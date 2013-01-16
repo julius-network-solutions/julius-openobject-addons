@@ -19,31 +19,6 @@
 #
 #################################################################################
 
-{
-    "name"      : "Account CODA extended - import bank statements from coda file or other",
-    "version"   : "1.0",
-    "author"    : "Julius Network Solutions",
-    "category"  : "Accounting & Finance",
-    "description": """
-    Module provides functionality to import
-    bank statements from another files than coda with parser.
-    """,
-    "depends"   : [
-       "account_voucher",
-       "l10n_fr_coda",
-    ],
-    "demo_xml"  : [],
-    "init_xml"  : [],
-    "update_xml": [
-        "wizard/account_coda_import.xml",
-        "res_company_view.xml",
-        "account_coda_view.xml",
-        "security/ir.model.access.csv",
-    ],
-    "active"    : False,
-    "installable" : True,
-
-}
+import account
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-
