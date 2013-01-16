@@ -145,7 +145,8 @@ class account_coda_import(osv.osv_memory):
 
         codafile = data['coda_data']
         journal_id = data['journal_id'][0]
-        journal_code = journal_obj.browse(cr, uid, journal_id, context=context).code
+        journal = journal_obj.browse(cr, uid, journal_id, context=context)
+        journal_code = journal.code
 
         period = account_period_obj.find(cr, uid, context=context)[0]
         def_pay_acc = data['def_payable']
@@ -164,21 +165,24 @@ class account_coda_import(osv.osv_memory):
         recordlist = base64.decodestring(unicode(codafile, 'utf-8')).split('\n')
         recordlist.pop()
         
-        bank_statements = self.get_file(cr, uid, ids, recordlist, filter_id, data, context)
+        bank_statements = self.get_file(cr, uid, ids, recordlist, filter_id, data, context=context)
         statement_update = data['statement_update']
         #end for
         bkst_list=[]
         for statement in bank_statements:
             try:       
                 '''If the month already exist we update the statement''' 
-                '''Section to be remove if we do not want a fusion of statement anymore'''                                            
-                for bank_statement_id in bank_statement_obj.search(cr,uid,[('period_id','=',statement.get('period_id',False))]):
-                    if statement_update:
+                '''Section to be remove if we do not want a fusion of statement anymore'''
+                if statement_update:
+                    for bank_statement_id in bank_statement_obj.search(cr, uid, [
+                                                ('period_id','=',statement.get('period_id',False)),
+                                                ('company_id', '=', journal.company_id.id)],
+                                                context=context):
                         bk_st_id = bank_statement_id
                         statement_total_amount = statement.get('total_amount') or 0
                         balance_start = bank_statement_obj.browse(cr, uid, bk_st_id, context=context).balance_start                    
                         balance_end_real = bank_statement_obj.browse(cr, uid, bk_st_id, context=context).balance_end_real + statement_total_amount
-                        bank_statement_obj.write(cr, uid, [bk_st_id], {'balance_end_real': balance_end_real}, context)
+                        bank_statement_obj.write(cr, uid, [bk_st_id], {'balance_end_real': balance_end_real}, context=context)
                         lines = statement.get('bank_statement_line',False)
                         if lines:
                             for value in lines:
@@ -240,7 +244,7 @@ class account_coda_import(osv.osv_memory):
                                            })
                         bkst_list.append(bk_st_id)                   
                 
-                '''If the month does not exist we create a new statement'''       
+                '''If the month does not exist we create a new statement'''
                 if not bank_statement_obj.search(cr,uid,[('period_id','=',statement.get('period_id',False))]) or statement_update == False:
                     if not statement.get('name',False):                    
                         statement['name'] = self.pool.get('ir.sequence').next_by_code(cr, uid, 'account.bank.statement')
