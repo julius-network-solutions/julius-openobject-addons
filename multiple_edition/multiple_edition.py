@@ -29,15 +29,19 @@ class field_relation(osv.osv_memory):
     
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
         result = super(field_relation, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar,submenu)
-        fields = {}   
+        fields = {}
+        xml = ''
+        if context == None:
+            context = {}
         multiple_edition_id = context.get('multiple_edition_id')
-        field_data = self.pool.get('multiple.edition').browse(cr, uid, multiple_edition_id, context).field_id
-        fields.update({'field_relation': {'type': field_data.ttype, 'relation': field_data.relation, 'string': field_data.name},})        
-        xml_field = etree.Element('field', {'name':'field_relation'})
-        root = xml_field.getroottree()
-        xml = etree.tostring(root)
-        fields.update(result['fields'])
-        result['fields'] = fields
+        if multiple_edition_id:
+            field_data = self.pool.get('multiple.edition').browse(cr, uid, multiple_edition_id, context).field_id
+            fields.update({'field_relation': {'type': field_data.ttype, 'relation': field_data.relation, 'string': field_data.name},})        
+            xml_field = etree.Element('field', {'name':'field_relation'})
+            root = xml_field.getroottree()
+            xml = etree.tostring(root)
+            fields.update(result['fields'])
+            result['fields'] = fields
         result['arch'] = result['arch'].replace('<separator string="placeholder"/>',xml)
         return result
     
@@ -99,6 +103,8 @@ class multiple_edition(osv.osv_memory):
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
         result = super(multiple_edition, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar,submenu)
         xml = ''
+        if context is None:
+            context = {}
         if context.get('value_ok'):
             fields = {}
             multiple_edition_id = context.get('multiple_edition_id')

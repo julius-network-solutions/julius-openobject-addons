@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <openerp>
-	<data>
-	
-		<record id="view_field_relation" model="ir.ui.view">
+    <data>
+    
+    		<record id="view_field_relation" model="ir.ui.view">
             <field name="name">Field Relation</field>
             <field name="model">field.relation</field>
             <field name="type">form</field>
@@ -22,49 +22,56 @@
             <field name="view_mode">form</field>
             <field name="view_id" ref="view_field_relation"/>
             <field name="target">new</field>
-        </record>
+        </record><!--
 	    
-	    <!--  Multiple Edition -->
+	      Multiple Edition -->
 
-        <record id="view_make_procurment_wizard" model="ir.ui.view">
-            <field name="name">Multiple Edition</field>
-            <field name="model">multiple.edition</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="Multiple Edition">
-                    <label string="This wizard will allow a multiple edtion for selected records." colspan="4"/>
-                    <field name="model_id"/>
-                    <field name="field_type"/>
-                    <field name="field_id"/>
-                    <newline/>
-                    <field name="char_value" colspan="4" attrs="{'invisible':[('field_type','!=','char')]}"/>
-                    <field name="bool_value" colspan="4" attrs="{'invisible':[('field_type','!=','boolean')]}"/>
-                    <field name="int_value" colspan="4" attrs="{'invisible':[('field_type','!=','integer')]}"/>
-                    <field name="text_value" colspan="4" attrs="{'invisible':[('field_type','!=','text')]}"/>
-                    <field name="float_value" colspan="4" attrs="{'invisible':[('field_type','!=','float')]}"/>
-                    <separator string="placeholder"/>
-                    <button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relation" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','many2one')]}"/>
-                    <button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relations" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','one2many')]}"/>
-                    <button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relations" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','many2many')]}"/>
-                    <newline/>
-                    <separator colspan="4"/>
-                    <group col="2" colspan="4">
-                        <button icon='gtk-cancel' special="cancel" string="Cancel" />
-                        <button name="edit_fields" string="Edit Fields" colspan="1" type="object" icon="gtk-ok" />
-                    </group>
-                </form>
-            </field>
-        </record>
+	<record id="view_make_procurment_wizard" model="ir.ui.view">
+	    <field name="name">Multiple Edition</field>
+	    <field name="model">multiple.edition</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">
+	        <form string="Multiple Edition" version="7.0">
+	        	<group>
+	           		<label string="This wizard will allow a multiple edtion for selected records." colspan="4"/>	       
+	             	<field name="model_id" class="oe_inline"/>
+	             	<field name="field_type" class="oe_inline"/>	         		
+             		<field name="field_id" class="oe_inline"/>
+             		<label for="char_value"/> 
+             		<div>
+		             	<field name="char_value" class="oe_inline" colspan="4" attrs="{'invisible':[('field_type','!=','char')]}"/>
+		             	<field name="bool_value" class="oe_inline" colspan="4" attrs="{'invisible':[('field_type','!=','boolean')]}"/>
+		             	<field name="int_value" class="oe_inline" colspan="4" attrs="{'invisible':[('field_type','!=','integer')]}"/>
+		             	<field name="text_value" class="oe_inline" colspan="4" attrs="{'invisible':[('field_type','!=','text')]}"/>
+		             	<field name="float_value" class="oe_inline" colspan="4" attrs="{'invisible':[('field_type','!=','float')]}"/>
+		             	<button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relation" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','many2one')]}"/>
+	             		<button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relations" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','one2many')]}"/>
+	             		<button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relations" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','many2many')]}"/>
+	            	</div>
+	            </group>
+	            <footer>
+	                <button string="Edit Fields" name="edit_fields" type="object" class="oe_highlight"/>
+	                or
+	                <button string="Cancel" class="oe_link" special="cancel"/>
+	            </footer>
+	        </form>
+	    </field>
+	</record>
+
+<!--
         
-        <!--  Product Multiple Edition -->
+          Product Multiple Edition 
         
-        <act_window name="Multiple Edition"
+       --><act_window name="Multiple Edition"
             res_model="multiple.edition"
             src_model="product.product"
             view_mode="form"
             target="new"
             key2="client_action_multi"
             id="act_multiple_edition"/>
-
-	</data>
+            <!--
+        <menuitem name="Tools" id="base.menu_tools" sequence="120" groups="base.group_no_one"/>
+        
+    --></data>
 </openerp>
+        
