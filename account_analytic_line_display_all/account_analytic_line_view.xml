@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="project_account_analytic_tree_view">
+            <field name="name">Project Account Analytic Tree</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="account.view_account_analytic_line_tree"/>
+            <field name="arch" type="xml">
+				<field name="ref" position="replace">
+               		<field name="ref" invisible="context.get('to_invoice', False) and not context.get('display_all', False)"/>
+               	</field>
+               	<field name="journal_id" position="replace">
+               		<field name="journal_id" invisible="context.get('to_invoice', False) and not context.get('display_all', False)"/>
+               	</field>
+               	<field name="amount" position="replace">
+               		<field name="amount" sum="Total" invisible="context.get('to_invoice', False) and not context.get('display_all', False)"/>
+               	</field>
+               	<field name="product_id" position="replace">
+               		<field name="product_id" on_change="on_change_unit_amount(product_id, unit_amount, company_id, product_uom_id, journal_id)" invisible="not context.get('to_invoice', False) and not context.get('display_all', False)"/>
+               	</field>
+               	<field name="product_uom_id" position="replace">
+               		<field name="product_uom_id" on_change="on_change_unit_amount(product_id, unit_amount, company_id, product_uom_id)" invisible="not context.get('to_invoice', False) and not context.get('display_all', False)"/>
+               	</field>
+               	<field name="general_account_id" position="replace">
+               		<field name="general_account_id" invisible="context.get('to_invoice', False) and not context.get('display_all', False)"/>
+               	</field>
+            </field>
+        </record>
+        
+        <record id="project_account_analytic_search_view" model="ir.ui.view">
+            <field name="name">account.analytic.line.select</field>
+            <field name="model">account.analytic.line</field>
+        	<field name="inherit_id" ref="account.view_account_analytic_line_filter" />
+            <field name="arch" type="xml">
+            	<field name="user_id" position="after">
+            		<filter name="display_all" string="Display all fields" context="{'display_all': 1}" icon="terp-personal"/>
+            	</field>	
+            </field>		
+        </record>   
+        		
+    </data>
+</openerp>

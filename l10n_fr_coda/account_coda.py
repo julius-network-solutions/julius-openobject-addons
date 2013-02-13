@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -20,11 +20,9 @@
 #
 ##############################################################################
 
-from osv import osv, fields
-import decimal_precision as dp
-import netsvc
-from tools.translate import _
-logger=netsvc.Logger()
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+import openerp.addons.decimal_precision as dp
 
 class account_coda(osv.osv):
     _name = 'account.coda'
@@ -67,7 +65,5 @@ class account_coda(osv.osv):
         return super(account_coda, self).unlink(cr, uid, ids, context=context)
   
 account_coda()
-
-
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

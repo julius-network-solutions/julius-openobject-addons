@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<openerp>
+	<data noupdate="1">
+	
+		<record model="account.bankimport.filters" id="filters_asc">
+			<field name="name">ASC</field>
+			<field name="filter">asc</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_banque_populaire">
+			<field name="name">Banque Populaire</field>
+			<field name="filter">banque_populaire</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_bfa">
+			<field name="name">BFA</field>
+			<field name="filter">bfa</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_bnp_pro">
+			<field name="name">BNP Pro</field>
+			<field name="filter">bnp_pro</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_bnp">
+			<field name="name">BNP</field>
+			<field name="filter">bnp</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_cfonb">
+			<field name="name">CFONB</field>
+			<field name="filter">cfonb</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_cic">
+			<field name="name">CIC</field>
+			<field name="filter">cic</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_coda">
+			<field name="name">CODA</field>
+			<field name="filter">coda</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_emirates_nbd">
+			<field name="name">Emirates NBD</field>
+			<field name="filter">emirates_nbd</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_hsbc">
+			<field name="name">HSBC</field>
+			<field name="filter">hsbc</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_emirates_mt940">
+			<field name="name">MT940</field>
+			<field name="filter">mt940</field>
+			<field name="active" eval="False"/>
+		</record>
+	
+		<record model="account.bankimport.filters" id="filters_tota">
+			<field name="name">TOTA</field>
+			<field name="filter">tota</field>
+			<field name="active" eval="False"/>
+		</record>
+
+    </data>
+</openerp>
