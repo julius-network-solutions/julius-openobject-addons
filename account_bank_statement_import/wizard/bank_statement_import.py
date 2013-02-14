@@ -25,21 +25,6 @@ import base64
 from osv import fields, osv
 from tools.translate import _
 
-#def str2date(date_str):
-#    return time.strftime("%y/%m/%d", time.strptime(date_str, "%d%m%y"))
-
-#def str2float(str):
-#    try:
-#        return float(str)
-#    except:
-#        return 0.0
-
-#def list2float(lst):
-#    try:
-#        return str2float((lambda s: s[:-3] + '.' + s[-3:])(lst))
-#    except:
-#        return 0.0
-
 class account_bank_statement_import(osv.osv_memory):
     _name = 'account.bank.statement.import'
 
@@ -70,6 +55,15 @@ class account_bank_statement_import(osv.osv_memory):
                 return company.def_receivable_id.id
         return False
     
+    def _default_def_awaiting(self, cr, uid, context):
+        company_obj = self.pool.get('res.company')
+        company_id = company_obj._company_default_get(cr, uid, context=context)
+        if company_id:
+            company = company_obj.browse(cr, uid, company_id)
+            if company and company.def_awaiting_id:
+                return company.def_awaiting_id.id
+        return False
+    
     def _default_filter_id(self, cr, uid, context):
         company_obj = self.pool.get('res.company')
         company_id = company_obj._company_default_get(cr, uid, context=context)
@@ -78,24 +72,37 @@ class account_bank_statement_import(osv.osv_memory):
             if company and company.def_filter_id:
                 return company.def_filter_id.id
         return False
+    
+    def _default_date_format(self, cr, uid, context):
+        company_obj = self.pool.get('res.company')
+        company_id = company_obj._company_default_get(cr, uid, context=context)
+        if company_id:
+            company = company_obj.browse(cr, uid, company_id)
+            return company and company.def_date_format or '%d/%m/%Y'
+        return '%d/%m/%Y'
 
     _columns = {
         'journal_id': fields.many2one('account.journal', 'Bank Journal', required=True),
-        'payable_id': fields.many2one('account.account', 'Default Payable Account', domain=[('type', '=', 'payable')], required=True, help= 'Set here the payable account that will be used, by default, if the partner is not found'),
-        'receivable_id': fields.many2one('account.account', 'Default Receivable Account', domain=[('type', '=', 'receivable')], required=True, help= 'Set here the receivable account that will be used, by default, if the partner is not found',),
-        'awaiting_account': fields.many2one('account.account', 'Default Account for Unrecognized Movement', domain=[('type', '=', 'liquidity')], required=True, help= 'Set here the default account that will be used, if the partner is found but does not have the bank account, or if he is domiciled'),
+        'payable_id': fields.many2one('account.account', 'Payable Account', domain=[('type', '=', 'payable')], required=True, help= 'Set here the payable account that will be used, by default, if the partner is not found'),
+        'receivable_id': fields.many2one('account.account', 'Receivable Account', domain=[('type', '=', 'receivable')], required=True, help= 'Set here the receivable account that will be used, by default, if the partner is not found',),
+        'awaiting_id': fields.many2one('account.account', 'Account for Unrecognized Movement', domain=[('type', '=', 'liquidity')], required=True, help= 'Set here the default account that will be used, if the partner is found but does not have the bank account, or if he is domiciled'),
         'filter_id': fields.many2one('account.bankimport.filters', 'Filter', required=True),
         'statement_update': fields.boolean('Update Statement'),
         'date_format': fields.char('Date Format', size=32, required=True),
+        'file_data': fields.binary('File to import', required=True),
+        'file_fname': fields.char('Filename', size=128, required=True),
+        'note': fields.text('Log'),
     }
     
     _defaults = {
         'journal_id': lambda x, y, z, c: x._default_journal_id(y, z, c),
         'payable_id' : lambda x, y, z, c: x._default_def_payable(y, z, c),
         'receivable_id': lambda x, y, z, c: x._default_def_receivable(y, z, c),
+        'awaiting_id': lambda x, y, z, c: x._default_def_awaiting(y, z, c),
         'filter_id' : lambda x, y, z, c: x._default_filter_id(y, z, c),
         'statement_update': False,
-        'date_format': '%d/%m/%Y',
+        'date_format': lambda x, y, z, c: x._default_date_format(y, z, c),
+        'file_fname': lambda *a: '',
     }
     
     def get_file(self, cr, uid, ids, recordlist, filter_id, data, context):
@@ -110,19 +117,88 @@ class account_bank_statement_import(osv.osv_memory):
             raise
         return bank_statements
     
-    def get_line_vals(self, cr, uid, line, bk_st_id, voucher_id, str_not1, context=None):
+    def _get_line_vals(self, cr, uid, line, bk_st_id, voucher_id, str_not1, context=None):
         return {
-            'name': line['name'],
-            'date': line['date'],
-            'amount': line['amount'],
-            'account_id':line['account_id'],
+            'name': line.get('name') or '',
+            'date': line.get('date') or False,
+            'amount': line.get('amount') or 0,
+            'account_id': line.get('account_id') or False,
             'statement_id': bk_st_id,
             'voucher_id': voucher_id,
-            'note': str_not1 + '\n' + line['extra_note'],
-            'ref':line['ref'],
+            'note': str_not1 + '\n' + line.get('extra_note') or '',
+            'ref': line.get('ref') or '',
         }
+        
+    def _voucher_create(self, cr, uid, statement, line, journal, context=None):
+        if context == None:
+            context = {}
+        voucher_obj = self.pool.get('account.voucher')
+        voucher_line_obj = self.pool.get('account.voucher.line')
+        line_obj = self.pool.get('account.move.line')
+        
+        name = line['name'][:3] + '/' + line['name'][3:7] + '/' + line['name'][7:]
+        rec_ids = line_obj.search(cr, uid, [
+            ('name', '=', name),
+            ('reconcile_id', '=', False),
+            ('account_id.reconcile', '=', True)
+        ], limit=1, context=context)
+        if rec_ids:
+            result = voucher_obj.onchange_partner_id(cr, uid, [],
+                partner_id=line['partner_id'], journal_id=statement['journal_id'],
+                price=abs(line['amount']), currency_id = journal.company_id.currency_id.id,
+                ttype=(line['amount'] < 0 and 'payment' or 'receipt'), context=context)
+            voucher_res = {
+                'type':((line.get('amount') or 0) < 0 and 'payment' or 'receipt'),
+                'name': line.get('name') or '',
+                'journal_id': journal.id,
+                'account_id': result.get('value') and result['value'].get('account_id') or journal.default_credit_account_id.id,
+                'company_id': journal.company_id.id,
+                'currency_id': journal.company_id.currency_id.id,
+                'date': line.get('date') or False,
+                'amount': abs(line.get('amount') or 0),
+                'period_id': statement.get('period_id') or period,
+            }
+            voucher_id = voucher_obj.create(cr, uid, voucher_res, context=context)
+            context.update({'move_line_ids': rec_ids})
+            voucher_line_dict =  False
+            if result['value']['line_ids']:
+                for line_dict in result['value']['line_ids']:
+                    move_line = line_obj.browse(cr, uid, line_dict['move_line_id'], context)
+                    if line.move_id.id == move_line.move_id.id:
+                        voucher_line_dict = line_dict
 
-    def coda_parsing(self, cr, uid, ids, context=None):
+            if voucher_line_dict:
+                voucher_line_dict.update({'voucher_id':voucher_id})
+                voucher_line_obj.create(cr, uid, voucher_line_dict, context=context)
+            mv = line_obj.browse(cr, uid, rec_ids[0], context=context)
+            if mv.partner_id:
+                line['partner_id'] = mv.partner_id.id
+                if line['amount'] < 0:
+                    line['account_id'] = mv.partner_id.property_account_payable.id
+                else:
+                    line['account_id'] = mv.partner_id.property_account_receivable.id
+        return voucher_id, line
+    
+    def _create_bank_statement_line(self, cr, uid, statement, journal, context=None):
+        if context is None:
+            context = {}
+        bank_statement_line_obj = self.pool.get('account.bank.statement.line')
+        lines = statement.get('bank_statement_line') or []
+        str_not1 = ''
+        for line in lines:
+            if not line['partner_id']:
+                line['partner_id'] = journal.company_id and journal.company_id.partner_id.id or False
+            voucher_id = False
+            if line.get('toreconcile') or False: # Fix me
+                voucher_id, line = self._voucher_create(cr, uid, statement=statement, line=line, journal=journal, context=context)
+
+            if line.has_key('contry_name') and line.has_key('cntry_number'):
+                str_not1 += "Partner name:%s \n Partner Account Number:%s \n Communication:%s \n Value Date:%s \n Entry Date:%s \n"%(line["contry_name"], line["cntry_number"], line["free_comm"]+line['extra_note'], line["val_date"][0], line["entry_date"][0])
+            line_vals = self._get_line_vals(cr, uid, line, bk_st_id, voucher_id, str_not1, context=context)
+            bank_statement_line_obj.create(cr, uid, line_vals, context=context)
+        return str_not1
+
+    def file_parsing(self, cr, uid, ids, context=None):
 
         journal_obj=self.pool.get('account.journal')
         account_period_obj = self.pool.get('account.period')
@@ -130,248 +206,133 @@ class account_bank_statement_import(osv.osv_memory):
         bank_statement_line_obj = self.pool.get('account.bank.statement.line')
         voucher_obj = self.pool.get('account.voucher')
         voucher_line_obj = self.pool.get('account.voucher.line')
-#        account_coda_obj = self.pool.get('account.coda')
         mod_obj = self.pool.get('ir.model.data')
         line_obj = self.pool.get('account.move.line')
+        seq_obj = self.pool.get('ir.sequence')
 
         if context is None:
             context = {}
 
         data = self.read(cr, uid, ids)[0]
 
-        codafile = data['coda_data']
+        file_data = data['file_data']
         journal_id = data['journal_id'][0]
         journal = journal_obj.browse(cr, uid, journal_id, context=context)
         journal_code = journal.code
 
         period = account_period_obj.find(cr, uid, context=context)[0]
-        def_pay_acc = data['def_payable']
-        def_rec_acc = data['def_receivable']
+        def_pay_acc = data['payable_id']
+        def_rec_acc = data['receivable_id']
         filter_id = data['filter_id'][0]
 
-        err_log = "Errors:\n------\n"
-        nb_err=0
-        std_log=''
-        str_log1 = "Coda File is Imported:  "
-        str_not=''
-        str_not1=''
+        err_log = _("Errors:") + "\n------\n"
+        nb_err = 0
+        str_log1 = _("The bank statement file has been imported") + "\n"
 
         bank_statements = []
         bank_statement = {}
-        recordlist = base64.decodestring(unicode(codafile, 'utf-8')).split('\n')
+        recordlist = base64.decodestring(unicode(file_data, 'utf-8')).split('\n')
         recordlist.pop()
         
         bank_statements = self.get_file(cr, uid, ids, recordlist, filter_id, data, context=context)
         statement_update = data['statement_update']
         #end for
-        bkst_list=[]
+        bkst_list = []
         for statement in bank_statements:
             try:       
                 '''If the month already exist we update the statement''' 
                 '''Section to be remove if we do not want a fusion of statement anymore'''
                 if statement_update:
                     for bank_statement_id in bank_statement_obj.search(cr, uid, [
-                                                ('period_id','=',statement.get('period_id',False)),
+                                                ('period_id', '=', statement.get('period_id',False)),
                                                 ('company_id', '=', journal.company_id.id)],
                                                 context=context):
                         bk_st_id = bank_statement_id
+                        statement_data = bank_statement_obj.browse(cr, uid, bk_st_id, context=context)
                         statement_total_amount = statement.get('total_amount') or 0
-                        balance_start = bank_statement_obj.browse(cr, uid, bk_st_id, context=context).balance_start                    
-                        balance_end_real = bank_statement_obj.browse(cr, uid, bk_st_id, context=context).balance_end_real + statement_total_amount
+                        balance_start = statement_data.balance_start                    
+                        balance_end_real = statement_data.balance_end_real + statement_total_amount
                         bank_statement_obj.write(cr, uid, [bk_st_id], {'balance_end_real': balance_end_real}, context=context)
-                        lines = statement.get('bank_statement_line',False)
-                        if lines:
-                            for value in lines:
-                                journal = statement.get('journal_id',journal_id)
-                                journal = journal_obj.browse(cr, uid, journal, context=context)
-                                line = lines[value]
-                                if not line['partner_id']:
-                                    line['partner_id'] = journal.company_id.partner_id.id
-                                voucher_id = False
-                                rec_id = False
-                                if line.get('toreconcile',False): # Fix me
-                                    name = line['name'][:3] + '/' + line['name'][3:7] + '/' + line['name'][7:]
-                                    rec_id = self.pool.get('account.move.line').search(cr, uid, [('name', '=', name), ('reconcile_id', '=', False), ('account_id.reconcile', '=', True)])
-                                    if rec_id:
-                                        result = voucher_obj.onchange_partner_id(cr, uid, [], partner_id=line['partner_id'], journal_id=statement['journal_id'], price=abs(line['amount']), currency_id = journal.company_id.currency_id.id, ttype=(line['amount'] < 0 and 'payment' or 'receipt'), context=context)
-                                        voucher_res = { 'type':(line['amount'] < 0 and 'payment' or 'receipt'),
-                                        'name': line['name'],#line.name,
-                                        'journal_id': journal.id, #statement.journal_id.id,
-                                        'account_id': result.get('account_id', journal.default_credit_account_id.id),#line.account_id.id,
-                                        'company_id': journal.company_id.id,#statement.company_id.id,
-                                        'currency_id': journal.company_id.currency_id.id,#statement.currency.id,
-                                        'date': line['date'], #line.date,
-                                        'amount':abs(line['amount']),
-                                        'period_id':statement.get('period_id',False) or period,# statement.period_id.id
-                                        }
-                                        voucher_id = voucher_obj.create(cr, uid, voucher_res, context=context)
-                                        context.update({'move_line_ids': rec_id})
-                                        voucher_line_dict =  False
-                                        if result['value']['line_ids']:
-                                            for line_dict in result['value']['line_ids']:
-                                                move_line = line_obj.browse(cr, uid, line_dict['move_line_id'], context)
-                                                if line.move_id.id == move_line.move_id.id:
-                                                    voucher_line_dict = line_dict
-        
-                                        if voucher_line_dict:
-                                            voucher_line_dict.update({'voucher_id':voucher_id})
-                                            voucher_line_obj.create(cr, uid, voucher_line_dict, context=context)
-        
-                                        mv = self.pool.get('account.move.line').browse(cr, uid, rec_id[0], context=context)
-                                        if mv.partner_id:
-                                            line['partner_id'] = mv.partner_id.id
-                                            if line['amount'] < 0:
-                                                line['account_id'] = mv.partner_id.property_account_payable.id
-                                            else:
-                                                line['account_id'] = mv.partner_id.property_account_receivable.id
-                                str_not1 = ''
-                                if line.has_key('contry_name') and line.has_key('cntry_number'):
-                                    str_not1="Partner name:%s \n Partner Account Number:%s \n Communication:%s \n Value Date:%s \n Entry Date:%s \n"%(line["contry_name"], line["cntry_number"], line["free_comm"]+line['extra_note'], line["val_date"][0], line["entry_date"][0])
-
-                                bank_statement_line_obj.create(cr, uid, {
-                                           'name':line['name'],
-                                           'date': line['date'],
-                                           'amount': line['amount'],
-                                           'account_id':line['account_id'],
-                                           'statement_id': bk_st_id,
-                                           'voucher_id': voucher_id,
-                                           'note': str_not1 + '\n' + line['extra_note'],
-                                           'ref':line['ref'],
-                                           })
-                        bkst_list.append(bk_st_id)                   
+                        bkst_list.append(bk_st_id)
+                        statement_journal_id = statement.get('journal_id') or journal_id
+                        journal = journal_obj.browse(cr, uid, statement_journal_id, context=context)
+                        str_not1 = self._create_bank_statement_line(cr, uid, statement, journal, context=context)
                 
                 '''If the month does not exist we create a new statement'''
-                if not bank_statement_obj.search(cr,uid,[('period_id','=',statement.get('period_id',False))]) or statement_update == False:
+                if not bank_statement_obj.search(cr, uid, [
+                        ('period_id', '=', statement.get('period_id',False))
+                        ], context=context) or statement_update == False:
                     if not statement.get('name',False):                    
-                        statement['name'] = self.pool.get('ir.sequence').next_by_code(cr, uid, 'account.bank.statement')
+                        statement['name'] = seq_obj.next_by_code(cr, uid, 'account.bank.statement')
                     previous_bank_statement_id = bank_statement_obj.search(cr, uid, [], order=('date desc,period_id desc'), context=context)
                     if previous_bank_statement_id:
                         balance_start = bank_statement_obj.browse(cr, uid, previous_bank_statement_id[0], context=context).balance_end_real 
                     else:
                         balance_start = 0
-#                        err_log += '\n Should Not Append'
-#                        raise
-                    journal = statement.get('journal_id',journal_id)
+                    statement_journal_id = statement.get('journal_id') or journal_id,
                     statement_total_amount = statement.get('total_amount') or 0
                     balance_end_real = balance_start + statement_total_amount
                     bk_st_id = bank_statement_obj.create(cr, uid, {
-                        'journal_id': journal,
-                        'date': time.strftime('%Y-%m-%d', time.strptime(statement.get('date',time.strftime('%Y/%m/%d')), "%Y/%m/%d")),
-                        'period_id': statement.get('period_id',False) or period,
+                        'journal_id': statement_journal_id,
+                        'date': statement.get('date'),
+                        'period_id': statement.get('period_id') or period,
                         'balance_start': balance_start,
                         'balance_end_real': balance_end_real,
                         'state': 'draft',
-                        'name': statement.get('name',False),
+                        'name': statement.get('name') or False,
                     })
-                
-                    lines = statement.get('bank_statement_line',False)
-                    if lines:
-                        for value in lines:
-                            journal = journal_obj.browse(cr, uid, journal, context=context)
-                            line = lines[value]
-                            if not line['partner_id']:
-                                line['partner_id'] = journal.company_id and journal.company_id.partner_id.id or False
-                            voucher_id = False
-                            rec_id = False
-                            if line.get('toreconcile',False): # Fix me
-                                name = line['name'][:3] + '/' + line['name'][3:7] + '/' + line['name'][7:]
-                                rec_id = self.pool.get('account.move.line').search(cr, uid, [('name', '=', name), ('reconcile_id', '=', False), ('account_id.reconcile', '=', True)])
-                                if rec_id:
-                                    result = voucher_obj.onchange_partner_id(cr, uid, [], partner_id=line['partner_id'], journal_id=statement['journal_id'], price=abs(line['amount']), currency_id = journal.company_id.currency_id.id, ttype=(line['amount'] < 0 and 'payment' or 'receipt'), context=context)
-                                    voucher_res = { 'type':(line['amount'] < 0 and 'payment' or 'receipt'),
-                                    'name': line['name'],#line.name,
-#                                    'partner_id': line['partner_id'],#line.partner_id.id,
-                                    'journal_id': journal.id, #statement.journal_id.id,
-                                    'account_id': result.get('account_id', journal.default_credit_account_id.id),#line.account_id.id,
-                                    'company_id': journal.company_id.id,#statement.company_id.id,
-                                    'currency_id': journal.company_id.currency_id.id,#statement.currency.id,
-                                    'date': line['date'], #line.date,
-                                    'amount':abs(line['amount']),
-                                    'period_id':statement.get('period_id',False) or period,# statement.period_id.id
-                                    }
-                                    voucher_id = voucher_obj.create(cr, uid, voucher_res, context=context)
-                                    context.update({'move_line_ids': rec_id})
-    
-                                    voucher_line_dict =  False
-                                    if result['value']['line_ids']:
-                                        for line_dict in result['value']['line_ids']:
-                                            move_line = line_obj.browse(cr, uid, line_dict['move_line_id'], context)
-                                            if line.move_id.id == move_line.move_id.id:
-                                                voucher_line_dict = line_dict
-    
-                                    if voucher_line_dict:
-                                        voucher_line_dict.update({'voucher_id':voucher_id})
-                                        voucher_line_obj.create(cr, uid, voucher_line_dict, context=context)
-    
-            #                            reconcile_id = statement_reconcile_obj.create(cr, uid, {
-            #                                'line_ids': [(6, 0, rec_id)]
-            #                                }, context=context)
-            #
-    
-                                    mv = self.pool.get('account.move.line').browse(cr, uid, rec_id[0], context=context)
-                                    if mv.partner_id:
-                                        line['partner_id'] = mv.partner_id.id
-                                        if line['amount'] < 0:
-                                            line['account_id'] = mv.partner_id.property_account_payable.id
-                                        else:
-                                            line['account_id'] = mv.partner_id.property_account_receivable.id
-                            str_not1 = ''
-                            if line.has_key('contry_name') and line.has_key('cntry_number'):
-                                str_not1="Partner name:%s \n Partner Account Number:%s \n Communication:%s \n Value Date:%s \n Entry Date:%s \n"%(line["contry_name"], line["cntry_number"], line["free_comm"]+line['extra_note'], line["val_date"][0], line["entry_date"][0])
-                            
-                            line_vals = self.get_line_vals(cr, uid, line, bk_st_id, voucher_id, str_not1, context=context)
-                            bank_statement_line_obj.create(cr, uid, line_vals, context=context)
-    
                     bkst_list.append(bk_st_id)
+                
+                    journal = journal_obj.browse(cr, uid, statement_journal_id, context=context)
+                    str_not1 = self._create_bank_statement_line(cr, uid, statement, journal, context=context)
+    
 
             except osv.except_osv, e:
                 cr.rollback()
                 nb_err += 1
-                err_log += '\n Application Error: ' + str(e)
+                err_log += '\n' + _('Application Error:') + ' ' + str(e)
                 raise # REMOVEME
 
             except Exception, e:
                 cr.rollback()
                 nb_err += 1
-                err_log += '\n System Error: '+str(e)
+                err_log += '\n' + _('System Error:') + ' ' + str(e)
                 raise # REMOVEME
             except:
                 cr.rollback()
                 nb_err+=1
-                err_log += '\n Unknown Error'
+                err_log += '\n' + _('Unknown Error')
                 raise
-        err_log += '\n\nNumber of statements: '+ str(len(bkst_list))
-        err_log += '\nNumber of error:'+ str(nb_err) +'\n'
-        test = mod_obj.browse(cr, uid,filter_id, context=context)
-#        account_coda_obj.create(cr, uid, {
-#            'name': 'test',
-#            'coda_data': codafile,
-#            'bank_statement_ids': [(6, 0, bkst_list,)],
-#            'note': str_log1+str_not+std_log+err_log,
-#            'date': time.strftime("%Y-%m-%d"),
-#            'coda_creation_date': time.strftime("%Y-%m-%d"),
-#            'user_id': uid,
-#        })
+        sumup_log = '\n' + _('Sum up:') + '\n' + _('Number of statements:') + ' ' + str(len(bkst_list)) + '\n' +  _('Number of error:') + ' ' + str(nb_err)
         
-        test = ''
-        test = str_log1 + std_log + err_log
-        self.write(cr, uid, ids, {'note': test}, context=context)
-        context.update({ 'statment_ids': bkst_list})
-        model_data_ids = mod_obj.search(cr, uid, [('model', '=', 'ir.ui.view'), ('name', '=', 'view_bank_statement_tree')], context=context)
-        resource_id = mod_obj.read(cr, uid, model_data_ids, fields=['res_id'], context=context)[0]['res_id']
-
+        total_log = str_log1 + err_log + sumup_log
+        self.write(cr, uid, ids, {'note': total_log}, context=context)
+        context.update({'statement_ids': bkst_list})
+        model_id, res_id = mod_obj.get_object_reference(cr, uid, 'account_bank_statement_import', 'account_bank_statement_file_report_view')
         return {
             'name': _('Result'),
             'res_id': ids[0],
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'account.bank.statetement.import',
-            'view_id': False,
+            'res_model': 'account.bank.statement.import',
+            'view_id': res_id,
             'target': 'new',
-            'views': [(resource_id, 'tree')],
+            'views': [(res_id, 'form')],
             'context': context,
             'type': 'ir.actions.act_window',
         }
+        
+    def open_bank_statements(self, cr, uid, ids, context=None):
+        if context == None:
+            context = {}
+        mod_obj = self.pool.get('ir.model.data')
+        model_id, res_id = mod_obj.get_object_reference(cr, uid, 'account_bank_statement_import', 'action_bank_statement_imported')
+        
+        action_obj = self.pool.get('ir.actions.act_window')
+        action = action_obj.read(cr, uid, res_id, [], context=context)
+        if context and context.get('statement_ids'):
+            action['domain'] = [('id', 'in', context.get('statement_ids'))]
+        return action
         
 account_bank_statement_import()
 

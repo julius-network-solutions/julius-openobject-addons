@@ -39,7 +39,7 @@
         "security/ir.model.access.csv",
         "data/filters_data.xml",
         "config_view.xml",
-#        "wizard/statement_import.xml",
+        "wizard/statement_import.xml",
 #        "account_coda_view.xml",
     ],
     "active"    : False,

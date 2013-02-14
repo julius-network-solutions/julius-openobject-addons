@@ -121,11 +121,11 @@ def get_data(self, cr, uid, ids, recordlist, data):
             if sign == '-':
 #            if line[32:34] in ('01','11','23','96','62','67','70'):
 #                st_line['amount'] = amount
-                st_line['account_id'] = data['def_payable']
+                st_line['account_id'] = data['payable_id']
             elif sign == '+':
 #            elif line[32:34] in ('02','05'):
 #                st_line['amount'] = amount
-                st_line['account_id'] = data['def_receivable']
+                st_line['account_id'] = data['receivable_id']
 #            else:
 #                st_line['amount'] = amount
 #                st_line['account_id'] = data['def_receivable']

@@ -33,8 +33,12 @@ class account_config_settings(osv.osv_memory):
             string='Default Payable Account', domain=[('type','=','payable')]),
         'def_receivable_id': fields.related('company_id', 'def_receivable_id', type='many2one', relation='account.account',
             string='Default Receivable Account', domain=[('type','=','receivable')]),
+        'def_awaiting_id': fields.related('company_id', 'def_awaiting_id', type='many2one', relation='account.account',
+            string='Default Account for Unrecognized Movement', domain=[('type', '=', 'liquidity')]),
         'def_filter_id': fields.related('company_id', 'def_filter_id', type='many2one', relation='account.bankimport.filters',
             string='Default Filter'),
+        'def_date_format': fields.related('company_id', 'def_date_format', type='char', size=32,
+            string='Default Date Format'),
     }
 
     _defaults = {}
@@ -49,5 +53,20 @@ class account_config_settings(osv.osv_memory):
             'domain': ['|',('active', '=', True),('active', '=', False)],
             'context': {'search_default_active':1, 'search_default_not_active':1},
         }
+        
+    def onchange_company_id(self, cr, uid, ids, company_id):
+        # update related fields
+        res = super(account_config_settings, self).onchange_company_id(cr, uid, ids, company_id)
+        if company_id:
+            company = self.pool.get('res.company').browse(cr, uid, company_id)
+            res['value'].update({
+                'def_bank_journal_id': company.def_bank_journal_id and company.def_bank_journal_id.id or False,
+                'def_payable_id': company.def_payable_id and company.def_payable_id.id or False,
+                'def_receivable_id': company.def_receivable_id and company.def_receivable_id.id or False,
+                'def_awaiting_id': company.def_awaiting_id and company.def_awaiting_id.id or False,
+                'def_filter_id': company.def_filter_id and company.def_filter_id.id or False,
+                'def_date_format': company.def_date_format or False,
+            })
+        return res
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

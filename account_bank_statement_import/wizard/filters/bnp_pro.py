@@ -19,10 +19,9 @@
 #
 #################################################################################
 
-
-from osv import fields, osv
+from openerp.osv import fields, osv
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 import time
-import conversion
 
 def get_data(self, cr, uid, ids, recordlist, data):
     
@@ -31,13 +30,13 @@ def get_data(self, cr, uid, ids, recordlist, data):
     journal_obj = self.pool.get('account.journal')
     journal_code = journal_obj.browse(cr, uid, data['journal_id']).code
     
-    
     bank_statements = []
     i = 0        
     bal_end = 0
     first_line = True
     month_statement = {}
-    month_statement_period = {}
+    
+    date_format = data.get('date_format') or '%Y/%m/%d'
     
     # first loop on each line to determine the number of month in the statement
     for line_1 in recordlist:
@@ -50,14 +49,11 @@ def get_data(self, cr, uid, ids, recordlist, data):
         st_line_1 = {}
         st_line_1['date'] = line_splited_1[2]
         
-        line_period = time.strftime('%Y-%m', time.strptime(st_line_1['date'], "%Y/%m/%d"))
+        line_period = time.strftime('%Y-%m', time.strptime(st_line_1['date'], date_format))
        
-        if line_period in month_statement.keys():
-            month_statement[line_period].append(line_1)
-        else:
-            month_statement[line_period] = [line_1]
-            month_statement_period[line_period] = line_period
-        
+        if line_period not in month_statement.keys():
+            month_statement[line_period] = []
+        month_statement[line_period].append(line_1)
     # loop on each month
     for key in month_statement.keys():
                
@@ -71,24 +67,30 @@ def get_data(self, cr, uid, ids, recordlist, data):
             line_splited = line.split('\t') 
             st_line = {}
             line_name = i
-            st_line['date'] = line_splited[2]
-            st_line['name'] = line_splited[1]
+            name = line_splited[1]
+            st_line['name'] = name
+            line_date = line_splited[2]
+            st_line['date'] = line_date
             st_line['extra_note'] = ''
             st_line['ref'] = ''
             amount = line_splited[3]
             
             '''Definition of a positive or negative value'''
             if amount.startswith('-'):
-                st_line['account_id'] = data['def_payable'][0]
+                st_line['account_id'] = data['payable_id'][0]
             else:
-                st_line['account_id'] = data['def_receivable'][0]
+                st_line['account_id'] = data['receivable_id'][0]
                 
             amount = float(amount or 0.0)
             st_line['amount'] = amount
             st_line['partner_id'] = False
             
             # check of uniqueness of a field in the data base            
-            check_ids = self.pool.get('account.bank.statement.line').search(cr,uid,[('name','=',line_splited[1]),('date','=',line_splited[2]),('amount','=',amount)])
+            check_ids = self.pool.get('account.bank.statement.line').search(cr, uid, [
+                    ('name', '=', name),
+                    ('date', '=', line_date),
+                    ('amount', '=', amount),
+                ])
             if check_ids:
                 continue
             
@@ -99,13 +101,15 @@ def get_data(self, cr, uid, ids, recordlist, data):
             bank_statement["bank_statement_line"] = bank_statement_lines
             i += 1
             total_amount += amount
-
            
         # Saving data at month level
         bank_statement["total_amount"] = total_amount
         bank_statement['journal_id'] = data['journal_id'][0]
         bank_statement['date'] = time.strftime('%Y/%m/01', time.strptime(key,"%Y-%m"))
-        period_id = account_period_obj.search(cr, uid, [('date_start', '<=', time.strftime('%Y-%m-%d', time.strptime(bank_statement['date'], "%Y/%m/%d"))), ('date_stop', '>=', time.strftime('%Y-%m-%d', time.strptime(bank_statement['date'], "%Y/%m/%d")))])
+        period_id = account_period_obj.search(cr, uid, [
+                ('date_start', '<=', time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(bank_statement['date'], date_format))),
+                ('date_stop', '>=', time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(bank_statement['date'], date_format)))
+            ], limit=1)
         bank_statement['period_id'] = period_id and period_id[0] or False
         bank_statements.append(bank_statement)
 

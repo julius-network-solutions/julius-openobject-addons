@@ -73,8 +73,6 @@ def get_data(self, cr, uid, ids, bankData, bank_statement):
             st_line['name'] = line_list[2]
             st_line['free_comm']= ''
             st_line['ref']=''
-            st_line['cntry_number']=''
-            st_line['contry_name']=''
      
             if line_list[4] == ' \r' :
                 st_line_amt = - conversion.str2float(line_list[3])

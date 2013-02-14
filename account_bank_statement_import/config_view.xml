@@ -63,7 +63,9 @@
 					<field name="def_bank_journal_id"/>
 					<field name="def_payable_id"/>
 					<field name="def_receivable_id"/>
+					<field name="def_awaiting_id"/>
 					<field name="def_filter_id"/>
+					<field name="def_date_format"/>
 				</field>
 			</field>
 		</record>
@@ -88,6 +90,14 @@
                             <div>
                                 <label for="def_receivable_id"/>
 								<field name="def_receivable_id" class="oe_inline"/>
+                    		</div>
+                            <div>
+                                <label for="def_awaiting_id"/>
+								<field name="def_awaiting_id" class="oe_inline"/>
+                    		</div>
+                            <div>
+                                <label for="def_date_format"/>
+								<field name="def_date_format" class="oe_inline"/>
                     		</div>
                             <div>
                                 <label for="def_filter_id"/>

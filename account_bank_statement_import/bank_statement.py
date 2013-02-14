@@ -42,22 +42,10 @@ class res_company(osv.osv):
         'def_bank_journal_id' :  fields.many2one('account.journal', 'Default Bank Journal'),
         'def_payable_id' :  fields.many2one('account.account', 'Default Payable Account', domain=[('type','=','payable')]),
         'def_receivable_id' :  fields.many2one('account.account', 'Default Receivable Account', domain=[('type','=','receivable')]),
+        'def_awaiting_id' :  fields.many2one('account.account', 'Default Account for Unrecognized Movement', domain=[('type','=','liquidity')]),
         'def_filter_id': fields.many2one('account.bankimport.filters', 'Default Filter'),
+        'def_date_format': fields.char('Default Date Format', size=32),
     }
 res_company()
-
-#class account_bank_statement(osv.osv):
-#    _inherit = 'account.bank.statement'
-#    _columns = {
-#        'coda_id': fields.many2one('account.coda','CODA'),
-#    }
-#account_bank_statement()
-
-#class account_coda(osv.osv):
-#    _inherit = 'account.coda'
-#    _columns = {
-#        'bank_statement_ids': fields.one2many('account.bank.statement','coda_id','Generated CODA Bank Statements', readonly=True),
-#    }
-#account_coda()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

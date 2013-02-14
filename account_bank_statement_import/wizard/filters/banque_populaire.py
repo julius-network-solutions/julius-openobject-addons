@@ -83,9 +83,9 @@ def get_data(self, cr, uid, ids, recordlist, data):
         
         '''Definition of a positive or negative value'''
         if amount.startswith('-'):
-            st_line['account_id'] = data['def_payable']
+            st_line['account_id'] = data['payable_id']
         else:
-            st_line['account_id'] = data['def_receivable']
+            st_line['account_id'] = data['receivable_id']
             
         amount = float(amount or 0.0)
         st_line['amount'] = amount
