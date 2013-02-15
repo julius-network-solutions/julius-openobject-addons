@@ -200,25 +200,19 @@ class account_bank_statement_import(osv.osv_memory):
 
     def file_parsing(self, cr, uid, ids, context=None):
 
-        journal_obj=self.pool.get('account.journal')
-        account_period_obj = self.pool.get('account.period')
-        bank_statement_obj = self.pool.get('account.bank.statement')
-        bank_statement_line_obj = self.pool.get('account.bank.statement.line')
-        voucher_obj = self.pool.get('account.voucher')
-        voucher_line_obj = self.pool.get('account.voucher.line')
-        mod_obj = self.pool.get('ir.model.data')
-        line_obj = self.pool.get('account.move.line')
-        seq_obj = self.pool.get('ir.sequence')
-
         if context is None:
             context = {}
 
-        data = self.read(cr, uid, ids)[0]
+        journal_obj = self.pool.get('account.journal')
+        account_period_obj = self.pool.get('account.period')
+        bank_statement_obj = self.pool.get('account.bank.statement')
+        mod_obj = self.pool.get('ir.model.data')
+        seq_obj = self.pool.get('ir.sequence')
+
+        data = self.read(cr, uid, ids[0],  context=context)
 
         file_data = data['file_data']
         journal_id = data['journal_id'][0]
-        journal = journal_obj.browse(cr, uid, journal_id, context=context)
-        journal_code = journal.code
 
         period = account_period_obj.find(cr, uid, context=context)[0]
         def_pay_acc = data['payable_id']
@@ -239,23 +233,22 @@ class account_bank_statement_import(osv.osv_memory):
         #end for
         bkst_list = []
         for statement in bank_statements:
+            statement_journal_id = statement.get('journal_id') or journal_id
+            journal = journal_obj.browse(cr, uid, statement_journal_id, context=context)
             try:       
                 '''If the month already exist we update the statement''' 
                 '''Section to be remove if we do not want a fusion of statement anymore'''
                 if statement_update:
-                    for bank_statement_id in bank_statement_obj.search(cr, uid, [
+                    for bk_st_id in bank_statement_obj.search(cr, uid, [
                                                 ('period_id', '=', statement.get('period_id',False)),
-                                                ('company_id', '=', journal.company_id.id)],
-                                                context=context):
-                        bk_st_id = bank_statement_id
+                                                ('company_id', '=', journal.company_id.id)
+                                                ], context=context):
                         statement_data = bank_statement_obj.browse(cr, uid, bk_st_id, context=context)
                         statement_total_amount = statement.get('total_amount') or 0
                         balance_start = statement_data.balance_start                    
                         balance_end_real = statement_data.balance_end_real + statement_total_amount
                         bank_statement_obj.write(cr, uid, [bk_st_id], {'balance_end_real': balance_end_real}, context=context)
                         bkst_list.append(bk_st_id)
-                        statement_journal_id = statement.get('journal_id') or journal_id
-                        journal = journal_obj.browse(cr, uid, statement_journal_id, context=context)
                         str_not1 = self._create_bank_statement_line(cr, uid, statement, journal, context=context)
                 
                 '''If the month does not exist we create a new statement'''
@@ -269,7 +262,6 @@ class account_bank_statement_import(osv.osv_memory):
                         balance_start = bank_statement_obj.browse(cr, uid, previous_bank_statement_id[0], context=context).balance_end_real 
                     else:
                         balance_start = 0
-                    statement_journal_id = statement.get('journal_id') or journal_id,
                     statement_total_amount = statement.get('total_amount') or 0
                     balance_end_real = balance_start + statement_total_amount
                     bk_st_id = bank_statement_obj.create(cr, uid, {
@@ -280,12 +272,9 @@ class account_bank_statement_import(osv.osv_memory):
                         'balance_end_real': balance_end_real,
                         'state': 'draft',
                         'name': statement.get('name') or False,
-                    })
+                    }, context=context)
                     bkst_list.append(bk_st_id)
-                
-                    journal = journal_obj.browse(cr, uid, statement_journal_id, context=context)
                     str_not1 = self._create_bank_statement_line(cr, uid, statement, journal, context=context)
-    
 
             except osv.except_osv, e:
                 cr.rollback()
