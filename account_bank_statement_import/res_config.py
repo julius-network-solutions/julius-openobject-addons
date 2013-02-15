@@ -54,9 +54,9 @@ class account_config_settings(osv.osv_memory):
             'context': {'search_default_active':1, 'search_default_not_active':1},
         }
         
-    def onchange_company_id(self, cr, uid, ids, company_id):
+    def onchange_company_id(self, cr, uid, ids, company_id, context=None):
         # update related fields
-        res = super(account_config_settings, self).onchange_company_id(cr, uid, ids, company_id)
+        res = super(account_config_settings, self).onchange_company_id(cr, uid, ids, company_id, context=context)
         if company_id:
             company = self.pool.get('res.company').browse(cr, uid, company_id)
             res['value'].update({
