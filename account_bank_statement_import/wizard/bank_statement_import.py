@@ -240,15 +240,19 @@ class account_bank_statement_import(osv.osv_memory):
                 '''If the month already exist we update the statement''' 
                 '''Section to be remove if we do not want a fusion of statement anymore'''
                 if statement_update:
-                    for bk_st_id in bank_statement_obj.search(cr, uid, [
-                                                ('period_id', '=', statement.get('period_id',False)),
-                                                ('company_id', '=', journal.company_id.id)
-                                                ], context=context):
+                    bk_st_ids = bank_statement_obj.search(cr, uid, [
+                        ('period_id', '=', statement.get('period_id')),
+                        ('company_id', '=', journal.company_id.id)
+                        ], limit=1, context=context)
+                    if bk_st_ids:
+                        bk_st_id = bk_st_ids[0]
                         statement_data = bank_statement_obj.browse(cr, uid, bk_st_id, context=context)
                         statement_total_amount = statement.get('total_amount') or 0
                         balance_start = statement_data.balance_start                    
                         balance_end_real = statement_data.balance_end_real + statement_total_amount
-                        bank_statement_obj.write(cr, uid, [bk_st_id], {'balance_end_real': balance_end_real}, context=context)
+                        bank_statement_obj.write(cr, uid, [bk_st_id], {
+                                'balance_end_real': balance_end_real,
+                            }, context=context)
                         bkst_list.append(bk_st_id)
                         str_not1 = self._create_bank_statement_line(cr, uid, statement, journal, bk_st_id, context=context)
                 
@@ -258,9 +262,11 @@ class account_bank_statement_import(osv.osv_memory):
                         ], context=context) or statement_update == False:
                     if not statement.get('name',False):                    
                         statement['name'] = seq_obj.next_by_code(cr, uid, 'account.bank.statement')
-                    previous_bank_statement_id = bank_statement_obj.search(cr, uid, [], order=('date desc,period_id desc'), context=context)
-                    if previous_bank_statement_id:
-                        balance_start = bank_statement_obj.browse(cr, uid, previous_bank_statement_id[0], context=context).balance_end_real 
+                    previous_bank_statement_ids = bank_statement_obj.search(cr, uid, [],
+                            order=('date desc,period_id desc'), context=context)
+                    if previous_bank_statement_ids:
+                        balance_start = bank_statement_obj.browse(cr, uid,
+                            previous_bank_statement_ids[0], context=context).balance_end_real 
                     else:
                         balance_start = 0
                     statement_total_amount = statement.get('total_amount') or 0
@@ -293,7 +299,8 @@ class account_bank_statement_import(osv.osv_memory):
                 nb_err+=1
                 err_log += '\n' + _('Unknown Error')
                 raise
-        sumup_log = '\n' + _('Sum up:') + '\n' + _('Number of statements:') + ' ' + str(len(bkst_list)) + '\n' +  _('Number of error:') + ' ' + str(nb_err)
+        sumup_log = '\n' + _('Sum up:') + '\n' + _('Number of statements:') + ' ' \
+            + str(len(bkst_list)) + '\n' +  _('Number of error:') + ' ' + str(nb_err)
         
         total_log = str_log1 + err_log + sumup_log
         self.write(cr, uid, ids, {'note': total_log}, context=context)

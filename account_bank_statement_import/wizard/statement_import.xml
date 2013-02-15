@@ -7,43 +7,47 @@
 			<field name="model">account.bank.statement.import</field>
 			<field name="arch" type="xml">
 				<form string="Import Bank statement file" version="7.0">
-					<group col="6">
-						<group col="6">
+                    <group>
+	                    <label for="id" string="Accounting Parameters"/>
+						<div>
 							<div>
 	                            <label for="journal_id"/>
-								<field name="journal_id"/>
+								<field name="journal_id" class="oe_inline"/>
 							</div>
-							<div>
-	                            <label for="filter_id"/>
-								<field name="filter_id"/>
-							</div>
-							<div>
-	                            <label for="date_format"/>
-								<field name="date_format"/>
-							</div>
-						</group>
-						<newline/>
-						<group col="6">
 							<div>
 	                            <label for="payable_id"/>
-								<field name="payable_id"/>
+								<field name="payable_id" class="oe_inline"/>
 							</div>
 							<div>
 	                            <label for="receivable_id"/>
-								<field name="receivable_id"/>
+								<field name="receivable_id" class="oe_inline"/>
 							</div>
 							<div>
 	                            <label for="awaiting_id"/>
-								<field name="awaiting_id"/>
+								<field name="awaiting_id" class="oe_inline"/>
 							</div>
-						</group>
-						<newline/>
-						<group col="6">
+						</div>
+					</group>
+                    <group>
+	                    <label for="id" string="Import Parameters"/>
+						<div>
+							<div>
+	                            <label for="filter_id"/>
+								<field name="filter_id" class="oe_inline" widget="selection"/>
+							</div>
+							<div>
+	                            <label for="date_format"/>
+								<field name="date_format" class="oe_inline"/>
+							</div>
+							<div>
+	                            <label for="statement_update"/>
+								<field name="statement_update" class="oe_inline"/>
+							</div>
 							<div>
 	                            <label for="file_data"/>
-								<field name="file_data" filename="file_fname"/>
+								<field name="file_data" filename="file_fname" class="oe_inline"/>
 							</div>
-						</group>
+						</div>
 					</group>
 					<footer>
 						<button name="file_parsing" string="Import" type="object" class="oe_highlight"/>
