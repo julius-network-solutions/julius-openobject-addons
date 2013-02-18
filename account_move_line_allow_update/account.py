@@ -21,10 +21,10 @@
 
 import time
 
-from openerp.osv import fields, osv
+from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
 
-class account_move_line(osv.osv):
+class account_move_line(orm.Model):
     _inherit = "account.move.line"
 
     def _update_check(self, cr, uid, ids, context=None):
@@ -40,7 +40,5 @@ class account_move_line(osv.osv):
                 self._update_journal_check(cr, uid, line.journal_id.id, line.period_id.id, context)
                 done[t] = True
         return True
-
-account_move_line()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

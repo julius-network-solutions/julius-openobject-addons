@@ -20,10 +20,10 @@
 ##############################################################################
 
 from openerp.tools.translate import _
-from openerp.osv import fields, osv
+from openerp.osv import fields, osv, orm
 from openerp import tools
 
-class account_config_settings(osv.osv_memory):
+class account_config_settings(orm.TransientModel):
     _inherit = 'account.config.settings'
 
     _columns = {

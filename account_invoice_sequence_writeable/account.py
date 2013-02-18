@@ -28,10 +28,10 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp.osv import osv, fields, orm
 from openerp.tools.translate import _
 
-class account_journal(osv.osv):
+class account_journal(orm.Model):
     _inherit = 'account.journal'
 
     _columns = {
@@ -45,7 +45,5 @@ class account_journal(osv.osv):
         return True
 
     _constraints = [ (_check_company, 'Journal company and invoice sequence company do not match.', ['company_id','invoice_sequence_id']) ]
-account_journal()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

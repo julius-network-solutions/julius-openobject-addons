@@ -21,10 +21,10 @@
 
 import time
 
-from openerp.osv import fields, osv
+from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
      
-class account_bankimport_filters(osv.osv):
+class account_bankimport_filters(orm.Model):
     _name = "account.bankimport.filters"
     _description = "Define the filters, which is related to the file"
     _columns = {
@@ -33,10 +33,8 @@ class account_bankimport_filters(osv.osv):
         'active': fields.boolean('Active'),
     }
     
-account_bankimport_filters()
-
 # Save data for each company
-class res_company(osv.osv):
+class res_company(orm.Model):
     _inherit = 'res.company'
     _columns = {
         'def_bank_journal_id' :  fields.many2one('account.journal', 'Default Bank Journal'),
@@ -46,6 +44,5 @@ class res_company(osv.osv):
         'def_filter_id': fields.many2one('account.bankimport.filters', 'Default Filter'),
         'def_date_format': fields.char('Default Date Format', size=32),
     }
-res_company()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

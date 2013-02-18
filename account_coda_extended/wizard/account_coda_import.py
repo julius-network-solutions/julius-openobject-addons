@@ -22,7 +22,7 @@
 import time
 import base64
 
-from osv import fields, osv
+from osv import fields, osv, orm
 from tools.translate import _
 
 def str2date(date_str):
@@ -40,7 +40,7 @@ def list2float(lst):
     except:
         return 0.0
 
-class account_coda_import(osv.osv_memory):
+class account_coda_import(orm.TransientModel):
     _inherit = 'account.coda.import'
 
     def _default_journal_id(self, cr, uid, context):
@@ -376,7 +376,5 @@ class account_coda_import(osv.osv_memory):
             'context': context,
             'type': 'ir.actions.act_window',
         }
-        
-account_coda_import()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

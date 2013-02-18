@@ -20,11 +20,11 @@
 #################################################################################
 
 from lxml import etree
-import tools
-from osv import fields, osv
-from tools.translate import _
+import openerp.tools
+from openerp.osv import fields, osv, orm
+from openerp.tools.translate import _
 
-class field_relation(osv.osv_memory):
+class field_relation(orm.TransientModel):
     _name = 'field.relation'  
     
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
@@ -75,9 +75,7 @@ class field_relation(osv.osv_memory):
             'type': 'ir.actions.act_window',
         }
 
-field_relation()
-
-class multiple_edition(osv.osv_memory):
+class multiple_edition(orm.TransientModel):
     
     _name = 'multiple.edition'    
     _columns = {
@@ -139,8 +137,4 @@ class multiple_edition(osv.osv_memory):
                     model_obj.write(cr, uid, update_id, {this.field_id.name: value}, context)
         return {'type': 'ir.actions.act_window_close'}
     
-
-    
-multiple_edition()
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

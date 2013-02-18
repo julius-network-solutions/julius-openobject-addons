@@ -19,17 +19,14 @@
 #
 #################################################################################
 
-from openerp.osv import fields, osv
+from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
 
-class project_work(osv.osv):
+class project_work(orm.Model):
     _inherit = "project.task.work"
     
     _columns = {
         'notes': fields.text('Notes', help="Notes"),
     }
-    
-project_work()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

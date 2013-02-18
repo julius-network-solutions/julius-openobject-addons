@@ -20,11 +20,11 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, osv
+from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
 
-class account_coda(osv.osv):
+class account_coda(orm.Model):
     _name = 'account.coda'
     _description = 'Object to store CODA Data Files'
     _order = 'coda_creation_date desc'
@@ -63,7 +63,5 @@ class account_coda(osv.osv):
                         bank_st_obj.unlink(cr, uid, [coda_statement.statement_id.id], context=context)                   
         context.update({'coda_unlink': False})
         return super(account_coda, self).unlink(cr, uid, ids, context=context)
-  
-account_coda()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

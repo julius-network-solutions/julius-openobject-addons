@@ -19,10 +19,10 @@
 #
 #################################################################################
 
-from openerp.osv import osv, fields
+from openerp.osv import osv, fields, orm
 from openerp.tools.translate import _
 
-class account_analytic_line(osv.osv):
+class account_analytic_line(orm.Model):
     
     _inherit = 'account.analytic.line'
    
@@ -33,6 +33,4 @@ class account_analytic_line(osv.osv):
             
         return True
     
-account_analytic_line()
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

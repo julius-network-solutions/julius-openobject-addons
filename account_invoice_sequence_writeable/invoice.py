@@ -28,10 +28,10 @@
 #
 ##############################################################################
 
-from openerp.osv import osv, fields
+from openerp.osv import osv, fields, orm
 from openerp.tools.translate import _
 
-class account_invoice(osv.osv):
+class account_invoice(orm.Model):
     _inherit = 'account.invoice'
 
     def _number(self, cr, uid, ids, name, args, context=None):
@@ -91,7 +91,4 @@ class account_invoice(osv.osv):
         }, context)
         return result
 
-account_invoice()
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

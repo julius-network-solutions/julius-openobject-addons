@@ -22,10 +22,10 @@
 import time
 import base64
 
-from osv import fields, osv
+from osv import fields, osv, orm
 from tools.translate import _
 
-class account_bank_statement_import(osv.osv_memory):
+class account_bank_statement_import(orm.TransientModel):
     _name = 'account.bank.statement.import'
 
     def _default_journal_id(self, cr, uid, context):
@@ -331,6 +331,4 @@ class account_bank_statement_import(osv.osv_memory):
             action['domain'] = [('id', 'in', context.get('statement_ids'))]
         return action
         
-account_bank_statement_import()
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

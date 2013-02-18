@@ -31,20 +31,16 @@
     "depends"   : [
         "account",
         "account_voucher",
-#       "l10n_fr_coda",
     ],
-    "demo_xml"  : [],
-    "init_xml"  : [],
-    "update_xml": [
+    "demo"  : [],
+    "data": [
         "security/ir.model.access.csv",
         "data/filters_data.xml",
         "config_view.xml",
         "wizard/statement_import.xml",
-#        "account_coda_view.xml",
     ],
     "active"    : False,
     "installable" : True,
-
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
