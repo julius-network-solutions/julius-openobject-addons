@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="view_stock_picking_fill_wizard" model="ir.ui.view">
+			<field name="name">Fill picking</field>
+			<field name="model">stock.picking.fill</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Fill picking">
+					<group colspan="4" col="4">
+						<field name="picking_id" invisible="True"/>
+						<field name="type_id" colspan="4" on_change="onchange_type_id(type_id)" widget="selection"/>
+						<field name="type" invisible="True"/>
+						<newline/>
+						<group name="products" colspan="4" col="4" attrs="{'invisible':[('type','!=','product')]}">
+							<separator string="Products" colspan="4"/>
+							<field name="product_table_ids" colspan="4" nolabel="1" widget="one2many" mode="tree"  context="{'default_picking_id':picking_id}" >
+								<tree editable="top">
+									<field name="picking_id" invisible="True"/>
+									<field name="product_id" on_change="onchange_product_id(product_id, picking_id, context)"/>
+        							<field name="qty"/>
+								</tree>
+							</field>
+							<!--<field name="product_ids" colspan="4" nolabel="1"/>-->
+						</group>
+					</group>
+					<newline/>
+					<separator string="" colspan="4" />
+					<button special="cancel" string="_Cancel" />
+					<button name="fill_picking" string="Fill" type="object" class="oe_highlight"/>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_stock_picking_fill" model="ir.actions.act_window">
+			<field name="name">Fill stock picking</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">stock.picking.fill</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+	</data>
+</openerp>
