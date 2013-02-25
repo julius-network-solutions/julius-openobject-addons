@@ -4,7 +4,7 @@
 
 		<record id="view_picking_in_form_fill_prodlot" model="ir.ui.view">
 			<field name="name">Picking in fill with production lots</field>
-			<field name="model">stock.picking</field>
+			<field name="model">stock.picking.in</field>
 			<field name="inherit_id" ref="stock_picking_fill_move.view_picking_in_form_fill_product"/>
 			<field name="arch" type="xml">
 				<group name="fill_picking" position="inside">
@@ -16,7 +16,7 @@
 
 		<record id="view_picking_out_form_fill_prodlot" model="ir.ui.view">
 			<field name="name">Picking out fill with production lots</field>
-			<field name="model">stock.picking</field>
+			<field name="model">stock.picking.out</field>
 			<field name="inherit_id" ref="stock_picking_fill_move.view_picking_out_form_fill_product"/>
 			<field name="arch" type="xml">
 				<group name="fill_picking" position="inside">

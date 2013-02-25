@@ -54,7 +54,7 @@ class stock_picking_fill_product(orm.TransientModel):
         picking_obj = self.pool.get('stock.picking')
         product_obj = self.pool.get('product.product')
         if product_id and picking_id:
-            context['location'] = picking_obj.browse(cr, uid, picking_id, context=context).location_default_id.id
+            context['location'] = picking_obj.browse(cr, uid, picking_id, context=context).location_id.id
             context['states'] = ('done',)
             context['what'] = ('in', 'out')
             context['compute_child'] = True
@@ -145,8 +145,8 @@ class stock_picking_fill(orm.TransientModel):
             return []
         else:
             picking_id = picking.id
-            location_id = picking.location_default_id and picking.location_default_id.id or False
-            location_dest_id = picking.location_dest_default_id and picking.location_dest_default_id.id or False
+            location_id = picking.location_id and picking.location_id.id or False
+            location_dest_id = picking.location_dest_id and picking.location_dest_id.id or False
             if not location_id or not location_dest_id:
                 return []
         if current.type_id.code == 'product':
