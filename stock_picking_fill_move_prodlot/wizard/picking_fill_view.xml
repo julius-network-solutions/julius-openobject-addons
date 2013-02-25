@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="view_stock_picking_fill_wizard" model="ir.ui.view">
+			<field name="name">Fill picking</field>
+			<field name="model">stock.picking.fill</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="stock_picking_fill_move.view_stock_picking_fill_wizard"/>
+			<field name="arch" type="xml">
+				<group name="products" position="after">
+					<group name="prodlots" colspan="4" col="4" attrs="{'invisible':[('type','!=','prodlot')]}">
+						<separator string="Production lots" colspan="4"/>
+						<field name="prodlot_ids" colspan="4" nolabel="1" domain="[('current_location_id','=',location_id)]"/>
+					</group>
+				</group>
+			</field>
+		</record>
+
+	</data>
+</openerp>

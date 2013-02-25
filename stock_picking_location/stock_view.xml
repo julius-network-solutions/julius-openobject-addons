@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="view_picking_in_form_add_location" model="ir.ui.view">
+			<field name="name">Picking in add location</field>
+			<field name="model">stock.picking</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="stock.view_picking_in_form"/>
+			<field name="arch" type="xml">
+				<field name="partner_id" position="after">
+					<newline/>
+					<field name="location_default_id" required="1"/>
+					<field name="location_dest_default_id" required="1"/>
+				</field>
+				<field name="move_lines" position="attributes">
+					<attribute name="context">{'address_in_id':address_id, 'picking_type': type, 'picking_id': active_id}</attribute>
+				</field>
+			</field>
+		</record>
+
+		<record id="view_picking_out_form_add_location" model="ir.ui.view">
+			<field name="name">Picking out add location</field>
+			<field name="model">stock.picking</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="stock.view_picking_out_form"/>
+			<field name="arch" type="xml">
+				<field name="partner_id" position="after">
+					<newline/>
+					<field name="location_default_id" required="1"/>
+					<field name="location_dest_default_id" required="1"/>
+				</field>
+				<field name="move_lines" position="attributes">
+					<attribute name="context">{'address_out_id':address_id, 'picking_type': type, 'picking_id': active_id}</attribute>
+				</field>
+			</field>
+		</record>
+
+        <record id="view_picking_form_add_location" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="type">form</field>
+			<field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+				<field name="partner_id" position="after">
+					<newline/>
+					<field name="location_default_id" required="1"/>
+					<field name="location_dest_default_id" required="1"/>
+				</field>
+				<field name="move_lines" position="attributes">
+					<attribute name="context">{'address_in_id':address_id, 'picking_id': active_id}</attribute>
+				</field>
+			</field>
+		</record>
+
+	</data>
+</openerp>

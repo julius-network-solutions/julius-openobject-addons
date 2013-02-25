@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="view_picking_in_form_fill_product" model="ir.ui.view">
+			<field name="name">Picking in fill with product</field>
+			<field name="model">stock.picking</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="stock.view_picking_in_form"/>
+			<field name="arch" type="xml">
+				<field name="move_lines" position="before">
+					<newline/>
+					<group name="fill_picking" colspan="4" col="12">
+						<button string="Fill with products" name="%(action_stock_picking_fill)d" type="action"
+							states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4"/>
+					</group>
+				</field>
+			</field>
+		</record>
+
+		<record id="view_picking_out_form_fill_product" model="ir.ui.view">
+			<field name="name">Picking out fill with product</field>
+			<field name="model">stock.picking</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="stock.view_picking_out_form"/>
+			<field name="arch" type="xml">
+				<field name="move_lines" position="before">
+					<newline/>
+					<group name="fill_picking" colspan="4" col="12">
+						<button string="Fill with products" name="%(action_stock_picking_fill)d" type="action"
+							states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4"/>
+					</group>
+				</field>
+			</field>
+		</record>
+
+        <record id="view_picking_form_fill_product" model="ir.ui.view">
+            <field name="name">stock.picking.form fill with product</field>
+            <field name="model">stock.picking</field>
+            <field name="type">form</field>
+			<field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+				<field name="move_lines" position="before">
+					<newline/>
+					<group name="fill_picking" colspan="4" col="12">
+						<button string="Fill with products" name="%(action_stock_picking_fill)d" type="action"
+							states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4"/>
+					</group>
+				</field>
+			</field>
+		</record>
+
+	</data>
+</openerp>

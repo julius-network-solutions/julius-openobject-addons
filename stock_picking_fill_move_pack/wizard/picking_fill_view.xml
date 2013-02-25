@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="view_stock_picking_fill_wizard" model="ir.ui.view">
+			<field name="name">Fill picking pack</field>
+			<field name="model">stock.picking.fill</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="stock_picking_fill_move.view_stock_picking_fill_wizard"/>
+			<field name="arch" type="xml">
+				<group name="products" position="after">
+					<group name="pack" colspan="4" col="4" attrs="{'invisible':[('type','!=','pack')]}">
+						<separator string="Packs" colspan="4"/>
+						<field name="location_id" invisible="True"/>
+						<field name="pack_ids" colspan="4" nolabel="1" domain="[('parent_id', '=', False),('state', '=', 'close'),('location_id', '=', location_id)]"/>
+					</group>
+				</group>
+			</field>
+		</record>
+
+	</data>
+</openerp>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="fill_type_prodlot" model="stock.picking.fill.type">
+			<field name="code">prodlot</field>
+			<field name="name">Production lot</field>
+		</record>
+
+	</data>
+</openerp>
