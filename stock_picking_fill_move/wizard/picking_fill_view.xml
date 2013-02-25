@@ -5,7 +5,6 @@
 		<record id="view_stock_picking_fill_wizard" model="ir.ui.view">
 			<field name="name">Fill picking</field>
 			<field name="model">stock.picking.fill</field>
-			<field name="type">form</field>
 			<field name="arch" type="xml">
 				<form string="Fill picking">
 					<group colspan="4" col="4">
@@ -25,10 +24,11 @@
 							<!--<field name="product_ids" colspan="4" nolabel="1"/>-->
 						</group>
 					</group>
-					<newline/>
-					<separator string="" colspan="4" />
-					<button special="cancel" string="_Cancel" />
-					<button name="fill_picking" string="Fill" type="object" class="oe_highlight"/>
+					<footer>
+						<button name="fill_picking" string="Fill" type="object" class="oe_highlight"/>
+						or
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
 				</form>
 			</field>
 		</record>

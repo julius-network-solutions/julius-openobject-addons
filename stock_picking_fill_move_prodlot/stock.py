@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012 Julius Network Solutions (<http://www.julius.fr/>) contact@julius.fr
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,9 +19,10 @@
 #
 #################################################################################
 
-from osv import osv, fields
+from openerp.osv import fields, osv, orm
+from openerp.tools.translate import _
 
-class stock_production_lot(osv.osv):
+class stock_production_lot(orm.Model):
     
     _inherit = 'stock.production.lot'
     
@@ -30,15 +31,17 @@ class stock_production_lot(osv.osv):
         move_obj = self.pool.get('stock.move')
         for prodlot in self.browse(cr, uid, ids, context=context):
             result[prodlot.id] = False
-            move_ids = move_obj.search(cr, uid, [('prodlot_id','=',prodlot.id),('state','=','done')], order='date', limit=1, context=context)
+            move_ids = move_obj.search(cr, uid, [
+                        ('prodlot_id','=',prodlot.id),
+                        ('state','=','done')
+                    ], order='date', limit=1, context=context)
             if move_ids:
                 result[prodlot.id] = move_obj.browse(cr, uid, move_ids[0], context=context).location_dest_id.id
         return result
     
     _columns = {
-        'current_location_id': fields.function(_get_current_location, type='many2one', relation='stock.location', string='Current Location', store=True),
+        'current_location_id': fields.function(_get_current_location, type='many2one',
+                relation='stock.location', string='Current Location', store=True),
     }
-    
-stock_production_lot()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

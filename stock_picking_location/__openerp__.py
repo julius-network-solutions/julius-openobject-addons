@@ -31,11 +31,10 @@
     'depends': [
         'stock',
     ],
-    'init_xml': [],
-    'update_xml': [
+    'data': [
         'stock_view.xml',
     ],
-    'demo_xml': [],
+    'demo': [],
     'installable': True,
     'active': False,
     'license': 'GPL-3',

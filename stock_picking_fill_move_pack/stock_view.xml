@@ -5,7 +5,6 @@
 		<record id="view_picking_in_form_fill_pack" model="ir.ui.view">
 			<field name="name">Picking in fill with packs</field>
 			<field name="model">stock.picking</field>
-			<field name="type">form</field>
 			<field name="inherit_id" ref="stock_picking_fill_move.view_picking_in_form_fill_product"/>
 			<field name="arch" type="xml">
 				<group name="fill_picking" position="inside">
@@ -18,7 +17,6 @@
 		<record id="view_picking_out_form_fill_pack" model="ir.ui.view">
 			<field name="name">Picking out fill with packs</field>
 			<field name="model">stock.picking</field>
-			<field name="type">form</field>
 			<field name="inherit_id" ref="stock_picking_fill_move.view_picking_out_form_fill_product"/>
 			<field name="arch" type="xml">
 				<group name="fill_picking" position="inside">
@@ -31,7 +29,6 @@
         <record id="view_picking_form_fill_pack" model="ir.ui.view">
             <field name="name">stock.picking.form fill with packs</field>
             <field name="model">stock.picking</field>
-            <field name="type">form</field>
 			<field name="inherit_id" ref="stock_picking_fill_move.view_picking_form_fill_product"/>
             <field name="arch" type="xml">
 				<group name="fill_picking" position="inside">

@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012 Julius Network Solutions (<http://www.julius.fr/>) contact@julius.fr
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,25 +19,26 @@
 #
 #################################################################################
 
-from osv import osv, fields
 
-class stock_picking_fill_type(osv.osv):
+from openerp.osv import fields, osv, orm
+from openerp.tools.translate import _
+
+class stock_picking_fill_type(orm.Model):
     _name = 'stock.picking.fill.type'
     
     _columns = {
         'code': fields.char('Code', size=64),
         'name': fields.char('Name', size=64),
     }
-    
-stock_picking_fill_type()
 
-class stock_picking_fill_product(osv.osv_memory):
+class stock_picking_fill_product(orm.TransientModel):
     _name = 'stock.picking.fill.product'
     
     _columns = {
         'name': fields.char('Name', size=64),
         'fill_id': fields.many2one('stock.picking.fill', 'Fill ID'),
-        'product_id': fields.many2one('product.product', 'Product', domain="[('type', '!=', 'service'),('track_outgoing', '=', False)]", required=True),
+        'product_id': fields.many2one('product.product', 'Product',
+                        domain="[('type', '!=', 'service'),('track_outgoing', '=', False)]", required=True),
         'picking_id': fields.many2one('stock.picking', 'Picking'),
         'qty': fields.integer('Quantity'),
     }
@@ -60,11 +61,8 @@ class stock_picking_fill_product(osv.osv_memory):
             data = product_obj.get_product_available(cr, uid, [product_id], context=context)
             res['value']['qty'] = data[product_id]
         return res
-    
-stock_picking_fill_product()
 
-
-class stock_picking_fill(osv.osv_memory):
+class stock_picking_fill(orm.TransientModel):
     
     _name = 'stock.picking.fill'
     
@@ -124,15 +122,19 @@ class stock_picking_fill(osv.osv_memory):
         res = []
         move_obj = self.pool.get('stock.move')
         if not current.product_table_ids:
-            raise osv.except_osv(_('Invalid action !'), _('There are no product to add please select at least 1 product to add to the picking !'))
+            raise osv.except_osv(_('Invalid action !'),
+                    _('There are no product to add please select at least 1 product to add to the picking !'))
         for line in current.product_table_ids:
             line.product_id.id
-            result_vals = move_obj.onchange_product_id(cr, uid, [], prod_id=line.product_id.id, loc_id=location_id, loc_dest_id=location_dest_id)
+            result_vals = move_obj.onchange_product_id(cr, uid, [], prod_id=line.product_id.id,
+                                loc_id=location_id, loc_dest_id=location_dest_id)
             line_vals = result_vals and result_vals.get('value') or False
             if line_vals:
-                line_vals.update({'picking_id': picking_id})
-                line_vals.update({'product_id': line.product_id.id})
-                line_vals.update({'product_qty': line.qty})
+                line_vals.update({
+                    'picking_id': picking_id,
+                    'product_id': line.product_id.id,
+                    'product_qty': line.qty
+                })
                 res.append(line_vals)
         return res
     
@@ -148,7 +150,8 @@ class stock_picking_fill(osv.osv_memory):
             if not location_id or not location_dest_id:
                 return []
         if current.type_id.code == 'product':
-            res = self._get_vals_product(cr, uid, current, picking_id=picking_id, location_id=location_id, location_dest_id=location_dest_id,  context=context)
+            res = self._get_vals_product(cr, uid, current, picking_id=picking_id, location_id=location_id,
+                    location_dest_id=location_dest_id,  context=context)
         return res
     
     def fill_picking(self, cr, uid, ids, context=None):
@@ -159,7 +162,5 @@ class stock_picking_fill(osv.osv_memory):
         for line in lines:
             self.pool.get('stock.move').create(cr, uid, line, context=context)
         return {'type': 'ir.actions.act_window_close'}                
-                
-stock_picking_fill()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

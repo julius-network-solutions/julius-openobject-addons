@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012 Julius Network Solutions (<http://www.julius.fr/>) contact@julius.fr
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,9 +19,10 @@
 #
 #################################################################################
 
-from osv import osv, fields
+from openerp.osv import fields, osv, orm
+from openerp.tools.translate import _
 
-class stock_picking_fill(osv.osv_memory):
+class stock_picking_fill(orm.TransientModel):
     
     _inherit = 'stock.picking.fill'
     
@@ -29,18 +30,23 @@ class stock_picking_fill(osv.osv_memory):
         'prodlot_ids': fields.many2many('stock.production.lot', 'prodlot_fill_picking_rel', 'wizard_id', 'prodlot_id', 'Production lots'),
     }
     
-    def _get_vals_prodlot(self, cr, uid, current, picking_id, location_id, location_dest_id, address_id=False, context=None):
+    def _get_vals_prodlot(self, cr, uid, current, picking_id, location_id,
+            location_dest_id, address_id=False, context=None):
         res = []
         move_obj = self.pool.get('stock.move')
         if not current.prodlot_ids:
-            raise osv.except_osv(_('Invalid action !'), _('There are no production lot to add, please select at least 1 production lot to add to the picking !'))
+            raise osv.except_osv(_('Invalid action !'),
+                _('There are no production lot to add, please select at least 1 production lot to add to the picking !'))
         for prodlot in current.prodlot_ids:
-            result_vals = move_obj.onchange_product_id(cr, uid, [], prod_id=prodlot.product_id.id, loc_id=location_id, loc_dest_id=location_dest_id, address_id=address_id or False)
+            result_vals = move_obj.onchange_product_id(cr, uid, [], prod_id=prodlot.product_id.id,
+                            loc_id=location_id, loc_dest_id=location_dest_id, address_id=address_id or False)
             line_vals = result_vals and result_vals.get('value') or False
             if line_vals:
-                line_vals.update({'picking_id': picking_id})
-                line_vals.update({'product_id': prodlot.product_id.id})
-                line_vals.update({'prodlot_id': prodlot.id})
+                line_vals.update({
+                    'picking_id': picking_id,
+                    'product_id': prodlot.product_id.id,
+                    'prodlot_id': prodlot.id
+                })
                 res.append(line_vals)
         return res
     
@@ -57,9 +63,8 @@ class stock_picking_fill(osv.osv_memory):
             if not location_id or not location_dest_id:
                 return []
         if current.type_id.code == 'prodlot':
-            res = self._get_vals_prodlot(cr, uid, current, picking_id=picking_id, location_id=location_id, location_dest_id=location_dest_id, address_id=address_id, context=context)
+            res = self._get_vals_prodlot(cr, uid, current, picking_id=picking_id, location_id=location_id,
+                    location_dest_id=location_dest_id, address_id=address_id, context=context)
         return res
-    
-stock_picking_fill()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012 Julius Network Solutions (<http://www.julius.fr/>) contact@julius.fr
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,9 +19,10 @@
 #
 #################################################################################
 
-from osv import osv, fields
+from openerp.osv import fields, osv, orm
+from openerp.tools.translate import _
 
-class stock_picking(osv.osv):
+class stock_picking(orm.Model):
     
     _inherit = 'stock.picking'
     
@@ -29,10 +30,8 @@ class stock_picking(osv.osv):
         'location_default_id': fields.many2one('stock.location', 'Default move location'),
         'location_dest_default_id': fields.many2one('stock.location', 'Default move dest. location'),
     }
-    
-stock_picking()
 
-class stock_move(osv.osv):
+class stock_move(orm.Model):
     _inherit = 'stock.move'
     
     def _get_default_location(self, cr, uid, field='location_id', context=None):
@@ -51,10 +50,10 @@ class stock_move(osv.osv):
         return res
     
     _defaults = {
-        'location_id': lambda self, cr, uid, context: context.get('picking_id', False) and self._get_default_location(cr, uid, 'location_id', context) or False,
-        'location_dest_id': lambda self, cr, uid, context: context.get('picking_id', False) and self._get_default_location(cr, uid, 'location_dest_id', context) or False,
+        'location_id': lambda self, cr, uid, context: context.get('picking_id', False)
+                and self._get_default_location(cr, uid, 'location_id', context) or False,
+        'location_dest_id': lambda self, cr, uid, context: context.get('picking_id', False)
+                and self._get_default_location(cr, uid, 'location_dest_id', context) or False,
     }
-    
-stock_move()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

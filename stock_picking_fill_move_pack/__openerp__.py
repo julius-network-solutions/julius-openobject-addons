@@ -35,13 +35,12 @@
         'stock_picking_fill_move',
         'stock_tracking_extended',
     ],
-    'init_xml': [],
-    'update_xml': [
+    'data': [
         'wizard/picking_fill_view.xml',
         'data/type.xml',
         'stock_view.xml',
     ],
-    'demo_xml': [],
+    'demo': [],
     'installable': False,
     'active': False,
     'license': 'GPL-3',
