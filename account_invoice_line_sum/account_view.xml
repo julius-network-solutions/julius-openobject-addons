@@ -8,8 +8,8 @@
             <field name="model">account.invoice.line</field>
             <field name="inherit_id" ref="account.view_invoice_line_tree"/>
             <field name="arch" type="xml">
-	            <field name="quantity" position="replace">
-	            	<field name="quantity" sum="Quantity"/>
+	            <field name="quantity" position="attributes">
+	            	<attribute name="sum">Quantity</attribute>
 	            </field>
             </field>
         </record>
