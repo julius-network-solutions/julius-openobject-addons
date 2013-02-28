@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="1"> 
+	
+		<!-- Automatic Mail Template Creation -->
+		<!-- Pack Expiration -->
+		
+		<record id="expiration_pack" model="email.template">
+            <field name="name">Pack Expiration - Responsable Email</field>
+            <field name="model_id" ref="model_stock_tracking"/>
+            <field name="email_from">noreply@localhost</field>
+            <field name="email_to">noreply@localhost</field>
+            <field name="subject">Pack Expiration - Responsable Email</field>
+        </record>
+        
+	</data>
+</openerp>

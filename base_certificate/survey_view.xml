@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<!-- 
+			SURVEY DEFINITION
+		-->
+	 	<!-- Survey -->
+	 	<!--<record model="ir.ui.view" id="survey_form_inherit">
+           <field name="name">survey_form_inherit</field>
+           <field name="model">survey</field>
+           <field name="type">form</field>
+           <field name="inherit_id" ref="survey.survey_form"/>
+           <field name="arch" type="xml">
+           		<xpath expr="/form/notebook/page[@string='Survey Details']/field[@name='page_ids']/form/group/field[@name='question_ids']/form/group/group/field[@name='type']" position="after">
+                	<field name="score"/>
+                </xpath>
+           </field>
+        </record>-->  
+        <!-- Survey Page -->
+	 	<!--<record model="ir.ui.view" id="survey_page_form_inherit">
+           <field name="name">survey_page_form_inherit</field>
+           <field name="model">survey.page</field>
+           <field name="type">form</field>
+           <field name="inherit_id" ref="survey.survey_page_form"/>
+           <field name="arch" type="xml">
+           		<xpath expr="/form/field[@name='question_ids']/form/field[@name='type']" position="after">
+                	<field name="score"/>
+                </xpath>
+           </field>
+        </record>-->       
+        <!-- Survey Question -->   
+        <record model="ir.ui.view" id="survey_question_form_inherit">
+            <field name="name">survey_question_form_inherit</field>
+            <field name="model">survey.question</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="survey.survey_question_form"/>
+			<field name="arch" type="xml">
+				<field name="type" position="after">
+					<field name="score"/>
+				</field>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="action_survey_question">
+            <field name="name">Survey Question</field>
+            <field name="res_model">survey.question</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem name="Survey Question" id="menu_survey_question" action="action_survey_question" 
+       				parent='survey.menu_surveys' groups="base.group_tool_manager" sequence="20"/>
+        <!-- Survey Answer -->
+        <record model="ir.ui.view" id="survey_answer_search">
+            <field name="name">survey_answer_search_inherit</field>
+            <field name="model">survey.answer</field>
+            <field name="type">search</field>
+			<field name="arch" type="xml">
+				<search string="Answer">
+	                <field name="answer"/>
+	                <field name="question_id"/>
+	                <field name="type"/>
+                </search>
+			</field>
+		</record>
+        <record model="ir.ui.view" id="survey_answer_tree_inherit">
+            <field name="name">survey_answer_tree_inherit</field>
+            <field name="model">survey.answer</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="survey.survey_answer_tree"/>
+			<field name="arch" type="xml">
+				<field name="type" position="after">
+					<field name="good_answer"/>
+				</field>
+			</field>
+		</record>
+        <record model="ir.ui.view" id="survey_answer_form_inherit">
+            <field name="name">survey_answer_form_inherit</field>
+            <field name="model">survey.answer</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="survey.survey_answer_form"/>
+			<field name="arch" type="xml">
+				<field name="type" position="after">
+					<field name="good_answer"/>
+				</field>
+			</field>
+		</record>
+		
+         <record model="ir.actions.act_window" id="action_survey_answer">
+            <field name="name">Survey Answer</field>
+            <field name="res_model">survey.answer</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="survey_answer_search"/>
+        </record>
+        
+		<menuitem name="Survey Answer" id="menu_survey_answer" action="action_survey_answer" 
+				  	parent='survey.menu_surveys' groups="base.group_tool_manager" sequence="21"/>
+        
+        <!-- 
+			SURVEY RESULT
+		-->
+		
+        <!-- Survey Response -->
+        <record model="ir.ui.view" id="survey_response_tree_inherit">
+            <field name="name">survey_response_tree_inherit</field>
+            <field name="model">survey.response</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="survey.survey_response_tree"/>
+			<field name="arch" type="xml">
+				<field name="state" position="after">
+					<field name="score"/>
+				</field>
+			</field>
+		</record>
+		
+        <record model="ir.ui.view" id="survey_response_form_inherit">
+            <field name="name">survey_response_form_inherit</field>
+            <field name="model">survey.response</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="survey.survey_response_form"/>
+			<field name="arch" type="xml">
+				<field name="state" position="after">
+					<field name="score"/>
+				</field>
+			</field>
+		</record>
+        
+         <record model="ir.actions.act_window" id="action_survey_response_form">
+            <field name="name">Survey Response</field>
+            <field name="res_model">survey.response</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Survey Response" id="menu_survey_answer_form1"
+            action="action_survey_response_form" parent='survey.menu_surveys'
+            groups="base.group_tool_manager" sequence="25"/>
+   		   
+        <!-- survey Response Line-->
+        
+		
+		<record model="ir.ui.view" id="survey_response_line_tree_inherit">
+            <field name="name">survey_response_line_tree_inherit</field>
+            <field name="model">survey.response.line</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="survey.survey_response_line_tree"/>
+			<field name="arch" type="xml">
+				<field name="state" position="after">
+					<field name="score"/>
+				</field>
+			</field>
+		</record>
+        
+	</data>
+</openerp>

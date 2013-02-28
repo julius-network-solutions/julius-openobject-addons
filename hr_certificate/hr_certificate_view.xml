@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		
+        
+		<!-- HR Employee Form View -->
+		
+		<!--<record id="view_employee_for" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <page string="Personal Information" position="after">
+                	<page string="Qualification Certificate" groups="base.group_hr_user">
+                    	<group col="2" colspan="4">
+	                        <group col="2" colspan="2" groups="base.group_hr_user">
+		                        <separator colspan="2" string="Certificate"/>
+		                        <field name="certificate_ids" mode="tree" nolabel="1" colspan="4" domain="[('active', '=', True),('object_id.model','=','hr.employee')]">
+		                        	<tree>
+		                        		<field name="name"/>
+		                        		<field name="template_id" domain="[('object_id.model','=','hr.employee')]"/>
+		        						<field name="date_obtained"/>
+										<field name="validity"/>
+										<field name="time_unit"/>
+										<field name="expiry_date"/>
+										<field name="state"/>
+		                        	</tree>
+		                        	<form string="Certificate">
+						                <field name="name"/>
+					                    <field name="template_id" on_change="onchange_template_id(template_id)" domain="[('object_id.model','=','hr.employee')]"/>
+						                <field name="date_obtained"/>
+										<field name="validity"/>
+										<field name="time_unit"/>
+						        		<field name="expiry_date"/>
+						        		<field name="state"/>
+						        		<field name="employee_id" on_change="onchange_employee(employee_id)"/>
+					            		<field name="parent_id" invisible="1"/>
+					            		<field name="department_id" invisible="1"/>
+					            		<newline/>
+					            		<button name="check_documents" string="Documents" colspan="2" type="object" icon="gtk-ok"/>
+					                </form>
+		                        </field>
+                            </group>
+                        </group>
+					</page>          
+                </page>
+                <newline/>
+                <field name="parent_id" position="after">
+	                <button name="certificate_form_parent" string="Required Certificates" colspan="4" type="object" icon="gtk-ok"/>
+		        </field>
+            </field>
+        </record>-->
+        
+    	<!-- 
+		""""""""""""""
+		Certificate 
+		""""""""""""""
+		-->
+		<!--<record id="hr_view_certificate_category_search" model="ir.ui.view">
+            <field name="name">base.certificate.search</field>
+            <field name="model">base.certificate</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+	            <search string="Certificate">
+	                <field name="name"/>
+                    <field name="template_id" on_change="onchange_template_id(template_id)" domain="[('object_id.model','=','hr.employee')]"/>
+	                <field name="date_obtained"/>
+					<field name="validity"/>
+					<field name="time_unit"/>
+	        		<field name="expiry_date"/>
+	        		<field name="state"/>
+            		<field name="employee_id"/>
+            		<field name="parent_id"/>
+            		<field name="department_id"/>
+            		<newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Certificate Type" icon="terp-partner" domain="[]" context="{'group_by':'template_id'}"/>
+                        <filter string="State"  icon="terp-personal" context="{'group_by':'state'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Employee" icon="terp-partner" domain="[]" context="{'group_by':'employee_id'}"/>
+                        <filter string="Manager" icon="terp-partner" domain="[]" context="{'group_by':'parent_id'}"/>
+                        <filter string="Department" icon="terp-partner" domain="[]" context="{'group_by':'department_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>-->
+        
+		<!--<record id="hr_view_certificate_category_form_inherit" model="ir.ui.view">
+            <field name="name">base.certificate.form</field>
+            <field name="model">base.certificate</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+	            <form string="Certificate">
+	                <field name="name"/>
+                    <field name="type_id" on_change="onchange_type_id(type_id)" domain="[('object_id.model','=','hr.employee')]"/>
+	                <field name="date_obtained"/>
+					<field name="validity"/>
+					<field name="time_unit"/>
+	        		<field name="expiry_date"/>
+	        		<field name="state"/>
+            		<field name="employee_id" on_change="onchange_employee(employee_id)"/>
+            		<field name="parent_id" invisible="1"/>
+            		<field name="department_id" invisible="1"/>
+                </form>
+            </field>
+        </record>
+		
+        <record id="hr_view_certificate_category_tree_inherit" model="ir.ui.view">
+            <field name="name">base.certificate.tree</field>
+            <field name="model">base.certificate</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Certificate List">
+                    <field name="name"/>
+                    <field name="type_id" domain="[('object_id.model','=','hr.employee')]"/>
+	                <field name="date_obtained"/>
+					<field name="validity"/>
+					<field name="time_unit"/>
+	        		<field name="expiry_date"/>
+	        		<field name="state"/>
+            		<field name="employee_id" on_change="onchange_employee(employee_id)"/>
+            		<field name="parent_id" invisible="1"/>
+            		<field name="department_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>--><!--
+        
+         <record id="hr_open_view_category_form" model="ir.actions.act_window">
+            <field name="name">Certificate</field>
+            <field name="res_model">base.certificate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="hr_view_certificate_category_tree_inherit"/>
+            <field name="search_view_id" ref="hr_view_certificate_category_search"/>
+            <field name="context" eval="{'object_id': ref('hr.model_hr_employee')}"/>
+            <field name="domain">[('object_id.model', '=', 'hr.employee')]</field>
+        </record>-->
+        
+		<!--<menuitem action="hr_open_view_category_form" id="hr_menu_view_certificate_category_form" parent="hr.menu_view_employee_category_configuration_form" sequence="8"/>-->
+            
+        <!-- 
+		"""""""""""""""""""
+		Certificate Type
+		"""""""""""""""""""
+		-->          
+          
+        <!--<record id="hr_certificate_type_form_view" model="ir.ui.view">
+            <field name="name">certificate.type.tree</field>
+            <field name="model">certificate.template</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            	<form string="Certificate Type">
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="survey_id"/>
+                    <field name="score_min"/>
+                    <field name="score_max"/>
+                    <field name="validity"/>
+					<field name="time_unit"/>
+            		<button name="job_update_certificate_type" string="Update Certificates" colspan="4" type="object" icon="gtk-ok"/> 
+                    <notebook colspan="4">
+                    	<page string="Certificate List">
+		                    <field name="certificate_ids" colspan="4" nolabel="1">
+			                    <tree string="Certificate List">
+			                    	<field name="name"/>
+					                <field name="date_obtained"/>
+									<field name="validity"/>
+									<field name="time_unit"/>
+					        		<field name="expiry_date"/>
+					        		<field name="state"/>
+					        		<field name="employee_id" on_change="onchange_employee(employee_id)"/>
+				            		<field name="parent_id" invisible="1"/>
+				            		<field name="department_id" invisible="1"/>
+			                	</tree>
+					            <form string="Certificate">
+					                <field name="name"/>
+				                    <field name="type_id" on_change="onchange_type_id(type_id)" domain="[('object_id.model','=','hr.employee')]"/>
+					                <field name="date_obtained"/>
+									<field name="validity"/>
+									<field name="time_unit"/>
+					        		<field name="expiry_date"/>
+					        		<field name="state"/>
+								    <field name="employee_id" on_change="onchange_employee(employee_id)"/>
+				            		<field name="parent_id" invisible="1"/>
+				            		<field name="department_id" invisible="1"/>	
+				                </form>
+		                    </field>
+                    	</page>
+			    		<page string="Jobs List">
+	                		<field name="job_ids" colspan="4" nolabel="1">
+				    			<tree string="Jobs List">
+				     				<field name="name"/>
+				     				<field name="department_id"/>
+				      			</tree>
+			           		</field>
+	                    </page>
+	                	<page string="Evaluations">
+	                		<field name="survey_response_ids" colspan="4" nolabel="1">
+			                    <tree string="Evaluations">
+			                    	<field name="survey_id"/>
+			                    	<field name="date_create"/>
+			                    	<field name="user_id"/>
+			                    	<field name="state"/>
+			                    </tree>
+			                </field>
+	                	</page>
+                    </notebook>
+                </form>
+            </field>
+        </record>-->
+
+        <!--<record id="hr_certificate_type_tree_inherit" model="ir.ui.view">
+            <field name="name">certificate.type.tree</field>
+            <field name="model">certificate.template</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Certificate Type">
+                    <field name="complete_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_open_view_categ_form" model="ir.actions.act_window">
+            <field name="name">Certificate Type</field>
+            <field name="res_model">certificate.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="hr_certificate_type_tree_inherit"/>
+            <field name="context" eval="{'object_id': ref('hr.model_hr_employee')}"/>
+            <field name="domain">[('object_id.model', '=', 'hr.employee')]</field>
+        </record>
+        <record id="hr_open_view_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="hr_certificate_type_tree_inherit"/>
+            <field name="act_window_id" ref="hr_open_view_categ_form"/>
+        </record>
+        <record id="hr_open_view_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="hr_certificate_type_form_view"/>
+            <field name="act_window_id" ref="hr_open_view_categ_form"/>
+        </record>
+
+        <menuitem action="hr_open_view_categ_form" id="hr_menu_view_certificate_type_form" parent="hr.menu_view_employee_category_configuration_form" sequence="6"/>
+
+        <record id="hr_base_certificate_normal_action_tree" model="ir.actions.act_window">
+            <field name="name">Certificate</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">base.certificate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('certificate_ids','=', active_ids)]</field>
+        </record>
+
+        <record id="hr_base_certificate_category_open" model="ir.values">
+            <field eval="'tree_but_open'" name="key2"/>
+            <field ref="model_base_certificate_type" name="model_id"/>
+            <field name="model">certificate.template</field>
+            <field name="name">Certificate Type</field>
+            <field eval="'ir.actions.act_window,%d'%hr_base_certificate_normal_action_tree" name="value"/>
+        </record>
+            
+         DASHBOARD 
+        
+        <record id="hr_open_view_team_category_form" model="ir.actions.act_window">
+            <field name="name">Categories of Certificate</field>
+            <field name="res_model">base.certificate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state', '=', 'close'),('employee_id.parent_id.user_id','=',uid),('object_id.model','=','hr.employee')]</field>
+        </record>
+        
+       	<record id="hr_open_view_user_category_form" model="ir.actions.act_window">
+            <field name="name">Categories of Certificate</field>
+            <field name="res_model">base.certificate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state', '=', 'close'),('object_id.model','=','hr.employee'),('employee_id.user_id','=',uid)]</field>
+        </record>
+        
+        <record id="hr_board_certificate_form" model="ir.ui.view">
+            <field name="name">board.certificate.form</field>
+            <field name="model">board.board</field>
+            <field name="inherit_id" ref="hr.board_hr_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="/form/board/column[1]" position="inside">
+                	<action name="%(hr_open_view_team_category_form)d" string="My Team Expired Certificate"/>
+                    <action name="%(hr_open_view_user_category_form)d" string="Expired Certificate"/>
+                </xpath>
+	      	</field>
+	     </record>-->
+        
+	</data>
+</openerp>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="1"> 
+	
+		<!-- Automatic Mail Template Creation -->
+		
+		<record id="expiration_manager" model="email.template">
+            <field name="name">Certificate Expiration - Manager Email</field>
+            <field name="model_id" ref="model_certificate"/>
+            <field name="email_from">noreply@localhost</field>
+            <field name="email_to">noreply@localhost</field>
+            <field name="subject">Certificate Expiration - Manager Email</field>
+        </record>
+        
+        <record id="expiration_user" model="email.template">
+            <field name="name">Certificate Expiration - User Email</field>
+            <field name="model_id" ref="model_certificate"/>
+            <field name="email_from">noreply@localhost</field>
+            <field name="email_to">noreply@localhost</field>
+            <field name="subject">Certificate Expiration - User Email</field>
+        </record>
+        
+	</data>
+</openerp>
