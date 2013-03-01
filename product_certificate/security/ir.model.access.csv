@@ -1,0 +1,7 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_base_certificate_user","base.certificate","base_certificate.model_base_certificate","base.group_user",1,0,0,0
+"access_base_certificate_hr_user","base.certificate","base_certificate.model_base_certificate","base.group_hr_user",1,1,1,1
+"access_base_certificate_hr_manager","base.certificate","base_certificate.model_base_certificate","base.group_hr_manager",1,1,1,1
+"access_base_certificate_type_user","base.certificate.type","base_certificate.model_base_certificate_type","base.group_user",1,0,0,0
+"access_base_certificate_type_hr_user","base.certificate.type","base_certificate.model_base_certificate_type","base.group_hr_user",1,1,1,1
+"access_base_certificate_type_hr_manager","base.certificate.type","base_certificate.model_base_certificate_type","base.group_hr_manager",1,1,1,1

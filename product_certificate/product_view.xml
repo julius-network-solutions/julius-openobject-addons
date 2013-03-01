@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+        
+	     
+	    <!-- 
+		"""""""""""""""""""
+		Product Related Certificate
+		"""""""""""""""""""
+		-->
+		
+        <record id="view_product_form_inherit" model="ir.ui.view">
+            <field name="name">product.product.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+            	<notebook position="inside">
+            		<page string="Certificate">
+                  		<field name="template_ids" colspan="4" nolabel="1" widget="many2many" mode="tree,form"/>
+                	</page>
+            	</notebook>
+         	</field>
+      	</record>
+        
+	</data>
+</openerp>
