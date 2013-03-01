@@ -20,11 +20,11 @@
 #################################################################################
 
 from lxml import etree
-import tools
-from osv import fields, osv
-from tools.translate import _
+import openerp.tools
+from openerp.osv import fields, osv, orm
+from openerp.tools.translate import _
 
-class field_relation(osv.osv_memory):
+class field_relation(orm.TransientModel):
     _name = 'field.relation'  
     
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
@@ -75,13 +75,23 @@ class field_relation(osv.osv_memory):
             'type': 'ir.actions.act_window',
         }
 
-field_relation()
-
-class multiple_edition(osv.osv_memory):
+class multiple_edition(orm.TransientModel):
     
     _name = 'multiple.edition'    
+    
+    def _get_default_multiple_edition_model(self, cr, uid, context=None):
+        model_obj = self.pool.get('ir.model')
+        if context is None:
+            context = {}
+        print context
+        temp = context.get('active_model')
+        model_ids = model_obj.search(cr, uid, [('model', '=', temp)], limit=1, context=context)
+        if model_ids:
+            result = model_ids[0]
+        return result
+    
     _columns = {
-        'model_id': fields.many2one('ir.model', 'Resource', required=True),
+        'model_id': fields.many2one('ir.model', 'Resource', readonly=True, required=True),
         'field_type': fields.selection([('char', 'Char'),
                                         ('boolean', 'Boolean'),
                                         ('integer', 'Integer'),
@@ -99,6 +109,12 @@ class multiple_edition(osv.osv_memory):
         'float_value': fields.float('Value'),
         
     }
+    
+    _defaults = {
+        'model_id': _get_default_multiple_edition_model,
+    }
+    
+    
     
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
         result = super(multiple_edition, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar,submenu)
@@ -139,8 +155,4 @@ class multiple_edition(osv.osv_memory):
                     model_obj.write(cr, uid, update_id, {this.field_id.name: value}, context)
         return {'type': 'ir.actions.act_window_close'}
     
-
-    
-multiple_edition()
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

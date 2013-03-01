@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,26 +20,22 @@
 #################################################################################
 
 {
-    "name": 'Multiple Edition',
-    "version": '1.0',
-    "description": """ This module give the possibility to edit
-    several record of a table. """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'base',
-        'product',
-    ],
-    "init_xml": [],
+    "name" : "Task Work Calendar View",
+    "version": "1.0",
+    "author" : "Julius Network Solutions",
+    "website" : "http://www.julius.fr",
+    "category" : "Projet",
+    "depends" : ["project"],
+    "description": """Project task work views with a menu.
+Adds a calendar view for the module project and a note summarizing the task work performed for the task selected.
+You can manage your projects from the calendar view.""",
+    "init_xml" : [],
+    "demo_xml" : [],
     "update_xml": [
-        "multiple_edition_view.xml",
-        "res_config_view.xml"
+        "project_task_work_view.xml", 
     ],
-    "demo_xml": [],
-    "installable": True,
-    "active": False,
-    "category" : "Base extra Modules",
-    "test": [],
+    'demo_xml': [],
+    'installable': True,
+    'active': False,
 }
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

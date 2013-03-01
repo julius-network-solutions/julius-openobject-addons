@@ -23,22 +23,26 @@ import time
 
 from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
-
-class account_move_line(orm.Model):
-    _inherit = "account.move.line"
-
-    def _update_check(self, cr, uid, ids, context=None):
-        done = {}
-        for line in self.browse(cr, uid, ids, context=context):
-            err_msg = _('Move name (id): %s (%s)') % (line.move_id.name, str(line.move_id.id))
-#            if line.move_id.state <> 'draft' and (not line.journal_id.entry_posted):
-#                raise osv.except_osv(_('Error!'), _('You cannot do this modification on a confirmed entry. You can just change some non legal fields or you must unconfirm the journal entry first.\n%s.') % err_msg)
-            if line.reconcile_id:
-                raise osv.except_osv(_('Error!'), _('You cannot do this modification on a reconciled entry. You can just change some non legal fields or you must unreconcile first.\n%s.') % err_msg)
-            t = (line.journal_id.id, line.period_id.id)
-            if t not in done:
-                self._update_journal_check(cr, uid, line.journal_id.id, line.period_id.id, context)
-                done[t] = True
-        return True
+     
+class account_bankimport_filters(orm.Model):
+    _name = "account.bankimport.filters"
+    _description = "Define the filters, which is related to the file"
+    _columns = {
+        'filter': fields.char('Filtername', size=64, required=True),
+        'name': fields.char('Filename', size=128, required=True),
+        'active': fields.boolean('Active'),
+    }
+    
+# Save data for each company
+class res_company(orm.Model):
+    _inherit = 'res.company'
+    _columns = {
+        'def_bank_journal_id' :  fields.many2one('account.journal', 'Default Bank Journal'),
+        'def_payable_id' :  fields.many2one('account.account', 'Default Payable Account', domain=[('type','=','payable')]),
+        'def_receivable_id' :  fields.many2one('account.account', 'Default Receivable Account', domain=[('type','=','receivable')]),
+        'def_awaiting_id' :  fields.many2one('account.account', 'Default Account for Unrecognized Movement', domain=[('type','=','liquidity')]),
+        'def_filter_id': fields.many2one('account.bankimport.filters', 'Default Filter'),
+        'def_date_format': fields.char('Default Date Format', size=32),
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

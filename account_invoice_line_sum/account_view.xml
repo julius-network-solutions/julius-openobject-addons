@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	
+		<!-- Invoice line Sum  -->
+	    <record id="view_invoice_line_tree_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.line.tree.inherit</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_tree"/>
+            <field name="arch" type="xml">
+	            <field name="quantity" position="replace">
+	            	<field name="quantity" sum="Quantity"/>
+	            </field>
+            </field>
+        </record>
+	
+    	<!-- Sum for supplier invoice  -->
+    	<record id="invoice_supplier_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+	            <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="replace">
+                	<field name="quantity" sum="Quantity"/>
+            	</xpath>
+            </field>
+        </record>
+
+    	<record id="invoice_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+	            <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="replace">
+                	<field name="quantity" sum="Quantity"/>
+            	</xpath>
+            </field>
+        </record>
+    	
+	</data>
+</openerp>

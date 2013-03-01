@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,27 +19,18 @@
 #
 #################################################################################
 
-{
-    "name": 'Multiple Edition',
-    "version": '1.0',
-    "description": """ This module give the possibility to edit
-    several record of a table. """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'base',
-        'product',
-    ],
-    "init_xml": [],
-    "update_xml": [
-        "multiple_edition_view.xml",
-        "res_config_view.xml"
-    ],
-    "demo_xml": [],
-    "installable": True,
-    "active": False,
-    "category" : "Base extra Modules",
-    "test": [],
-}
+from openerp.osv import osv, fields, orm
+from openerp.tools.translate import _
 
+class account_analytic_line(orm.Model):
+    
+    _inherit = 'account.analytic.line'
+   
+    def display_all(self, cr, uid, ids, context=None):
+        
+        if context == None:
+            context = {}
+            
+        return True
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
