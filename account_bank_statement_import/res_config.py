@@ -44,7 +44,9 @@ class account_config_settings(orm.TransientModel):
     _defaults = {}
 
     def open_filters_form(self, cr, uid, ids, context=None):
-        config = self.browse(cr, uid, ids[0], context)
+        if context is None:
+            context = {}
+        config = self.browse(cr, uid, ids[0], context=context)
         return {
             'type': 'ir.actions.act_window',
             'name': 'Activate',
@@ -55,10 +57,12 @@ class account_config_settings(orm.TransientModel):
         }
         
     def onchange_company_id(self, cr, uid, ids, company_id, context=None):
+        if context is None:
+            context = {}
         # update related fields
-        res = super(account_config_settings, self).onchange_company_id(cr, uid, ids, company_id)
+        res = super(account_config_settings, self).onchange_company_id(cr, uid, ids, company_id, context=context)
         if company_id:
-            company = self.pool.get('res.company').browse(cr, uid, company_id)
+            company = self.pool.get('res.company').browse(cr, uid, company_id, context=context)
             res['value'].update({
                 'def_bank_journal_id': company.def_bank_journal_id and company.def_bank_journal_id.id or False,
                 'def_payable_id': company.def_payable_id and company.def_payable_id.id or False,
