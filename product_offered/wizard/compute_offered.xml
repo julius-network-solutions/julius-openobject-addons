@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <wizard id="wizard_so_compute_offered"
+            string="Compute offered"
+            model="sale.order"
+            name="sale.order.compute.offered"
+            keyword="client_action_multi"
+        />
+
+
+    </data>
+</openerp>
+
