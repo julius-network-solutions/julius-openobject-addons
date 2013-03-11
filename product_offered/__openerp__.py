@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,25 +20,28 @@
 #################################################################################
 
 {
-    "name": 'Multiple Edition',
+    "name": 'Product Offered',
     "version": '1.0',
-    "description": """ This module give the possibility to edit
-    several record of a table. """,
+    "description": """
+    With this module you will be able to choose a quantity and a product to offer
+    when the customer will buy a specific quantity.
+    e.g.: For 10 candles bought 2 candles offered.
+    """,
     "author": 'Julius Network Solutions',
     "website": 'http://www.julius.fr/',
     "depends": [
-        'base',
         'product',
+        'sale',
     ],
-    "init_xml": [],
-    "update_xml": [
-        "multiple_edition_view.xml",
-        "res_config_view.xml",
+    "data": [
+        "product_view.xml",
+        "sale_view.xml",
+        "wizard/compute_offered.xml",
     ],
-    "demo_xml": [],
-    "installable": True,
+    "demo": [],
+    "installable": False,
     "active": False,
-    "category" : "Base extra Modules",
+    "category" : "Sales",
     "test": [],
 }
 
