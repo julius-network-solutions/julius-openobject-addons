@@ -33,6 +33,7 @@
     "init_xml": [],
     "update_xml": [
         "multiple_edition_view.xml",
+        "res_config_view.xml"
     ],
     "demo_xml": [],
     "installable": True,

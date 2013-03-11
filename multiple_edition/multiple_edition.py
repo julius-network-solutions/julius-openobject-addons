@@ -78,8 +78,20 @@ class field_relation(orm.TransientModel):
 class multiple_edition(orm.TransientModel):
     
     _name = 'multiple.edition'    
+    
+    def _get_default_multiple_edition_model(self, cr, uid, context=None):
+        model_obj = self.pool.get('ir.model')
+        if context is None:
+            context = {}
+        print context
+        temp = context.get('active_model')
+        model_ids = model_obj.search(cr, uid, [('model', '=', temp)], limit=1, context=context)
+        if model_ids:
+            result = model_ids[0]
+        return result
+    
     _columns = {
-        'model_id': fields.many2one('ir.model', 'Resource', required=True),
+        'model_id': fields.many2one('ir.model', 'Resource', readonly=True, required=True),
         'field_type': fields.selection([('char', 'Char'),
                                         ('boolean', 'Boolean'),
                                         ('integer', 'Integer'),
@@ -97,6 +109,12 @@ class multiple_edition(orm.TransientModel):
         'float_value': fields.float('Value'),
         
     }
+    
+    _defaults = {
+        'model_id': _get_default_multiple_edition_model,
+    }
+    
+    
     
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
         result = super(multiple_edition, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar,submenu)

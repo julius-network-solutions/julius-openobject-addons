@@ -56,7 +56,7 @@ class account_config_settings(orm.TransientModel):
         
     def onchange_company_id(self, cr, uid, ids, company_id, context=None):
         # update related fields
-        res = super(account_config_settings, self).onchange_company_id(cr, uid, ids, company_id, context=context)
+        res = super(account_config_settings, self).onchange_company_id(cr, uid, ids, company_id)
         if company_id:
             company = self.pool.get('res.company').browse(cr, uid, company_id)
             res['value'].update({
