@@ -30,7 +30,7 @@ class costes_products_sale_order(orm.Model):
         # should only be called from a wizard in a form view
         if len(soids) > 1:
             return False
-        b_so = self.browse(cr, uid, soids[0], context)
+        b_so = self.browse(cr, uid, soids[0], context)[0]
 
 #        euro_zone = (b_so.partner_invoice_id.country_id and \
 #                        b_so.partner_invoice_id.country_id.in_euro_zone \
@@ -38,8 +38,8 @@ class costes_products_sale_order(orm.Model):
 
         del_ids = []
 
-        if b_so.state != 'draft':
-            return False
+#        if b_so.state != 'draft':
+#            return False
 
         o_sol = self.pool.get('sale.order.line')
 
@@ -49,7 +49,7 @@ class costes_products_sale_order(orm.Model):
 
         o_sol.unlink(cr, uid, del_ids)
 
-        b_so = self.browse(cr, uid, soids[0], context)
+        b_so = self.browse(cr, uid, soids[0], context)[0]
         for line in b_so.order_line:
             if line.product_id and line.product_id.offered_product:
                 if line.product_uom_qty < line.product_id.offered_threshold:

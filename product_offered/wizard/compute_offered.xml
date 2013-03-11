@@ -2,13 +2,38 @@
 <openerp>
     <data>
 
-        <wizard id="wizard_so_compute_offered"
-            string="Compute offered"
-            model="sale.order"
-            name="sale.order.compute.offered"
-            keyword="client_action_multi"
-        />
-
+		<!-- 
+		"""""""""""""""""""
+		Compute Offered
+		"""""""""""""""""""
+		-->
+	    
+	    <record id="product_compute_offered_view_form" model="ir.ui.view">
+	        <field name="name">product.compute.offered.form</field>
+	        <field name="model">product.compute.offered</field>
+	        <field name="type">form</field>
+	        <field name="arch" type="xml">
+	            <form string="Compute Offered">
+					<button name="do_compute_offered" string="do it" icon="gtk-go-forward" type="object"/>
+					<button string="Cancel" class="oe_link" special="cancel"/>
+	            </form>
+	        </field>
+	    </record>
+	    
+	    <!--
+		"""""""""""""""""""""""""""""""
+		Wizard Action
+		"""""""""""""""""""""""""""""""
+		-->
+		
+		<record id="action_product_compute_offered_view_form" model="ir.actions.act_window">
+	        <field name="name">product.compute.offered.form</field>
+	        <field name="type">ir.actions.act_window</field>
+	        <field name="res_model">product.compute.offered</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="target">new</field>
+        </record>
 
     </data>
 </openerp>
