@@ -19,15 +19,16 @@
 #
 #################################################################################
 
-
 from openerp.osv import fields, osv, orm
+from openerp.tools.translate import _
 import copy
 
 class ir_model(orm.Model):
     _inherit = 'ir.model'
     
     _columns = {
-        'multiple_edition_model': fields.boolean('Multiple Edtion linked', help='If checked, by default the multiple edition configuration will get this module in the list'),
+        'multiple_edition_model': fields.boolean('Multiple Edtion linked',
+            help='If checked, by default the multiple edition configuration will get this module in the list'),
     }
     
     _defaults = {
@@ -97,9 +98,6 @@ class multiple_edition_settings(orm.TransientModel):
                  'key2': 'client_action_multi',
                  'value': "ir.actions.act_window," + str(act_id),
             }, context=context)
-            
-            
-            
         return True
     
     def create(self, cr, uid, vals, context=None):
@@ -117,7 +115,6 @@ class multiple_edition_settings(orm.TransientModel):
         """ install method """
         for vals in self.read(cr, uid, ids, context=context):
             result = self.update_field(cr, uid, vals, context=context)
-            
         return {
             'type': 'ir.actions.client',
             'tag': 'reload',
