@@ -22,7 +22,7 @@
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
-class costes_products_sale_order(orm.Model):
+class sale_order(orm.Model):
     _inherit = 'sale.order'
     
     def _get_offered_line_vals(self, cr, uid, line, order, context=None):

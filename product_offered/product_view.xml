@@ -11,8 +11,8 @@
 					<newline/>
                     <group string="Gifts Conditions">
                         <div>
-                            When <field name="offered_threshold" attrs="{'required':[('offered_qty','>', 0)]}" class="oe_inline"/> product of this bought,
-                    		<field name="offered_qty" attrs="{'required':[('offered_threshold','>', 0)]}" class="oe_inline"/><field name="offered_product_id" class="oe_inline"/> product(s) will be offered
+                            When <field name="offered_threshold" attrs="{'required':[('offered_qty','>', 0)]}" class="oe_inline"/> bought,
+                    		<field name="offered_qty" attrs="{'required':[('offered_threshold','>', 0)]}" class="oe_inline"/><field name="offered_product_id" class="oe_inline"/> will be offered
                         </div>
                     </group>
                 </group>

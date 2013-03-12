@@ -23,7 +23,8 @@ from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
 class product_compute_offered(orm.TransientModel):
-    _name = "product.compute.offered"    
+    _name = "product.compute.offered"
+    _description = "Generate offered Products"
     
     def _get_orders(self, cr, uid, context=None):
         if context is None:

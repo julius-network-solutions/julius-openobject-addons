@@ -22,7 +22,7 @@
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
-class costes_product_template(orm.Model):
+class product_product(orm.Model):
     """ Product """
     _inherit = "product.product"
     _description = "Costes boutique product template"
