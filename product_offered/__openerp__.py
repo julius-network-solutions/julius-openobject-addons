@@ -20,7 +20,7 @@
 #################################################################################
 
 {
-    "name": 'Product Offered',
+    "name": 'Offered Products',
     "version": '1.0',
     "description": """
     With this module you will be able to choose a quantity and a product to offer
@@ -34,15 +34,14 @@
         'sale',
     ],
     "data": [
+        "wizard/compute_offered.xml",
         "product_view.xml",
         "sale_view.xml",
-        "wizard/compute_offered.xml",
     ],
     "demo": [],
-    "installable": False,
+    "installable": True,
     "active": False,
     "category" : "Sales",
-    "test": [],
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

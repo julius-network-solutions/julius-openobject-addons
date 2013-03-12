@@ -2,6 +2,22 @@
 <openerp>
     <data>
 
+        <record id="product_normal_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.normal.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <group string="Sale Conditions" position="after">
+					<newline/>
+                    <group string="Gifts Conditions">
+                        <div>
+                            When <field name="offered_threshold" attrs="{'required':[('offered_qty','>', 0)]}" class="oe_inline"/> product of this bought,
+                    		<field name="offered_qty" attrs="{'required':[('offered_threshold','>', 0)]}" class="oe_inline"/><field name="offered_product_id" class="oe_inline"/> product(s) will be offered
+                        </div>
+                    </group>
+                </group>
+            </field>
+        </record>
+
     </data>
 </openerp>
-

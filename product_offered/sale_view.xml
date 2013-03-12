@@ -2,6 +2,29 @@
 <openerp>
     <data>
 
+        <record id="view_order_line_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <button name="invoice_recreate" position="before">
+                     <button name="generate_offered" string="Compute Offered"
+                         states="draft" type="object"
+                         class="oe_highlight" groups="base.group_user"/>
+                </button>
+            </field>
+        </record>
+
+        <record id="view_order_line_form2_inherit" model="ir.ui.view">
+            <field name="name">sale.order.line.form.inherit</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_form2"/>
+            <field name="arch" type="xml">
+                <field name="invoiced" position="after">  
+                    <field name="offered"/>
+                </field>
+            </field>
+        </record>
+
     </data>
 </openerp>
-
