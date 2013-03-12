@@ -22,16 +22,6 @@
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
-#confirm_form = """<form string="Compute offered">
-#    <separator colspan="4" string="Compute offered products for this sale" />
-#    <label colspan="4" string="This will add a line with an offered product for each sale line that matches offered rules of its product." />
-#    <label colspan="4" string="Important: please note that existing offered product lines will be removed." />
-#</form>"""
-#
-#wrong_state_form = """<form string="Compute offered">
-#    <label colspan="4" string="This only applies to sale orders in 'Draft' state." />
-#</form>
-#"""
 class product_compute_offered(orm.TransientModel):
     _name = "product.compute.offered"    
 
@@ -43,10 +33,4 @@ class product_compute_offered(orm.TransientModel):
         o_so._generate_offered(cr, uid, sale_ids, context=context)
         return {'type': 'ir.actions.act_window_close'}
 
-#    def check_sale_order_state(wiz, cr, uid, data, context):
-#        so_id = data['ids'][0]
-#        o_so = pooler.get_pool(cr.dbname).get('sale.order')
-#        b_so = o_so.browse(cr, uid, so_id, context)
-#        return b_so.state == 'draft' and 'ask_confirmation' or 'not_draft'
-    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

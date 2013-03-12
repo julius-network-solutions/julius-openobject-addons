@@ -11,9 +11,16 @@
             <field name="name">product.compute.offered.form</field>
             <field name="model">product.compute.offered</field>
             <field name="arch" type="xml">
-                <form string="Compute Offered">
-                    <button name="do_compute_offered" string="do it" icon="gtk-go-forward" type="object"/>
-                    <button string="Cancel" class="oe_link" special="cancel"/>
+                <form string="Compute Offered" version="7.0">
+                    <group>
+                        <label string="This action will delete all the offered lines of all draft orders
+                        and recreate the new offered lines."/>
+                    </group>
+                    <footer>
+                        <button name="do_compute_offered" string="Generate offered Products" class="oe_highlight" type="object"/>
+                          or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
                 </form>
             </field>
         </record>
@@ -24,12 +31,22 @@
         """""""""""""""""""""""""""""""
         -->
         <record id="action_product_compute_offered_view_form" model="ir.actions.act_window">
-            <field name="name">product.compute.offered.form</field>
+            <field name="name">Generate Offered Products</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">product.compute.offered</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
+            <field name="multi" eval="1"/>
+        </record>
+
+        <record model="ir.values" id="action_product_compute_offered_value">
+            <field name="model_id" ref="sale.model_sale_order" />
+            <field name="name">Generate Offered Products</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_product_compute_offered_view_form'))" />
+            <field name="key">action</field>
+            <field name="model">sale.order</field>
         </record>
 
     </data>

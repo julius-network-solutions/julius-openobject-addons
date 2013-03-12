@@ -95,6 +95,9 @@ class costes_products_sale_order(orm.Model):
             # force computation of weight
             self.write(cr, uid, order.id, {}, context=context)
         return True
+    
+    def generate_offered(self, cr, uid, ids, context=None):
+        return self._generate_offered(cr, uid, ids, context=context)
 
 
 class costes_products_sale_order_line(orm.Model):
