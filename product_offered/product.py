@@ -29,12 +29,13 @@ class costes_product_template(orm.Model):
     
     _columns = {
         'offered_product_id' : fields.many2one('product.product', 'Offered Product'),
-        'offered_threshold' : fields.float('From'),
+        'offered_threshold' : fields.float('Offered threshold'),
         'offered_qty' : fields.float('Offered quantity'),
     }
 
     _defaults = {
-        'offered_qty' : lambda *args: 1,
+        'offered_threshold': 0.0,
+        'offered_qty': 0.0,
     }
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

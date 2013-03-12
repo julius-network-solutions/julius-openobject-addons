@@ -29,20 +29,22 @@ class costes_products_sale_order(orm.Model):
         if context is None:
             context = {}
         o_sol = self.pool.get('sale.order.line')
-        offered_product = line.product_id.offered_product_id.id
+        # If there is no product define, the system take the same product
+        offered_product = line.product_id.offered_product_id or line.product_id
         res = o_sol.product_id_change(cr, uid, list(),
-                order.pricelist_id.id, offered_product, qty=1,
-                uom=line.product_id.offered_product_id.uom_id.id,
-                qty_uos=1, uos=line.product_id.offered_product_id.uom_id.id,
+                order.pricelist_id.id, offered_product.id, qty=1,
+                uom=offered_product.uom_id.id,
+                qty_uos=1, uos=offered_product.uom_id.id,
                 name='', partner_id=order.partner_id.id, lang=order.partner_id.lang,
                 update_tax=True, date_order=order.date_order,
                 packaging=False, fiscal_position=order.fiscal_position,
                 flag=False, context=context)
         vals = res['value']
-        uom_id = vals.get('product_uos') and uom[0] or line.product_id.offered_product_id.uom_id.id or False
-        quantity = int(line.product_uom_qty / line.product_id.offered_threshold) * line.product_id.offered_qty
+        uom_id = vals.get('product_uos') and vals.get('product_uos')[0] or offered_product.uom_id.id or False
+        quantity = int(line.product_uom_qty / line.product_id.offered_threshold) \
+                            * line.product_id.offered_qty
         vals.update({
-            'product_id': offered_product,
+            'product_id': offered_product.id,
             'product_uos': uom_id,
             'product_uos_qty': quantity,
             'product_uom': uom_id,
@@ -70,28 +72,17 @@ class costes_products_sale_order(orm.Model):
                 if line.offered:
                     del_ids.append(line.id)
             o_sol.unlink(cr, uid, del_ids, context=context)
-
-#        euro_zone = (b_so.partner_invoice_id.country_id and \
-#                        b_so.partner_invoice_id.country_id.in_euro_zone \
-#                        or False)
-
+            
+            # This will create the lines if there is a offered threshold
+            # and a offered qty
             for line in order.order_line:
-                if line.product_id and line.product_id.offered_product_id:
+                if line.product_id and line.product_id.offered_threshold and line.product_id.offered_qty:
                     # If the quantity of the line is lower than the offered threshold
                     # don't do the function for this line
                     if line.product_uom_qty < line.product_id.offered_threshold:
                         continue
                     vals = self._get_offered_line_vals(cr, uid, line, order, context=context)
-                    
-    #                if euro_zone:
-    #                    data['discount'] = 0.0
-    #                    data['price_unit'] = 0.0
-    #                else:
-    #                    data['discount'] = 100.0
-    #                    data['price_unit'] = 0.10
-    
                     o_sol.create(cr, uid, vals, context=context)
-    
             # force computation of weight
             self.write(cr, uid, order.id, {}, context=context)
         return True
