@@ -7,10 +7,15 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-                <field name="warranty" position="after">
-                    <field name="offered_threshold"/>
-                    <field name="offered_qty"/>
-                </field>
+                <group string="Sale Conditions" position="after">
+					<newline/>
+                    <group string="Gifts Conditions">
+                        <div>
+                            When <field name="offered_threshold" attrs="{'required':[('offered_qty','>', 0)]}" class="oe_inline"/> product of this bought,
+                    		<field name="offered_qty" attrs="{'required':[('offered_threshold','>', 0)]}" class="oe_inline"/><field name="offered_product_id" attrs="{'required':[('offered_threshold','>', 0), ('offered_qty','>', 0)]}" class="oe_inline"/> product(s) will be offered
+                        </div>
+                    </group>
+                </group>
             </field>
         </record>
 

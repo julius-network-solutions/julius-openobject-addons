@@ -10,7 +10,6 @@
         <record id="product_compute_offered_view_form" model="ir.ui.view">
             <field name="name">product.compute.offered.form</field>
             <field name="model">product.compute.offered</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Compute Offered">
                     <button name="do_compute_offered" string="do it" icon="gtk-go-forward" type="object"/>

@@ -29,8 +29,8 @@ class costes_product_template(orm.Model):
     
     _columns = {
         'offered_product_id' : fields.many2one('product.product', 'Offered Product'),
-        'offered_threshold' : fields.integer('From'),
-        'offered_qty' : fields.integer('Offered quantity'),
+        'offered_threshold' : fields.float('From'),
+        'offered_qty' : fields.float('Offered quantity'),
     }
 
     _defaults = {

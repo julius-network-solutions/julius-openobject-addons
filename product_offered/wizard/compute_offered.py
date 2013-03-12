@@ -34,15 +34,13 @@ from openerp.tools.translate import _
 #"""
 class product_compute_offered(orm.TransientModel):
     _name = "product.compute.offered"    
-    
 
     def do_compute_offered(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         o_so = self.pool.get('sale.order')
-        if not isinstance(ids, list):
-            ids = [ids]
-        res = o_so._generate_offered(cr, uid, ids, context=context)
+        sale_ids = o_so.search(cr, uid, [('state', '=', 'draft')], context=context)
+        o_so._generate_offered(cr, uid, sale_ids, context=context)
         return {'type': 'ir.actions.act_window_close'}
 
 #    def check_sale_order_state(wiz, cr, uid, data, context):
