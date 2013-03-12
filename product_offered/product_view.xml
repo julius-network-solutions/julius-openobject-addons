@@ -2,6 +2,17 @@
 <openerp>
     <data>
 
+        <record id="product_normal_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.normal.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="warranty" position="after">
+                    <field name="offered_threshold"/>
+                    <field name="offered_qty"/>
+                </field>
+            </field>
+        </record>
+
     </data>
 </openerp>
-
