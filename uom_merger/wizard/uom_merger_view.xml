@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_base_uom_merge_form">
+            <field name="name">uom.merger.form</field>
+            <field name="model">uom.merger</field>
+            <field name="arch" type="xml">
+                <form string="Merge UoM" version="7.0">
+                    <group>
+                        <label for="uom_id"/>
+                        <div>
+                            <field name="uom_id"/>
+                        </div>
+	                </group>
+	                <footer>
+	                    <button string="Merge UoM" name="action_merge" type="object" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+                </form>
+            </field>
+        </record>
+    
+        <record id="action_base_uom_merge_form" model="ir.actions.act_window">
+            <field name="name">Merge UoM</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">uom.merger</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_base_uom_merge_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_base_uom_merge_form_values" model="ir.values">
+            <field name="model_id" ref="product.model_product_uom" />
+            <field name="name">Merge UoM</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_base_uom_merge_form'))"/>
+            <field name="key">action</field>
+            <field name="model">product.uom</field>
+        </record>
+
+    </data>
+</openerp>
