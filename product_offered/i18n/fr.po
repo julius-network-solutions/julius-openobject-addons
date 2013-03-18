@@ -95,7 +95,7 @@ msgstr "Seuil d'offre"
 #. module: product_offered
 #: view:product.product:0
 msgid "bought,"
-msgstr "acheté,"
+msgstr "achetés,"
 
 #. module: product_offered
 #: view:product.compute.offered:0

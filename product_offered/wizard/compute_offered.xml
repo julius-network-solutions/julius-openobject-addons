@@ -16,6 +16,7 @@
                         <label colspan="4" string="This will add a line with an offered product for each sale line that matches offered rules of its product." />
                         <newline/>
                         <label colspan="4" string="Important: please note that existing offered product lines will be removed." />
+						<field name="multiple"/>
                     </group>
                     <footer>
                         <button name="do_compute_offered" string="Generate offered Products" class="oe_highlight" type="object"/>

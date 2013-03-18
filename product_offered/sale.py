@@ -25,7 +25,7 @@ from openerp.tools.translate import _
 class sale_order(orm.Model):
     _inherit = 'sale.order'
     
-    def _get_offered_line_vals(self, cr, uid, line, order, context=None):
+    def _get_offered_line_vals(self, cr, uid, line, order, multiple, context=None):
         if context is None:
             context = {}
         o_sol = self.pool.get('sale.order.line')
@@ -41,8 +41,8 @@ class sale_order(orm.Model):
                 flag=False, context=context)
         vals = res['value']
         uom_id = vals.get('product_uos') and vals.get('product_uos')[0] or offered_product.uom_id.id or False
-        quantity = int(line.product_uom_qty / line.product_id.offered_threshold) \
-                            * line.product_id.offered_qty
+        quantity = multiple and (int(line.product_uom_qty / line.product_id.offered_threshold) \
+                            * line.product_id.offered_qty) or line.product_id.offered_qty
         vals.update({
             'product_id': offered_product.id,
             'product_uos': uom_id,
@@ -58,7 +58,7 @@ class sale_order(orm.Model):
         vals['name'] += _(' offered')
         return vals
 
-    def _generate_offered(self, cr, uid, ids, context=None):
+    def _generate_offered(self, cr, uid, ids, multiple, context=None):
         if context is None:
             context = {}
         o_sol = self.pool.get('sale.order.line')
@@ -81,14 +81,17 @@ class sale_order(orm.Model):
                     # don't do the function for this line
                     if line.product_uom_qty < line.product_id.offered_threshold:
                         continue
-                    vals = self._get_offered_line_vals(cr, uid, line, order, context=context)
+                    vals = self._get_offered_line_vals(cr, uid, line, order, multiple, context=context)
                     o_sol.create(cr, uid, vals, context=context)
             # force computation of weight
             self.write(cr, uid, order.id, {}, context=context)
         return True
     
     def generate_offered(self, cr, uid, ids, context=None):
-        return self._generate_offered(cr, uid, ids, context=context)
+        if context is None:
+            context = {}
+        multiple = context.get('multiple',True)
+        return self._generate_offered(cr, uid, ids, multiple, context=context)
 
 
 class costes_products_sale_order_line(orm.Model):

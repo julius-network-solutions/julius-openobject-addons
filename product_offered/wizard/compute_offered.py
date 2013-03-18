@@ -26,6 +26,18 @@ class product_compute_offered(orm.TransientModel):
     _name = "product.compute.offered"
     _description = "Generate offered Products"
     
+    _colums = {
+        'multiple': fields.boolean('Multiple',
+            help='If checked the system will compute the offered products like this, example: '
+            '- 5 products bought = 1 product offered '
+            '- 10 products bought = 2 product offered, etc.'
+            'else, if the customer buy 5, 10, 15 products you will only offered him 1 product'),
+    }
+    
+    _defaults = {
+        'multiple': True,
+    }
+    
     def _get_orders(self, cr, uid, context=None):
         if context is None:
             context = {}
@@ -37,7 +49,9 @@ class product_compute_offered(orm.TransientModel):
             context = {}
         o_so = self.pool.get('sale.order')
         sale_ids = self._get_orders(cr, uid, context=context)
-        o_so._generate_offered(cr, uid, sale_ids, context=context)
+        current = self.browse(cr, uid, ids[0], context=context)
+        multiple = current.multiple
+        o_so._generate_offered(cr, uid, sale_ids, multiple, context=context)
         return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
