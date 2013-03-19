@@ -26,7 +26,7 @@ class product_compute_offered(orm.TransientModel):
     _name = "product.compute.offered"
     _description = "Generate offered Products"
     
-    _colums = {
+    _columns = {
         'multiple': fields.boolean('Multiple',
             help='If checked the system will compute the offered products like this, example: '
             '- 5 products bought = 1 product offered '
