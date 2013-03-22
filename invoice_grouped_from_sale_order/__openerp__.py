@@ -24,12 +24,14 @@
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://www.julius.fr/",
-    "category" : "Invoice, Sale Order",
+    "category" : "Sale Management",
     "depends" : [
         "sale",
     ],
     "description" : """ Invoice Grouped From Sale Order """,
-    "data" : ["invoice_grouped_from_sale_order_view.xml"],
+    "data" : [
+        "invoice_grouped_from_sale_order_view.xml"
+    ],
     "demo" : [],
     "active": False,
     "installable": True,

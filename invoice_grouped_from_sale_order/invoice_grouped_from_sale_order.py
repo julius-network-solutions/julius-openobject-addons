@@ -22,19 +22,9 @@
 import openerp.tools
 from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
-import locale
-import unicodedata
 
-import base64
-import StringIO
-import csv
-import netsvc
-
-
-class invoice_grouped_from_sale_order( orm.Model):
+class invoice_grouped_from_sale_order(orm.Model):
     _name = 'invoice.grouped.from.sale.order'
-
-
 
     def action_invoice_create_cp(self, cr, uid, ids, context=None):
         res = False
@@ -68,7 +58,6 @@ class invoice_grouped_from_sale_order( orm.Model):
             inv_obj.button_compute(cr, uid, [inv_id])
             return inv_id
 
-
         lines = []
         ids = []
         so_obj = self.pool.get('sale.order')
@@ -77,7 +66,6 @@ class invoice_grouped_from_sale_order( orm.Model):
             for line in o.order_line:
                 lines.append(line.id)
         invoices_lines = self.pool.get('sale.order.line').invoice_line_create_cp(cr, uid, lines)
-
 
         for partner, val in invoices_lines.items():
             res = make_invoice(partner, val[1])
@@ -89,13 +77,10 @@ class invoice_grouped_from_sale_order( orm.Model):
                 }, context=context)
         return res
 
-class costes_products_sale_order_line( orm.Model ):
+class sale_order_line(orm.Model):
     _name = 'sale.order.line'
     _inherit = 'sale.order.line'
-
-
-    _order = 'sequence , id'
-
+#    _order = 'sequence , id'
 
     def invoice_line_create_cp(self, cr, uid, ids, context={}):
         def _get_line_qty(line):
@@ -103,65 +88,58 @@ class costes_products_sale_order_line( orm.Model ):
                 return line.product_uos_qty or line.product_uom_qty
             else:
                 return self.pool.get('mrp.procurement').quantity_get(cr, uid, line.procurement_id.id, context)
-
         invoice_lines = {}
         invl_soll_map = {}
         parl_sol = {}
 
-
         for line in self.browse(cr, uid, ids, context):
+            uosqty = _get_line_qty(line)
+            product = line.product_id.id or False
+            price_unit = line.price_unit
+            discount = line.discount
+            partner = line.order_id.partner_id.id
+            order = line.order_id.id
 
-                uosqty = _get_line_qty(line)
-                product = line.product_id.id or False
-                price_unit = line.price_unit
-                discount = line.discount
-                partner = line.order_id.partner_id.id
-                order = line.order_id.id
+            parl_sol.setdefault(partner, list()).append(order)
 
-                parl_sol.setdefault(partner, list()).append(order)
+            uos_id = (line.product_uos and line.product_uos.id) or False
 
-                uos_id = (line.product_uos and line.product_uos.id) or False
+            pkey = str(partner) + '-' +str(product) + '-' + str(price_unit) + '-' + str(discount)
 
-                pkey = str(partner) + '-' +str(product) + '-' + str(price_unit) + '-' + str(discount)
-
-                if product:
-                    inv_line = invoice_lines.get(pkey, False)
-                    if inv_line:
-                        inv_line['quantity'] += uosqty
-                        inv_line['note'] += '\n' + (line.notes or '')
-                        invl_soll_map[pkey].append(line.id)
-                    else:
-                        inv_line = {
-                            'name': line.name ,
-#                            'account_id': a ,
-                            'price_unit': price_unit ,
-                            'quantity': uosqty ,
-                            'discount': discount ,
-                            'uos_id': uos_id ,
-                            'product_id': product ,
-                            'invoice_line_tax_id': [(6,0,[x.id for x in line.tax_id])] ,
-#                            'note': line.notes or '',
-                        }
-                        invoice_lines[pkey] = inv_line
-                        invl_soll_map[pkey] = [line.id, ]
-
+            if product:
+                inv_line = invoice_lines.get(pkey, False)
+                if inv_line:
+                    inv_line['quantity'] += uosqty
+                    inv_line['note'] += '\n' + (line.notes or '')
+                    invl_soll_map[pkey].append(line.id)
                 else:
                     inv_line = {
                         'name': line.name ,
-                        'account_id': a ,
+#                            'account_id': a ,
                         'price_unit': price_unit ,
                         'quantity': uosqty ,
                         'discount': discount ,
                         'uos_id': uos_id ,
                         'product_id': product ,
                         'invoice_line_tax_id': [(6,0,[x.id for x in line.tax_id])] ,
-                        'note': line.notes or '',
+#                            'note': line.notes or '',
                     }
                     invoice_lines[pkey] = inv_line
                     invl_soll_map[pkey] = [line.id, ]
-
-
-
+            else:
+                inv_line = {
+                    'name': line.name ,
+                    'account_id': a ,
+                    'price_unit': price_unit ,
+                    'quantity': uosqty ,
+                    'discount': discount ,
+                    'uos_id': uos_id ,
+                    'product_id': product ,
+                    'invoice_line_tax_id': [(6,0,[x.id for x in line.tax_id])] ,
+                    'note': line.notes or '',
+                }
+                invoice_lines[pkey] = inv_line
+                invl_soll_map[pkey] = [line.id, ]
 
         invl_4part = {}
 
