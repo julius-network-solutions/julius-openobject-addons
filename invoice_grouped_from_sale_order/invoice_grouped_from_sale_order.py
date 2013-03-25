@@ -25,6 +25,30 @@ from openerp.tools.translate import _
 
 class invoice_grouped_from_sale_order(orm.Model):
     _name = 'invoice.grouped.from.sale.order'
+    
+    def _make_invoice(self, cr, uid, partner, lines, context):
+        partner_id = self.pool.get('res.partner').browse(cr, uid, partner, context=context)
+        acc = partner_id.property_account_receivable.id
+        if partner_id and partner_id.property_payment_term:
+            pay_term = partner_id.property_payment_term[0]
+        else:
+            pay_term = False
+        inv = {
+            'name': 'Grouped invoice',
+            'origin': 'Sale order to group',
+            'type': 'out_invoice',
+            'reference': "C%dVEGR"% partner ,
+            'account_id': acc,
+            'partner_id': partner,
+            'invoice_line': [(6,0,lines)],
+            'payment_term': pay_term,
+            'user_id' : uid ,
+        }
+        
+        inv_obj = self.pool.get('account.invoice')
+        inv_id = inv_obj.create(cr, uid, inv)
+        inv_obj.button_compute(cr, uid, [inv_id])
+        return inv_id
 
     def action_invoice_create_cp(self, cr, uid, ids, context=None):
         res = False
@@ -32,31 +56,6 @@ class invoice_grouped_from_sale_order(orm.Model):
         invoice_ids = []
         if context is None:
             context = {}
-
-        def make_invoice(partner, lines):
-            partner_id = self.pool.get('res.partner').browse(cr, uid, partner,context=context)
-            acc = partner_id.property_account_receivable.id
-
-            if partner_id and partner_id.property_payment_term:
-                pay_term = partner_id.property_payment_term[0]
-            else:
-                pay_term = False
-            inv = {
-                'name': 'Facture groupée',
-                'origin': 'Commandes à grouper',
-                'type': 'out_invoice',
-                'reference': "C%dVEGR"% partner ,
-                'account_id': acc,
-                'partner_id': partner,
-                'invoice_line': [(6,0,lines)],
-                'payment_term': pay_term,
-                'salesman' : uid ,
-            }
-            
-            inv_obj = self.pool.get('account.invoice')
-            inv_id = inv_obj.create(cr, uid, inv)
-            inv_obj.button_compute(cr, uid, [inv_id])
-            return inv_id
 
         lines = []
         ids = []
@@ -68,7 +67,7 @@ class invoice_grouped_from_sale_order(orm.Model):
         invoices_lines = self.pool.get('sale.order.line').invoice_line_create_cp(cr, uid, lines)
 
         for partner, val in invoices_lines.items():
-            res = make_invoice(partner, val[1])
+            res = self._make_invoice(cr, uid, partner, val[1], context=context)
             invoice_ids.append(res)
             for so_id in val[0]:
                 so_obj.write(cr, uid, [so_id], {
@@ -80,20 +79,22 @@ class invoice_grouped_from_sale_order(orm.Model):
 class sale_order_line(orm.Model):
     _name = 'sale.order.line'
     _inherit = 'sale.order.line'
-#    _order = 'sequence , id'
 
-    def invoice_line_create_cp(self, cr, uid, ids, context={}):
-        def _get_line_qty(line):
-            if (line.order_id.invoice_quantity=='order') or not line.procurement_id:
-                return line.product_uos_qty or line.product_uom_qty
-            else:
-                return self.pool.get('mrp.procurement').quantity_get(cr, uid, line.procurement_id.id, context)
+
+    def _get_line_qty_invoice(line):
+        if (line.order_id.invoice_quantity=='order') or not line.procurement_id:
+            return line.product_uos_qty or line.product_uom_qty
+        else:
+            return self.pool.get('mrp.procurement').quantity_get(cr, uid, line.procurement_id.id, context)
+
+    def invoice_line_create_cp(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
         invoice_lines = {}
         invl_soll_map = {}
         parl_sol = {}
-
         for line in self.browse(cr, uid, ids, context):
-            uosqty = _get_line_qty(line)
+            uosqty = self._get_line_qty(cr, uid,line)
             product = line.product_id.id or False
             price_unit = line.price_unit
             discount = line.discount
@@ -115,28 +116,24 @@ class sale_order_line(orm.Model):
                 else:
                     inv_line = {
                         'name': line.name ,
-#                            'account_id': a ,
                         'price_unit': price_unit ,
                         'quantity': uosqty ,
                         'discount': discount ,
                         'uos_id': uos_id ,
                         'product_id': product ,
                         'invoice_line_tax_id': [(6,0,[x.id for x in line.tax_id])] ,
-#                            'note': line.notes or '',
                     }
                     invoice_lines[pkey] = inv_line
                     invl_soll_map[pkey] = [line.id, ]
             else:
                 inv_line = {
                     'name': line.name ,
-                    'account_id': a ,
                     'price_unit': price_unit ,
                     'quantity': uosqty ,
                     'discount': discount ,
                     'uos_id': uos_id ,
                     'product_id': product ,
                     'invoice_line_tax_id': [(6,0,[x.id for x in line.tax_id])] ,
-                    'note': line.notes or '',
                 }
                 invoice_lines[pkey] = inv_line
                 invl_soll_map[pkey] = [line.id, ]
@@ -149,18 +146,18 @@ class sale_order_line(orm.Model):
             sol_ids = invl_soll_map[pkey]
             for sol_id in sol_ids:
                 self.write(cr, uid, sol_id ,{
-                            'invoice_ids':[(4, inv_id)]
+                            'invoice_id':[(4, inv_id)]
                             },context=context)
             self.write(cr, uid, sol_ids ,{
                         'invoiced':True
                         }, context=context)
             invl_4part.setdefault(partner, list()).append(inv_id)
 
-        the_big_whole_thing = {}
+        res = {}
 
         for kpar, vinv in invl_4part.items():
-            the_big_whole_thing[kpar] = [ parl_sol[kpar] , vinv ]
+            res[kpar] = [ parl_sol[kpar] , vinv ]
 
-        return the_big_whole_thing
+        return res
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
