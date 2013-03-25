@@ -29,13 +29,20 @@ class invoice_grouped_from_sale_order(orm.Model):
     def _make_invoice(self, cr, uid, partner, lines, context):
         partner_id = self.pool.get('res.partner').browse(cr, uid, partner, context=context)
         acc = partner_id.property_account_receivable.id
+        so_obj = self.pool.get('sale.order')
+        ids = context.get('active_ids')
+        group = []
+        for id in ids:
+            so = so_obj.browse(cr, uid, id, context=context).name
+            so = str(so)
+            group.append(so)
         if partner_id and partner_id.property_payment_term:
             pay_term = partner_id.property_payment_term[0]
         else:
             pay_term = False
         inv = {
-            'name': 'Grouped invoice',
-            'origin': 'Sale order to group',
+            'name': _('Invoice Grouped'),
+            'origin': group,
             'type': 'out_invoice',
             'reference': "C%dVEGR"% partner ,
             'account_id': acc,
