@@ -32,17 +32,14 @@ class invoice_grouped_from_sale_order(orm.Model):
         so_obj = self.pool.get('sale.order')
         ids = context.get('active_ids')
         group = []
-        for id in ids:
-            so = so_obj.browse(cr, uid, id, context=context).name
-            so = str(so)
-            group.append(so)
-        if partner_id and partner_id.property_payment_term:
-            pay_term = partner_id.property_payment_term[0]
-        else:
-            pay_term = False
+        orders = so_obj.browse(cr, uid, ids, context=context)
+        for order in orders:
+            group.append(order.name)
+        origin = ','.join(group)
+        pay_term = partner_id and partner_id.property_payment_term and partner_id.property_payment_term.id or False
         inv = {
             'name': _('Invoice Grouped'),
-            'origin': group,
+            'origin': origin,
             'type': 'out_invoice',
             'reference': "C%dVEGR"% partner ,
             'account_id': acc,
@@ -71,7 +68,7 @@ class invoice_grouped_from_sale_order(orm.Model):
         for o in so_obj.browse(cr,uid,ids):
             for line in o.order_line:
                 lines.append(line.id)
-        invoices_lines = self.pool.get('sale.order.line').invoice_line_create_cp(cr, uid, lines)
+        invoices_lines = self.pool.get('sale.order.line').invoice_line_create_cp(cr, uid, lines, context=context)
 
         for partner, val in invoices_lines.items():
             res = self._make_invoice(cr, uid, partner, val[1], context=context)
@@ -81,18 +78,34 @@ class invoice_grouped_from_sale_order(orm.Model):
                     'state' : 'progress',
                     'invoice_ids': [(4, res)],
                 }, context=context)
-        return res
+                
+        return self._open_invoices( cr, uid, ids, invoice_ids, context=context)           
+                
+    def _open_invoices(self, cr, uid, ids, invoice_ids, context=None):
+        """ open a view on one of the given invoice_ids """
+        ir_model_data = self.pool.get('ir.model.data')
+        form_res = ir_model_data.get_object_reference(cr, uid, 'account', 'invoice_form')
+        form_id = form_res and form_res[1] or False
+        tree_res = ir_model_data.get_object_reference(cr, uid, 'account', 'invoice_tree')
+        tree_id = tree_res and tree_res[1] or False
+
+        return {
+            'name': _('Advance Invoice'),
+            'view_type': 'form',
+            'view_mode': 'form,tree',
+            'res_model': 'account.invoice',
+            'res_id': invoice_ids[0],
+            'view_id': False,
+            'views': [(form_id, 'form'), (tree_id, 'tree')],
+            'context': "{'type': 'out_invoice'}",
+            'type': 'ir.actions.act_window',
+        }
 
 class sale_order_line(orm.Model):
     _name = 'sale.order.line'
     _inherit = 'sale.order.line'
 
 
-    def _get_line_qty_invoice(line):
-        if (line.order_id.invoice_quantity=='order') or not line.procurement_id:
-            return line.product_uos_qty or line.product_uom_qty
-        else:
-            return self.pool.get('mrp.procurement').quantity_get(cr, uid, line.procurement_id.id, context)
 
     def invoice_line_create_cp(self, cr, uid, ids, context=None):
         if context is None:
@@ -100,8 +113,12 @@ class sale_order_line(orm.Model):
         invoice_lines = {}
         invl_soll_map = {}
         parl_sol = {}
-        for line in self.browse(cr, uid, ids, context):
-            uosqty = self._get_line_qty(cr, uid,line)
+        for line in self.browse(cr, uid, ids, context=context):
+            uosqty = 0
+            if (line.order_id.invoice_quantity=='order') or not line.procurement_id:
+                uosqty = line.product_uos_qty or line.product_uom_qty
+            else:
+                uosqty = self.pool.get('mrp.procurement').quantity_get(cr, uid, line.procurement_id.id, context=context)
             product = line.product_id.id or False
             price_unit = line.price_unit
             discount = line.discount
