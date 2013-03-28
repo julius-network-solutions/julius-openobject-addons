@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,35 +18,38 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
+
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 from openerp.tools import ustr
 
-class uom_merger(orm.TransientModel):
+class partner_merger(orm.TransientModel):
     '''
-    Merges uom
+    Merges partners
     '''
-    _name = 'uom.merger'
-    _description = 'Merges uom'
+    _name = 'partner.merger'
+    _description = 'Merge partners'
 
     _columns = {
-        'uom_id': fields.many2one('product.uom', 'Uom to keep', required=True),
+        'partner_id': fields.many2one('res.partner', 'Partner to keep', required=True),
     }
 
-    def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False,submenu=False):
+    def fields_view_get(self, cr, uid, view_id=None, view_type='form',
+                context=None, toolbar=False, submenu=False):
         if context is None:
             context = {}
-        res = super(uom_merger, self).fields_view_get(cr, uid, view_id, view_type, context=context, toolbar=toolbar,submenu=False)
-        uom_ids = context.get('active_ids',[])
-        if uom_ids:
-            view_part = '<field name="uom_id" widget="selection" domain="[(\'id\', \'in\', ' + str(uom_ids) + ')]"/>'
-            res['arch'] = res['arch'].decode('utf8').replace('<field name="uom_id"/>', view_part)
-            res['fields']['uom_id']['domain'] = [('id', 'in', uom_ids)]
+        res = super(partner_merger, self).fields_view_get(cr, uid, view_id, view_type,
+                                    context=context, toolbar=toolbar, submenu=False)
+        partner_ids = context.get('active_ids',[])
+        if partner_ids:
+            view_part = '<field name="partner_id" widget="selection" domain="[(\'id\', \'in\', ' + str(partner_ids) + ')]"/>'
+            res['arch'] = res['arch'].decode('utf8').replace('<field name="partner_id"/>', view_part)
+            res['fields']['partner_id']['domain'] = [('id', 'in', partner_ids)]
         return res
 
     def action_merge(self, cr, uid, ids, context=None):
         """
-        Merges two uom
+        Merges two partner
         @param self: The object pointer
         @param cr: the current row, from the database cursor,
         @param uid: the current user’s ID for security checks,
@@ -57,14 +60,14 @@ class uom_merger(orm.TransientModel):
         """
         if context is None:
             context = {}
-        res = self.read(cr, uid, ids, context = context)[0]
+        res = self.read(cr, uid, ids, context=context)[0]
 
 #        res.update(self._values)
-        uom_pool = self.pool.get('product.uom')
-        uom_ids = context.get('active_ids',[])
-        uom_id = self.browse(cr, uid, ids, context=context)[0].uom_id.id
+        partner_pool = self.pool.get('res.partner')
+        partner_ids = context.get('active_ids',[])
+        partner_id = self.browse(cr, uid, ids, context=context)[0].partner_id.id
         # For one2many fields on res.partner
-        cr.execute("select name, model from ir_model_fields where relation='product.uom' and ttype not in ('many2many', 'one2many');")
+        cr.execute("select name, model from ir_model_fields where relation='res.partner' and ttype not in ('many2many', 'one2many');")
         for name, model_raw in cr.fetchall():
             if hasattr(self.pool.get(model_raw), '_auto'):
                 if not self.pool.get(model_raw)._auto:
@@ -82,7 +85,7 @@ class uom_merger(orm.TransientModel):
                             model = self.pool.get(model_raw)._table
                         else:
                             model = model_raw.replace('.', '_')
-                        requete = "UPDATE "+model+" SET "+name+"="+str(uom_id)+" WHERE "+ ustr(name) +" IN " + str(tuple(uom_ids)) + ";"
+                        requete = "UPDATE "+model+" SET "+name+"="+str(partner_id)+" WHERE "+ ustr(name) +" IN " + str(tuple(partner_ids)) + ";"
                         cr.execute(requete)
         cr.execute("select name, model from ir_model_fields where relation='res.partner' and ttype in ('many2many');")
         for field, model in cr.fetchall():
@@ -94,10 +97,10 @@ class uom_merger(orm.TransientModel):
                             or False
             if field_data:
                 model_m2m, rel1, rel2 = field_data._sql_names(self.pool.get(model))
-                requete = "UPDATE "+model_m2m+" SET "+rel2+"="+str(uom_id)+" WHERE "+ ustr(rel2) +" IN " + str(tuple(uom_ids)) + ";"
+                requete = "UPDATE "+model_m2m+" SET "+rel2+"="+str(partner_id)+" WHERE "+ ustr(rel2) +" IN " + str(tuple(partner_ids)) + ";"
                 cr.execute(requete)
-        unactive_uom_ids = uom_pool.search(cr, uid, [('id', 'in', uom_ids), ('id', '<>', uom_id)])
-        uom_pool.write(cr, uid, unactive_uom_ids, {'active': False})
+        unactive_partner_ids = partner_pool.search(cr, uid, [('id', 'in', partner_ids), ('id', '<>', partner_id)], context=context)
+        partner_pool.write(cr, uid, unactive_partner_ids, {'active': False}, context=context)
         return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

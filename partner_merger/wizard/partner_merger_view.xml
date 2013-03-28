@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_base_partner_merge_form">
+            <field name="name">partner.merger.form</field>
+            <field name="model">partner.merger</field>
+            <field name="arch" type="xml">
+                <form string="Merge Partner" version="7.0">
+                    <group>
+                        <label for="partner_id"/>
+                        <div>
+                            <field name="partner_id"/>
+                        </div>
+	                </group>
+	                <footer>
+	                    <button string="Merge Partner" name="action_merge" type="object" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+                </form>
+            </field>
+        </record>
+    
+        <record id="action_base_partner_merge_form" model="ir.actions.act_window">
+            <field name="name">Merge Partner</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">partner.merger</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_base_partner_merge_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_base_partner_merge_form_values" model="ir.values">
+            <field name="model_id" ref="base.model_res_partner" />
+            <field name="name">Merge Partner</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_base_partner_merge_form'))"/>
+            <field name="key">action</field>
+            <field name="model">res.partner</field>
+        </record>
+
+    </data>
+</openerp>
