@@ -20,21 +20,27 @@
 #################################################################################
 
 {
-    "name" : "Invoice Grouped From Sale Order",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://www.julius.fr/",
-    "category" : "Sale Management",
-    "depends" : [
-        "sale",
-    ],
-    "description" : """ Invoice Grouped From Sale Order """,
-    "data" : [
-        "invoice_grouped_from_sale_order_view.xml"
-    ],
-    "demo" : [],
-    "active": False,
-    "installable": False,
-}
+    'name': 'Object Merger',
+    'version': '1.0',
+    'category': 'Tools',
+    'description': """
 
+    This Module will give you the possibility to merge 2 or more objects:
+    Example: You want to merge 2 partners, select the Partner to merge, then which one to keep.
+    All SO, PO, Invoices, Pickings, products, etc. of selected partner will be add to the one to keep.
+
+    """,
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr',
+    'depends': [
+        'base',
+    ],
+    'data': [
+        "wizard/object_merger_view.xml",
+        "res_config_view.xml",
+    ],
+    'demo': [],
+    'installable': True,
+    "active": False,
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

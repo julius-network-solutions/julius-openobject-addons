@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,35 +18,48 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
+
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 from openerp.tools import ustr
 
-class uom_merger(orm.TransientModel):
+class object_merger(orm.TransientModel):
     '''
-    Merges uom
+    Merges partners
     '''
-    _name = 'uom.merger'
-    _description = 'Merges uom'
+    _name = 'object.merger'
+    _description = 'Merge objects'
 
     _columns = {
-        'uom_id': fields.many2one('product.uom', 'Uom to keep', required=True),
+        'name': fields.char('Name', size=16),
     }
-
-    def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False,submenu=False):
+    
+    def fields_view_get(self, cr, uid, view_id=None, view_type='form',
+                context=None, toolbar=False, submenu=False):
         if context is None:
             context = {}
-        res = super(uom_merger, self).fields_view_get(cr, uid, view_id, view_type, context=context, toolbar=toolbar,submenu=False)
-        uom_ids = context.get('active_ids',[])
-        if uom_ids:
-            view_part = '<field name="uom_id" widget="selection" domain="[(\'id\', \'in\', ' + str(uom_ids) + ')]"/>'
-            res['arch'] = res['arch'].decode('utf8').replace('<field name="uom_id"/>', view_part)
-            res['fields']['uom_id']['domain'] = [('id', 'in', uom_ids)]
+        res = super(object_merger, self).fields_view_get(cr, uid, view_id, view_type,
+                                    context=context, toolbar=toolbar, submenu=False)
+        object_ids = context.get('active_ids',[])
+        active_model = context.get('active_model')
+        field_name = 'x_' + (active_model and active_model.replace('.','_') or '') + '_id'
+        if object_ids:
+            view_part = """<label for='"""+field_name+"""'/>
+                        <div>
+                            <field name='""" + field_name +"""' required="1" domain="[(\'id\', \'in\', """ + str(object_ids) + """)]"/>
+                        </div>"""
+#                            <field name='""" + field_name +"""' domain="[(\'id\', \'in\', '""" + str(object_ids) + """')]"/>'
+            res['arch'] = res['arch'].decode('utf8').replace(
+                    """<separator string="to_replace"/>""", view_part)
+            field = self.fields_get(cr, uid, [field_name], context=context)
+            res['fields'] = field
+            res['fields'][field_name]['domain'] = [('id', 'in', object_ids)]
+            res['fields'][field_name]['required'] = True
         return res
 
     def action_merge(self, cr, uid, ids, context=None):
         """
-        Merges two uom
+        Merges two (or more objects
         @param self: The object pointer
         @param cr: the current row, from the database cursor,
         @param uid: the current user’s ID for security checks,
@@ -57,14 +70,23 @@ class uom_merger(orm.TransientModel):
         """
         if context is None:
             context = {}
-        res = self.read(cr, uid, ids, context = context)[0]
-
-#        res.update(self._values)
-        uom_pool = self.pool.get('product.uom')
-        uom_ids = context.get('active_ids',[])
-        uom_id = self.browse(cr, uid, ids, context=context)[0].uom_id.id
+        res = self.read(cr, uid, ids, context=context)[0]
+        active_model = context.get('active_model')
+        if not active_model:
+            raise orm.except_orm(_('Configuration Error!'),
+                 _('The is no active model defined!'))
+        model_pool = self.pool.get(active_model)
+        object_ids = context.get('active_ids',[])
+        field_to_read = context.get('field_to_read')
+        fields = field_to_read and [field_to_read] or []
+        object = self.read(cr, uid, ids[0], fields, context=context)
+        if object and fields and object[field_to_read]:
+            object_id = object[field_to_read][0]
+        else:
+            raise orm.except_orm(_('Configuration Error!'),
+                 _('Please select one value to keep'))
         # For one2many fields on res.partner
-        cr.execute("select name, model from ir_model_fields where relation='product.uom' and ttype not in ('many2many', 'one2many');")
+        cr.execute("SELECT name, model FROM ir_model_fields WHERE relation='" + active_model + "' and ttype not in ('many2many', 'one2many');")
         for name, model_raw in cr.fetchall():
             if hasattr(self.pool.get(model_raw), '_auto'):
                 if not self.pool.get(model_raw)._auto:
@@ -82,7 +104,7 @@ class uom_merger(orm.TransientModel):
                             model = self.pool.get(model_raw)._table
                         else:
                             model = model_raw.replace('.', '_')
-                        requete = "UPDATE "+model+" SET "+name+"="+str(uom_id)+" WHERE "+ ustr(name) +" IN " + str(tuple(uom_ids)) + ";"
+                        requete = "UPDATE "+model+" SET "+name+"="+str(object_id)+" WHERE "+ ustr(name) +" IN " + str(tuple(object_ids)) + ";"
                         cr.execute(requete)
         cr.execute("select name, model from ir_model_fields where relation='res.partner' and ttype in ('many2many');")
         for field, model in cr.fetchall():
@@ -94,10 +116,10 @@ class uom_merger(orm.TransientModel):
                             or False
             if field_data:
                 model_m2m, rel1, rel2 = field_data._sql_names(self.pool.get(model))
-                requete = "UPDATE "+model_m2m+" SET "+rel2+"="+str(uom_id)+" WHERE "+ ustr(rel2) +" IN " + str(tuple(uom_ids)) + ";"
+                requete = "UPDATE "+model_m2m+" SET "+rel2+"="+str(object_id)+" WHERE "+ ustr(rel2) +" IN " + str(tuple(object_ids)) + ";"
                 cr.execute(requete)
-        unactive_uom_ids = uom_pool.search(cr, uid, [('id', 'in', uom_ids), ('id', '<>', uom_id)])
-        uom_pool.write(cr, uid, unactive_uom_ids, {'active': False})
+        unactive_object_ids = model_pool.search(cr, uid, [('id', 'in', object_ids), ('id', '<>', object_id)], context=context)
+        model_pool.write(cr, uid, unactive_object_ids, {'active': False}, context=context)
         return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

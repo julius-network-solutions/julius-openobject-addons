@@ -20,21 +20,25 @@
 #################################################################################
 
 {
-    "name" : "Invoice Grouped From Sale Order",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://www.julius.fr/",
-    "category" : "Sale Management",
-    "depends" : [
-        "sale",
-    ],
-    "description" : """ Invoice Grouped From Sale Order """,
-    "data" : [
-        "invoice_grouped_from_sale_order_view.xml"
-    ],
-    "demo" : [],
-    "active": False,
-    "installable": False,
-}
+    'name': 'Partner Merger',
+    'version': '1.0',
+    'category': 'Custom Module',
+    'description': """
 
+    This Module creates a wizard on:
+    1. Select the Partner to merge, then which one to keep. All SO, PO, Invoices, Pickings, products, etc. of selected partner will be add to the one to keep.
+
+    """,
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr',
+    'depends': [
+        'base',
+    ],
+    'data': [
+        "wizard/partner_merger_view.xml", 
+    ],
+    'demo': [],
+    'installable': False,
+    "active": False,
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

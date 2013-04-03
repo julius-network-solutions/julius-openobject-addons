@@ -19,22 +19,7 @@
 #
 #################################################################################
 
-{
-    "name" : "Invoice Grouped From Sale Order",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://www.julius.fr/",
-    "category" : "Sale Management",
-    "depends" : [
-        "sale",
-    ],
-    "description" : """ Invoice Grouped From Sale Order """,
-    "data" : [
-        "invoice_grouped_from_sale_order_view.xml"
-    ],
-    "demo" : [],
-    "active": False,
-    "installable": False,
-}
+import wizard
+import res_config
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
