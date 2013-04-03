@@ -18,38 +18,40 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
-from openerp import netsvc
-from openerp import pooler
-from openerp.osv import osv, fields
+
+from openerp.osv import fields, orm
 from openerp.tools.translate import _
-from openerp import netsvc
 
-#confirm_form = """<form string="Compute offered">
-#    <separator colspan="4" string="Compute offered products for this sale" />
-#    <label colspan="4" string="This will add a line with an offered product for each sale line that matches offered rules of its product." />
-#    <label colspan="4" string="Important: please note that existing offered product lines will be removed." />
-#</form>"""
-#
-#wrong_state_form = """<form string="Compute offered">
-#    <label colspan="4" string="This only applies to sale orders in 'Draft' state." />
-#</form>
-#"""
-class product_compute_offered(osv.osv_memory):
-    _name = "product.compute.offered"    
+class product_compute_offered(orm.TransientModel):
+    _name = "product.compute.offered"
+    _description = "Generate offered Products"
     
-
-    def do_compute_offered(self, cr, uid, ids, context):
-        o_so = pooler.get_pool(cr.dbname).get('sale.order')
-        res = o_so._generate_offered(cr, uid, [ids], context)
-        return dict()
-
-#    def check_sale_order_state(wiz, cr, uid, data, context):
-#        so_id = data['ids'][0]
-#        o_so = pooler.get_pool(cr.dbname).get('sale.order')
-#        b_so = o_so.browse(cr, uid, so_id, context)
-#        return b_so.state == 'draft' and 'ask_confirmation' or 'not_draft'
+    _columns = {
+        'multiple': fields.boolean('Multiple',
+            help='If checked the system will compute the offered products like this, example: '
+            '- 5 products bought = 1 product offered '
+            '- 10 products bought = 2 product offered, etc.'
+            'else, if the customer buy 5, 10, 15 products you will only offered him 1 product'),
+    }
     
+    _defaults = {
+        'multiple': True,
+    }
+    
+    def _get_orders(self, cr, uid, context=None):
+        if context is None:
+            context = {}
+        o_so = self.pool.get('sale.order')
+        return o_so.search(cr, uid, [('state', '=', 'draft')], context=context)
 
-product_compute_offered()
+    def do_compute_offered(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        o_so = self.pool.get('sale.order')
+        sale_ids = self._get_orders(cr, uid, context=context)
+        current = self.browse(cr, uid, ids[0], context=context)
+        multiple = current.multiple
+        o_so._generate_offered(cr, uid, sale_ids, multiple, context=context)
+        return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

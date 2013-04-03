@@ -19,23 +19,30 @@
 #
 #################################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+{
+    "name" : "Mrp Module Percentage Date",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Manufacturing",
+    "depends" : [
+        'product',
+        'purchase',
+        'procurement',
+        'mrp',
+        'stock',
+    ],
+    "description": """
+    Mrp Module.
+    Adds a customizable percentage to manage the date of purchase materials and production of the final product.
+    """,
+    "demo" : [],
+    "data" : [
+        "product_view.xml",
+        "stock_view.xml",
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
-class product_product(orm.Model):
-    """ Product """
-    _inherit = "product.product"
-    _description = "Costes boutique product template"
-    
-    _columns = {
-        'offered_product_id' : fields.many2one('product.product', 'Offered Product'),
-        'offered_threshold' : fields.float('Offered threshold'),
-        'offered_qty' : fields.float('Offered quantity'),
-    }
-
-    _defaults = {
-        'offered_threshold': 0.0,
-        'offered_qty': 0.0,
-    }
-    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

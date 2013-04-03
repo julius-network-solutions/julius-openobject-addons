@@ -19,23 +19,28 @@
 #
 #################################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+{
+    'name': 'Object Merger',
+    'version': '1.0',
+    'category': 'Tools',
+    'description': """
 
-class product_product(orm.Model):
-    """ Product """
-    _inherit = "product.product"
-    _description = "Costes boutique product template"
-    
-    _columns = {
-        'offered_product_id' : fields.many2one('product.product', 'Offered Product'),
-        'offered_threshold' : fields.float('Offered threshold'),
-        'offered_qty' : fields.float('Offered quantity'),
-    }
+    This Module will give you the possibility to merge 2 or more objects:
+    Example: You want to merge 2 partners, select the Partner to merge, then which one to keep.
+    All SO, PO, Invoices, Pickings, products, etc. of selected partner will be add to the one to keep.
 
-    _defaults = {
-        'offered_threshold': 0.0,
-        'offered_qty': 0.0,
-    }
-    
+    """,
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr',
+    'depends': [
+        'base',
+    ],
+    'data': [
+        "wizard/object_merger_view.xml",
+        "res_config_view.xml",
+    ],
+    'demo': [],
+    'installable': True,
+    "active": False,
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

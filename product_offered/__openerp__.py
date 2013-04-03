@@ -20,7 +20,7 @@
 #################################################################################
 
 {
-    "name": 'Product Offered',
+    "name": 'Offered Products',
     "version": '1.0',
     "description": """
     With this module you will be able to choose a quantity and a product to offer
@@ -41,8 +41,7 @@
     "demo": [],
     "installable": True,
     "active": False,
-    "category" : "Sales",
-    "test": [],
+    "category" : "Sales Management",
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record model="ir.ui.view" id="view_invoice_grouped_from_sale_order_form">
+            <field name="name">invoice.grouped.from.sale.order.form</field>
+            <field name="model">invoice.grouped.from.sale.order</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+				<form string="Group invoices from Sale order" version="7.0">
+					<group>
+    					<separator colspan="4" string="Do you really want to create the invoices ?" />
+					</group>
+					<footer>
+	                   <button type="object"  name="action_invoice_create_cp" string="Group Invoices" class="oe_highlight"/>
+	                   or
+	                   <button special="cancel"   string="Cancel" class="oe_link"/>
+					</footer>
+                </form>
+            </field>
+        </record>
+		
+		 <record model="ir.actions.act_window" id="act_win_invoice_grouped_from_sale_order">
+            <field name="name">Invoice Grouped From Sale Order</field>
+            <field name="res_model">invoice.grouped.from.sale.order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+		
+		<record id="value_invoice_grouped_from_sale_order" model="ir.values">
+			<field name="name">Invoice Grouped From Sale Order</field>
+			<field name="key">action</field>
+			<field name="key2">client_action_multi</field>
+			<field name="model">sale.order</field>
+			<field name="value" eval="'ir.actions.act_window,'+str(ref('act_win_invoice_grouped_from_sale_order'))"/>
+		</record>
+	
+
+    </data>
+</openerp>

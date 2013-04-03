@@ -19,23 +19,29 @@
 #
 #################################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
-
-class product_product(orm.Model):
-    """ Product """
-    _inherit = "product.product"
-    _description = "Costes boutique product template"
+{
+    "name": 'Product barcode generator',
+    "version": '1.0',
+    "description": """
+    This module will add a function which leads to an automatic generation of EAN13 for products
     
-    _columns = {
-        'offered_product_id' : fields.many2one('product.product', 'Offered Product'),
-        'offered_threshold' : fields.float('Offered threshold'),
-        'offered_qty' : fields.float('Offered quantity'),
-    }
-
-    _defaults = {
-        'offered_threshold': 0.0,
-        'offered_qty': 0.0,
-    }
-    
+    You will have to define the company default value (6 firsts number of EAN13) then the 6 next number the sequence.
+    The 13rd is the key of the EAN13, this will be automatically computed.
+    """,
+    "author": 'Julius Network Solutions',
+    "website": 'http://www.julius.fr/',
+    "depends": [
+        'base',
+        'product',
+    ],
+    "demo": [],
+    "data": [
+       "data/ean_sequence.xml",
+       "res_company_view.xml",
+       "product_view.xml",
+    ],
+    "installable": True,
+    "active": False,
+    "category" : "Stock Management",
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

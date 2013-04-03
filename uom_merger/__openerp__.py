@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,23 +19,26 @@
 #
 #################################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+{
+    'name': 'UoM Merger',
+    'version': '1.0',
+    'category': 'Custom Module',
+    'description': """
 
-class product_product(orm.Model):
-    """ Product """
-    _inherit = "product.product"
-    _description = "Costes boutique product template"
-    
-    _columns = {
-        'offered_product_id' : fields.many2one('product.product', 'Offered Product'),
-        'offered_threshold' : fields.float('Offered threshold'),
-        'offered_qty' : fields.float('Offered quantity'),
-    }
+    This Module creates a wizard on:
+    1. Select the UoM to merge, then which one to keep. All SO, PO, Invoices, Pickings, products, etc. of selected uom will be add to the one to keep.
 
-    _defaults = {
-        'offered_threshold': 0.0,
-        'offered_qty': 0.0,
-    }
-    
+    """,
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr',
+    'depends': [
+        'product',
+    ],
+    'data': [
+        "wizard/uom_merger_view.xml", 
+    ],
+    'demo': [],
+    'installable': False,
+    "active": False,
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
