@@ -34,7 +34,7 @@ class procurement_order (orm.Model):
         @return: New created Production Orders procurement wise 
         """
         res = {}
-        company = self.pool.get('res.users').browse(cr, uid, uid, context).company_id
+        company = self.pool.get('res.users').browse(cr, uid, uid, context)
         production_obj = self.pool.get('mrp.production')
         wf_service = netsvc.LocalService("workflow")
         procurement_obj = self.pool.get('procurement.order')
@@ -48,13 +48,25 @@ class procurement_order (orm.Model):
                 # We looking for the date_percentage defined into the product
                 # If there is no percentage defined here we get the company default value
                 # And if there is no value we get 2/3 as default value
-                date_percentage = procurement.product_id.date_percentage
+                if procurement.product_id.date_percentage is None:
+                    date_percentage = company.date_percentage
+                else : 
+                    date_percentage = procurement.product_id.date_percentage
+ 
                 from_dt = datetime.today()
                 to_dt = datetime.strptime(procurement.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
                 delta_days = to_dt - from_dt
                 diff_day = delta_days.days
                 delta = diff_day * date_percentage
                 date = from_dt + timedelta(days=delta)
+                date_day = date.weekday()
+                if date_day == 1 or date_day ==3:
+                    date = date
+                elif date_day == 0 or date_day == 2:
+                    date = date + timedelta(days=1)
+                else:
+                    delta_d = 8 - date_day 
+                    date = date + timedelta(days=delta_d) 
                 res_id = procurement.move_id.id
                 produce_id = production_obj.create(cr, uid, {
                     'origin': procurement.origin,
@@ -92,6 +104,7 @@ class procurement_order (orm.Model):
     
     def _get_purchase_order_date(self, cr, uid, procurement, company, schedule_date, context=None):
         return schedule_date
+    
     def _get_purchase_schedule_date(self, cr, uid, procurement, company, context=None):
         procurement_date_planned = datetime.strptime(procurement.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
         schedule_date = procurement_date_planned
