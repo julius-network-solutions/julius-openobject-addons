@@ -33,7 +33,7 @@ class stock_picking(osv.osv):
             move_lines = self.browse(cr, uid, picking_id.id, context=context).move_lines
             min_date=picking_id.min_date
             for move in move_lines:
-                context['date_expected']=min_date
+                context['to_date']=expected_date
             res= super(stock_picking,self).action_assign(cr, uid, ids, context)
         return res
         
