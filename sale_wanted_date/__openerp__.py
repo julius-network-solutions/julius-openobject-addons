@@ -24,7 +24,7 @@
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Customs Modules",
+    "category" : "Sales Management",
     "depends" : [
         'sale',
         'sale_stock',

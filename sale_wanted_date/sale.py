@@ -33,8 +33,8 @@ class sale_order(orm.Model):
     
     def _get_date_planned(self, cr, uid, order, line, start_date, context=None):
         result = super(sale_order, self)._get_date_planned(cr, uid, order, line, start_date, context=None)
-        date_planned = line.wanted_date
-        result = date_planned
+        if line.wanted_date:
+            result = line.wanted_date
         return result
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

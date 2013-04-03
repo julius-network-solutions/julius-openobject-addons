@@ -24,7 +24,7 @@
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Customs Modules",
+    "category" : "Manufacturing",
     "depends" : [
         'product',
         'purchase',
@@ -33,8 +33,8 @@
         'stock',
     ],
     "description": """
-    Mrp Module .
-    Adds percentage date and calculs
+    Mrp Module.
+    Adds a customizable percentage to manage the date of purchase materials and production of the final product.
     """,
     "demo" : [],
     "data" : [

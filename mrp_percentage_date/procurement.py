@@ -18,17 +18,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
-import time
-from datetime import datetime, timedelta ,date
-from dateutil.relativedelta import relativedelta
 
-from openerp.osv import fields, osv, orm
-from openerp import netsvc
-from openerp import pooler
+from datetime import datetime, timedelta
+
+from openerp.osv import fields, orm
 from openerp.tools.translate import _
-import openerp.addons.decimal_precision as dp
-from openerp.osv.orm import browse_record, browse_null
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
 
  
   
@@ -36,16 +31,18 @@ class procurement_order (orm.Model):
     _inherit = "procurement.order"
     
     def make_mo(self, cr, uid, ids, context=None):
-        res = super(procurement_order, self).make_mo(cr, uid, ids, context=None)
         """ Make Manufacturing(production) order from procurement
         @return: New created Production Orders procurement wise 
         """
+        res = super(procurement_order, self).make_mo(cr, uid, ids, context=None)
         production_obj = self.pool.get('mrp.production')
-        product_obj = self.pool.get('product.product')
         stock_move_obj = self.pool.get('stock.move')
-        for procurement_id in res:
+        for procurement_id in res.keys():
             procurement = self.browse(cr, uid, procurement_id, context=context)
-            date_percentage = product_obj.browse(cr, uid, procurement.product_id.id, context=context).date_percentage
+            # We looking for the date_percentage defined into the product
+            # If there is no percentage defined here we get the company default value
+            # And if there is no value we get 2/3 as default value
+            date_percentage = procurement.product_id.date_percentage
 
             from_dt = datetime.today()
             to_dt = datetime.strptime(procurement.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
@@ -55,17 +52,19 @@ class procurement_order (orm.Model):
             date = from_dt + timedelta(days=delta)
             
             #Manufacturing Order Date
-            
-            production_obj.write(cr, uid, res[procurement_id], {'date_planned': date}, context=context)
-            production_data = production_obj.browse(cr, uid, res[procurement_id], context=context)
+            production_id = res[procurement_id]
+            production_obj.write(cr, uid, production_id, {
+                        'date_planned': date
+                    }, context=context)
+            production_data = production_obj.browse(cr, uid, production_id, context=context)
             
             mo_lines = production_data.move_lines
             for mo_line in mo_lines:
                 #Move_line Manufacturing Order Date
                 stock_move_obj.write(cr, uid, mo_line.id, {
-                                                           'date_expected': date,
-                                                           'date': date
-                                                           }, context=context)
+                               'date_expected': date,
+                               'date': date,
+                           }, context=context)
             
 #                procurement_child = self.search(cr, uid, [('move_id','=',mo_line.id)], limit=1, context=context)
 #                print procurement_child 
