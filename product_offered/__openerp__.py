@@ -41,7 +41,7 @@
     "demo": [],
     "installable": True,
     "active": False,
-    "category" : "Sales",
+    "category" : "Sales Management",
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
