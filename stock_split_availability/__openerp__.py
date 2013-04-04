@@ -42,7 +42,7 @@
          'product',
     ],
     "data" : [
-#        "scheduler_data.xml",
+        "stock_view.xml",
     ],
     "demo" : [],
     'installable': True,
