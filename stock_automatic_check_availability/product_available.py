@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
 #
 #################################################################################
 
-from openerp.osv import fields, osv
+from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
-class stock_picking(osv.osv):
+class stock_picking(orm.Model):
     _inherit = "stock.picking.out"
 
     def action_assign(self, cr, uid, ids, context):
@@ -52,7 +52,4 @@ class stock_picking(osv.osv):
                         res = self.split(cr, uid, ids, data[product_id]['qty_available'], context=context)
         return res
         
-stock_picking()
-
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

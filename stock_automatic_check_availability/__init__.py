@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,23 +19,6 @@
 #
 #################################################################################
 
-{
-    "name" : "Product available",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
-    "description" : """ 
-                     """,
-    "website" : "http://www.julius.fr",
-    "depends" : [
-         "stock",
-         'product',
-    ],
-    "init_xml" : [
-                  'product_available.xml',
-                  ],
-    "demo_xml" : [],
-    "update_xml" : [],
-    'test': [],
-    'installable': True,
-    'active': False,
-}
+import schedulers
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
