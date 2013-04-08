@@ -44,13 +44,14 @@ class stock_move(orm.Model):
             ('prodlot_id', 'many2one'),
             ('product_id', 'many2one'),
         ]
+        
     #TODO: Get the good value here !!
     def _get_specific_available_qty(self, cr, uid, move, context=None):
         if context is None:
             context = {}
         product = self.pool.get('product.product').browse(cr, uid, move.product_id.id, context=context)
-        return product.qty_available
-    
+        return product.virtual_available
+
     def _merge_move(self, cr, uid, move_id, context=None):
         if context is None:
             context = {}
@@ -107,21 +108,28 @@ class stock_move(orm.Model):
         available_quantity = self._get_specific_available_qty(cr, uid, move, context=context)
         #TODO: Get the good value for the available_uos_qty
         available_uos_qty = available_quantity
-        quantity_rest = move.product_qty - available_quantity
-        #TODO: Get the good value for the uos_qty_rest
-        uos_qty_rest = move.product_uos_qty - available_uos_qty
-        update_val = {
-            'product_qty': available_quantity,
-            'product_uos_qty': available_uos_qty,
-        }
-        self.write(cr, uid, move.id, update_val, context=context)
-        if quantity_rest:
-            copy_val = {
-                'product_qty': quantity_rest,
-                'product_uos_qty': uos_qty_rest,
-                'state': move.state,
+        if available_quantity > (-move.product_qty):
+            if available_quantity > 0:
+                quantity_rest = 0
+            else:
+                quantity_rest = move.product_qty + available_quantity
+            #TODO: Get the good value for the uos_qty_rest
+            if available_uos_qty > 0:
+                uos_qty_rest = 0
+            else:
+                uos_qty_rest = move.product_uos_qty - available_uos_qty
+            update_val = {
+                'product_qty': move.product_qty - quantity_rest,
+                'product_uos_qty': move.product_uos_qty - uos_qty_rest,
             }
-            new_move_id = self.copy(cr, uid, move.id, default=copy_val, context=context)
+            self.write(cr, uid, move.id, update_val, context=context)
+            if quantity_rest:
+                copy_val = {
+                    'product_qty': quantity_rest,
+                    'product_uos_qty': uos_qty_rest,
+                    'state': move.state,
+                }
+                new_move_id = self.copy(cr, uid, move.id, default=copy_val, context=context)
         return new_move_id
     
     def action_assign(self, cr, uid, ids, *args):
