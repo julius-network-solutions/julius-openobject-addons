@@ -38,7 +38,7 @@ class stock_picking(orm.Model):
             context = {}
         move_obj = self.pool.get('stock.move')
         for move_id in move_ids:
-            move_obj.check_assign(cr, uid, [move_id], context=context)
+            move_obj.action_assign(cr, uid, [move_id], context)
         return True
     
     def _get_picking_domain_for_auto_check(self, cr, uid, context=None):

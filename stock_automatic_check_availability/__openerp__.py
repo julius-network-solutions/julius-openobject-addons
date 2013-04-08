@@ -23,6 +23,7 @@
     "name" : "Stock automatic check availability",
     "version" : "1.0",
     "author" : "Julius Network Solutions",
+    "category" : "Warehouse Management",
     "description" : """
     This module will add a cron which will check the availability of moves
     """,

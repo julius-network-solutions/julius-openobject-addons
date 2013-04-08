@@ -45,7 +45,6 @@ class stock_move(orm.Model):
             ('product_id', 'many2one'),
         ]
         
-    #TODO: Get the good value here !!
     def _get_specific_available_qty(self, cr, uid, move, context=None):
         if context is None:
             context = {}
@@ -104,7 +103,6 @@ class stock_move(orm.Model):
         if context is None:
             context = {}
         new_move_id = False
-        #TODO: Get the good value for the available_quantity
         available_quantity = self._get_specific_available_qty(cr, uid, move, context=context)
         #TODO: Get the good value for the available_uos_qty
         available_uos_qty = available_quantity
@@ -132,25 +130,27 @@ class stock_move(orm.Model):
                 new_move_id = self.copy(cr, uid, move.id, default=copy_val, context=context)
         return new_move_id
     
-    def action_assign(self, cr, uid, ids, *args):
+    def action_assign(self, cr, uid, ids, context=None):
         """ Changes state to confirmed or waiting.
         @return: List of values
         """
+        if context is None:
+            context = {}
         todo = []
         tomerge = []
-        for move in self.browse(cr, uid, ids):
+        for move in self.browse(cr, uid, ids, context=context):
             # Split moves
             if move.state in ('confirmed', 'waiting'):
                 if move.split_move:
-                    new_move_id = self._split_move(cr, uid, move)
+                    new_move_id = self._split_move(cr, uid, move, context=context)
                     if new_move_id:
                         todo.append(new_move_id)
                 todo.append(move.id)
-        res = self.check_assign(cr, uid, todo)
+        res = self.check_assign(cr, uid, todo, context=context)
         
         # Merge moves
         for move_id in todo:
-            self._merge_move(cr, uid, move_id)
+            self._merge_move(cr, uid, move_id, context=context)
         return res
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
