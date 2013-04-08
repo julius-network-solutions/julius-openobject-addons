@@ -49,7 +49,7 @@ class stock_move(orm.Model):
         if context is None:
             context = {}
         product = self.pool.get('product.product').browse(cr, uid, move.product_id.id, context=context)
-        return product.qty_available + product.virtual_available
+        return product.qty_available
     
     def _merge_move(self, cr, uid, move_id, context=None):
         if context is None:
