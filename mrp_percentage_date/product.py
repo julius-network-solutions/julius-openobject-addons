@@ -19,29 +19,21 @@
 #
 #################################################################################
 
-{
-    "name": 'Offered Products',
-    "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
-    """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'product',
-        'sale',
-    ],
-    "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
-    ],
-    "demo": [],
-    "installable": True,
-    "active": False,
-    "category" : "Sales Management",
-}
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
+
+class product_product(orm.Model):
+    _inherit = "product.product"
+    
+    _columns = {
+        'date_percentage': fields.float('Date percentage'),
+    }
+
+class res_company(orm.Model):
+    _inherit = "res.company"
+    
+    _columns = {
+        'date_percentage': fields.float('Date percentage'),
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
