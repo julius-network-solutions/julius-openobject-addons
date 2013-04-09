@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       	<record id="view_mail_form_inherit" model="ir.ui.view">
+            <field name="name">mail.form.inherit</field>
+            <field name="model">mail.mail</field>
+            <field name="inherit_id" ref="mail.view_mail_form"/>
+            <field name="arch" type="xml">
+            	<field name="body_html" position="after">
+					<button string="Confirm" name="email_confirmation" type="object" class="oe_highlight"/>            	
+            	</field>
+        	</field>
+       	</record>
+	</data>
+</openerp>
+        
