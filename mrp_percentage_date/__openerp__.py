@@ -20,28 +20,29 @@
 #################################################################################
 
 {
-    "name": 'Offered Products',
-    "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
-    """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
+    "name" : "Mrp Module Percentage Date",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Manufacturing",
+    "depends" : [
         'product',
-        'sale',
+        'purchase',
+        'procurement',
+        'mrp',
+        'stock',
     ],
-    "data": [
-        "wizard/compute_offered.xml",
+    "description": """
+    Mrp Module.
+    Adds a customizable percentage to manage the date of purchase materials and production of the final product.
+    """,
+    "demo" : [],
+    "data" : [
         "product_view.xml",
-        "sale_view.xml",
+        "stock_view.xml",
     ],
-    "demo": [],
-    "installable": True,
-    "active": False,
-    "category" : "Sales Management",
+    'installable' : True,
+    'active' : False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

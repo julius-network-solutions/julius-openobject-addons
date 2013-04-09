@@ -20,28 +20,33 @@
 #################################################################################
 
 {
-    "name": 'Offered Products',
-    "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
+    "name" : "Stock split availability",
+    "version" : "1.0",
+    "author" : "Julius Network Solutions",
+    "description" : """
+    This module will allow to split moves when there are some moves which are partially available.
+    E.g.: You have to send 10 PCE, but right now you only got 8 PCE ready.
+    By default OpenERP will tells you that this move is not ready when you will check the availability of this move.
+    
+    This module will split the move into 2 moves:
+        - One of 8 PCE ready.
+        - One of 2 PCE not ready.
+    
+    Then when you will check the availability again in this Picking, and the 2 last PCE are ready and the 8 PCE not send yet,
+    This will merge these to move into only one.
+    
     """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'product',
-        'sale',
+    "website" : "http://www.julius.fr",
+    "depends" : [
+         "stock",
+         'product',
     ],
-    "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
+    "data" : [
+        "stock_view.xml",
     ],
-    "demo": [],
-    "installable": True,
-    "active": False,
-    "category" : "Sales Management",
+    "demo" : [],
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
