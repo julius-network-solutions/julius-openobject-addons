@@ -22,22 +22,13 @@
 from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
 
-#class stock_picking(orm.Model):
-#    
-#    _inherit = 'stock.picking'
-#    
-#    _columns = {
-#        'location_default_id': fields.many2one('stock.location', 'Default move location'),
-#        'location_dest_default_id': fields.many2one('stock.location', 'Default move dest. location'),
-#    }
-
 class stock_move(orm.Model):
     _inherit = 'stock.move'
     
     def _get_default_location(self, cr, uid, field='location_id', context=None):
         picking_obj = self.pool.get('stock.picking')
         res = False
-        if context == None:
+        if context is None:
             context = {}
         if context.get('picking_id'):
             picking_id = context.get('picking_id')
@@ -48,6 +39,23 @@ class stock_move(orm.Model):
                 else:
                     res = picking.location_id and picking.location_id.id or False
         return res
+    
+    def onchange_move_type(self, cr, uid, ids, type, context=None):
+        """ On change of move type gives sorce and destination location.
+        @param type: Move Type
+        @return: Dictionary of values
+        """
+        if context is None:
+            context = {}
+        if context.get('picking_id'):
+            return {
+                'value': {
+                    'location_id': self._get_default_location(cr, uid, field='location_id', context=context),
+                    'location_dest_id': self._get_default_location(cr, uid, field='location_dest_id', context=context)}
+                }
+        else:
+            return super(stock_move, self).onchange_move_type(cr, uid, ids, type, context=context)
+        return {'value':{'location_id': source_location and source_location[1] or False, 'location_dest_id': dest_location and dest_location[1] or False}}
     
     _defaults = {
         'location_id': lambda self, cr, uid, context: context.get('picking_id', False)
