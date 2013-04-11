@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,22 +20,22 @@
 #################################################################################
 
 {
-    'name': 'UoM Merger',
+    'name': 'Partner Merger',
     'version': '1.0',
     'category': 'Custom Module',
     'description': """
 
     This Module creates a wizard on:
-    1. Select the UoM to merge, then which one to keep. All SO, PO, Invoices, Pickings, products, etc. of selected uom will be add to the one to keep.
+    1. Select the Partner to merge, then which one to keep. All SO, PO, Invoices, Pickings, products, etc. of selected partner will be add to the one to keep.
 
     """,
     'author': 'Julius Network Solutions',
     'website': 'http://www.julius.fr',
     'depends': [
-        'product',
+        'base',
     ],
     'data': [
-        "wizard/uom_merger_view.xml", 
+        "wizard/partner_merger_view.xml", 
     ],
     'demo': [],
     'installable': False,

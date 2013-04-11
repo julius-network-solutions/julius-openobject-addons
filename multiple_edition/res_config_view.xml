@@ -12,8 +12,8 @@
                         <button string="Cancel" type="object" name="cancel" class="oe_link"/>
                     </header>
                     <separator string="Multiple Edition Configuration"/>
-                    <group name="barcode_config">
-                        <div name="multiple_edition2">
+                    <group name="multiple_edition_config">
+                        <div name="multiple_edition">
                        		<group colspan="8">
 	  							<field name="models_ids" colspan="4" nolabel="1"/>
 							</group>

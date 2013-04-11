@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,25 +20,27 @@
 #################################################################################
 
 {
-    'name': 'UoM Merger',
+    'name': 'Object Merger',
     'version': '1.0',
-    'category': 'Custom Module',
+    'category': 'Tools',
     'description': """
 
-    This Module creates a wizard on:
-    1. Select the UoM to merge, then which one to keep. All SO, PO, Invoices, Pickings, products, etc. of selected uom will be add to the one to keep.
+    This Module will give you the possibility to merge 2 or more objects:
+    Example: You want to merge 2 partners, select the Partner to merge, then which one to keep.
+    All SO, PO, Invoices, Pickings, products, etc. of selected partner will be add to the one to keep.
 
     """,
     'author': 'Julius Network Solutions',
     'website': 'http://www.julius.fr',
     'depends': [
-        'product',
+        'base',
     ],
     'data': [
-        "wizard/uom_merger_view.xml", 
+        "wizard/object_merger_view.xml",
+        "res_config_view.xml",
     ],
     'demo': [],
-    'installable': False,
+    'installable': True,
     "active": False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
