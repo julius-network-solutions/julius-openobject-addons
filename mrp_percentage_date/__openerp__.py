@@ -39,6 +39,7 @@
     "demo" : [],
     "data" : [
         "product_view.xml",
+        "procurement_view.xml",
         "stock_view.xml",
     ],
     'installable' : True,
