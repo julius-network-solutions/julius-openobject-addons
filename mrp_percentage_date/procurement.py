@@ -59,11 +59,11 @@ class procurement_order (orm.Model):
                 # We looking for the date_percentage defined into the product
                 # If there is no percentage defined here we get the company default value
                 # And if there is no value we get 2/3 as default value
-                date_percentage = procurement.product_id and \
+                date_percentage = (procurement.product_id and \
                     (procurement.product_id.date_percentage or \
                     procurement.product_id.company_id and \
                     procurement.product_id.company_id.date_percentage) \
-                    or company.date_percentage or 2/3
+                    or company.date_percentage or (2/3 * 100)) / 100
  
                 from_dt = datetime.today()
                 to_dt = datetime.strptime(procurement.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
@@ -93,7 +93,7 @@ class procurement_order (orm.Model):
                     stock_move_obj.write(cr, uid, [res_id], {
                             'location_id': procurement.location_id.id
                         }, context=context)
-                self.production_order_create_note(cr, uid, ids, context=context)
+                self.production_order_create_note(cr, uid, special_ids, context=context)
                 
                 mo_lines = production_obj.browse(cr, uid, produce_id ,context=context).move_lines
                 for mo_line in mo_lines:

@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="sale.view_order_line_tree"/>
             <field name="arch" type="xml">
             	<field name="name" position="after">
-					<field name="desired_date"/>
+					<field name="wanted_date"/>
                 </field>
 			</field>
         </record>
@@ -17,11 +17,14 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-            <data>
-           		<xpath expr="//page[@string='Order Lines']/field[@name='order_line']/tree[@string='Sales Order Lines']/field[@name='name']" position="after"> 
-                    <field name="wanted_date"/>
-                 </xpath>
-            </data>
+                <data>
+               		<xpath expr="//page[@string='Order Lines']/field[@name='order_line']/tree/field[@name='name']" position="after">
+                        <field name="wanted_date"/>
+                     </xpath>
+                    <xpath expr="//page[@string='Order Lines']/field[@name='order_line']/form/group/group/field[@name='tax_id']" position="after">
+                        <field name="wanted_date"/>
+                     </xpath>
+                </data>
             </field>
         </record>
     </data>
