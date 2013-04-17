@@ -28,14 +28,14 @@
     "website": 'http://www.julius.fr/',
     "depends": [
         'mail',
+        'portal',
     ],
     "init_xml": [],
-    "update_xml": [
-                   "wizard/mail_confirm_view.xml",
-                   "email_confirmation_view.xml",
+    "data": [
+           "email_confirmation_view.xml",
     ],
-    "demo_xml": [],
-    "installable": False,
+    "demo": [],
+    "installable": True,
     "active": False,
     "category" : "Base extra Modules",
     "test": [],

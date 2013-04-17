@@ -21,39 +21,35 @@
 from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
 
-## NOT WORKING ##
+#TODO: For the moment only manual create mail are in "waiting" state , 
+#      All the automatic mail creation need to be confirm before sending
+
 
 class mail_mail(orm.Model):
     _inherit = 'mail.mail'
     
+    _columns = {
+            'state': fields.selection([('outgoing', 'Outgoing'),
+                                       ('sent', 'Sent'),
+                                       ('waiting', 'Waiting Confirmation'),
+                                       ('received', 'Received'),
+                                       ('exception', 'Delivery Failed'),
+                                       ('cancel', 'Cancelled'),
+                                       ], 'Status', readonly=True),
+        }        
+
+    
     def create(self, cr, uid,values, context=None):
         print context
         print values
+        values.update({'state': 'waiting'})
+        print values
         new_id = super(mail_mail, self).create(cr, uid, values, context=context)
-        if values['type'] == 'email':
-            print new_id
-            return self.email_confirmation(cr, uid, context=context)
+        print new_id
         return new_id
     
+    def confirm_mail(self, cr, uid, ids, context=None):
+        res = self.write(cr, uid, ids[0],{'state':'outgoing'},context=context)
+        return res
 
-    def email_confirmation(self, cr, uid, context=None):
-        print '3'
-        ir_model_data = self.pool.get('ir.model.data')
-        form_res = ir_model_data.get_object_reference(cr, uid, 'email_confirmation', 'email_confirmation_form')
-        form_id = form_res and form_res[1] or False
-        tree_res = ir_model_data.get_object_reference(cr, uid, 'email_confirmation', 'email_confirmation_tree')
-        tree_id = tree_res and tree_res[1] or False
-        print form_id
-        print tree_id
-        return {
-            'name': _('Email Confirmation'),
-            'view_type': 'form',
-            'view_mode': 'form,tree',
-            'res_model': 'mail.confirm',
-#            'res_id': new_id,
-            'target': 'new',
-            'view_id': False,
-            'views': [(form_id, 'form'),(tree_id, 'tree')],
-            'type': 'ir.actions.act_window',
-        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
