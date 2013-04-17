@@ -12,6 +12,12 @@
                          states="draft,sent" type="object"
                          class="oe_highlight" groups="base.group_user"/>
                 </button>
+                <xpath expr="//page/field[@name='order_line']/tree/field[@name='tax_id']" position="after">
+                    <field name="offered"/>
+                 </xpath>
+                <xpath expr="//page/field[@name='order_line']/form/group/group/div[@name='discount']" position="after">
+                    <field name="offered"/>
+                 </xpath>
             </field>
         </record>
 
