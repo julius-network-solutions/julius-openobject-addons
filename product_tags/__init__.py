@@ -19,25 +19,6 @@
 #
 #################################################################################
 
-{
-    "name" : "Stock automatic check availability",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
-    "category" : "Warehouse Management",
-    "description" : """
-    This module will add a cron which will check the availability of moves
-    """,
-    "website" : "http://www.julius.fr",
-    "depends" : [
-         "stock",
-         'product',
-    ],
-    "data" : [
-        "scheduler_data.xml",
-    ],
-    "demo" : [],
-    'installable': True,
-    'active': False,
-}
+import product
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

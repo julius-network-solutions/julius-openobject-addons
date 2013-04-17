@@ -20,24 +20,23 @@
 #################################################################################
 
 {
-    "name" : "Stock automatic check availability",
+    "name" : "Product Tags",
     "version" : "1.0",
     "author" : "Julius Network Solutions",
-    "category" : "Warehouse Management",
-    "description" : """
-    This module will add a cron which will check the availability of moves
-    """,
-    "website" : "http://www.julius.fr",
+    "website" : "http://julius.fr",
+    "category" : "Sales Management",
     "depends" : [
-         "stock",
-         'product',
+        'product',
     ],
-    "data" : [
-        "scheduler_data.xml",
-    ],
+    "description": """
+    Add tags in products like it's done for the partners
+    """,
     "demo" : [],
-    'installable': True,
-    'active': False,
+    "data" : [
+        'product_view.xml',
+    ],
+    'installable' : True,
+    'active' : False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

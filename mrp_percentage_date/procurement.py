@@ -25,25 +25,75 @@ from openerp.osv import fields, orm
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
   
-class procurement_order (orm.Model):
+class procurement_order(orm.Model):
     _inherit = "procurement.order"
+    
+    def _is_special(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        procurements = self.browse(cr, uid, ids, context=context)
+        for procurement in procurements:
+            res[procurement.id] = procurement.location_id.special_location
+        return res
+    
+    def _is_special_search(self, cursor, user, obj, name, args, domain=None, context=None):
+        if context is None:
+            context = {}
+        if not args:
+            return []
+        value = True
+        for val in args:
+            if val[0] == 'special_location':
+                value = val[2]
+                break
+        res = []
+        cursor.execute('SELECT DISTINCT(id) FROM stock_location WHERE active=True AND special_location = ' + str(value))
+        res = cursor.fetchall()
+        if not res:
+            return [('id', '=', '0')]
+        where = ""
+        if res:
+            val_ids = [x[0] for x in res]
+            if len(val_ids) > 1:
+                where = "WHERE location_id in " + str(tuple(val_ids))
+            elif len(val_ids) == 1:
+                where = "WHERE location_id = " + str(val_ids[0])
+        request = ('SELECT DISTINCT(id) FROM procurement_order %s') %where
+        cursor.execute(request)
+        res = cursor.fetchall()
+        if not res:
+            return [('id', '=', '0')]
+        return [('id', 'in', [x[0] for x in res])]
+    
+    _columns = {
+        'procurement_date': fields.date('Procurement date'),
+        'special_location': fields.function(_is_special, fnct_search=_is_special_search, method=True, type='boolean', string='Special procurement'),
+    }
     
     def _get_newdate_value(self, cr, uid, from_dt, to_dt, date_percentage, context=None):
         delta_days = to_dt - from_dt
         diff_day = delta_days.days
         delta = diff_day * date_percentage
         newdate = from_dt + timedelta(days=delta)
-        #TODO: put this part in a specific customer module
-        ##############
-        date_day = newdate.weekday()
-        delta_d = 0
-        if date_day in (0,2):
-            delta_d = 1
-        elif date_day not in (1,3):
-            delta_d = 8 - date_day 
-        newdate = newdate + timedelta(days=delta_d)
-        ###############
         return newdate
+    
+    def _get_date_from_procurement(self, cr, uid, procurement, context=None):
+        # We looking for the date_percentage defined into the product
+        # If there is no percentage defined here we get the company default value
+        # And if there is no value we get 2/3 as default value
+        newdate_str = procurement.procurement_date
+        if not procurement.procurement_date:
+            date_percentage = (procurement.product_id and \
+                (procurement.product_id.date_percentage or \
+                procurement.product_id.company_id and \
+                procurement.product_id.company_id.date_percentage) \
+                or company.date_percentage or (2/3 * 100)) / 100
+        
+            from_dt = datetime.today()
+            to_dt = datetime.strptime(procurement.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
+            newdate = self._get_newdate_value(cr, uid, from_dt, to_dt, date_percentage, context=context)
+            res_id = procurement.move_id.id
+            newdate_str = newdate.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        return newdate_str
     
     def _special_make_mo(self, cr, uid, special_ids, res=None, context=None):
         if res is None: res = {}
@@ -56,20 +106,7 @@ class procurement_order (orm.Model):
             production_obj = self.pool.get('mrp.production')
             stock_move_obj = self.pool.get('stock.move')
             for procurement in procurement_obj.browse(cr, uid, special_ids, context=context):
-                # We looking for the date_percentage defined into the product
-                # If there is no percentage defined here we get the company default value
-                # And if there is no value we get 2/3 as default value
-                date_percentage = procurement.product_id and \
-                    (procurement.product_id.date_percentage or \
-                    procurement.product_id.company_id and \
-                    procurement.product_id.company_id.date_percentage) \
-                    or company.date_percentage or 2/3
- 
-                from_dt = datetime.today()
-                to_dt = datetime.strptime(procurement.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
-                newdate = self._get_newdate_value(cr, uid, from_dt, to_dt, date_percentage, context=context)
-                res_id = procurement.move_id.id
-                newdate_str = newdate.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+                newdate_str = self._get_date_from_procurement(cr, uid, procurement, context=context)
                 produce_id = production_obj.create(cr, uid, {
                     'origin': procurement.origin,
                     'product_id': procurement.product_id.id,
@@ -93,7 +130,7 @@ class procurement_order (orm.Model):
                     stock_move_obj.write(cr, uid, [res_id], {
                             'location_id': procurement.location_id.id
                         }, context=context)
-                self.production_order_create_note(cr, uid, ids, context=context)
+                self.production_order_create_note(cr, uid, special_ids, context=context)
                 
                 mo_lines = production_obj.browse(cr, uid, produce_id ,context=context).move_lines
                 for mo_line in mo_lines:
@@ -121,12 +158,16 @@ class procurement_order (orm.Model):
             res = self._special_make_mo(cr, uid, special_ids, res, context=context)
         return res
     
-    def _get_purchase_order_date(self, cr, uid, procurement, company, schedule_date, context=None):
-        return schedule_date
-    
     def _get_purchase_schedule_date(self, cr, uid, procurement, company, context=None):
-        procurement_date_planned = datetime.strptime(procurement.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
-        schedule_date = procurement_date_planned
-        return schedule_date
+        res = super(procurement_order, self)._get_purchase_schedule_date(cr, uid, procurement, company, context=context)
+        if procurement.special_location:
+            res = self._get_date_from_procurement(cr, uid, procurement, context=context)
+        return res
+    
+    def _get_purchase_order_date(self, cr, uid, procurement, company, context=None):
+        res = super(procurement_order, self)._get_purchase_order_date(cr, uid, procurement, company, context=context)
+        if procurement.special_location:
+            res = self._get_date_from_procurement(cr, uid, procurement, context=context)
+        return res
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

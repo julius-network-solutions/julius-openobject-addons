@@ -22,7 +22,7 @@
 {
     'name': 'Split stock picking',
     'version': '1.0',
-    "category" : "stock",
+    "category" : "Warehouse Management",
 	'description':"""
     Add a feature which enable a rapid split of stock picking
     """,

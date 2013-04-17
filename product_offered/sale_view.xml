@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <button name="invoice_recreate" position="before">
                      <button name="generate_offered" string="Compute Offered"
-                         states="draft" type="object"
+                         states="draft,sent" type="object"
                          class="oe_highlight" groups="base.group_user"/>
                 </button>
             </field>
