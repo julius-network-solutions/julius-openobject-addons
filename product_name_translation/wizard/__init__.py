@@ -19,26 +19,8 @@
 #
 #################################################################################
 
-
-{
-    "name" : "Product Name Translation",
-    "version" : "0.1",
-    "author" : "Julius Networks Solutions",
-    "website" : "www.julius.fr",
-    "category" : "Generic Modules/Others",
-    "depends" : [
-        "base",
-        "product",
-    ],
-    "description" : """ The product name is posted in several languages """,
-    "init_xml" : [],
-    "demo_xml" : [],
-    "update_xml" : [
-        "wizard/change_product_name.xml",  
-        "product_name.xml",
-    ],
-    "installable": True,
-    "active": False,
-}
+import change_product_name
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
+

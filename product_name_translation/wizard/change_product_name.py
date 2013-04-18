@@ -19,26 +19,21 @@
 #
 #################################################################################
 
+from osv import fields, orm
+from openerp.tools.translate import _
 
-{
-    "name" : "Product Name Translation",
-    "version" : "0.1",
-    "author" : "Julius Networks Solutions",
-    "website" : "www.julius.fr",
-    "category" : "Generic Modules/Others",
-    "depends" : [
-        "base",
-        "product",
-    ],
-    "description" : """ The product name is posted in several languages """,
-    "init_xml" : [],
-    "demo_xml" : [],
-    "update_xml" : [
-        "wizard/change_product_name.xml",  
-        "product_name.xml",
-    ],
-    "installable": True,
-    "active": False,
-}
+class product_name_change(orm.Model):
+    _name = "product.translate.name"
+    _columns = {
+            'name_trans': fields.char('Name', size=64),
+    }
+    
+    
+    def change_name(self, cr, uid, ids, context=None):
+        if context==None:
+            context = {}
+            return True
+        
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
