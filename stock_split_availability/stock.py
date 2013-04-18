@@ -48,8 +48,27 @@ class stock_move(orm.Model):
     def _get_specific_available_qty(self, cr, uid, move, context=None):
         if context is None:
             context = {}
-        product = self.pool.get('product.product').browse(cr, uid, move.product_id.id, context=context)
-        return product.virtual_available
+        c = context.copy()
+        c.update({
+            'shop': False,
+            'warehouse': False,
+            'location': move.location_id.id,
+            'states': ('confirmed','waiting','assigned','done'),
+            'what': ('in'),
+            })
+        stock = self.pool.get('product.product').get_product_available(cr, uid, [move.product_id.id], context=c)
+        incoming_qty = stock.get(move.product_id.id, 0.0)
+        c.update({
+            'shop': False,
+            'warehouse': False,
+            'location': move.location_id.id,
+            'states': ('assigned','done'),
+            'what': ('out'),
+            })
+        stock = self.pool.get('product.product').get_product_available(cr, uid, [move.product_id.id], context=c)
+        outgoing_qty = stock.get(move.product_id.id, 0.0)
+        available_qty = incoming_qty + outgoing_qty
+        return available_qty
 
     def _merge_move(self, cr, uid, move_id, context=None):
         if context is None:
@@ -106,16 +125,16 @@ class stock_move(orm.Model):
         available_quantity = self._get_specific_available_qty(cr, uid, move, context=context)
         #TODO: Get the good value for the available_uos_qty
         available_uos_qty = available_quantity
-        if available_quantity > (-move.product_qty):
-            if available_quantity > 0:
-                quantity_rest = 0
-            else:
-                quantity_rest = move.product_qty + available_quantity
+        if available_quantity and available_quantity < move.product_qty:
+#            if available_quantity > 0:
+#                quantity_rest = 0
+#            else:
+            quantity_rest = move.product_qty - available_quantity
             #TODO: Get the good value for the uos_qty_rest
-            if available_uos_qty > 0:
-                uos_qty_rest = 0
-            else:
-                uos_qty_rest = move.product_uos_qty - available_uos_qty
+#            if available_uos_qty > 0:
+#                uos_qty_rest = 0
+#            else:
+            uos_qty_rest = move.product_uos_qty - available_uos_qty
             update_val = {
                 'product_qty': move.product_qty - quantity_rest,
                 'product_uos_qty': move.product_uos_qty - uos_qty_rest,
