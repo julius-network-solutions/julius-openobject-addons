@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+		<record id="view_product_simple_ean_form" model="ir.ui.view">
+			<field name="name">product.product.form</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_normal_form_view"/>
+			<field name="arch" type="xml">
+				<field name="ean13" position="after">
+					<button
+						string="Generate the EAN13"
+						name="generate_ean13"
+						attrs="{'invisible': [('ean13', '!=', False)]}"
+						type="object" colspan="2"/>
+				</field>
+			</field>
+		</record>
+		
+    </data>
+</openerp>

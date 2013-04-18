@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <record id="procurement_form_inherit" model="ir.ui.view">
+            <field name="name">procurement.date.view.form</field>
+            <field name="model">procurement.order</field>
+            <field name="inherit_id" ref="procurement.procurement_form_view"/>
+            <field name="arch" type="xml">
+                <field name="date_planned" position="after">
+                    <field name="special_location" invisible="True"/>
+                    <field name="procurement_date" attrs="{'invisible':[('special_location', '=', False)]}"/>
+                </field>
+			</field>
+        </record>
+
+    </data>
+</openerp>

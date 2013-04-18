@@ -93,8 +93,7 @@ class sale_order(orm.Model):
         multiple = context.get('multiple',True)
         return self._generate_offered(cr, uid, ids, multiple, context=context)
 
-
-class costes_products_sale_order_line(orm.Model):
+class sale_order_line(orm.Model):
     _inherit = 'sale.order.line'
 
     _columns = {
@@ -104,6 +103,31 @@ class costes_products_sale_order_line(orm.Model):
     _defaults = {
         'offered' : lambda *args: False,
     }
+    
+    #TODO: Modify this to be able to get the good price !
+    def on_change_offered(self, cr, uid, ids, product_id, offered=False, context=None):
+        if context is None:
+            context = {}
+        res = {}
+        product_obj = self.pool.get('product.product')
+        if offered:
+            price = 0.10
+            res = {
+                'value': {
+                    'price_unit': price,
+                    'discount': 100,
+                }
+            }
+        else:
+            #TODO: get the good price unit here !
+            list_price = product_obj.browse(cr,uid,product_id,context).list_price
+            res = {
+                'value': {
+                    'price_unit': list_price,
+                    'discount': 0,
+                }
+            }
+        return res
 
 #    def product_id_change(self, cr, uid, ids, pricelist, product, qty=0,
 #                                uom=False, qty_uos=0, uos=False, name='',

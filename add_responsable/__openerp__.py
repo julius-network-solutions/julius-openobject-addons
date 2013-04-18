@@ -20,28 +20,22 @@
 #################################################################################
 
 {
-    "name": 'Offered Products',
+    "name": 'Add responsable',
     "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
-    """,
+    "description": """ This module give the possibility to edit
+    several record of a table. """,
     "author": 'Julius Network Solutions',
     "website": 'http://www.julius.fr/',
     "depends": [
-        'product',
-        'sale',
-    ],
-    "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
-    ],
-    "demo": [],
+             "mail"   
+                ],
+    "init_xml": [],
+    "update_xml": [],
+    "demo_xml": [],
     "installable": True,
     "active": False,
-    "category" : "Sales Management",
+    "category" : "Base extra Modules",
+    "test": [],
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
