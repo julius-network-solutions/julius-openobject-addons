@@ -29,10 +29,15 @@ class product_name_change(orm.Model):
     }
     
     
-    def change_name(self, cr, uid, ids, context=None):
-        if context==None:
-            context = {}
-            return True
+#    def change_name(self, cr, uid, ids, name, context=context):
+#        prod_obj = self.pool.get('product.product')
+#        if context==None:
+#            context = {}
+#        for prod_name in ids:
+#            prod_data = self.browse(cr, uid, prod_id, context=['lang']== 'fr_FR')
+#            if prod_data.name:
+#                        name = prod_data.name
+#            return True
         
 
 
