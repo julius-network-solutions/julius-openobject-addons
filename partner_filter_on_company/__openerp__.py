@@ -20,24 +20,22 @@
 #################################################################################
 
 {
-    "name": "Partner filter on comapny",
+    "name": "Partner filter on companies",
     "version": '1.0',
-    "description": """ This module give the possibility to filter
-    by default the parter on company """,
+    "description": """ This module give the possibility to filter partners
+    by default on company partners """,
     "author": 'Julius Network Solutions',
     "website": 'http://www.julius.fr/',
     "depends": [
-            'base'
+        'base',
     ],
-    "init_xml": [],
     "data": [
         "base_partner_view.xml"
     ],
     "demo": [],
     "installable": True,
     "active": False,
-    "category" : "Base extra Modules",
-    "test": [],
+    "category" : "Sales Management",
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
