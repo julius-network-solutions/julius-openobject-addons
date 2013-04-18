@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Split Picking Wizard -->
+
+        <record id="view_split_picking_wizard" model="ir.ui.view">
+            <field name="name">Split Picking</field>
+            <field name="model">split.picking</field>
+            <field name="arch" type="xml">
+                <form string="Split Picking" version="7.0">
+                    <group>
+                        <div>
+                            I want to split the selection into <field name="number" required="1" class="oe_inline"/><field name="period" required="1" class="oe_inline"/>
+                        </div>
+                    </group>
+                    <footer>                    
+                        <button name="split_picking" string="Split" type="object" class="oe_highlight"/>
+                         or 
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    
+    </data>
+</openerp>

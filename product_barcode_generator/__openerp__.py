@@ -20,28 +20,28 @@
 #################################################################################
 
 {
-    "name": 'Offered Products',
+    "name": 'Product barcode generator',
     "version": '1.0',
     "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
+    This module will add a function which leads to an automatic generation of EAN13 for products
+    
+    You will have to define the company default value (6 firsts number of EAN13) then the 6 next number the sequence.
+    The 13rd is the key of the EAN13, this will be automatically computed.
     """,
     "author": 'Julius Network Solutions',
     "website": 'http://www.julius.fr/',
     "depends": [
+        'base',
         'product',
-        'sale',
-    ],
-    "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
     ],
     "demo": [],
+    "data": [
+       "data/ean_sequence.xml",
+       "res_company_view.xml",
+       "product_view.xml",
+    ],
     "installable": True,
     "active": False,
-    "category" : "Sales Management",
+    "category" : "Stock Management",
 }
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

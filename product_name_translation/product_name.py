@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,30 +18,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-{
-    "name": 'Offered Products',
-    "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
-    """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'product',
-        'sale',
-    ],
-    "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
-    ],
-    "demo": [],
-    "installable": True,
-    "active": False,
-    "category" : "Sales Management",
-}
+class res_partner(orm.Model):
+    _inherit = "product.product"
+    _columns = {
+        'name_fr': fields.char('Solde', size=24),
+        'name_en': fields.char('Solde', size=24),
+    }
+  
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

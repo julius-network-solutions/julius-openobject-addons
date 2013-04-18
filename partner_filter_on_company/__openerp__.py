@@ -20,23 +20,17 @@
 #################################################################################
 
 {
-    "name": 'Offered Products',
+    "name": "Partner filter on companies",
     "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
-    """,
+    "description": """ This module give the possibility to filter partners
+    by default on company partners """,
     "author": 'Julius Network Solutions',
     "website": 'http://www.julius.fr/',
     "depends": [
-        'product',
-        'sale',
+        'base',
     ],
     "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
+        "base_partner_view.xml"
     ],
     "demo": [],
     "installable": True,

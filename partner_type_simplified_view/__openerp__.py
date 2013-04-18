@@ -20,28 +20,24 @@
 #################################################################################
 
 {
-    "name": 'Offered Products',
+    "name": "Type on Partner simplified view",
     "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
-    """,
+    "description": """ This module give the possibility to filter
+    by default the parter on company """,
     "author": 'Julius Network Solutions',
     "website": 'http://www.julius.fr/',
     "depends": [
-        'product',
-        'sale',
+        'base',
     ],
+    "init_xml": [],
     "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
+        "base_partner_view.xml"
     ],
     "demo": [],
     "installable": True,
     "active": False,
     "category" : "Sales Management",
+    "test": [],
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

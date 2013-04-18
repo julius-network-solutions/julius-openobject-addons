@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Split Picking Action -->
+
+        <act_window
+            id="action_split_picking"
+            name="Split Picking"
+            res_model="split.picking"
+            src_model="stock.picking"
+            view_mode="form"
+            view_type="form"
+            target="new"
+        />
+        <act_window
+            id="action_split_picking"
+            name="Split Picking"
+            res_model="split.picking"
+            src_model="stock.picking.in"
+            view_mode="form"
+            view_type="form"
+            target="new"
+        />
+        <act_window
+            id="action_split_picking"
+            name="Split Picking"
+            res_model="split.picking"
+            src_model="stock.picking.out"
+            view_mode="form"
+            view_type="form"
+            target="new"
+        />
+    
+    </data>
+</openerp>

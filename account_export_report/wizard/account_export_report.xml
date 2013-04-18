@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+		<record id="account_export_report_form" model="ir.ui.view">
+            <field name="name">account.export.report.form</field>
+            <field name="model">account.export.report</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Account Export">
+                    <group>
+                    	<group string="Company">
+	                		<field name="company_id" groups="base.group_multi_company" widget="selection"/>
+	                	</group>
+	                	<newline/>
+                    	<group>
+	                    	<group string="Date">
+			                 	<field name="date_form"/>
+			                 	<field name="date_to"/>
+			                 </group>
+		                 </group>
+		                 <group>
+		                 	<group string="Period">
+			                 	<field name="period_form_id"/>
+			                 	<field name="period_to_id"/>
+			                 </group>
+	              		</group>
+	              	</group>
+	              	<newline/>
+                   	<group string="Accounts">
+                 		<field name="child"/>
+                  		<field name="account_ids" widget="many2many" mode="tree" nolabel="1" colspan="2"/>
+                    	<separator string="Analytic Accounts"/>
+                    	<field name="analytic_account_ids" widget="many2many" mode="tree" nolabel="1" colspan="2"/>
+            		</group>
+           			<group col="2" colspan="4" fill="0">
+                      	<button  class="oe_link" special="cancel" string="Cancel" type="object"/>
+                      	<button class="oe_highlight" name="print_report" string="Print" type="object"/>
+                  	</group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_export_report" model="ir.actions.act_window">
+            <field name="name">Account Export</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.export.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account_export_report_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            icon="STOCK_PRINT"
+            name="Account Report Export"
+            parent="account.final_accounting_reports"
+            action="action_account_export_report"
+            groups="account.group_account_manager,account.group_account_user"
+            id="menu_account_export_report"
+           />
+
+    </data>
+</openerp>

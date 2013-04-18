@@ -18,30 +18,20 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-{
-    "name": 'Offered Products',
-    "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
-    """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'product',
-        'sale',
-    ],
-    "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
-    ],
-    "demo": [],
-    "installable": True,
-    "active": False,
-    "category" : "Sales Management",
-}
+class product_tag(orm.Model):
+    _name = "product.tag"
+    _columns = {
+        'name': fields.char('Tag Name', required=True, size=64),
+    }
 
+class product_product(orm.Model):
+    _inherit = "product.product"
+    
+    _columns = {
+        'tag_ids' : fields.many2many('product.tag', 'product_product_tag_rel', 'tag_id', 'product_id', 'Tags'),
+    }
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

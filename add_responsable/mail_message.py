@@ -43,4 +43,14 @@ class mail_message(orm.Model):
         new_id = super(mail_message, self).create(cr, uid, values, context=context)
         return new_id
 
+        
+#        message = self.browse(cr,uid,new_id,context=context)
+#        model = message.model
+#        res_id = message.res_id 
+#        print res_id
+#        obj_model = self.pool.get(model)
+#        obj = obj_model.browse(cr,uid,res_id,context=context)
+#        user_id = obj.user_id.partner_id.id
+#        print user_id
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

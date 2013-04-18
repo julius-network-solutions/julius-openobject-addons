@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,29 +19,25 @@
 #
 #################################################################################
 
+
 {
-    "name": 'Offered Products',
-    "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
-    """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'product',
-        'sale',
+    "name" : "Product Name Translation",
+    "version" : "0.1",
+    "author" : "Julius Networks Solutions",
+    "website" : "www.julius.fr",
+    "category" : "Generic Modules/Others",
+    "depends" : [
+        "base",
+        "product",
     ],
-    "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
+    "description" : """ The product name is posted in several languages """,
+    "init_xml" : [],
+    "demo_xml" : [],
+    "update_xml" : [
+        "product_name.xml",
     ],
-    "demo": [],
     "installable": True,
     "active": False,
-    "category" : "Sales Management",
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

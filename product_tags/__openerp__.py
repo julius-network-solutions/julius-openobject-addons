@@ -20,28 +20,23 @@
 #################################################################################
 
 {
-    "name": 'Offered Products',
-    "version": '1.0',
-    "description": """
-    With this module you will be able to choose a quantity and a product to offer
-    when the customer will buy a specific quantity.
-    e.g.: For 10 candles bought 2 candles offered.
-    """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'product',
-        'sale',
-    ],
-    "data": [
-        "wizard/compute_offered.xml",
-        "product_view.xml",
-        "sale_view.xml",
-    ],
-    "demo": [],
-    "installable": True,
-    "active": False,
+    "name" : "Product Tags",
+    "version" : "1.0",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
     "category" : "Sales Management",
+    "depends" : [
+        'product',
+    ],
+    "description": """
+    Add tags in products like it's done for the partners
+    """,
+    "demo" : [],
+    "data" : [
+        'product_view.xml',
+    ],
+    'installable' : True,
+    'active' : False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
