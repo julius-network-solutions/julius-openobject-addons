@@ -106,6 +106,7 @@ class procurement_order(orm.Model):
             production_obj = self.pool.get('mrp.production')
             stock_move_obj = self.pool.get('stock.move')
             for procurement in procurement_obj.browse(cr, uid, special_ids, context=context):
+                res_id = procurement.move_id.id
                 newdate_str = self._get_date_from_procurement(cr, uid, procurement, context=context)
                 produce_id = production_obj.create(cr, uid, {
                     'origin': procurement.origin,
@@ -151,7 +152,7 @@ class procurement_order(orm.Model):
         normal_ids = [x.id for x in procurement_obj.browse(cr, uid, ids, context=context) 
             if not x.location_id or not x.location_id.special_location]
         special_ids = [x.id for x in procurement_obj.browse(cr, uid, ids, context=context) 
-            if x.location_id or x.location_id.special_location]
+            if x.location_id and x.location_id.special_location]
         if normal_ids:
             res = super(procurement_order, self).make_mo(cr, uid, normal_ids, context=None)
         if special_ids:
@@ -161,13 +162,16 @@ class procurement_order(orm.Model):
     def _get_purchase_schedule_date(self, cr, uid, procurement, company, context=None):
         res = super(procurement_order, self)._get_purchase_schedule_date(cr, uid, procurement, company, context=context)
         if procurement.special_location:
-            res = self._get_date_from_procurement(cr, uid, procurement, context=context)
+            newdate_str = self._get_date_from_procurement(cr, uid, procurement, context=context)
+            res = datetime.strptime(newdate_str, DEFAULT_SERVER_DATETIME_FORMAT)
         return res
     
-    def _get_purchase_order_date(self, cr, uid, procurement, company, context=None):
-        res = super(procurement_order, self)._get_purchase_order_date(cr, uid, procurement, company, context=context)
+    def _get_purchase_order_date(self, cr, uid, procurement, company, schedule_date, context=None):
+        print procurement, company, schedule_date, context
+        res = super(procurement_order, self)._get_purchase_order_date(cr, uid, procurement, company, schedule_date, context=context)
         if procurement.special_location:
-            res = self._get_date_from_procurement(cr, uid, procurement, context=context)
+            date_str = self._get_date_from_procurement(cr, uid, procurement, context=context)
+            res = datetime.strptime(date_str, DEFAULT_SERVER_DATETIME_FORMAT)
         return res
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
