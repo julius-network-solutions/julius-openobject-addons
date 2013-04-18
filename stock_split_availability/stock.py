@@ -67,7 +67,6 @@ class stock_move(orm.Model):
             })
         stock = self.pool.get('product.product').get_product_available(cr, uid, [move.product_id.id], context=c)
         outgoing_qty = stock.get(move.product_id.id, 0.0)
-        print incoming_qty, outgoing_qty
         available_qty = incoming_qty + outgoing_qty
         return available_qty
 
@@ -126,13 +125,11 @@ class stock_move(orm.Model):
         available_quantity = self._get_specific_available_qty(cr, uid, move, context=context)
         #TODO: Get the good value for the available_uos_qty
         available_uos_qty = available_quantity
-        print available_quantity
         if available_quantity and available_quantity < move.product_qty:
 #            if available_quantity > 0:
 #                quantity_rest = 0
 #            else:
             quantity_rest = move.product_qty - available_quantity
-            print quantity_rest
             #TODO: Get the good value for the uos_qty_rest
 #            if available_uos_qty > 0:
 #                uos_qty_rest = 0
