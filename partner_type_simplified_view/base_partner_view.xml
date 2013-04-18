@@ -4,22 +4,44 @@
         <record id="view_partner_simple_inherit_form" model="ir.ui.view">
             <field name="name">res partner simplified inherit form</field>
             <field name="model">res.partner</field>
-            <field name="inherit" ref="base.view_partner_simple_form"/>
+            <field name="inherit_id" ref="base.view_partner_simple_form"/>
             <field name="arch" type="xml">
 	            <field name="name" position="before">
 	            	<field name="type"/>
 	            </field>
             </field>
         </record>
+
         <record id="view_partner_inherit_form" model="ir.ui.view">
             <field name="name">res partner inherit form</field>
             <field name="model">res.partner</field>
-            <field name="inherit" ref="base.view_partner_form"/>
+            <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='child_ids']/form/div/group/field[@name='name']" position="before">
             		<field name="type"/>
             	</xpath>
+                <xpath expr="//field[@name='child_ids']/kanban/field[@name='name']" position="after">
+                    <field name="type"/>
+                </xpath>
+                <xpath expr="//field[@name='child_ids']/kanban/templates//table/tr/td" position="inside">
+                    <div t-if="record.type.raw_value">Address type: <field name="type"/></div>
+                </xpath>
         	</field>
         </record>
+
+        <record id="view_partner_inherit_form" model="ir.ui.view">
+            <field name="name">res partner inherit form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="type"/>
+                </field>
+                <xpath expr="//templates//ul" position="inside">
+                    <li t-if="!record.is_company.raw_value and record.type.raw_value">Address type: <field name="type"/></li>
+                </xpath>
+            </field>
+        </record>
+
 	</data>
 </openerp>
