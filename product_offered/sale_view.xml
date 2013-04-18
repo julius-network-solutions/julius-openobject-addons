@@ -13,7 +13,7 @@
                          class="oe_highlight" groups="base.group_user"/>
                 </button>
                 <xpath expr="//page/field[@name='order_line']/tree/field[@name='tax_id']" position="after">
-                    <field name="offered"/>
+                    <field name="offered" on_change="on_change_offered(product_id,offered,context)"/>
                  </xpath>
                 <xpath expr="//page/field[@name='order_line']/form/group/group/div[@name='discount']" position="after">
                     <field name="offered"/>
@@ -27,7 +27,7 @@
             <field name="inherit_id" ref="sale.view_order_line_form2"/>
             <field name="arch" type="xml">
                 <field name="invoiced" position="after">  
-                    <field name="offered"/>
+                    <field name="offered" />
                 </field>
             </field>
         </record>

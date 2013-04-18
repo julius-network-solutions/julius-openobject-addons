@@ -94,6 +94,7 @@ class sale_order(orm.Model):
         return self._generate_offered(cr, uid, ids, multiple, context=context)
 
 
+
 class costes_products_sale_order_line(orm.Model):
     _inherit = 'sale.order.line'
 
@@ -104,6 +105,18 @@ class costes_products_sale_order_line(orm.Model):
     _defaults = {
         'offered' : lambda *args: False,
     }
+    
+    def on_change_offered(self,cr, uid, ids, product_id, offered,context=None):
+        if context == None:
+            context = {}
+        product_obj = self.pool.get('product.product')
+        if offered == False: 
+            list_price = product_obj.browse(cr,uid,product_id,context).list_price
+            return {'value':{'price_unit':list_price, 'discount': 0}}
+        if offered == True:
+            price = 0.10
+            return {'value':{'price_unit':price, 'discount': 100}}
+
 
 #    def product_id_change(self, cr, uid, ids, pricelist, product, qty=0,
 #                                uom=False, qty_uos=0, uos=False, name='',
