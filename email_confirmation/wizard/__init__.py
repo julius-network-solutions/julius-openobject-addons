@@ -19,7 +19,6 @@
 #
 #################################################################################
 
-import mail_mail
-import wizard
+import mail_confirmation
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

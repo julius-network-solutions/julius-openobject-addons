@@ -33,6 +33,7 @@
     "init_xml": [],
     "data": [
            "email_confirmation_view.xml",
+           "wizard/confirmation_view.xml",
     ],
     "demo": [],
     "installable": True,

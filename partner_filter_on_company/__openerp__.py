@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,23 @@
 #
 #################################################################################
 
-import mail_mail
-import wizard
+{
+    "name": "Partner filter on companies",
+    "version": '1.0',
+    "description": """ This module give the possibility to filter partners
+    by default on company partners """,
+    "author": 'Julius Network Solutions',
+    "website": 'http://www.julius.fr/',
+    "depends": [
+        'base',
+    ],
+    "data": [
+        "base_partner_view.xml"
+    ],
+    "demo": [],
+    "installable": True,
+    "active": False,
+    "category" : "Sales Management",
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

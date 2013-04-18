@@ -19,7 +19,16 @@
 #
 #################################################################################
 
-import mail_mail
-import wizard
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
+
+class confirm_mail_message(orm.TransientModel):
+    _name = "confirm.mail.message"
+    
+    def confirm_mails(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        self.pool.get('mail.message').confirm_mail(cr, uid, context.get(('active_ids'), []), context=context)
+        return {'type': 'ir.actions.act_window_close',}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
