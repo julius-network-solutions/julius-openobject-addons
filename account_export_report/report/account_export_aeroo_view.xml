@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	
+		<!-- Invoice-->
+    	<record id="account_export_aeroo_report_ods" model="ir.actions.report.xml">
+			<field name="name">Account Export Aeroo Report ODS</field>
+			<field name="type">ir.actions.report.xml</field>
+			<field name="model">account.move.line</field>
+			<field name="report_name">account.export.aeroo.report.ods</field>
+			<field name="auto">TRUE</field>
+			<field name="report_type">aeroo</field>
+			<field name="report_file">wilog_report_aeroo/report/account_export_aeroo_wilog.ods</field>
+			<field name="report_rml">wilog_report_aeroo/report/account_export_aeroo_wilog.ods</field>
+			<field name="parser_state">default</field>
+			<field name="tml_source">file</field>
+			<field name="in_format">oo-ods</field>
+			<field name="out_format" eval="ref('report_aeroo_ooo.report_mimetypes_pdf_ods')"/>
+		</record>
+		
+		<record id="value_invoice_aeroo_report_ods" model="ir.values">
+			<field name="name">account.export.aeroo.report.ods</field>
+			<field name="key">action</field>
+			<field name="key2">client_print_multi</field>
+			<field name="model">account.move.line</field>
+			<field name="value" eval="'ir.actions.report.xml,'+str(ref('wilog_report_aeroo.account_export_aeroo_report_ods'))"/>
+			<field name="object">TRUE</field>
+		</record>
+		
+	</data>
+</openerp>

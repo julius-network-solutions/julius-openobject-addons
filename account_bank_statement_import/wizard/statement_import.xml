@@ -10,22 +10,24 @@
                     <group>
 	                    <label for="id" string="Accounting Parameters"/>
 						<div>
-							<div>
-	                            <label for="journal_id"/>
-								<field name="journal_id" class="oe_inline"/>
-							</div>
-							<div>
-	                            <label for="payable_id"/>
-								<field name="payable_id" class="oe_inline"/>
-							</div>
-							<div>
-	                            <label for="receivable_id"/>
-								<field name="receivable_id" class="oe_inline"/>
-							</div>
-							<div>
-	                            <label for="awaiting_id"/>
-								<field name="awaiting_id" class="oe_inline"/>
-							</div>
+							<group>
+								<div>
+		                            <label for="journal_id"/>
+									<field name="journal_id" class="oe_inline"/>
+								</div>
+								<div>
+		                            <label for="payable_id"/>
+									<field name="payable_id" class="oe_inline"/>
+								</div>
+								<div>
+		                            <label for="receivable_id"/>
+									<field name="receivable_id" class="oe_inline"/>
+								</div>
+								<div>
+		                            <label for="awaiting_id"/>
+									<field name="awaiting_id" class="oe_inline"/>
+								</div>
+							</group>
 						</div>
 					</group>
                     <group>
