@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       	
+        <record id="view_mail_message_form_waiting" model="ir.ui.view">
+            <field name="name">waiting mail form</field>
+            <field name="model">mail.message</field>
+            <field name="inherit_id" ref="mail.view_message_form"/>
+            <field name="arch" type="xml">
+            	<field name="body" position="after">
+                    <newline/>
+           			<button name="confirm_mail" string="Confirm Mail" type="object" class="oe_highlight" attrs="{'invisible':[('type','!=','waiting')]}"/>
+           	 	</field>
+            </field>
+        </record>
+
+        <record id="view_mail_message_search_waiting" model="ir.ui.view">
+            <field name="name">waiting mail search</field>
+            <field name="model">mail.message</field>
+            <field name="inherit_id" ref="mail.view_message_search"/>
+            <field name="arch" type="xml">
+                <filter name="emails" position="after">
+                    <filter string="Waiting Emails" name="waiting"  domain="[('type', '=', 'waiting')]"/>
+                </filter>
+            </field>
+        </record>
+       	
+        <record id="action_view_waiting_mail" model="ir.actions.act_window">
+            <field name="name">Waiting Mail</field>
+            <field name="res_model">mail.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_waiting': 1}</field>
+            <field name="search_view_id" ref="view_mail_message_search_waiting"/>
+        </record>
+
+        <menuitem name="Waiting Emails" id="menu_waiting_mail" parent="mail.mail_feeds" sequence="40" action="action_view_waiting_mail" />
+
+	</data>
+</openerp>
+        

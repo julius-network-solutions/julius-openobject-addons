@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+       	
+        <record id="view_confirm_waiting_mail_form" model="ir.ui.view">
+          <field name="name">confirm.mail.message.form</field>
+          <field name="model">confirm.mail.message</field>
+          <field name="arch" type="xml">
+            <form string="Confirm selected Mails" version="7.0">
+                <header>
+                    <button string="Confirm Mails" name="confirm_mails" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </header>
+            </form>
+          </field>
+        </record>
+        
+        <record id="action_confirm_waiting_mail" model="ir.actions.act_window">
+          <field name="name">Confirm Waiting Mails</field>
+          <field name="res_model">confirm.mail.message</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">tree,form</field>
+          <field name="view_id" ref="view_confirm_waiting_mail_form"/>
+          <field name="target">new</field>
+        </record>
+
+        <record model="ir.values" id="confirm_waiting_mail">
+            <field name="model_id" ref="mail.model_mail_message" />
+            <field name="name">Confirm Mail</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_confirm_waiting_mail'))" />
+            <field name="key">action</field>
+            <field name="model">mail.message</field>
+        </record>
+
+	</data>
+</openerp>
+        
