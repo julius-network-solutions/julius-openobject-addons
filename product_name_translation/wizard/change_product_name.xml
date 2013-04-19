@@ -6,8 +6,14 @@
           <field name="name">product.translate.name.form</field>
           <field name="model">product.translate.name</field>
           <field name="arch" type="xml">
-            <form string="Product Name" version="7.0">
-            	<field name="name_trans"/>
+            <form string="Translation" version="7.0">
+                <separator string="Translation"/>
+                <group col="4">
+                    <label for="name"/>
+                    <div>
+            	       <field name="name" class="oe_inline" colspan="4"/>
+                    </div>
+                </group>
                 <footer>
                     <button string="Translate" name="change_name" type="object" class="oe_highlight"/>
                     or

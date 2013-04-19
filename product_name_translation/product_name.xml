@@ -7,17 +7,17 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-            	<field name="name" position="after">
-            		<group>
-	            		<groupe>
-		            		<field name="name_fr_FR"/>
-		            		<field name="name_en_US"/>
-		            	</groupe>
-		            	<group>
-		                	<button name="%(action_product_translate_name)d" string="Edit Name" type="action"/>
-		                	<newline/>         	
-		                	<button name="%(action_product_translate_name)d" string="Edit Name" type="action"/>
-	                	</group>
+            	<field name="description" position="before">
+            		<group name="translated_names" colspan="4">
+                        <separator string="Translated Names" colspan="4"/>
+                        <group colspan="4" col="4">
+                            <field name="name_en_US" colspan="3"/>
+                            <button name="%(action_product_translate_name)d" string="Edit en" type="action" context="{'lang': 'en_US'}" colspan="1"/>
+                        </group>
+	            		<group colspan="4" col="4">
+		            		<field name="name_fr_FR" colspan="3"/>
+                            <button name="%(action_product_translate_name)d" string="Edit fr" type="action" context="{'lang': 'fr_FR'}" colspan="1"/>
+		            	</group>
 	                </group>
 	            </field>
 	        </field>
