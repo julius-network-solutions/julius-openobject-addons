@@ -28,7 +28,6 @@ class product_name_change(orm.TransientModel):
             'name_trans': fields.char('Name', size=64),
     }
     
-    
     def change_name(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
