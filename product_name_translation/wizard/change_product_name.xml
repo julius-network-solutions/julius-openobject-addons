@@ -11,7 +11,7 @@
                 <group col="4">
                     <label for="name"/>
                     <div>
-            	       <field name="name" class="oe_inline" colspan="4"/>
+            	       <field name="name" class="oe_inline"/>
                     </div>
                 </group>
                 <footer>
@@ -24,7 +24,7 @@
        </record>
     	
         <record id="action_product_translate_name" model="ir.actions.act_window">
-            <field name="name">Name Translate</field>
+            <field name="name">Name Translation</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">product.translate.name</field>
             <field name="view_type">form</field>
