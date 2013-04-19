@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+    
+    	<record id="product_translate_name_form" model="ir.ui.view">
+          <field name="name">product.translate.name.form</field>
+          <field name="model">product.translate.name</field>
+          <field name="arch" type="xml">
+            <form string="Product Name" version="7.0">
+            	<field name="name_trans"/>
+                <footer>
+                    <button string="Translate" name="change_name" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+          </field>
+       </record>
     	
-    	 <record id="product_translate_name_form" model="ir.ui.view">
-            <field name="name">product.translate.name</field>
-            <field name="model">product.translate.name</field>
-            <field name="arch" type="xml">
-                <form string="Product Name" version="7.0">
-                    <field name="name_trans"/>
-	               	<button name="change_name" string="Print" type="object" icon="gtk-print"/>
-                	<button special="cancel" string="Cancel" icon="gtk-cancel" class="oe_edit_only"/>
-                </form>
-                
-           </field>
-        </record>
-
         <record id="action_product_translate_name" model="ir.actions.act_window">
             <field name="name">Name Translate</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">product.translate.name</field>
             <field name="view_type">form</field>
-            <field name="view_mode">form</field>
+            <field name="view_mode">tree,form</field>
             <field name="view_id" ref="product_translate_name_form"/>
             <field name="target">new</field>
         </record>

@@ -34,12 +34,12 @@ class res_partner(orm.Model):
             result[prod_id] = {}
             for f in names:
                 name = False
-                if f == 'name_fr':
+                if f == 'name_fr_FR':
                     context_copy.update({'lang': 'fr_FR'})
                     prod_data = self.browse(cr, uid, prod_id, context=context_copy)
                     if prod_data.name:
                         name = prod_data.name
-                if f == 'name_en':
+                if f == 'name_en_US':
                     context_copy.update({'lang': 'en_US'})
                     prod_data = self.browse(cr, uid, prod_id, context=context_copy)
                     if prod_data.name:
@@ -48,8 +48,8 @@ class res_partner(orm.Model):
         return result
     
     _columns = {
-        'name_fr': fields.function(_translate_name, string='Fr Name', type='char', size=64, multi='name'),
-        'name_en': fields.function(_translate_name, string='En Name', type='char', size=64, multi='name'),
+        'name_fr_FR': fields.function(_translate_name, string='Fr Name', type='char', size=64, multi='name'),
+        'name_en_US': fields.function(_translate_name, string='En Name', type='char', size=64, multi='name'),
     }
             
             

@@ -33,7 +33,7 @@
     "description" : """ The product name is posted in several languages """,
     "init_xml" : [],
     "demo_xml" : [],
-    "update_xml" : [
+    "data" : [
         "wizard/change_product_name.xml",  
         "product_name.xml",
     ],

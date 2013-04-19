@@ -22,22 +22,24 @@
 from osv import fields, orm
 from openerp.tools.translate import _
 
-class product_name_change(orm.Model):
+class product_name_change(orm.TransientModel):
     _name = "product.translate.name"
     _columns = {
             'name_trans': fields.char('Name', size=64),
     }
     
     
-#    def change_name(self, cr, uid, ids, name, context=context):
-#        prod_obj = self.pool.get('product.product')
-#        if context==None:
-#            context = {}
-#        for prod_name in ids:
-#            prod_data = self.browse(cr, uid, prod_id, context=['lang']== 'fr_FR')
-#            if prod_data.name:
-#                        name = prod_data.name
-#            return True
+    def change_name(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        context_copy = context.copy()
+        prod_id = context.get('active_id')
+        prod_obj = self.pool.get('product.product')
+        for this in self.browse(cr, uid, ids, context=context):
+            name_trans = this.name_trans
+        if name_trans:
+            prod_obj.write(cr, uid, prod_id, {'name': name_trans}, context={'lang':'fr_FR'})
+        return {'type': 'ir.actions.act_window_close'}
         
 
 
