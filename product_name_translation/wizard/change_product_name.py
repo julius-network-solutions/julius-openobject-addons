@@ -22,23 +22,31 @@
 from osv import fields, orm
 from openerp.tools.translate import _
 
-class product_name_change(orm.Model):
+class product_name_change(orm.TransientModel):
     _name = "product.translate.name"
+    _description = 'Product name translation'
     _columns = {
-            'name_trans': fields.char('Name', size=64),
+        'name': fields.char('New translation', size=128),
     }
     
+    _defaults = {
+        'name': lambda self,
+                cr, uid, context: context.get('active_id') \
+                and self.pool.get('product.product').browse(cr, uid,
+                context.get('active_id'), context=context).name or "",
+    }
     
-#    def change_name(self, cr, uid, ids, name, context=context):
-#        prod_obj = self.pool.get('product.product')
-#        if context==None:
-#            context = {}
-#        for prod_name in ids:
-#            prod_data = self.browse(cr, uid, prod_id, context=['lang']== 'fr_FR')
-#            if prod_data.name:
-#                        name = prod_data.name
-#            return True
-        
-
+    def change_name(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        context_copy = context.copy()
+        prod_id = context.get('active_id')
+        prod_obj = self.pool.get('product.product')
+        name_translation = False
+        for this in self.browse(cr, uid, ids, context=context):
+            name_translation = this.name
+        if name_translation:
+            prod_obj.write(cr, uid, prod_id, {'name': name_translation}, context=context_copy)
+        return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

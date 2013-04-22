@@ -21,10 +21,11 @@
 
 from osv import fields, orm
 from openerp.tools.translate import _
+from openerp import SUPERUSER_ID
 
 class res_partner(orm.Model):
     _inherit = "product.product"
-    
+
     def _translate_name(self, cr, uid, ids, names, args, context=None):
         if context is None:
             context={}
@@ -33,24 +34,19 @@ class res_partner(orm.Model):
         for prod_id in ids:
             result[prod_id] = {}
             for f in names:
-                name = False
-                if f == 'name_fr':
-                    context_copy.update({'lang': 'fr_FR'})
-                    prod_data = self.browse(cr, uid, prod_id, context=context_copy)
-                    if prod_data.name:
-                        name = prod_data.name
-                if f == 'name_en':
+                lang = f[5:]
+                if self.pool.get('res.lang').search(cr, SUPERUSER_ID,
+                                        [('code', '=', lang)], context=context):
+                    context_copy.update({'lang': lang})
+                else:
                     context_copy.update({'lang': 'en_US'})
-                    prod_data = self.browse(cr, uid, prod_id, context=context_copy)
-                    if prod_data.name:
-                        name = prod_data.name
-                result[prod_id].update({f: name})
+                prod_data = self.browse(cr, uid, prod_id, context=context_copy)
+                result[prod_id].update({f: prod_data.name})
         return result
-    
+
     _columns = {
-        'name_fr': fields.function(_translate_name, string='Fr Name', type='char', size=64, multi='name'),
-        'name_en': fields.function(_translate_name, string='En Name', type='char', size=64, multi='name'),
+        'name_fr_FR': fields.function(_translate_name, string='Name (french)', type='char', size=64, multi='name'),
+        'name_en_US': fields.function(_translate_name, string='Name (english)', type='char', size=64, multi='name'),
     }
-            
             
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

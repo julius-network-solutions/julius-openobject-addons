@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,15 +25,14 @@
     "version" : "0.1",
     "author" : "Julius Networks Solutions",
     "website" : "www.julius.fr",
-    "category" : "Generic Modules/Others",
+    "category" : "Sales Management",
     "depends" : [
         "base",
         "product",
     ],
     "description" : """ The product name is posted in several languages """,
-    "init_xml" : [],
-    "demo_xml" : [],
-    "update_xml" : [
+    "demo" : [],
+    "data" : [
         "wizard/change_product_name.xml",  
         "product_name.xml",
     ],
