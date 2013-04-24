@@ -31,6 +31,7 @@
         'procurement',
         'mrp',
         'stock',
+        'stock_special_location',
     ],
     "description": """
     Mrp Module.
@@ -40,7 +41,6 @@
     "data" : [
         "product_view.xml",
         "procurement_view.xml",
-        "stock_view.xml",
     ],
     'installable' : True,
     'active' : False,

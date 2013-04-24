@@ -19,7 +19,28 @@
 #
 #################################################################################
 
-import product
-import procurement
+{
+    "name" : "Sale stock without auto procurement",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Warehouse Management",
+    "depends" : [
+        'sale',
+        'sale_stock',
+        "stock_special_location",
+    ],
+    "description": """
+    This module will check if the move is due to a specific location.
+    If this is a special location, then the sale_order will create the picking as usual, but not the associated procurement.
+    The procurement will be generated with an action checking the need by date, and create automatically the procurement needs.
+    """,
+    "demo" : [],
+    "data" : [
+#        "sale_view.xml",
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
