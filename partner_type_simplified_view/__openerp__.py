@@ -29,7 +29,6 @@
     "depends": [
         'base',
     ],
-    "init_xml": [],
     "data": [
         "base_partner_view.xml"
     ],
@@ -37,7 +36,6 @@
     "installable": True,
     "active": False,
     "category" : "Sales Management",
-    "test": [],
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
