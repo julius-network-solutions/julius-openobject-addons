@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012 Julius Network Solutions (<http://www.julius.fr/>) contact@julius.fr
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,27 +20,24 @@
 #################################################################################
 
 {
-    "name" : "Sale stock without auto procurement",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Warehouse Management",
-    "depends" : [
-        'sale',
-        'sale_stock',
-        "stock_special_location",
-    ],
-    "description": """
-    This module will check if the move is due to a specific location.
-    If this is a special location, then the sale_order will create the picking as usual, but not the associated procurement.
-    The procurement will be generated with an action checking the need by date, and create automatically the procurement needs.
+    'name': 'Stock picking complete',
+    'version': '1.0',
+    "category" : "Warehouse management",
+	'description':"""
+    This module adds a boolean field which checks if the picking is complete or not
     """,
-    "demo" : [],
-    "data" : [
-#        "sale_view.xml",
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr/',
+    'depends': [
+        'stock',
     ],
-    'installable' : False,
-    'active' : False,
+    'data': [
+        'stock_view.xml',
+    ],
+    'demo': [],
+    'installable': True,
+    'active': False,
+    'license': 'GPL-3',
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

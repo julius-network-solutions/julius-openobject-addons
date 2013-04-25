@@ -32,14 +32,14 @@
     ],
     "description": """
     This module will check if the move is due to a specific location.
-    If this is a special location, then the sale_order will create the picking as usual, but not the associated procurement.
-    The procurement will be generated with an action checking the need by date, and create automatically the procurement needs.
+    If this is a special location, then the sale_order will create the picking and the associated procurement as usual
+    but the quantity to procure will be adjusted in function of the availability of the product at the planned date.
     """,
     "demo" : [],
     "data" : [
-#        "sale_view.xml",
+        "procurement.xml",
     ],
-    'installable' : False,
+    'installable' : True,
     'active' : False,
 }
 

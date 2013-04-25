@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		
+		<record id="procurement_form_view_check_quantity" model="ir.ui.view">
+            <field name="name">procurement.order.form</field>
+            <field name="model">procurement.order</field>
+            <field name="inherit_id" ref="procurement.procurement_form_view"/>
+            <field name="arch" type="xml">
+                <button name="button_check" position="after">
+                    <button name="button_check_quantity_to_make" type="object" states="confirmed" string="Check Quantity" class="oe_highlight"/>
+                </button>
+	        </field>
+		</record>
+
+    </data>
+</openerp>
