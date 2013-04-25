@@ -19,7 +19,24 @@
 #
 #################################################################################
 
-import product
-import procurement
+{
+    "name" : "Stock special location",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Warehouse Management",
+    "depends" : [
+        'stock',
+    ],
+    "description": """
+    Adds a boolean field special_location into stock.location object.
+    """,
+    "demo" : [],
+    "data" : [
+        "stock_view.xml",
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
