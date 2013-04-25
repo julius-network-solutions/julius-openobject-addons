@@ -37,7 +37,6 @@
     "demo_xml" : [],
     "update_xml" : [
         "report/account_export_aeroo_view.xml",
-        "report/account_export_aeroo.ods",
         "wizard/account_export_report.xml",
     ],
     "installable": True,

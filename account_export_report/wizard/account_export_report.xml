@@ -5,9 +5,8 @@
 		<record id="account_export_report_form" model="ir.ui.view">
             <field name="name">account.export.report.form</field>
             <field name="model">account.export.report</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Account Export">
+                <form string="Account Export" version="7.0">
                     <group>
                     	<group string="Company">
 	                		<field name="company_id" groups="base.group_multi_company" widget="selection"/>

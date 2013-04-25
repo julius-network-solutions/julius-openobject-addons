@@ -19,9 +19,9 @@
 #
 #################################################################################
 
-from osv import fields, osv
+from osv import fields, osv, orm
 
-class account_export_report(osv.osv_memory):
+class account_export_report(orm.Model):
     _name = "account.export.report"
     _columns = {
         'company_id': fields.many2one('res.company', 'Company', select=1),
@@ -89,6 +89,4 @@ class account_export_report(osv.osv_memory):
         else:
             return True
         
-account_export_report()
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
