@@ -45,26 +45,34 @@ class stock_move(orm.Model):
             ('product_id', 'many2one'),
         ]
         
+    def _get_context_check(self, cr, uid, move, what=('in'), states=('assigned','done'), context=None):
+        return {
+            'shop': False,
+            'warehouse': False,
+            'location': move.location_id.id,
+            'states': states,
+            'what': what,
+        }
+        
     def _get_specific_available_qty(self, cr, uid, move, context=None):
         if context is None:
             context = {}
         c = context.copy()
-        c.update({
-            'shop': False,
-            'warehouse': False,
-            'location': move.location_id.id,
-            'states': ('confirmed','waiting','assigned','done'),
-            'what': ('in'),
-            })
+        what = ('in')
+        states = context.get('states')
+        if not states:
+            states = ('assigned','done')
+        states_in = context.get('states_in')
+        if not states_in:
+            states_in = states
+        states_out = context.get('states_out')
+        if not states_out:
+            states_out = states
+        c.update(self._get_context_check(cr, uid, move, what=what, states=states, context=context))
         stock = self.pool.get('product.product').get_product_available(cr, uid, [move.product_id.id], context=c)
         incoming_qty = stock.get(move.product_id.id, 0.0)
-        c.update({
-            'shop': False,
-            'warehouse': False,
-            'location': move.location_id.id,
-            'states': ('assigned','done'),
-            'what': ('out'),
-            })
+        what = ('out')
+        c.update(self._get_context_check(cr, uid, move, what=what, states=states, context=context))
         stock = self.pool.get('product.product').get_product_available(cr, uid, [move.product_id.id], context=c)
         outgoing_qty = stock.get(move.product_id.id, 0.0)
         available_qty = incoming_qty + outgoing_qty

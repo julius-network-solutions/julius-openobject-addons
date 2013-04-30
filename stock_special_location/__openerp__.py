@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,24 @@
 #
 #################################################################################
 
-import mail_mail
-import wizard
+{
+    "name" : "Stock special location",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Warehouse Management",
+    "depends" : [
+        'stock',
+    ],
+    "description": """
+    Adds a boolean field special_location into stock.location object.
+    """,
+    "demo" : [],
+    "data" : [
+        "stock_view.xml",
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

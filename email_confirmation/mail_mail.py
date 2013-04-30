@@ -21,35 +21,28 @@
 from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
 
-#TODO: For the moment only manual create mail are in "waiting" state , 
-#      All the automatic mail creation need to be confirm before sending
-
-
-class mail_mail(orm.Model):
-    _inherit = 'mail.mail'
+class mail_message(orm.Model):
+    _inherit = 'mail.message'
     
     _columns = {
-            'state': fields.selection([('outgoing', 'Outgoing'),
-                                       ('sent', 'Sent'),
-                                       ('waiting', 'Waiting Confirmation'),
-                                       ('received', 'Received'),
-                                       ('exception', 'Delivery Failed'),
-                                       ('cancel', 'Cancelled'),
-                                       ], 'Status', readonly=True),
+        'type': fields.selection([
+                        ('email', 'Email'),
+                        ('comment', 'Comment'),
+                        ('notification', 'System notification'),
+                        ('waiting', 'Waiting Confirmation'),
+                        ], 'Type',
+            help="Message type: email for email message, notification for system "\
+                 "message, comment for other messages such as user replies"),
         }        
 
-    
-    def create(self, cr, uid,values, context=None):
-        print context
-        print values
-        values.update({'state': 'waiting'})
-        print values
-        new_id = super(mail_mail, self).create(cr, uid, values, context=context)
-        print new_id
-        return new_id
+    def create(self, cr, uid, values, context=None):
+        values.update({'type': 'waiting'})
+        return super(mail_message, self).create(cr, uid, values, context=context)
     
     def confirm_mail(self, cr, uid, ids, context=None):
-        res = self.write(cr, uid, ids[0],{'state':'outgoing'},context=context)
+        for mail_message_id in ids:
+            res = self.write(cr, uid, mail_message_id, {'type':'email'}, context=context)
+            self._notify(cr, uid, mail_message_id, context=context)
         return res
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

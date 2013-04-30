@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,13 @@
 #
 #################################################################################
 
-import mail_mail
-import wizard
+from osv import fields, orm
+import time
 
+class document_page(orm.Model):
+    _inherit = 'document.page'
+    _columns = {
+        'meeting_report':fields.text('meeting'),
+    }
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

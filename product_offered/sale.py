@@ -104,8 +104,9 @@ class sale_order_line(orm.Model):
         'offered' : lambda *args: False,
     }
     
-    #TODO: Modify this to be able to get the good price !
-    def on_change_offered(self, cr, uid, ids, product_id, offered=False, context=None):
+    def on_change_offered(self, cr, uid, ids, offered, pricelist, product, qty=0,
+            uom=False, qty_uos=0, uos=False, name='', partner_id=False,
+            lang=False, update_tax=True, date_order=False, packaging=False, fiscal_position=False, flag=False, context=None):
         if context is None:
             context = {}
         res = {}
@@ -119,12 +120,15 @@ class sale_order_line(orm.Model):
                 }
             }
         else:
-            #TODO: get the good price unit here !
-            list_price = product_obj.browse(cr,uid,product_id,context).list_price
+            prod_change_val = super(sale_order_line, self).product_id_change(cr, uid, ids, pricelist, product, qty=qty,
+            uom=uom, qty_uos=qty_uos, uos=uos, name=name, partner_id=partner_id,
+            lang=lang, update_tax=update_tax, date_order=date_order, packaging=packaging, fiscal_position=fiscal_position, flag=flag, context=context)
+            price = prod_change_val.get('value') and prod_change_val['value'].get('price_unit') or 0.0
+            discount = prod_change_val.get('value') and prod_change_val['value'].get('discount') or 0.0
             res = {
                 'value': {
-                    'price_unit': list_price,
-                    'discount': 0,
+                    'price_unit': price,
+                    'discount': discount,
                 }
             }
         return res

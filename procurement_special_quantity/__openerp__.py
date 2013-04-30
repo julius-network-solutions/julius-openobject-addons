@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,28 @@
 #
 #################################################################################
 
-import mail_mail
-import wizard
+{
+    "name" : "Sale stock without auto procurement",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Warehouse Management",
+    "depends" : [
+        'sale',
+        'sale_stock',
+        "stock_special_location",
+    ],
+    "description": """
+    This module will check if the move is due to a specific location.
+    If this is a special location, then the sale_order will create the picking and the associated procurement as usual
+    but the quantity to procure will be adjusted in function of the availability of the product at the planned date.
+    """,
+    "demo" : [],
+    "data" : [
+        "procurement.xml",
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

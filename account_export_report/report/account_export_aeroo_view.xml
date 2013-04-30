@@ -10,8 +10,8 @@
 			<field name="report_name">account.export.aeroo.report.ods</field>
 			<field name="auto">TRUE</field>
 			<field name="report_type">aeroo</field>
-			<field name="report_file">wilog_report_aeroo/report/account_export_aeroo_wilog.ods</field>
-			<field name="report_rml">wilog_report_aeroo/report/account_export_aeroo_wilog.ods</field>
+			<field name="report_file">account_export_report/report/account_export_aeroo.ods</field>
+			<field name="report_rml">account_export_report/report/account_export_aeroo.ods</field>
 			<field name="parser_state">default</field>
 			<field name="tml_source">file</field>
 			<field name="in_format">oo-ods</field>
@@ -23,7 +23,7 @@
 			<field name="key">action</field>
 			<field name="key2">client_print_multi</field>
 			<field name="model">account.move.line</field>
-			<field name="value" eval="'ir.actions.report.xml,'+str(ref('wilog_report_aeroo.account_export_aeroo_report_ods'))"/>
+			<field name="value" eval="'ir.actions.report.xml,'+str(ref('account_export_report.account_export_aeroo_report_ods'))"/>
 			<field name="object">TRUE</field>
 		</record>
 		

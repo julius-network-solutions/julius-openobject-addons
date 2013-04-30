@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+		<record model="ir.ui.view" id="view_wiki_meeting_report_form">
+  			<field name="name">page.meeting.report.form</field>
+  			<field name="model">document.page</field>
+  			<field name="inherit_id" ref="document_page.view_wiki_form"/>
+  			<field name="type">form</field>
+  			<field name="arch" type="xml">
+  				<field name="content" position="after">
+  					<separator colspan="4" string="Meeting report Content"/>
+  					<field name="meeting_report" nolabel="1" colspan="4" select="1" widget="html"/>                
+  				</field>
+  			</field>
+		</record>
+
+    </data>
+</openerp>

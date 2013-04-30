@@ -20,6 +20,7 @@
 #################################################################################
 
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from openerp import netsvc
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
@@ -93,6 +94,9 @@ class procurement_order(orm.Model):
             newdate = self._get_newdate_value(cr, uid, from_dt, to_dt, date_percentage, context=context)
             res_id = procurement.move_id.id
             newdate_str = newdate.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        else:
+            newdate = datetime.strptime(procurement.procurement_date, '%Y-%m-%d')
+            newdate_str = newdate.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         return newdate_str
     
     def _special_make_mo(self, cr, uid, special_ids, res=None, context=None):
@@ -108,6 +112,8 @@ class procurement_order(orm.Model):
             for procurement in procurement_obj.browse(cr, uid, special_ids, context=context):
                 res_id = procurement.move_id.id
                 newdate_str = self._get_date_from_procurement(cr, uid, procurement, context=context)
+                newdate_done = datetime.strptime(newdate_str, DEFAULT_SERVER_DATETIME_FORMAT) + relativedelta(days=procurement.product_id.produce_delay or 0.0)
+                newdate_done_str = newdate_done.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
                 produce_id = production_obj.create(cr, uid, {
                     'origin': procurement.origin,
                     'product_id': procurement.product_id.id,
@@ -118,7 +124,7 @@ class procurement_order(orm.Model):
                     'location_src_id': procurement.location_id.id,
                     'location_dest_id': procurement.location_id.id,
                     'bom_id': procurement.bom_id and procurement.bom_id.id or False,
-                    'date_planned': newdate_str,
+                    'date_planned': newdate_done_str,
                     'move_prod_id': res_id,
                     'company_id': procurement.company_id.id,
                 })
@@ -133,12 +139,20 @@ class procurement_order(orm.Model):
                         }, context=context)
                 self.production_order_create_note(cr, uid, special_ids, context=context)
                 
-                mo_lines = production_obj.browse(cr, uid, produce_id ,context=context).move_lines
+                poduction = production_obj.browse(cr, uid, produce_id ,context=context)
+                mo_lines = poduction.move_lines
                 for mo_line in mo_lines:
                     #Move_line Manufacturing Order Date
                     stock_move_obj.write(cr, uid, mo_line.id, {
                                    'date_expected': newdate_str,
                                    'date': newdate_str,
+                               }, context=context)
+                mo_created_lines = poduction.move_created_ids
+                for mo_line in mo_created_lines:
+                    #Move_line Manufacturing Order Date
+                    stock_move_obj.write(cr, uid, mo_line.id, {
+                                   'date_expected': newdate_done_str,
+                                   'date': newdate_done_str,
                                }, context=context)
         return res
     
@@ -167,7 +181,6 @@ class procurement_order(orm.Model):
         return res
     
     def _get_purchase_order_date(self, cr, uid, procurement, company, schedule_date, context=None):
-        print procurement, company, schedule_date, context
         res = super(procurement_order, self)._get_purchase_order_date(cr, uid, procurement, company, schedule_date, context=context)
         if procurement.special_location:
             date_str = self._get_date_from_procurement(cr, uid, procurement, context=context)

@@ -19,7 +19,8 @@
 #
 #################################################################################
 
-import mail_mail
-import wizard
+import change_product_name
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
+

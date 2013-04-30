@@ -16,10 +16,10 @@
                		<field name="amount" sum="Total" invisible="context.get('to_invoice', False) and not context.get('display_all', False)"/>
                	</field>
                	<field name="product_id" position="replace">
-               		<field name="product_id" on_change="on_change_unit_amount(product_id, unit_amount, company_id, product_uom_id, journal_id)" invisible="not context.get('to_invoice', False) and not context.get('display_all', False)"/>
+               		<field name="product_id" on_change="on_change_unit_amount(product_id, unit_amount, company_id, False, journal_id)" invisible="not context.get('to_invoice', False) and not context.get('display_all', False)"/>
                	</field>
                	<field name="product_uom_id" position="replace">
-               		<field name="product_uom_id" on_change="on_change_unit_amount(product_id, unit_amount, company_id, product_uom_id)" invisible="not context.get('to_invoice', False) and not context.get('display_all', False)"/>
+               		<field name="product_uom_id" on_change="on_change_unit_amount(product_id, unit_amount, company_id, False)" invisible="not context.get('to_invoice', False) and not context.get('display_all', False)"/>
                	</field>
                	<field name="general_account_id" position="replace">
                		<field name="general_account_id" invisible="context.get('to_invoice', False) and not context.get('display_all', False)"/>

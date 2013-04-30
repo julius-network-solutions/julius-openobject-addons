@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,22 @@
 #
 #################################################################################
 
-import mail_mail
-import wizard
-
+{
+   "name" : "Wiki meeting report",
+   "version" : "0.1",
+   "author" : "Julius",
+   "website" : "Julius.fr",
+   "category" : "Generic Modules/Others",
+   "depends" : [
+                "document_page",
+                ],
+   "description" : """ Wiki meeting report """,
+   "init_xml" : [
+                 "wiki_meeting_report.xml",
+                 ],
+   "demo_xml" : [],
+   "update_xml" : [],
+   "active": False,
+   "installable": True
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
