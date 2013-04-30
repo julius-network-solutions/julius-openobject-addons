@@ -48,7 +48,10 @@ class procurement_order(orm.Model):
                     'to_date': procurement.date_planned,
                 })
                 product_available_qty = move_obj._get_specific_available_qty(cr, uid, procurement.move_id, context=c)
-                quantity = procurement.move_id.product_qty - product_available_qty
+                if product_available_qty < 0:
+                    quantity = - product_available_qty
+                else:
+                    quantity = procurement.move_id.product_qty - product_available_qty
                 if procurement.state in ('draft','exception','confirmed'):
                     new_quantity = quantity > 0 and quantity or 0
                     self.write(cr, uid, procurement.id, {
@@ -56,13 +59,19 @@ class procurement_order(orm.Model):
                                 'product_uos_qty': new_quantity,
                             }, context=context)
                 elif procurement.state in ('running','ready','waiting'):
+                    print quantity, procurement.product_qty
                     if quantity > procurement.product_qty:
-                        new_quantity = quantity - procurement.product_qty
-                        copy_procurement = True
-                        if procurement.linked_procurement_ids:
-                            for linked in procurement.linked_procurement_ids:
+                        new_quantity = procurement.move_id.product_qty - quantity
+                        copy_procurement = context.get('copy_child') or True
+                        linked_procurement_ids = self.search(cr, uid, [
+                                ('parent_procurement_id', '=', procurement.id)
+                            ], context=context)
+                        print procurement.linked_procurement_ids
+                        if linked_procurement_ids:
+                            for linked in self.browse(cr, uid, linked_procurement_ids, context=context):
+                                print 'here', new_quantity
                                 if linked.state in ('draft','exception','confirmed'):
-                                    self.write(cr, uid, procurement.linked_procurement_id.id, {
+                                    self.write(cr, uid, procurement.id, {
                                                 'product_qty': new_quantity,
                                                 'product_uos_qty': new_quantity
                                             }, context=context)
