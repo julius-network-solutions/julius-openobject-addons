@@ -59,7 +59,6 @@ class procurement_order(orm.Model):
                                 'product_uos_qty': new_quantity,
                             }, context=context)
                 elif procurement.state in ('running','ready','waiting'):
-                    print quantity, procurement.product_qty
                     if quantity > procurement.product_qty:
                         new_quantity = procurement.move_id.product_qty - quantity
                         copy_procurement = context.get('copy_child') or True
