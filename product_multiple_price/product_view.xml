@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+	    <!--  form view   -->
+        <record id="view_product_multiple_price_form" model="ir.ui.view">
+            <field name="name">product.product.multiple.price.view.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+            	<field name="description" position="before">
+            		<group colspan="4" col="4">
+                        <group colspan="2">
+    	            		<field name="price_data"/>
+    	            		<field name="price_type"/>
+                        </group>
+                        <group colspan="2">
+	            		     <field name="price_1_unit"/>
+                             <field name="price_10_unit"/>
+                             <field name="price_100_unit"/>
+                             <field name="price_1000_unit"/>
+                        </group>
+            		</group>
+            	</field>
+            </field>
+       	</record>
+
+	</data>
+</openerp>

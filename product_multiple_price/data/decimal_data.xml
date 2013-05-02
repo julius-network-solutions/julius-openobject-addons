@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+	    <record forcecreate="True" id="decimal_multi_price" model="decimal.precision">
+            <field name="name">Product Multi Price</field>
+            <field name="digits">6</field>
+        </record>
+
+	</data>
+</openerp>
