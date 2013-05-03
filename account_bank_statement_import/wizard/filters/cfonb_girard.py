@@ -19,10 +19,9 @@
 #
 #################################################################################
 
-
-from osv import fields, osv
 import time
 import conversion
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 
 list_positive = {
                  '{': '0',
@@ -156,8 +155,8 @@ def get_data(self, cr, uid, ids, recordlist, data):
     bank_statement['total_amount'] = bank_statement["balance_end_real"] - bank_statement["balance_start"]
     bank_statement["bank_statement_line"] = bank_statement_lines
     period_id = account_period_obj.search(cr, uid, [
-            ('date_start', '<=', time.strftime('%Y-%m-%d', time.strptime(st_line['date'], date_format))), 
-            ('date_stop', '>=', time.strftime('%Y-%m-%d', time.strptime(st_line['date'], date_format))),
+            ('date_start', '<=', time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(st_line['date'], date_format))), 
+            ('date_stop', '>=', time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(st_line['date'], date_format))),
         ])
     bank_statement['period_id'] = period_id and period_id[0] or False
     bank_statement['journal_id'] = data['journal_id'][0]

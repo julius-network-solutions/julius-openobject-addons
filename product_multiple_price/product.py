@@ -31,7 +31,8 @@ class product_product(orm.Model):
         res = {}
         if context is None:
             context = {}
-            
+        if not isinstance(names, list):
+            names = [names]
         for product in self.browse(cr, uid, ids, context=context):
             data = {}
             for name in names:
@@ -73,6 +74,10 @@ class product_product(orm.Model):
         'price_1000_unit': fields.function(
             _compute_multiple_price, type='float', string='Price 1000 Units', 
             digits_compute=dp.get_precision('Product Multi Price'), multi="price", store=True),
+    }
+    
+    _defaults = {
+        'price_type': '1_unit',
     }
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
