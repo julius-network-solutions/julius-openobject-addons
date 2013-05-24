@@ -23,7 +23,7 @@
 {
     "name" : "Product Name Translation",
     "version" : "0.1",
-    "author" : "Julius Networks Solutions",
+    "author" : "Julius Network Solutions",
     "website" : "www.julius.fr",
     "category" : "Sales Management",
     "depends" : [

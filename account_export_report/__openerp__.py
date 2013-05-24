@@ -23,7 +23,7 @@
 {
     "name" : "Account Export Report",
     "version" : "0.1",
-    "author" : "Julius Networks Solutions",
+    "author" : "Julius Network Solutions",
     "website" : "www.julius.fr",
     "category" : "Generic Modules/Others",
     "depends" : [
