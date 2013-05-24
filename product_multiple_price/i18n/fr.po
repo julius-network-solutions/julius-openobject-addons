@@ -1,0 +1,77 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* product_multiple_price
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-23 07:33+0000\n"
+"PO-Revision-Date: 2013-05-23 07:33+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_multiple_price
+#: selection:product.product,price_type:0
+msgid "100 Units"
+msgstr "100 Unités"
+
+#. module: product_multiple_price
+#: model:ir.model,name:product_multiple_price.model_product_product
+msgid "Product"
+msgstr "Article"
+
+#. module: product_multiple_price
+#: view:product.product:0
+msgid "for"
+msgstr "pour"
+
+#. module: product_multiple_price
+#: field:product.product,price_100_unit:0
+msgid "Price 100 Units"
+msgstr "Prix 100 Unités"
+
+#. module: product_multiple_price
+#: selection:product.product,price_type:0
+msgid "10 Units"
+msgstr "10 Unités"
+
+#. module: product_multiple_price
+#: field:product.product,price_1000_unit:0
+msgid "Price 1000 Units"
+msgstr "Prix 1000 Unités"
+
+#. module: product_multiple_price
+#: field:product.product,price_data:0
+msgid "Price Data"
+msgstr "Prix"
+
+#. module: product_multiple_price
+#: selection:product.product,price_type:0
+msgid "1000 Units"
+msgstr "1000 Unités"
+
+#. module: product_multiple_price
+#: selection:product.product,price_type:0
+msgid "1 Unit"
+msgstr "1 Unité"
+
+#. module: product_multiple_price
+#: field:product.product,price_10_unit:0
+msgid "Price 10 Units"
+msgstr "Prix 10 Unités"
+
+#. module: product_multiple_price
+#: field:product.product,price_1_unit:0
+msgid "Price 1 Unit"
+msgstr "Prix 1 Unité"
+
+#. module: product_multiple_price
+#: field:product.product,price_type:0
+msgid "Price Type"
+msgstr "Type de Prix"
+
