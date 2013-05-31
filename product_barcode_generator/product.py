@@ -41,6 +41,13 @@ def isodd(x):
 #            product_obj.generate_ean13(cr, uid, variant_ids, context=context)
 #        return True
 
+class product_category(orm.Model):
+    _inherit = 'product.category'
+    
+    _columns = {
+        'ean_sequence_id': fields.many2one('ir.sequence', 'Ean Sequence'),
+    }
+    
 class product_product(orm.Model):
     _inherit = 'product.product'
     
@@ -54,6 +61,8 @@ class product_product(orm.Model):
         ean = ''
         if product.ean_sequence_id:
             ean = sequence_obj.next_by_id(cr, uid, product.ean_sequence_id.id, context=context)
+        elif product.categ_id.ean_sequence_id:
+            ean = sequence_obj.next_by_id(cr, uid, product.categ_id.ean_sequence_id.id, context=context)
         elif product.company_id and product.company_id.ean_sequence_id:
             ean = sequence_obj.next_by_id(cr, uid, product.company_id.ean_sequence_id.id, context=context)
         else:

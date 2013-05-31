@@ -2,12 +2,25 @@
 <openerp>
     <data>
         
+        <record id="view_product_category_simple_ean_form" model="ir.ui.view">
+            <field name="name">product.category.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="ean_sequence_id"/>
+                    </newline>
+                </field>
+            </field>
+        </record>
+        
 		<record id="view_product_simple_ean_form" model="ir.ui.view">
 			<field name="name">product.product.form</field>
 			<field name="model">product.product</field>
 			<field name="inherit_id" ref="product.product_normal_form_view"/>
 			<field name="arch" type="xml">
 				<field name="ean13" position="after">
+                    <field name="ean_sequence_id"/>
 					<button
 						string="Generate the EAN13"
 						name="generate_ean13"
@@ -16,6 +29,6 @@
 				</field>
 			</field>
 		</record>
-		
+        
     </data>
 </openerp>

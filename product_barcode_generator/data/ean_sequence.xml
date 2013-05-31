@@ -2,7 +2,7 @@
 <openerp>
     <data noupdate="1">
     
-        <!-- Sequences -->
+        <!-- Product Sequences -->
         <record id="seq_type_ean13_sequence" model="ir.sequence.type">
             <field name="name">EAN13 code</field>
             <field name="code">product.ean13.code</field>
@@ -10,6 +10,18 @@
         <record id="seq_ean13_sequence" model="ir.sequence">
             <field name="name">Ean13 code</field>
             <field name="code">product.ean13.code</field>
+            <field name="prefixe">000000</field>
+            <field name="number_next">1</field>
+        </record>
+
+        <!-- Product Category Sequences -->
+        <record id="seq_type_ean13_sequence_cat" model="ir.sequence.type">
+            <field name="name">EAN13 code</field>
+            <field name="code">product.category.ean13.code</field>
+        </record>
+        <record id="seq_ean13_sequence_cat" model="ir.sequence">
+            <field name="name">Ean13 code</field>
+            <field name="code">product.category.ean13.code</field>
             <field name="prefixe">000000</field>
             <field name="number_next">1</field>
         </record>
