@@ -21,7 +21,7 @@
 
 {
     "name" : "Product Tree View By Default",
-    "version" : "0.1",
+    "version" : "1.0",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
     "category" : "Sales Management",

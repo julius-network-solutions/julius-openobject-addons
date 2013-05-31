@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <field name="type" position="after">
                     <field name="ean_sequence_id"/>
-                    </newline>
+                    <newline/>
                 </field>
             </field>
         </record>
