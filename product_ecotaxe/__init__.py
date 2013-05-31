@@ -17,29 +17,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+################################################################################
 
-{
-    "name": 'Email confirmation',
-    "version": '1.0',
-    "description": """ This module give the possibility to edit
-    several record of a table. """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'mail',
-        'portal',
-    ],
-    "init_xml": [],
-    "data": [
-           "email_confirmation_view.xml",
-           "wizard/confirmation_view.xml",
-    ],
-    "demo": [],
-    "installable": True,
-    "active": True,
-    "category" : "Base extra Modules",
-    "test": [],
-}
+import product
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

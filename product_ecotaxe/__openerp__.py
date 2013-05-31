@@ -20,26 +20,23 @@
 #################################################################################
 
 {
-    "name": 'Email confirmation',
-    "version": '1.0',
-    "description": """ This module give the possibility to edit
-    several record of a table. """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'mail',
-        'portal',
+    "name" : "Product Ecotaxe",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Sales Management",
+    "depends" : [
+        'product',
     ],
-    "init_xml": [],
-    "data": [
-           "email_confirmation_view.xml",
-           "wizard/confirmation_view.xml",
+    "description": """
+    Product Ecotaxe management
+    """,
+    "demo" : [],
+    "data" : [
+         'product_view.xml',
     ],
-    "demo": [],
-    "installable": True,
-    "active": True,
-    "category" : "Base extra Modules",
-    "test": [],
+    'installable' : True,
+    'active' : False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
