@@ -41,7 +41,7 @@
         'stock_view.xml',
     ],
     'demo': [],
-    'installable': False,
+    'installable': True,
     'active': False,
     'license': 'GPL-3',
 }

@@ -9,7 +9,7 @@
 			<field name="arch" type="xml">
 				<group name="fill_picking" position="inside">
 					<button string="Fill with production lots" name="%(stock_picking_fill_move.action_stock_picking_fill)d" type="action"
-						states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4" context="{'type_selection':'prodlot'}"/>
+						states="draft,auto,confirmed,assigned" class="oe_highlight" colspan="4" context="{'type_selection':'prodlot'}"/>
 				</group>
 			</field>
 		</record>
@@ -21,7 +21,7 @@
 			<field name="arch" type="xml">
 				<group name="fill_picking" position="inside">
 					<button string="Fill with production lots" name="%(stock_picking_fill_move.action_stock_picking_fill)d" type="action"
-						states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4" context="{'type_selection':'prodlot'}"/>
+						states="draft,auto,confirmed,assigned" class="oe_highlight" colspan="4" context="{'type_selection':'prodlot'}"/>
 				</group>
 			</field>
 		</record>
@@ -33,7 +33,7 @@
             <field name="arch" type="xml">
 				<group name="fill_picking" position="inside">
 					<button string="Fill with production lots" name="%(stock_picking_fill_move.action_stock_picking_fill)d" type="action"
-						states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4" context="{'type_selection':'prodlot'}"/>
+						states="draft,auto,confirmed,assigned" class="oe_highlight" colspan="4" context="{'type_selection':'prodlot'}"/>
 				</group>
 			</field>
 		</record>

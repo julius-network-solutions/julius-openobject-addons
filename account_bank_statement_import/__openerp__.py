@@ -39,7 +39,7 @@
         "config_view.xml",
         "wizard/statement_import.xml",
     ],
-    "active"    : False,
+    "active"    : True,
     "installable" : True,
 }
 
