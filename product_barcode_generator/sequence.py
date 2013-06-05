@@ -19,30 +19,18 @@
 #
 #################################################################################
 
-{
-    "name": 'Product barcode generator',
-    "version": '1.0',
-    "description": """
-    This module will add a function which leads to an automatic generation of EAN13 for products
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
+
+class ir_sequence(orm.Model):
+    _inherit = 'ir.sequence'
     
-    You will have to define the company default value (6 firsts number of EAN13) then the 6 next number the sequence.
-    The 13rd is the key of the EAN13, this will be automatically computed.
-    """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'base',
-        'product',
-    ],
-    "demo": [],
-    "data": [
-       "data/ean_sequence.xml",
-       "res_company_view.xml",
-       "product_view.xml",
-       "sequence_view.xml",
-    ],
-    "installable": True,
-    "active": False,
-    "category" : "Stock Management",
-}
+    _columns = {
+        'barcode_sequence': fields.boolean('Barcode Sequence'),
+    }
+    
+    _defaults = {
+        'barcode_sequence': False,
+    }
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
