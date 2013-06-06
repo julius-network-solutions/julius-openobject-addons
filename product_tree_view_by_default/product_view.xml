@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="product.product_normal_action_sell" model="ir.actions.act_window">
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+        <record id="product.open_view_product_tree1" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+        </record>
+
+        <record id="product.open_view_product_form1" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+        </record>
+
+        <record id="product.open_view_product_kanban1" model="ir.actions.act_window.view">
+            <field name="sequence" eval="3"/>
+        </record>
+
+        <record id="product.product_normal_action_puchased" model="ir.actions.act_window">
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="product.product_product_tree_view"/>
+        </record>
+	</data>
+</openerp>

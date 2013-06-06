@@ -37,7 +37,7 @@
     ],
     "demo": [],
     "installable": True,
-    "active": False,
+    "active": True,
     "category" : "Base extra Modules",
     "test": [],
 }

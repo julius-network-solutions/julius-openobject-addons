@@ -11,7 +11,8 @@
 					<newline/>
 					<group colspan="2" col="2">
 						<separator string="Ean Company code" colspan="2"/>
-						<field name="ean_sequence_id"/>
+						<field name="ean_sequence_id" domain="[('barcode_sequence', '=', 1)]"
+                        context="{'default_name': name and 'EAN ' + name or 'EAN', 'default_barcode_sequence': 1}"/>
 					</group>
 				</page>
 			</field>

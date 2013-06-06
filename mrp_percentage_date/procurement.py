@@ -81,7 +81,12 @@ class procurement_order(orm.Model):
         # We looking for the date_percentage defined into the product
         # If there is no percentage defined here we get the company default value
         # And if there is no value we get 2/3 as default value
+        if context is None:
+            context = {}
         newdate_str = procurement.procurement_date
+        company_obj = self.pool.get('res.company')
+        company_id = company_obj._company_default_get(cr, uid, context=context)
+        company = company_obj.browse(cr, uid, company_id, context=context)
         if not procurement.procurement_date:
             date_percentage = (procurement.product_id and \
                 (procurement.product_id.date_percentage or \
@@ -95,7 +100,7 @@ class procurement_order(orm.Model):
             res_id = procurement.move_id.id
             newdate_str = newdate.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         else:
-            newdate = datetime.strptime(procurement.procurement_date, '%Y-%m-%d')
+            newdate = datetime.strptime(procurement.procurement_date, DEFAULT_SERVER_DATE_FORMAT)
             newdate_str = newdate.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         return newdate_str
     
@@ -110,50 +115,58 @@ class procurement_order(orm.Model):
             production_obj = self.pool.get('mrp.production')
             stock_move_obj = self.pool.get('stock.move')
             for procurement in procurement_obj.browse(cr, uid, special_ids, context=context):
-                res_id = procurement.move_id.id
-                newdate_str = self._get_date_from_procurement(cr, uid, procurement, context=context)
-                newdate_done = datetime.strptime(newdate_str, DEFAULT_SERVER_DATETIME_FORMAT) + relativedelta(days=procurement.product_id.produce_delay or 0.0)
-                newdate_done_str = newdate_done.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-                produce_id = production_obj.create(cr, uid, {
-                    'origin': procurement.origin,
-                    'product_id': procurement.product_id.id,
-                    'product_qty': procurement.product_qty,
-                    'product_uom': procurement.product_uom.id,
-                    'product_uos_qty': procurement.product_uos and procurement.product_uos_qty or False,
-                    'product_uos': procurement.product_uos and procurement.product_uos.id or False,
-                    'location_src_id': procurement.location_id.id,
-                    'location_dest_id': procurement.location_id.id,
-                    'bom_id': procurement.bom_id and procurement.bom_id.id or False,
-                    'date_planned': newdate_done_str,
-                    'move_prod_id': res_id,
-                    'company_id': procurement.company_id.id,
-                })
-                res[procurement.id] = produce_id
-                self.write(cr, uid, [procurement.id], {'state': 'running', 'production_id': produce_id})   
-                bom_result = production_obj.action_compute(cr, uid,
-                        [produce_id], properties=[x.id for x in procurement.property_ids])
-                wf_service.trg_validate(uid, 'mrp.production', produce_id, 'button_confirm', cr)
-                if res_id:
-                    stock_move_obj.write(cr, uid, [res_id], {
-                            'location_id': procurement.location_id.id
+                if procurement.product_qty:
+                    res_id = procurement.move_id.id
+                    newdate_str = self._get_date_from_procurement(cr, uid, procurement, context=context)
+                    newdate_done = datetime.strptime(newdate_str, DEFAULT_SERVER_DATETIME_FORMAT) + relativedelta(days=procurement.product_id.produce_delay or 0.0)
+                    newdate_done_str = newdate_done.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+                    produce_id = production_obj.create(cr, uid, {
+                        'origin': procurement.origin,
+                        'product_id': procurement.product_id.id,
+                        'product_qty': procurement.product_qty,
+                        'product_uom': procurement.product_uom.id,
+                        'product_uos_qty': procurement.product_uos and procurement.product_uos_qty or False,
+                        'product_uos': procurement.product_uos and procurement.product_uos.id or False,
+                        'location_src_id': procurement.location_id.id,
+                        'location_dest_id': procurement.location_id.id,
+                        'bom_id': procurement.bom_id and procurement.bom_id.id or False,
+                        'date_planned': newdate_done_str,
+                        'move_prod_id': res_id,
+                        'company_id': procurement.company_id.id,
+                    })
+                    res[procurement.id] = produce_id
+                    self.write(cr, uid, [procurement.id], {
+                            'state': 'running',
+                            'production_id': produce_id
+                        }, context=context)   
+                    bom_result = production_obj.action_compute(cr, uid,
+                            [produce_id], properties=[x.id for x in procurement.property_ids])
+                    wf_service.trg_validate(uid, 'mrp.production', produce_id, 'button_confirm', cr)
+                    if res_id:
+                        stock_move_obj.write(cr, uid, [res_id], {
+                                'location_id': procurement.location_id.id
+                            }, context=context)
+                    self.production_order_create_note(cr, uid, special_ids, context=context)
+                    
+                    poduction = production_obj.browse(cr, uid, produce_id ,context=context)
+                    mo_lines = poduction.move_lines
+                    for mo_line in mo_lines:
+                        #Move_line Manufacturing Order Date
+                        stock_move_obj.write(cr, uid, mo_line.id, {
+                                       'date_expected': newdate_str,
+                                       'date': newdate_str,
+                                   }, context=context)
+                    mo_created_lines = poduction.move_created_ids
+                    for mo_line in mo_created_lines:
+                        #Move_line Manufacturing Order Date
+                        stock_move_obj.write(cr, uid, mo_line.id, {
+                                       'date_expected': newdate_done_str,
+                                       'date': newdate_done_str,
+                                   }, context=context)
+                else:
+                    self.write(cr, uid, [procurement.id], {
+                            'state': 'running'
                         }, context=context)
-                self.production_order_create_note(cr, uid, special_ids, context=context)
-                
-                poduction = production_obj.browse(cr, uid, produce_id ,context=context)
-                mo_lines = poduction.move_lines
-                for mo_line in mo_lines:
-                    #Move_line Manufacturing Order Date
-                    stock_move_obj.write(cr, uid, mo_line.id, {
-                                   'date_expected': newdate_str,
-                                   'date': newdate_str,
-                               }, context=context)
-                mo_created_lines = poduction.move_created_ids
-                for mo_line in mo_created_lines:
-                    #Move_line Manufacturing Order Date
-                    stock_move_obj.write(cr, uid, mo_line.id, {
-                                   'date_expected': newdate_done_str,
-                                   'date': newdate_done_str,
-                               }, context=context)
         return res
     
     def make_mo(self, cr, uid, ids, context=None):

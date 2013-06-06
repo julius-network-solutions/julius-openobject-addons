@@ -39,6 +39,7 @@
        "data/ean_sequence.xml",
        "res_company_view.xml",
        "product_view.xml",
+       "sequence_view.xml",
     ],
     "installable": True,
     "active": False,

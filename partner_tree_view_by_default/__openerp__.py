@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,28 +19,24 @@
 #
 #################################################################################
 
-
 {
-    "name" : "Account Export Report",
-    "version" : "0.1",
+    "name" : "Partner Tree View By Default",
+    "version" : "1.0",
     "author" : "Julius Network Solutions",
-    "website" : "www.julius.fr",
-    "category" : "Generic Modules/Others",
+    "website" : "http://julius.fr",
+    "category" : "Sales Management",
     "depends" : [
-        "base",
-        "account",
-        "report_aeroo",
-        "report_aeroo_ooo",
+        'base',
     ],
-    "description" : """ Export Account Report """,
-    "init_xml" : [],
-    "demo_xml" : [],
-    "update_xml" : [
-        "report/account_export_aeroo_view.xml",
-        "wizard/account_export_report.xml",
+    "description": """
+    Partner Tree View By Default.
+    """,
+    "demo" : [],
+    "data" : [
+         'partner_view.xml',
     ],
-    "installable": True,
-    "active": False,
+    'installable' : True,
+    'active' : False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
