@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+		<!--<record id="view_tracking_form_inherit" model="ir.ui.view">
+			<field name="name">stock.tracking.form.inherit</field>
+			<field name="model">stock.tracking</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="stock_tracking_extended.view_tracking_form_inherit"/>
+			<field name="arch" type="xml">
+				<field name="location_id" position="after">
+					<button name="purge_pack" string="Purge Pack" type="object" icon="gtk-execute" colspan="2"/>
+				</field>
+			</field>
+		</record>-->
+
+    </data>
+</openerp>
