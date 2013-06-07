@@ -20,21 +20,22 @@
 #################################################################################
 
 {
-    "name" : "Product Ecotax",
+    "name" : "Product Ecotax Sale",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
     "category" : "Sales Management",
     "depends" : [
         'product',
+        'product_ecotax',
         'sale',
     ],
     "description": """
-    Product Ecotax management
+    Product Ecotax management for sales
     """,
     "demo" : [],
     "data" : [
-         'product_view.xml',
+         'sale_view.xml',
     ],
     'installable' : True,
     'active' : False,

@@ -27,8 +27,8 @@ class product_template(orm.Model):
     _columns = {
         'ecotax_type': fields.selection([
                  ('0','No Submitted'),
-                 ('1','Submitted and Reportable'),
-                 ('2','Submitted and No Reportable')
+                 ('1', 'Submitted and Reportable'),
+                 ('2', 'Submitted and Non-Reportable')
              ], 'Ecotax', required=True),
         'ecotax_product_id': fields.many2one('product.product', 'Ecotax linked product', domain=[('ecotax', '=', True)]),
         'ecotax': fields.boolean('Ecotax product?'),

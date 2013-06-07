@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="purchase_generate_ecotax_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.ecotax.view.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <button name="purchase_cancel" position="after">
+                    <button name="generate_ecotax_line" type="object" states="draft" string="Generate ecotax lines"/>
+                </button>
+                <field name="amount_untaxed" position="after">
+                    <field name="amount_ecotax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

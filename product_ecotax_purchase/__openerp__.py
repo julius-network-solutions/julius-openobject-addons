@@ -20,21 +20,22 @@
 #################################################################################
 
 {
-    "name" : "Product Ecotax",
+    "name" : "Product Ecotax Purchase",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Management",
+    "category" : "Purchase Management",
     "depends" : [
         'product',
-        'sale',
+        'product_ecotax',
+        'purchase',
     ],
     "description": """
-    Product Ecotax management
+    Product Ecotax management for purchases
     """,
     "demo" : [],
     "data" : [
-         'product_view.xml',
+         'purchase_view.xml',
     ],
     'installable' : True,
     'active' : False,

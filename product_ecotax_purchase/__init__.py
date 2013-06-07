@@ -17,27 +17,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+################################################################################
 
-{
-    "name" : "Product Ecotax",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
-        'product',
-        'sale',
-    ],
-    "description": """
-    Product Ecotax management
-    """,
-    "demo" : [],
-    "data" : [
-         'product_view.xml',
-    ],
-    'installable' : True,
-    'active' : False,
-}
+import purchase
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
