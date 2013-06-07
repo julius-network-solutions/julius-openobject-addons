@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions (<http://www.julius.fr/>) contact@julius.fr
+#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,29 +20,33 @@
 #################################################################################
 
 {
-    'name': 'Stock picking fill production lot',
-    'version': '1.0',
-    "category" : "Warehouse management",
-	'description':"""
-    This module adds an action on the picking.
-    You can fill move lines with a selection of production lot
-    """,
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr/',
-    'depends': [
-        'stock',
-        'stock_picking_location',
-        'stock_picking_fill_move',
+    "name" : "Stock tracking swap pack",
+    "version" : "1.0",
+    "author" : "Julius Network Solutions",
+    "description" : """Presentation:
+
+This module add a wizard to swap pack in packaging.
+This wizard is used to replace an object from a package.
+Adding to the historical movements and parent objects
+
+""",
+    "website" : "http://www.julius.fr",
+    "depends" : [
+         "stock",
+         "stock_tracking_extended",
+         "stock_move_packaging",
+         "stock_tracking_add_product",
+         "stock_tracking_add_pack",
     ],
-    'data': [
-        'wizard/picking_fill_view.xml',
-        'data/type.xml',
+    "category" : "Customs/Stock",
+    "init_xml" : [],
+    "demo_xml" : [],
+    "images" : [],
+    "update_xml" : [
+        "wizard/swap_pack_view.xml",
         'stock_view.xml',
     ],
-    'demo': [],
+    'test': [],
     'installable': True,
     'active': False,
-    'license': 'GPL-3',
 }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

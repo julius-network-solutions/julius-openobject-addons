@@ -2,14 +2,14 @@
 <openerp>
 	<data>
 
-		<record id="view_picking_in_form_fill_pack" model="ir.ui.view">
+		<!--<record id="view_picking_in_form_fill_pack" model="ir.ui.view">
 			<field name="name">Picking in fill with packs</field>
 			<field name="model">stock.picking.in</field>
 			<field name="inherit_id" ref="stock_picking_fill_move.view_picking_in_form_fill_product"/>
 			<field name="arch" type="xml">
 				<group name="fill_picking" position="inside">
 					<button string="Fill with packs" name="%(stock_picking_fill_move.action_stock_picking_fill)d" type="action"
-						states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4" context="{'type_selection':'pack'}"/>
+						states="draft,auto,confirmed,assigned" class="oe_highlight" colspan="4" context="{'type_selection':'pack'}"/>
 				</group>
 			</field>
 		</record>
@@ -21,7 +21,7 @@
 			<field name="arch" type="xml">
 				<group name="fill_picking" position="inside">
 					<button string="Fill with packs" name="%(stock_picking_fill_move.action_stock_picking_fill)d" type="action"
-						states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4" context="{'type_selection':'pack'}"/>
+						states="draft,auto,confirmed,assigned" class="oe_highlight" colspan="4" context="{'type_selection':'pack'}"/>
 				</group>
 			</field>
 		</record>
@@ -33,10 +33,10 @@
             <field name="arch" type="xml">
 				<group name="fill_picking" position="inside">
 					<button string="Fill with packs" name="%(stock_picking_fill_move.action_stock_picking_fill)d" type="action"
-						states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4" context="{'type_selection':'pack'}"/>
+						states="draft,auto,confirmed,assigned" class="oe_highlight" colspan="4" context="{'type_selection':'pack'}"/>
 				</group>
 			</field>
-		</record>
+		</record>-->
 
 	</data>
 </openerp>

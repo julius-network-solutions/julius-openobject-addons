@@ -2,7 +2,7 @@
 <openerp>
 	<data>
 
-		<record id="view_stock_picking_fill_wizard" model="ir.ui.view">
+		<!--<record id="view_stock_picking_fill_wizard" model="ir.ui.view">
 			<field name="name">Fill picking pack</field>
 			<field name="model">stock.picking.fill</field>
 			<field name="inherit_id" ref="stock_picking_fill_move.view_stock_picking_fill_wizard"/>
@@ -15,7 +15,7 @@
 					</group>
 				</group>
 			</field>
-		</record>
+		</record>-->
 
 	</data>
 </openerp>

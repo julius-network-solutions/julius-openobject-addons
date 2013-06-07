@@ -11,7 +11,7 @@
 					<newline/>
 					<group name="fill_picking" colspan="4" col="12">
 						<button string="Fill with products" name="%(action_stock_picking_fill)d" type="action"
-							states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4"/>
+							states="draft,auto,confirmed,assigned" class="oe_highlight" colspan="4"/>
 					</group>
 				</field>
 			</field>
@@ -26,7 +26,7 @@
 					<newline/>
 					<group name="fill_picking" colspan="4" col="12">
 						<button string="Fill with products" name="%(action_stock_picking_fill)d" type="action"
-							states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4"/>
+							states="draft,auto,confirmed,assigned" class="oe_highlight" colspan="4"/>
 					</group>
 				</field>
 			</field>
@@ -41,7 +41,7 @@
 					<newline/>
 					<group name="fill_picking" colspan="4" col="12">
 						<button string="Fill with products" name="%(action_stock_picking_fill)d" type="action"
-							states="draft,auto,confirmed,assigned" icon="gtk-execute" colspan="4"/>
+							states="draft,auto,confirmed,assigned" class="oe_highlight" colspan="4"/>
 					</group>
 				</field>
 			</field>
