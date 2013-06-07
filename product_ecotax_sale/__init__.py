@@ -17,31 +17,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+################################################################################
 
-{
-    "name"      : "Bank statement import with specific filters",
-    "version"   : "1.0",
-    "author"    : "Julius Network Solutions",
-    "category"  : "Accounting & Finance",
-    "description": """
-    Module provides functionality to import
-    bank statements from another files than coda with parser.
-    """,
-    "depends"   : [
-        "account",
-        "account_voucher",
-    ],
-    "demo"  : [],
-    "data": [
-        "security/ir.model.access.csv",
-        "data/filters_data.xml",
-        "config_view.xml",
-        "wizard/statement_import.xml",
-    ],
-    "active"    : False,
-    "installable" : True,
-}
+import product
+import sale
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

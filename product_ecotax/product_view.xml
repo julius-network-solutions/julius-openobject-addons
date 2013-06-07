@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="product_ecotax_form_inherit" model="ir.ui.view">
+            <field name="name">product.ecotax.view.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <field name="active" position="after">
+                    <field name="ecotax"/>
+                </field>
+                <page string="Information" position="inside">
+                    <div name="ecotax_info">
+                        <label for="ecotax_type"/>
+                        <field name="ecotax_type" class="oe_inline"/>
+                        <field name="ecotax_product_id"
+                            attrs="{'required': [('ecotax_type', 'in', ('1','2'))], 'invisible': [('ecotax_type', '=', '0')]}"
+                            class="oe_inline"/>
+                    </div>
+                </page>
+            </field>
+        </record>
+
+        <record id="product_category_ecotax_form_inherit" model="ir.ui.view">
+            <field name="name">product.category.ecotax.view.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="priority">25</field>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <newline/>
+                    <group colspan="4">
+                        <div name="ecotax_info">
+                            <label for="ecotax_type"/>
+                            <field name="ecotax_type" class="oe_inline"/>
+                            <field name="ecotax_product_id"
+                                attrs="{'required': [('ecotax_type', 'in', ('1','2'))], 'invisible': [('ecotax_type', '=', '0')]}"
+                                class="oe_inline"/>
+                        </div>
+                    </group>
+                    <newline/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

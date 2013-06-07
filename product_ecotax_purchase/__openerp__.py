@@ -20,28 +20,25 @@
 #################################################################################
 
 {
-    "name"      : "Bank statement import with specific filters",
-    "version"   : "1.0",
-    "author"    : "Julius Network Solutions",
-    "category"  : "Accounting & Finance",
+    "name" : "Product Ecotax Purchase",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Purchase Management",
+    "depends" : [
+        'product',
+        'product_ecotax',
+        'purchase',
+    ],
     "description": """
-    Module provides functionality to import
-    bank statements from another files than coda with parser.
+    Product Ecotax management for purchases
     """,
-    "depends"   : [
-        "account",
-        "account_voucher",
+    "demo" : [],
+    "data" : [
+         'purchase_view.xml',
     ],
-    "demo"  : [],
-    "data": [
-        "security/ir.model.access.csv",
-        "data/filters_data.xml",
-        "config_view.xml",
-        "wizard/statement_import.xml",
-    ],
-    "active"    : False,
-    "installable" : True,
+    'installable' : True,
+    'active' : False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

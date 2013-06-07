@@ -25,34 +25,34 @@ class product_template(orm.Model):
     _inherit = "product.template"
     
     _columns = {
-        'ecotaxe_type': fields.selection([
+        'ecotax_type': fields.selection([
                  ('0','No Submitted'),
-                 ('1','Submitted and Reportable'),
-                 ('2','Submitted and No Reportable')
-             ], 'Ecotaxe', required=True),
-        'ecotaxe_product_id': fields.many2one('product.product', 'Ecotaxe linked product', domain=[('ecotaxe', '=', True)]),
-        'ecotaxe': fields.boolean('Ecotaxe product?'),
+                 ('1', 'Submitted and Reportable'),
+                 ('2', 'Submitted and Non-Reportable')
+             ], 'Ecotax', required=True),
+        'ecotax_product_id': fields.many2one('product.product', 'Ecotax linked product', domain=[('ecotax', '=', True)]),
+        'ecotax': fields.boolean('Ecotax product?'),
     }
     
     _defaults = {
-        'ecotaxe_type': '0',
-        'ecotaxe': False,
+        'ecotax_type': '0',
+        'ecotax': False,
     }
 
 class product_category(orm.Model):
     _inherit = "product.category"
     
     _columns = {
-        'ecotaxe_type': fields.selection([
+        'ecotax_type': fields.selection([
                  ('0','No Submitted'),
                  ('1','Submitted and Reportable'),
                  ('2','Submitted and No Reportable')
-             ], 'Ecotaxe', required=True),
-        'ecotaxe_product_id': fields.many2one('product.product', 'Ecotaxe linked product', domain=[('ecotaxe', '=', True)]),
+             ], 'Ecotax', required=True),
+        'ecotax_product_id': fields.many2one('product.product', 'Ecotax linked product', domain=[('ecotax', '=', True)]),
     }
     
     _defaults = {
-        'ecotaxe_type': '0',
+        'ecotax_type': '0',
     }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
