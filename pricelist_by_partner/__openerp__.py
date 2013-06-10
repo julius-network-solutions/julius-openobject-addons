@@ -28,6 +28,7 @@
     "depends" : [
         'base',
         'product',
+        'purchase',
     ],
     "description": """
     Price list Module allowing partner discount and easy creation.
