@@ -6,7 +6,6 @@
 		<record id="view_stock_packaging_add_wizard" model="ir.ui.view">
 			<field name="name">Stock packaging add</field>
 			<field name="model">stock.packaging.add</field>
-			<field name="type">form</field>
 			<field name="arch" type="xml">
 				<form string="Add object">
 					<group colspan="4" col="4">
@@ -45,7 +44,6 @@
 		<record id="view_stock_packaging_add_line_wizard" model="ir.ui.view">
 			<field name="name">Stock packaging add line</field>
 			<field name="model">stock.packaging.add.line</field>
-			<field name="type">form</field>
 			<field name="arch" type="xml">
 				<form string="Add line">
 					<field name="parent_id" invisible="True"/>
