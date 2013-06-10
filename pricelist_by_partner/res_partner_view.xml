@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_partner_property_form" model="ir.ui.view">
+            <field name="name">res.partner.product.property.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="product.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <field name="property_product_pricelist" position="attributes">
+                    <attribute name="domain">[('type', '=', 'sale'), ('partner_id', '=', active_id)]</attribute>
+                </field>
+                <field name="property_product_pricelist" position="attributes">
+                    <attribute name="domain">[('type', '=', 'purchase'), ('partner_id', '=', active_id)]</attribute>
+                </field>
+                <page string="Sales &amp; Purchases" position="after">
+                    <page string="Price list for Sales">
+                        <button name="create_update_pricelist" type="object"
+                            string="Create Update the Pricelist" context="{'type': 'sale'}"/>
+                        <field name="pricelist_items_ids" mode="tree" class="oe_edit_only" context="{'partner_id': active_id, 'type': 'sale', 'default_type': 'sale'}">
+                            <tree string="Pricelist items" editable="top">
+                                <field name="product_id"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="product_category_id"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="min_quantity"/>
+                                <field name="price"/>
+                                <field name="discount"/>
+                                <field name="date_start"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="date_end" 
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="partner_id" invisible="1"/>
+                                <field name="type" invisible="1"/>
+                            </tree>
+                        </field>
+                        <field name="complete_pricelist_items_ids" mode="tree" class="oe_view_only" context="{'partner_id': active_id}">
+                            <tree string="Pricelist items">
+                                <field name="partner_category_id"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="product_id"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="product_category_id"/>
+                                <field name="min_quantity"/>
+                                <field name="price"/>
+                                <field name="discount"/>
+                                <field name="date_start"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="date_end"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="partner_id" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Price list for Purchases">
+                        <button name="create_update_pricelist" type="object"
+                            string="Create Update the Pricelist" context="{'type': 'purchase'}"/>
+                        <field name="pricelist_items_purchase_ids" mode="tree" class="oe_edit_only" context="{'partner_id': active_id, 'type': 'purchase', 'default_type': 'purchase'}">
+                            <tree string="Pricelist items" editable="top">
+                                <field name="product_id"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="product_category_id"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="min_quantity"/>
+                                <field name="price"/>
+                                <field name="discount"/>
+                                <field name="date_start"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="date_end" 
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="partner_id" invisible="1"/>
+                                <field name="type" invisible="1"/>
+                            </tree>
+                        </field>
+                        <field name="complete_pricelist_items_purchase_ids" mode="tree" class="oe_view_only" context="{'partner_id': active_id}">
+                            <tree string="Pricelist items">
+                                <field name="partner_category_id"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="product_id"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="product_category_id"/>
+                                <field name="min_quantity"/>
+                                <field name="price"/>
+                                <field name="discount"/>
+                                <field name="date_start"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="date_end"
+                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
+                                <field name="partner_id" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+        <record id="view_partner_category_form" model="ir.ui.view">
+            <field name="name">Partner Categories</field>
+            <field name="model">res.partner.category</field>
+            <field name="inherit_id" ref="base.view_partner_category_form"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <newline/>
+                    <field name="pricelist_items_ids" mode="tree" colspan="4" class="oe_inline"
+                        context="{'partner_category_id': active_id, 'type': 'sale', 'default_type': 'sale'}">
+                        <tree string="Pricelist items for sale" editable="top">
+                            <field name="product_category_id"
+                                on_change="onchange_product_id(product_id, product_category_id, False, partner_category_id, date_start, date_end, context)"
+                                context="{'partner_category_id': active_id}"/>
+                            <field name="product_id"
+                                on_change="onchange_product_id(product_id, product_category_id, False, partner_category_id, date_start, date_end, context)"
+                                context="{'partner_category_id': active_id}"/>
+                            <field name="min_quantity"/>
+                            <field name="discount"/>
+                            <field name="price"/>
+                            <field name="date_start"
+                                on_change="onchange_product_id(product_id, product_category_id, False, partner_category_id, date_start, date_end, context)"
+                                context="{'partner_category_id': active_id}"/>
+                            <field name="date_end"
+                                on_change="onchange_product_id(product_id, product_category_id, False, partner_category_id, date_start, date_end, context)"
+                                context="{'partner_category_id': active_id}"/>
+                            <field name="type" invisible="1"/>
+                        </tree>
+                    </field>
+                    <field name="pricelist_items_purchase_ids" mode="tree" colspan="4" class="oe_inline"
+                        context="{'partner_category_id': active_id, 'type': 'purchase', 'default_type': 'purchase'}">
+                        <tree string="Pricelist items for purchase" editable="top">
+                            <field name="product_category_id"
+                                on_change="onchange_product_id(product_id, product_category_id, False, partner_category_id, date_start, date_end, context)"
+                                context="{'partner_category_id': active_id}"/>
+                            <field name="product_id"
+                                on_change="onchange_product_id(product_id, product_category_id, False, partner_category_id, date_start, date_end, context)"
+                                context="{'partner_category_id': active_id}"/>
+                            <field name="min_quantity"/>
+                            <field name="discount"/>
+                            <field name="price"/>
+                            <field name="date_start"
+                                on_change="onchange_product_id(product_id, product_category_id, False, partner_category_id, date_start, date_end, context)"
+                                context="{'partner_category_id': active_id}"/>
+                            <field name="date_end"
+                                on_change="onchange_product_id(product_id, product_category_id, False, partner_category_id, date_start, date_end, context)"
+                                context="{'partner_category_id': active_id}"/>
+                            <field name="type" invisible="1"/>
+                        </tree>
+                    </field>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

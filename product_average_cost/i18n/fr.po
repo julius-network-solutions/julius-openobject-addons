@@ -1,0 +1,179 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* product_average_cost
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-10 14:30+0000\n"
+"PO-Revision-Date: 2013-06-10 14:30+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_08:0
+msgid "August Stock"
+msgstr "Stock Août"
+
+#. module: product_average_cost
+#: model:ir.actions.act_window,name:product_average_cost.action_product_average_price
+#: model:ir.ui.menu,name:product_average_cost.product_average_price
+#: view:product.average.price:0
+msgid "Average Price"
+msgstr "Prix moyen"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_09:0
+msgid "September Stock"
+msgstr "Stock Septembre"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_12:0
+msgid "December Stock"
+msgstr "Stock Décembre"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_01:0
+msgid "January Amount"
+msgstr "Montant Janvier"
+
+#. module: product_average_cost
+#: view:product.average.price:0
+msgid "Stock"
+msgstr "Stock"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_11:0
+msgid "November Stock"
+msgstr "Stock Novembre"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_05:0
+msgid "May Amount"
+msgstr "Montant Mai"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_08:0
+msgid "August Amount"
+msgstr "Montant Août"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_init:0
+msgid "Initial Amount"
+msgstr "Montant initial"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_12:0
+msgid "December Amount"
+msgstr "Montant Décembre"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_03:0
+msgid "March Stock"
+msgstr "Stock Mars"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_04:0
+msgid "April Amount"
+msgstr "Montant Avril"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_01:0
+msgid "January Stock"
+msgstr "Stock Janvier"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_06:0
+msgid "June Stock"
+msgstr "Stock Juin"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_02:0
+msgid "February Stock"
+msgstr "Stock Février"
+
+#. module: product_average_cost
+#: field:product.average.price,year:0
+msgid "Year"
+msgstr "Année"
+
+#. module: product_average_cost
+#: field:product.average.price,product_id:0
+msgid "Product"
+msgstr "Produit"
+
+#. module: product_average_cost
+#: view:product.average.price:0
+msgid "Amount"
+msgstr "Montant"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_10:0
+msgid "October Stock"
+msgstr "Stock Octobre"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_11:0
+msgid "November Amount"
+msgstr "Montant Novembre"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_10:0
+msgid "October Amount"
+msgstr "Montant Octobre"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_05:0
+msgid "May Stock"
+msgstr "Stock Mai"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_02:0
+msgid "February Amount"
+msgstr "Montant Février"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_init:0
+msgid "Initial Stock"
+msgstr "Stock Initial"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_09:0
+msgid "September Amount"
+msgstr "Montant Septembre"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_07:0
+msgid "July Amount"
+msgstr "Montant Juillet"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_07:0
+msgid "July Stock"
+msgstr "Stock Juillet"
+
+#. module: product_average_cost
+#: field:product.average.price,stock_04:0
+msgid "April Stock"
+msgstr "Stock Avril"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_06:0
+msgid "June Amount"
+msgstr "Montant Juin"
+
+#. module: product_average_cost
+#: model:ir.model,name:product_average_cost.model_product_average_price
+msgid "product.average.price"
+msgstr "Prix moyen pondéré"
+
+#. module: product_average_cost
+#: field:product.average.price,amount_03:0
+msgid "March Amount"
+msgstr "Montant Mars"
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_partner_pricelist_items_tree" model="ir.ui.view">
+            <field name="name">product.pricelist.items.partner.tree</field>
+            <field name="model">product.pricelist.items.partner</field>
+            <field name="arch" type="xml">
+                <tree string="Pricelist items" editable="top">
+                    <field name="partner_id"/>
+                    <field name="partner_category_id"/>
+                    <field name="product_id"
+                        on_change="onchange_product_id(product_id, product_category_id, partner_id, partner_category_id, date_start, date_end, context)"/>
+                    <field name="product_category_id"/>
+                    <field name="min_quantity"/>
+                    <field name="price"/>
+                    <field name="discount"/>
+                    <field name="date_start"
+                        on_change="onchange_product_id(product_id, product_category_id, partner_id, partner_category_id, date_start, date_end, context)"/>
+                    <field name="date_end"
+                        on_change="onchange_product_id(product_id, product_category_id, partner_id, partner_category_id, date_start, date_end, context)"/>
+                    <field name="type"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_partner_pricelist_items_form" model="ir.ui.view">
+            <field name="name">product.pricelist.items.partner.form</field>
+            <field name="model">product.pricelist.items.partner</field>
+            <field name="arch" type="xml">
+                <form string="Pricelist items">
+                    <field name="partner_id"/>
+                    <field name="partner_category_id"/>
+                    <field name="product_id"
+                        on_change="onchange_product_id(product_id, product_category_id, partner_id, partner_category_id, date_start, date_end, context)"/>
+                    <field name="product_category_id"/>
+                    <field name="min_quantity"/>
+                    <field name="price"/>
+                    <field name="discount"/>
+                    <field name="date_start"
+                        on_change="onchange_product_id(product_id, product_category_id, partner_id, partner_category_id, date_start, date_end, context)"/>
+                    <field name="date_end"
+                        on_change="onchange_product_id(product_id, product_category_id, partner_id, partner_category_id, date_start, date_end, context)"/>
+                    <field name="type"/>
+                </form>
+            </field>
+        </record>
+        <record id="view_partner_pricelist_items_search" model="ir.ui.view">
+            <field name="name">product.pricelist.items.partner.search</field>
+            <field name="model">product.pricelist.items.partner</field>
+            <field name="arch" type="xml">
+                <search string="Pricelist items">
+                    <filter string='Sales' name="sales" domain="[('type', '=', 'sale')]"/>
+                    <filter string='Purchases' name="purchases" domain="[('type', '=', 'purchase')]"/>
+                    <field name="partner_id"/>
+                    <field name="partner_category_id"/>
+                    <field name="product_id"/>
+                    <field name="product_category_id"/>
+                    <field name="min_quantity"/>
+                    <field name="price"/>
+                    <field name="discount"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_partner_pricelist_items" model="ir.actions.act_window">
+            <field name="name">Pricelist items</field>
+            <field name="res_model">product.pricelist.items.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_partner_pricelist_items_tree"/>
+            <field name="search_view_id" ref="view_partner_pricelist_items_search"/>
+        </record>
+        <menuitem action="action_partner_pricelist_items"
+            id="menu_action_partner_pricelist_items"
+            parent="product.menu_product_pricelist_main"/>
+
+    </data>
+</openerp>
