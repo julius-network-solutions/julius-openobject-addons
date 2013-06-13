@@ -2,7 +2,7 @@
 <openerp>
     <data>
         
-		<record id="view_tracking_form_inherit" model="ir.ui.view">
+		<!--<record id="view_tracking_form_inherit" model="ir.ui.view">
 			<field name="name">stock.tracking.form.inherit</field>
 			<field name="model">stock.tracking</field>
 			<field name="inherit_id" ref="stock_tracking_extended.view_tracking_extended_form"/>
@@ -11,7 +11,7 @@
 					<button name="purge_pack" string="Purge Pack" type="object"  class="oe_highlight"/>
 				</field>
 			</field>
-		</record>
+		</record>-->
 
     </data>
 </openerp>
