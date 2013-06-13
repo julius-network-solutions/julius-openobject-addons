@@ -22,6 +22,14 @@
 from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
 
+class stock_picking(orm.Model):
+    _inherit = 'stock.picking'
+    
+    _columns = {
+        'location_default_id': fields.many2one('stock.location', 'Default move location'),
+        'location_dest_default_id': fields.many2one('stock.location', 'Default move dest. location'),
+    }
+
 class stock_move(orm.Model):
     _inherit = 'stock.move'
     

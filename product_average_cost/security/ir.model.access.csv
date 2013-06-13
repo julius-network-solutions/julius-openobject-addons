@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_product_average_price_manager","product.average.price.manager","model_product_average_price","account.group_account_manager",1,1,1,1
+"access_product_average_price_user","product.average.price.user","model_product_average_price","account.group_account_invoice",1,1,1,0
+"access_product_average_price_all","product.average.price.all","model_product_average_price",,1,0,0,0

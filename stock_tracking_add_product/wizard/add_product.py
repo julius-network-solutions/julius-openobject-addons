@@ -19,18 +19,16 @@
 #
 #################################################################################
 
-from osv import fields, osv
+from osv import fields, osv, orm
 from tools.translate import _
 
-class stock_packaging_add_type(osv.osv):
+class stock_packaging_add_type(orm.Model):
     _name = 'stock.packaging.add.type'
     
     _columns = {
         'code': fields.char('Code', size=64),
         'name': fields.char('Name', size=64),
     }
-    
-stock_packaging_add_type()
 
 class stock_packaging_add(osv.osv_memory):
 

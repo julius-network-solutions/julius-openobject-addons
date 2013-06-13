@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="product_average_price_tree" model="ir.ui.view">
+            <field name="name">product.average.price.view.tree</field>
+            <field name="model">product.average.price</field>
+            <field name="arch" type="xml">
+                <tree string="Average Price">
+                    <field name="year"/>
+                    <field name="product_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="product_average_price_filter" model="ir.ui.view">
+            <field name="name">product.average.price.view.filter</field>
+            <field name="model">product.average.price</field>
+            <field name="arch" type="xml">
+                <search string="Average Price">
+                    <field name="year"/>
+                    <field name="product_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="product_average_price_form" model="ir.ui.view">
+            <field name="name">product.average.price.view.form</field>
+            <field name="model">product.average.price</field>
+            <field name="arch" type="xml">
+                <form string="Average Price" version="7.0">
+                    <group colspan="4" col="4">
+                        <field name="year"/>
+                        <field name="product_id"/>
+                    </group>
+                    <separator string="Amount"/>
+                    <group>
+                        <field name="amount_init"/>
+                    </group>
+                    <group colspan="4" col="6">
+                        <group colspan="2" col="2">
+                            <field name="amount_01"/>
+                            <field name="amount_04"/>
+                            <field name="amount_07"/>
+                            <field name="amount_10"/>
+                        </group>
+                        <group colspan="2" col="2">
+                            <field name="amount_02"/>
+                            <field name="amount_05"/>
+                            <field name="amount_08"/>
+                            <field name="amount_11"/>
+                        </group>
+                        <group colspan="2" col="2">
+                            <field name="amount_03"/>
+                            <field name="amount_06"/>
+                            <field name="amount_09"/>
+                            <field name="amount_12"/>
+                        </group>
+                    </group>
+                    <separator string="Stock"/>
+                    <group>
+                        <field name="stock_init"/>
+                    </group>
+                    <group colspan="4" col="6">
+                        <group colspan="2" col="2">
+                            <field name="stock_01"/>
+                            <field name="stock_04"/>
+                            <field name="stock_07"/>
+                            <field name="stock_10"/>
+                        </group>
+                        <group colspan="2" col="2">
+                            <field name="stock_02"/>
+                            <field name="stock_05"/>
+                            <field name="stock_08"/>
+                            <field name="stock_11"/>
+                        </group>
+                        <group colspan="2" col="2">
+                            <field name="stock_03"/>
+                            <field name="stock_06"/>
+                            <field name="stock_09"/>
+                            <field name="stock_12"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_average_price" model="ir.actions.act_window">
+            <field name="name">Average Price</field>
+            <field name="res_model">product.average.price</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="product_average_price_tree"/>
+            <field name="search_view_id" ref="product_average_price_filter"/>
+        </record>
+
+        <menuitem
+            id="product_average_price"
+            parent="account.menu_finance_generic_reporting"
+            sequence="100"
+            action="action_product_average_price"/>
+
+    </data>
+</openerp>
