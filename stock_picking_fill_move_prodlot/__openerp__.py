@@ -37,7 +37,7 @@
     'data': [
         'wizard/picking_fill_view.xml',
         'data/type.xml',
-        'stock_view.xml',
+#        'stock_view.xml',
     ],
     'demo': [],
     'installable': True,

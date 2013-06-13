@@ -20,7 +20,7 @@
 #################################################################################
 
 {
-    "name" : "Stock tracking add moves",
+    "name" : "Stock tracking add pack",
     "version" : "1.0",
     "author" : "Julius Network Solutions",
     "description" : """Presentation:
