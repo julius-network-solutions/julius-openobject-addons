@@ -40,7 +40,7 @@ class sale_order(orm.Model):
                 packaging=False, fiscal_position=order.fiscal_position,
                 flag=False, context=context)
         vals = res['value']
-        uom_id = vals.get('product_uos') and vals.get('product_uos')[0] or offered_product.uom_id.id or False
+        uom_id = offered_product and offered_product.uom_id.id or False
         quantity = multiple and (int(line.product_uom_qty / line.product_id.offered_threshold) \
                             * line.product_id.offered_qty) or line.product_id.offered_qty
         vals.update({
@@ -56,6 +56,7 @@ class sale_order(orm.Model):
             'th_weight': False,
         })
         vals['name'] += _(' offered')
+        print vals
         return vals
 
     def _generate_offered(self, cr, uid, ids, multiple, context=None):
@@ -64,7 +65,7 @@ class sale_order(orm.Model):
         o_sol = self.pool.get('sale.order.line')
         for order in self.browse(cr, uid, ids, context=context):
             # If this order is not in draft state we continue
-            if order.state != 'draft':
+            if order.state not in ('sent','draft'):
                 continue
             # Delete all the existing offer lines existing in the current sale order
             del_ids = []
@@ -76,6 +77,7 @@ class sale_order(orm.Model):
             # This will create the lines if there is a offered threshold
             # and a offered qty
             for line in order.order_line:
+                print line
                 if line.product_id and line.product_id.offered_threshold and line.product_id.offered_qty:
                     # If the quantity of the line is lower than the offered threshold
                     # don't do the function for this line

@@ -291,6 +291,9 @@ class res_partner(orm.Model):
         data_obj = self.pool.get('ir.model.data')
         base_id = data_obj.get_object(cr, uid, 'product', 'list_price').id
         return base_id
+    
+    def _get_discount_value(self, cr, uid, item, context=None):
+        return item.discount and (- item.discount / 100) or False
 
     def _create_pricelist_items(self, cr, uid, 
             version_id, partner, pricelist_items,
@@ -342,7 +345,7 @@ class res_partner(orm.Model):
                 base_id = self._get_base_item_id(cr, uid, context=context)
                 seq = item.partner_category_id and 100 or 1
                 min_quantity = item.min_quantity > 0 and item.min_quantity or 0
-                discount = item.discount and (- item.discount / 100) or False
+                discount = self._get_discount_value(cr, uid, item, context=context)
                 price = item.price or False
                 if price:
                     discount = -1
