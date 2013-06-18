@@ -33,6 +33,7 @@
     """,
     "demo" : [],
     "data" : [
+        'security/ir.model.access.csv',
         'product_view.xml',
     ],
     'installable' : True,

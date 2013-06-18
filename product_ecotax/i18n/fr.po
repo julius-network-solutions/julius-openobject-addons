@@ -1,0 +1,76 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* product_ecotax
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-18 15:29+0000\n"
+"PO-Revision-Date: 2013-06-18 15:29+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_ecotax
+#: field:product.template,ecotax:0
+msgid "Ecotax product?"
+msgstr "Produit écotaxe?"
+
+#. module: product_ecotax
+#: selection:product.category,ecotax_type:0
+#: selection:product.template,ecotax_type:0
+msgid "No Submitted"
+msgstr "Non Soumis"
+
+#. module: product_ecotax
+#: model:ir.model,name:product_ecotax.model_product_category
+msgid "Product Category"
+msgstr "Catégorie d'articles"
+
+#. module: product_ecotax
+#: field:product.category,ecotax_type:0
+#: field:product.template,ecotax_type:0
+msgid "Ecotax"
+msgstr "Ecotaxe"
+
+#. module: product_ecotax
+#: field:product.category,ecotax_product_id:0
+#: field:product.template,ecotax_product_id:0
+msgid "Ecotax linked product"
+msgstr "Produit écotaxe lié"
+
+#. module: product_ecotax
+#: view:product.product:0
+msgid "Information"
+msgstr "Information"
+
+#. module: product_ecotax
+#: model:ir.model,name:product_ecotax.model_product_template
+msgid "Product Template"
+msgstr "Modèle d'article"
+
+#. module: product_ecotax
+#: selection:product.category,ecotax_type:0
+#: selection:product.template,ecotax_type:0
+msgid "Submitted and Reportable"
+msgstr "Soumis et déclarable"
+
+#. module: product_ecotax
+#: model:ir.model,name:product_ecotax.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: product_ecotax
+#: selection:product.template,ecotax_type:0
+msgid "Submitted and Non-Reportable"
+msgstr "Soumis et non déclarable"
+
+#. module: product_ecotax
+#: model:ir.model,name:product_ecotax.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de commandes de vente"
+
