@@ -86,8 +86,8 @@ class stock_picking_fill(orm.TransientModel):
             return res
         else:
             picking_id = picking.id
-            location_id = picking.location_default_id and picking.location_default_id.id or False
-            location_dest_id = picking.location_dest_default_id and picking.location_dest_default_id.id or False
+            location_id = picking.location_id and picking.location_id.id or False
+            location_dest_id = picking.location_dest_id and picking.location_dest_id.id or False
             address_id = picking.address_id.id
             if not location_id or not location_dest_id:
                 return []
@@ -112,7 +112,7 @@ class stock_picking_fill(orm.TransientModel):
         if active_id:
             picking_obj = self.pool.get('stock.picking')
             picking = picking_obj.browse(cr, uid, active_id, context=context)
-            location_id = picking.location_default_id and picking.location_default_id.id or False
+            location_id = picking.location_id and picking.location_id.id or False
         return location_id
     
     _defaults = {

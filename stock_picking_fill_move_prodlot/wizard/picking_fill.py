@@ -57,8 +57,8 @@ class stock_picking_fill(orm.TransientModel):
             return res
         else:
             picking_id = picking.id
-            location_id = picking.location_default_id and picking.location_default_id.id or False
-            location_dest_id = picking.location_dest_default_id and picking.location_dest_default_id.id or False
+            location_id = picking.location_id and picking.location_id.id or False
+            location_dest_id = picking.location_dest_id and picking.location_dest_id.id or False
             address_id = picking.address_id.id
             if not location_id or not location_dest_id:
                 return []
