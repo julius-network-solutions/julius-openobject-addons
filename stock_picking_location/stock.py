@@ -55,7 +55,17 @@ class stock_move(orm.Model):
         """
         if context is None:
             context = {}
-        if context.get('picking_id'):
+        location_id = False
+        location_dest_id = False
+        if context.get('location_id') or context.get('location_dest_id'):
+            location_id = context.get('location_id')
+            location_dest_id = context.get('location_dest_id')
+            return {
+                'value': {
+                    'location_id': location_id or self._get_default_location(cr, uid, field='location_id', context=context),
+                    'location_dest_id': location_dest_id or self._get_default_location(cr, uid, field='location_dest_id', context=context)}
+                }
+        elif context.get('picking_id'):
             return {
                 'value': {
                     'location_id': self._get_default_location(cr, uid, field='location_id', context=context),
