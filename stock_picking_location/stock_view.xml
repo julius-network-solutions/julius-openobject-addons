@@ -29,7 +29,7 @@
 					<field name="location_dest_id"/>
 				</field>
 				<field name="move_lines" position="attributes">
-					<attribute name="context">{'address_out_id':partner_id, 'picking_type': type, 'picking_id': active_id', location_id': location_id, 'location_dest_id': location_dest_id}</attribute>
+					<attribute name="context">{'address_out_id':partner_id, 'picking_type': type, 'picking_id': active_id, 'location_id': location_id, 'location_dest_id': location_dest_id}</attribute>
 				</field>
 			</field>
 		</record>
