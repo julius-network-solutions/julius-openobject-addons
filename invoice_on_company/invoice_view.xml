@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+       	<record model="ir.ui.view" id="invoice_on_company">
+            <field name="name">invoice.on.company</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name = "partner_id" position = "attributes">
+                 	<attribute name="domain">[('is_company','=',True),('customer','=',True)]</attribute>               
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
