@@ -10,13 +10,13 @@
             <field name="arch" type="xml">
             	<field name="description" position="before">
             		<group colspan="4" col="4">
-                        <group colspan="2">
+                        <group colspan="2" name="price_info">
                             <label for="price_data"/>
                             <div>
     	            		    <field name="price_data" class="oe_inline"/> for <field name="price_type" class="oe_inline"/>
                             </div>
                         </group>
-                        <group colspan="2">
+                        <group colspan="2" name="price_info2">
 	            		     <field name="price_1_unit"/>
                              <field name="price_10_unit"/>
                              <field name="price_100_unit"/>

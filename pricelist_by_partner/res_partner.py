@@ -41,12 +41,9 @@ class product_pricelist_items_partner(orm.Model):
         pricelist_type_obj = self.pool.get('product.pricelist.type')
         pricelist_type_ids = pricelist_type_obj.search(cr, uid, [], order='name')
         pricelist_types = pricelist_type_obj.read(cr, uid, pricelist_type_ids, ['key','name'], context=context)
-
         res = []
-
         for type in pricelist_types:
             res.append((type['key'],type['name']))
-
         return res
     
     _columns = {
@@ -295,6 +292,9 @@ class res_partner(orm.Model):
     def _get_discount_value(self, cr, uid, item, context=None):
         return item.discount and (- item.discount / 100) or False
 
+    def _get_item_sequence(self, cr, uid, item, partner, context=None):
+        return item.partner_category_id and 100 or 1
+
     def _create_pricelist_items(self, cr, uid, 
             version_id, partner, pricelist_items,
             date_start=False, date_end=False, context=None):
@@ -343,7 +343,7 @@ class res_partner(orm.Model):
                         create = True
             if create:
                 base_id = self._get_base_item_id(cr, uid, context=context)
-                seq = item.partner_category_id and 100 or 1
+                seq = self._get_item_sequence(cr, uid, item, partner, context=context)
                 min_quantity = item.min_quantity > 0 and item.min_quantity or 0
                 discount = self._get_discount_value(cr, uid, item, context=context)
                 price = item.price or False

@@ -14,7 +14,7 @@
                     <attribute name="domain">[('type', '=', 'purchase'), ('partner_id', '=', active_id)]</attribute>
                 </field>
                 <page string="Sales &amp; Purchases" position="after">
-                    <page string="Price list for Sales">
+                    <page string="Price list for Sales" attrs="{'invisible':[('customer','=',False)]}">
                         <button name="create_update_pricelist" type="object"
                             string="Create Update the Pricelist" context="{'type': 'sale'}"/>
                         <field name="pricelist_items_ids" mode="tree" class="oe_edit_only" context="{'partner_id': active_id, 'type': 'sale', 'default_type': 'sale'}">
@@ -52,7 +52,7 @@
                             </tree>
                         </field>
                     </page>
-                    <page string="Price list for Purchases">
+                    <page string="Price list for Purchases" attrs="{'invisible':[('supplier','=',False)]}">
                         <button name="create_update_pricelist" type="object"
                             string="Create Update the Pricelist" context="{'type': 'purchase'}"/>
                         <field name="pricelist_items_purchase_ids" mode="tree" class="oe_edit_only" context="{'partner_id': active_id, 'type': 'purchase', 'default_type': 'purchase'}">
