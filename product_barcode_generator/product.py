@@ -89,13 +89,11 @@ class product_product(orm.Model):
         ean13 = False
         if context is None: context = {}
         ean = self._get_ean_next_code(cr, uid, product, context=context)
-        print ean
         if len(ean) != 12:
             raise orm.except_orm(_("Configuration Error!"),
                  _("This sequence is different than 12 characters. This can't work."
                    "You will have to redefine the sequence or create a new one"))
         key = self._get_ean_key(ean)
-        print key
         ean13 = ean + key
         return ean13
     
