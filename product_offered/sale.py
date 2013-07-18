@@ -56,7 +56,6 @@ class sale_order(orm.Model):
             'th_weight': False,
         })
         vals['name'] += _(' offered')
-        print vals
         return vals
 
     def _generate_offered(self, cr, uid, ids, multiple, context=None):
@@ -77,7 +76,6 @@ class sale_order(orm.Model):
             # This will create the lines if there is a offered threshold
             # and a offered qty
             for line in order.order_line:
-                print line
                 if line.product_id and line.product_id.offered_threshold and line.product_id.offered_qty:
                     # If the quantity of the line is lower than the offered threshold
                     # don't do the function for this line
