@@ -1,0 +1,64 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* mrp_percentage_date
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-19 13:26+0000\n"
+"PO-Revision-Date: 2013-07-19 13:26+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mrp_percentage_date
+#: model:ir.model,name:mrp_percentage_date.model_product_product
+msgid "Product"
+msgstr "Article"
+
+#. module: mrp_percentage_date
+#: view:product.product:0
+#: view:res.company:0
+msgid "/ 100"
+msgstr "/ 100"
+
+#. module: mrp_percentage_date
+#: field:procurement.order,special_location:0
+msgid "Special procurement"
+msgstr "Approvisionnement spécial"
+
+#. module: mrp_percentage_date
+#: field:procurement.order,procurement_date:0
+msgid "Procurement date"
+msgstr "Date d'approvisionnement"
+
+#. module: mrp_percentage_date
+#: model:ir.model,name:mrp_percentage_date.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: mrp_percentage_date
+#: model:ir.model,name:mrp_percentage_date.model_procurement_order
+msgid "Procurement"
+msgstr "Approvisionnement"
+
+#. module: mrp_percentage_date
+#: model:ir.model,name:mrp_percentage_date.model_stock_location
+msgid "Location"
+msgstr "Emplacement"
+
+#. module: mrp_percentage_date
+#: field:product.product,date_percentage:0
+#: field:res.company,date_percentage:0
+msgid "Date percentage"
+msgstr "Pourcentage de date"
+
+#. module: mrp_percentage_date
+#: field:stock.location,special_location:0
+msgid "Special Location"
+msgstr "Emplacement spécial"
+

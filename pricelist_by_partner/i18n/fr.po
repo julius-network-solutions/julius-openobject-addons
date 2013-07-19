@@ -90,7 +90,7 @@ msgstr "Catégories de partenaires"
 #. module: pricelist_by_partner
 #: field:res.partner.category,pricelist_items_purchase_ids:0
 msgid "Defined price"
-msgstr "Prix convenus de ventes"
+msgstr "Prix convenus d'achats"
 
 #. module: pricelist_by_partner
 #: view:res.partner.category:0

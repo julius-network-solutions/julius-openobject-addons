@@ -210,8 +210,10 @@ class res_partner_category(orm.Model):
     _inherit = "res.partner.category"
     
     _columns = {
-        'pricelist_items_ids': fields.one2many('product.pricelist.items.partner', 'partner_category_id', 'Defined price'),
-        'pricelist_items_purchase_ids': fields.one2many('product.pricelist.items.partner', 'partner_category_id', 'Defined price'),
+        'pricelist_items_ids': fields.one2many('product.pricelist.items.partner', 'partner_category_id',
+                                               'Defined price', domain=[('type', '=', 'sale')]),
+        'pricelist_items_purchase_ids': fields.one2many('product.pricelist.items.partner', 'partner_category_id',
+                                                        'Defined price', domain=[('type', '=', 'purchase')]),
     }
 
 class res_partner(orm.Model):
@@ -226,7 +228,8 @@ class res_partner(orm.Model):
             res[partner.id] = [x.id for x in partner.pricelist_items_ids]
             for categ in partner.category_id:
                 for item in categ.pricelist_items_ids:
-                    res[partner.id].append(item.id)
+                    if item.type == 'sale':
+                        res[partner.id].append(item.id)
         return res
     
     def _get_all_pricelist_purchase_items(self, cr, uid, ids, field_name, arg, context=None):
@@ -238,7 +241,8 @@ class res_partner(orm.Model):
             res[partner.id] = [x.id for x in partner.pricelist_items_purchase_ids]
             for categ in partner.category_id:
                 for item in categ.pricelist_items_purchase_ids:
-                    res[partner.id].append(item.id)
+                    if item.type == 'purchase':
+                        res[partner.id].append(item.id)
         return res
     
     _columns = {
