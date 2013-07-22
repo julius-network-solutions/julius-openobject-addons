@@ -103,7 +103,14 @@ class procurement_order(orm.Model):
             newdate = datetime.strptime(procurement.procurement_date, DEFAULT_SERVER_DATE_FORMAT)
             newdate_str = newdate.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         return newdate_str
-    
+
+    def _get_date_done(self, cr, uid, newdate_str, procurement, context=None):
+        # If we add the produce delay defined in the product,
+        # We add it inside this date
+        newdate_done = datetime.strptime(newdate_str, DEFAULT_SERVER_DATETIME_FORMAT) + \
+            relativedelta(days=procurement.product_id.produce_delay or 0.0)
+        return newdate_done.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+
     def _special_make_mo(self, cr, uid, special_ids, res=None, context=None):
         if res is None: res = {}
         if context is None: context = {}
@@ -117,9 +124,10 @@ class procurement_order(orm.Model):
             for procurement in procurement_obj.browse(cr, uid, special_ids, context=context):
                 if procurement.product_qty:
                     res_id = procurement.move_id.id
+                    # We get here the procurement date
                     newdate_str = self._get_date_from_procurement(cr, uid, procurement, context=context)
-                    newdate_done = datetime.strptime(newdate_str, DEFAULT_SERVER_DATETIME_FORMAT) + relativedelta(days=procurement.product_id.produce_delay or 0.0)
-                    newdate_done_str = newdate_done.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+                    # Add the produce delay
+                    newdate_done_str = self._get_date_done(cr, uid, newdate_str, procurement, context=context)
                     produce_id = production_obj.create(cr, uid, {
                         'origin': procurement.origin,
                         'product_id': procurement.product_id.id,

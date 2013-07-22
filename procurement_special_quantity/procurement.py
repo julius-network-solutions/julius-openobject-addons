@@ -53,7 +53,7 @@ class procurement_order(orm.Model):
                     if product_available_qty < 0:
                         # When the quantity available quantity is < 0
                         # we only get the value of the move to be produce
-                        quantity = procurement.move_id.product_qty
+                        quantity = - product_available_qty
                     else:
                         # Else we remove available products to be produce
                         quantity = procurement.move_id.product_qty - product_available_qty
@@ -68,12 +68,13 @@ class procurement_order(orm.Model):
                     if product_available_qty < 0:
                         # When the quantity available quantity is < 0
                         # we only get the value of the move to be produce
-                        quantity = - product_available_qty
+                        quantity = procurement.move_id.product_qty + product_available_qty
                     else:
                         # Else we remove available products to be produce
                         quantity = procurement.move_id.product_qty - product_available_qty
-                    if procurement.product_qty > quantity:
-                        new_quantity = quantity
+#                    if procurement.product_qty > quantity:
+                    if quantity:
+                        new_quantity = quantity > 0 and quantity or 0
                         copy_procurement = context.get('copy_child') or True
                         linked_procurement_ids = self.search(cr, uid, [
                                 ('parent_procurement_id', '=', procurement.id)
@@ -87,13 +88,13 @@ class procurement_order(orm.Model):
                                             }, context=context)
                                     copy_procurement = False
                                     break
-                        if copy_procurement and new_quantity > 0:
-                                new_id = self.copy(cr, uid, procurement.id, default={
-                                            'product_qty': new_quantity,
-                                            'product_uos_qty': new_quantity,
-                                            'parent_procurement_id': procurement.id,
-                                        }, context=context)
-                                wf_service.trg_validate(uid, 'procurement.order', new_id, 'button_confirm', cr)
+                        if copy_procurement and new_quantity > 0 and procurement.move_id.product_qty < quantity:
+                            new_id = self.copy(cr, uid, procurement.id, default={
+                                        'product_qty': new_quantity,
+                                        'product_uos_qty': new_quantity,
+                                        'parent_procurement_id': procurement.id,
+                                    }, context=context)
+                            wf_service.trg_validate(uid, 'procurement.order', new_id, 'button_confirm', cr)
         return True
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
