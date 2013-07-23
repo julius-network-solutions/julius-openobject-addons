@@ -51,6 +51,7 @@ class procurement_order(orm.Model):
                 move_qty = procurement.move_id.product_qty
                 # We get here the total of pieces available
                 product_available_qty = move_obj._get_specific_available_qty(cr, uid, procurement.move_id, context=c)
+                print move_qty, product_available_qty
                 if product_available_qty < 0:
                     quantity_to_make = min(move_qty, -product_available_qty)
                 else:
