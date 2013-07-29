@@ -28,21 +28,79 @@ class clean_pricelist_data(orm.Model):
     _columns = {}
     
     def clean_pricelist_data(self, cr, uid, ids, context=None):
-        partner_obj = self.pool.get('res.partner')
-        offset = 370
-        while offset < 1000:
-            partner_ids = partner_obj.search(cr, uid, [
-                ('is_company', '=', True),
-    #            ('list_to_compute', '=', True),
-            ], limit=10, offset=offset, context=context)
-            partner_obj._create_update_pricelist(cr, uid, partner_ids, context=context)
-            offset += 10
-            cr.commit()
         version_obj = self.pool.get('product.pricelist.version')
         version_ids = version_obj.search(cr, uid,
             [('active', '=', False)], context=context)
         if version_ids:
             version_obj.unlink(cr, uid, version_ids, context=context)
+        return {'type': 'ir.actions.act_window_close'}
+    
+    def create_pricelist_sale_data(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        context['type'] = 'sale'
+        category_obj = self.pool.get('res.partner.category')
+        partner_obj = self.pool.get('res.partner')
+        item_obj = self.pool.get('product.pricelist.items.partner')
+        while True:
+            category_ids = category_obj.search(cr, uid, [
+                ('list_to_compute_sale', '=', True),
+            ], limit=10, context=context)
+            item_obj._create_update_pricelist(cr, uid, category_ids,
+                                              type='category', context=context)
+            if category_ids:
+                cr.execute("UPDATE res_partner_category SET list_to_compute_sale = FALSE WHERE id IN %s;" % (str(tuple(category_ids))))
+            cr.commit()
+            if not category_ids:
+                break
+        offset = 0
+        while True:
+            partner_ids = partner_obj.search(cr, uid, [
+                ('is_company', '=', True),
+                ('list_to_compute_sale', '=', True),
+            ], limit=10, context=context)
+            item_obj._create_update_pricelist(cr, uid, partner_ids,
+                                              type='partner', context=context)
+            if partner_ids:
+                partner_obj.write(cr, uid, partner_ids,
+                                  {'list_to_compute_sale': False}, context=context)
+            if partner_ids:
+                cr.execute("UPDATE res_partner SET list_to_compute_sale = FALSE WHERE id IN %s;" % (str(tuple(partner_ids))))
+            cr.commit()
+            if not partner_ids:
+                break
+        return {'type': 'ir.actions.act_window_close'}
+    
+    def create_pricelist_purchase_data(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        context['type'] = 'purchase'
+        category_obj = self.pool.get('res.partner.category')
+        partner_obj = self.pool.get('res.partner')
+        item_obj = self.pool.get('product.pricelist.items.partner')
+        while True:
+            category_ids = category_obj.search(cr, uid, [
+                ('list_to_compute_purchase', '=', True),
+            ], limit=10, context=context)
+            item_obj._create_update_pricelist(cr, uid, category_ids,
+                                              type='category', context=context)
+            if category_ids:
+                cr.execute("UPDATE res_partner_category SET list_to_compute_purchase = FALSE WHERE id IN %s;" % (str(tuple(complete_ids))))
+            cr.commit()
+            if not category_ids:
+                break
+        while True:
+            partner_ids = partner_obj.search(cr, uid, [
+                ('is_company', '=', True),
+                ('list_to_compute_purchase', '=', True),
+            ], limit=10, context=context)
+            item_obj._create_update_pricelist(cr, uid, partner_ids,
+                                              type='partner', context=context)
+            if partner_ids:
+                cr.execute("UPDATE res_partner SET list_to_compute_purchase = FALSE WHERE id IN %s;" % (str(tuple(partner_ids))))
+            cr.commit()
+            if not partner_ids:
+                break
         return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

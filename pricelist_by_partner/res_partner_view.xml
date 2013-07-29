@@ -17,7 +17,7 @@
                     <page string="Price list for Sales" attrs="{'invisible':[('customer','=',False)]}">
                         <button name="create_update_pricelist" type="object"
                             string="Create Update the Pricelist" context="{'type': 'sale'}"/>
-                        <field name="pricelist_items_ids" mode="tree" class="oe_edit_only" context="{'partner_id': active_id, 'type': 'sale', 'default_type': 'sale'}">
+                        <field name="pricelist_items_ids" mode="tree" context="{'partner_id': active_id, 'type': 'sale', 'default_type': 'sale'}">
                             <tree string="Pricelist items" editable="top">
                                 <field name="product_id"
                                     on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
@@ -32,30 +32,13 @@
                                     on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
                                 <field name="partner_id" invisible="1"/>
                                 <field name="type" invisible="1"/>
-                            </tree>
-                        </field>
-                        <field name="complete_pricelist_items_ids" mode="tree" class="oe_view_only" context="{'partner_id': active_id}">
-                            <tree string="Pricelist items">
-                                <field name="partner_category_id"
-                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
-                                <field name="product_id"
-                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
-                                <field name="product_category_id"/>
-                                <field name="min_quantity"/>
-                                <field name="price"/>
-                                <field name="discount"/>
-                                <field name="date_start"
-                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
-                                <field name="date_end"
-                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
-                                <field name="partner_id" invisible="1"/>
                             </tree>
                         </field>
                     </page>
                     <page string="Price list for Purchases" attrs="{'invisible':[('supplier','=',False)]}">
                         <button name="create_update_pricelist" type="object"
                             string="Create Update the Pricelist" context="{'type': 'purchase'}"/>
-                        <field name="pricelist_items_purchase_ids" mode="tree" class="oe_edit_only" context="{'partner_id': active_id, 'type': 'purchase', 'default_type': 'purchase'}">
+                        <field name="pricelist_items_purchase_ids" mode="tree" context="{'partner_id': active_id, 'type': 'purchase', 'default_type': 'purchase'}">
                             <tree string="Pricelist items" editable="top">
                                 <field name="product_id"
                                     on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
@@ -70,23 +53,6 @@
                                     on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
                                 <field name="partner_id" invisible="1"/>
                                 <field name="type" invisible="1"/>
-                            </tree>
-                        </field>
-                        <field name="complete_pricelist_items_purchase_ids" mode="tree" class="oe_view_only" context="{'partner_id': active_id}">
-                            <tree string="Pricelist items">
-                                <field name="partner_category_id"
-                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
-                                <field name="product_id"
-                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
-                                <field name="product_category_id"/>
-                                <field name="min_quantity"/>
-                                <field name="price"/>
-                                <field name="discount"/>
-                                <field name="date_start"
-                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
-                                <field name="date_end"
-                                    on_change="onchange_product_id(product_id, product_category_id, partner_id, False, date_start, date_end, context)"/>
-                                <field name="partner_id" invisible="1"/>
                             </tree>
                         </field>
                     </page>
@@ -102,6 +68,8 @@
                 <field name="parent_id" position="after">
                     <newline/>
                     <group colspan="4" col="4" string="Defined Sale Prices">
+                        <button name="create_update_pricelist" type="object"
+                            string="Create Update the Pricelist" context="{'type': 'sale'}"/>
                         <field name="pricelist_items_ids" mode="tree" colspan="4" nolabel="1"
                             context="{'partner_category_id': active_id, 'type': 'sale', 'default_type': 'sale'}">
                             <tree string="Pricelist items for sale" editable="top">
@@ -125,6 +93,8 @@
                         </field>
                     </group>
                     <group colspan="4" col="4" string="Defined Purchase Prices">
+                        <button name="create_update_pricelist" type="object"
+                            string="Create Update the Pricelist" context="{'type': 'purchase'}"/>
                         <field name="pricelist_items_purchase_ids" mode="tree" colspan="4" nolabel="1"
                             context="{'partner_category_id': active_id, 'type': 'purchase', 'default_type': 'purchase'}">
                             <tree string="Pricelist items for purchase" editable="top">
