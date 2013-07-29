@@ -188,6 +188,8 @@ class product_pricelist_items_partner(orm.Model):
                 request += ' AND product_category_id = ' + str(pricelist_partner_item.product_category_id.id)
             if pricelist_partner_item.min_quantity:
                 request += " AND min_quantity = " + str(pricelist_partner_item.min_quantity)
+            else:
+                request += " AND (min_quantity IS NULL or min_quantity = 0) "
             request += " AND type = '" + str(pricelist_partner_item.type) + "'"
             cursor.execute(request)
             if cursor.fetchall():
@@ -533,7 +535,16 @@ class res_partner(orm.Model):
                     date_start, date_end, context=context)
         return True
 
-    def create_update_pricelist(self, cr, uid, ids, context=None):
+    def _get_vals_for_price_list(self, cr, uid, partner, list_type, context=None):
+        if context is None:
+            context = {}
+        return {
+            'name': partner.name + ' ' + _('List price'),
+            'partner_id': partner.id,
+            'type': list_type,
+        }
+
+    def _create_update_pricelist(self, cr, uid, ids, context=None):
         """ This method will create a pricelist for Partners if there is no pricelist
         which is linked to this partner """
         if context is None:
@@ -543,11 +554,8 @@ class res_partner(orm.Model):
         for partner in self.browse(cr, uid, ids, context=context):
             parent = partner.parent_id
             if not parent:
-                vals = {
-                    'name': partner.name + ' ' + _('List price'),
-                    'partner_id': partner.id,
-                    'type': list_type,
-                }
+                vals = self._get_vals_for_price_list(cr, uid,
+                    partner, list_type, context=context)
                 # If there's no parent company we create a pricelist for the partner
                 pricelist_ids = pricelist_obj.search(cr, uid, [
                         ('partner_id', '=', partner.id),
@@ -567,6 +575,10 @@ class res_partner(orm.Model):
                             'property_product_pricelist': pricelist_id
                         }, context=context)
                 self._create_pricelist_version(cr, uid, pricelist_id, partner, context=context)
+        return True
+    
+    def create_update_pricelist(self, cr, uid, ids, context=None):
+        self._create_update_pricelist(cr, uid, ids, context=context)
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

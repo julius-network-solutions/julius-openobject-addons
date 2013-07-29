@@ -38,6 +38,7 @@
         'security/ir.model.access.csv',
         'res_partner_view.xml',
         'list_price_view.xml',
+        'wizard/clean_pricelist_data_view.xml',
     ],
     'installable' : True,
     'active' : False,

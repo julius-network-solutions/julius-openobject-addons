@@ -19,7 +19,30 @@
 #
 #################################################################################
 
-import res_partner
-import wizard
+from openerp.osv import orm, fields
+from openerp.tools.translate import _
+
+class clean_pricelist_data(orm.Model):
+    _name = 'clean.pricelist.data'
+    
+    _columns = {}
+    
+    def clean_pricelist_data(self, cr, uid, ids, context=None):
+        partner_obj = self.pool.get('res.partner')
+        offset = 370
+        while offset < 1000:
+            partner_ids = partner_obj.search(cr, uid, [
+                ('is_company', '=', True),
+    #            ('list_to_compute', '=', True),
+            ], limit=10, offset=offset, context=context)
+            partner_obj._create_update_pricelist(cr, uid, partner_ids, context=context)
+            offset += 10
+            cr.commit()
+        version_obj = self.pool.get('product.pricelist.version')
+        version_ids = version_obj.search(cr, uid,
+            [('active', '=', False)], context=context)
+        if version_ids:
+            version_obj.unlink(cr, uid, version_ids, context=context)
+        return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
