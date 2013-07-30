@@ -595,20 +595,28 @@ class product_pricelist_items_partner(orm.Model):
         e.g: update the price lists for partner """
         vals = {}
         if list_type == 'purchase':
-            if type == 'category':
+            if type == 'category' and \
+                (not current.pricelist_purchase_id or \
+                current.pricelist_purchase_id.id != pricelist_id):
                 vals = {
                     'pricelist_purchase_id': pricelist_id,
                 }
-            elif type == 'partner':
+            elif type == 'partner' and \
+                (not current.property_product_pricelist_purchase or \
+                current.property_product_pricelist_purchase.id != pricelist_id):
                 vals = {
                     'property_product_pricelist_purchase': pricelist_id,
                 }
         elif list_type == 'sale':
-            if type == 'category':
+            if type == 'category' and \
+                (not current.pricelist_sale_id or \
+                current.pricelist_sale_id.id != pricelist_id):
                 vals = {
                     'pricelist_sale_id': pricelist_id,
                 }
-            elif type == 'partner':
+            elif type == 'partner' and \
+                (not current.property_product_pricelist or \
+                current.property_product_pricelist.id != pricelist_id):
                 vals = {
                     'property_product_pricelist': pricelist_id,
                 }
@@ -622,7 +630,8 @@ class product_pricelist_items_partner(orm.Model):
             context = {}
         vals = self._update_current_vals(cr, uid, 
              current, pricelist_id, type, list_type, context=context)
-        obj.write(cr, uid, current.id, vals, context=context)
+        if vals:
+            obj.write(cr, uid, current.id, vals, context=context)
         return True
 
     def _update_list(self, cr, uid, ids, type, list_type, context=None):

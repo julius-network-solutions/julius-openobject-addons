@@ -25,6 +25,7 @@ from openerp import pooler
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from openerp import tools
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
 
 class procurement_order(orm.Model):
     _inherit = "procurement.order"
@@ -117,11 +118,26 @@ class procurement_order(orm.Model):
                                     break
                         if copy_procurement:
                             if quantity_to_make > 0:
-                                new_id = self.copy(cr, uid, procurement.id, default={
-                                            'product_qty': quantity_to_make,
-                                            'product_uos_qty': quantity_to_make,
-                                            'parent_procurement_id': procurement.id,
-                                        }, context=context)
+                                default = {
+                                    'product_qty': quantity_to_make,
+                                    'product_uos_qty': quantity_to_make,
+                                    'parent_procurement_id': procurement.id,
+                                }
+                                if context.get('date_procurement_compute') \
+                                    and procurement.procurement_date:
+                                    from_dt = datetime.strptime(context.get('date_procurement_compute'), DEFAULT_SERVER_DATE_FORMAT)
+                                    to_dt = datetime.strptime(procurement.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
+                                    date_percentage = (procurement.product_id and \
+                                        (procurement.product_id.date_percentage or \
+                                        procurement.product_id.company_id and \
+                                        procurement.product_id.company_id.date_percentage) \
+                                        or company.date_percentage or (2/3 * 100)) / 100
+                                    procurement_date = self._get_newdate_value(cr, uid, from_dt, to_dt, date_percentage, context=context)
+                                    procurement_date = procurement_date.strftime(DEFAULT_SERVER_DATE_FORMAT)
+                                    default = {
+                                        'procurement_date': procurement_date,
+                                    }
+                                new_id = self.copy(cr, uid, procurement.id, default=default, context=context)
                                 wf_service.trg_validate(uid, 'procurement.order', new_id, 'button_confirm', cr)
                                 res.append(new_id)
         return res
