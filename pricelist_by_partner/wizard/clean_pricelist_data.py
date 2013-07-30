@@ -53,7 +53,6 @@ class clean_pricelist_data(orm.Model):
             cr.commit()
             if not category_ids:
                 break
-        offset = 0
         while True:
             partner_ids = partner_obj.search(cr, uid, [
                 ('is_company', '=', True),

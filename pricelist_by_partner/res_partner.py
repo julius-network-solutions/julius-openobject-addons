@@ -630,6 +630,9 @@ class product_pricelist_items_partner(orm.Model):
             return True
         model = type == 'category' and 'res_partner_category' \
             or type == 'partner' and 'res_partner'
+        if len(ids) == 1:
+            cr.execute("UPDATE %s SET list_to_compute_sale = FALSE WHERE id = %s;" % (model, str(ids[0])))
+            return True
         cr.execute("UPDATE %s SET list_to_compute_sale = FALSE WHERE id IN %s;" % (model, str(tuple(ids))))
         return True
 
