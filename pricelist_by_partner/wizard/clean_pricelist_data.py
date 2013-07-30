@@ -34,6 +34,56 @@ class clean_pricelist_data(orm.Model):
         if version_ids:
             version_obj.unlink(cr, uid, version_ids, context=context)
         return {'type': 'ir.actions.act_window_close'}
+
+    def _update_object(self, cr, uid, object, field, ids, context=None):
+        if len(ids) == 1:
+            where = ' WHERE id = %s;' % (str(ids[0]))
+        else:
+            where = ' WHERE id IN %s;' % (str(tuple(ids)))
+        request = 'UPDATE %s SET %s = FALSE %s' %(object, field, where)
+        return cr.execute(request)
+
+    def _get_category_domain_sale(self, cr, uid, context=None):
+        return [('list_to_compute_sale', '=', True)]
+
+    def _get_partner_domain_sale(self, cr, uid, context=None):
+        return [
+            ('is_company', '=', True),
+            ('list_to_compute_sale', '=', True)
+        ]
+
+    def _get_category_domain_purchase(self, cr, uid, context=None):
+        return [('list_to_compute_purchase', '=', True)]
+
+    def _get_partner_domain_purchase(self, cr, uid, context=None):
+        return [
+            ('is_company', '=', True),
+            ('list_to_compute_purchase', '=', True)
+        ]
+    
+    def _update_list_price(self, cr, uid, obj,
+                           domain, type, list_type, context=None):
+        item_obj = self.pool.get('product.pricelist.items.partner')
+        list_ids = obj.search(cr, uid, domain, limit=10, context=context)
+        item_obj._create_update_pricelist(cr, uid, list_ids,
+                                          type=type, context=context)
+        if type == 'category':
+            model = 'res_partner_category'
+        elif type == 'partner':
+            model = 'res_partner'
+        else:
+            return []
+        if list_type == 'sale':
+            field = 'list_to_compute_sale'
+        elif list_type == 'purchase':
+            field = 'list_to_compute_purchase'
+        else:
+            return []
+        if list_ids:
+            self._update_object(cr, uid, model,
+                                field, list_ids, context=context)
+        cr.commit()
+        return list_ids
     
     def create_pricelist_sale_data(self, cr, uid, ids, context=None):
         if context is None:
@@ -41,32 +91,17 @@ class clean_pricelist_data(orm.Model):
         context['type'] = 'sale'
         category_obj = self.pool.get('res.partner.category')
         partner_obj = self.pool.get('res.partner')
-        item_obj = self.pool.get('product.pricelist.items.partner')
+        domain = self._get_category_domain_sale(cr, uid, context=context)
         while True:
-            category_ids = category_obj.search(cr, uid, [
-                ('list_to_compute_sale', '=', True),
-            ], limit=10, context=context)
-            item_obj._create_update_pricelist(cr, uid, category_ids,
-                                              type='category', context=context)
-            if category_ids:
-                cr.execute("UPDATE res_partner_category SET list_to_compute_sale = FALSE WHERE id IN %s;" % (str(tuple(category_ids))))
-            cr.commit()
-            if not category_ids:
+            list_ids = self._update_list_price(cr, uid,
+                category_obj, domain, type='category', list_type='sale', context=context)
+            if not list_ids:
                 break
+        domain = self._get_partner_domain_sale(cr, uid, context=context)
         while True:
-            partner_ids = partner_obj.search(cr, uid, [
-                ('is_company', '=', True),
-                ('list_to_compute_sale', '=', True),
-            ], limit=10, context=context)
-            item_obj._create_update_pricelist(cr, uid, partner_ids,
-                                              type='partner', context=context)
-            if partner_ids:
-                partner_obj.write(cr, uid, partner_ids,
-                                  {'list_to_compute_sale': False}, context=context)
-            if partner_ids:
-                cr.execute("UPDATE res_partner SET list_to_compute_sale = FALSE WHERE id IN %s;" % (str(tuple(partner_ids))))
-            cr.commit()
-            if not partner_ids:
+            list_ids = self._update_list_price(cr, uid,
+                partner_obj, domain, type='partner', list_type='sale', context=context)
+            if not list_ids:
                 break
         return {'type': 'ir.actions.act_window_close'}
     
@@ -76,29 +111,17 @@ class clean_pricelist_data(orm.Model):
         context['type'] = 'purchase'
         category_obj = self.pool.get('res.partner.category')
         partner_obj = self.pool.get('res.partner')
-        item_obj = self.pool.get('product.pricelist.items.partner')
+        domain = self._get_category_domain_purchase(cr, uid, context=context)
         while True:
-            category_ids = category_obj.search(cr, uid, [
-                ('list_to_compute_purchase', '=', True),
-            ], limit=10, context=context)
-            item_obj._create_update_pricelist(cr, uid, category_ids,
-                                              type='category', context=context)
-            if category_ids:
-                cr.execute("UPDATE res_partner_category SET list_to_compute_purchase = FALSE WHERE id IN %s;" % (str(tuple(complete_ids))))
-            cr.commit()
-            if not category_ids:
+            list_ids = self._update_list_price(cr, uid,
+                category_obj, domain, type='category', list_type='purchase', context=context)
+            if not list_ids:
                 break
+        domain = self._get_partner_domain_purchase(cr, uid, context=context)
         while True:
-            partner_ids = partner_obj.search(cr, uid, [
-                ('is_company', '=', True),
-                ('list_to_compute_purchase', '=', True),
-            ], limit=10, context=context)
-            item_obj._create_update_pricelist(cr, uid, partner_ids,
-                                              type='partner', context=context)
-            if partner_ids:
-                cr.execute("UPDATE res_partner SET list_to_compute_purchase = FALSE WHERE id IN %s;" % (str(tuple(partner_ids))))
-            cr.commit()
-            if not partner_ids:
+            list_ids = self._update_list_price(cr, uid,
+                partner_obj, domain, type='partner', list_type='purchase', context=context)
+            if not list_ids:
                 break
         return {'type': 'ir.actions.act_window_close'}
 
