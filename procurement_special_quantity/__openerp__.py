@@ -20,7 +20,7 @@
 #################################################################################
 
 {
-    "name" : "Sale stock without auto procurement",
+    "name" : "Special quantity to procure",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",

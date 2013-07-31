@@ -22,7 +22,7 @@
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 
-class clean_pricelist_data(orm.Model):
+class clean_pricelist_data(orm.TransientModel):
     _name = 'clean.pricelist.data'
     
     _columns = {}

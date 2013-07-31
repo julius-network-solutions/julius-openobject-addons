@@ -229,6 +229,10 @@ class product_pricelist_items_partner(orm.Model):
             'name': name,
         }
         return vals
+    
+    def _create_default_item(self, cr, uid, version_id, current,
+                             type, list_type, context=None):
+        return True
 
     def _create_default_pricelist_item(self,
             cr, uid, version_id, current,
@@ -257,16 +261,18 @@ class product_pricelist_items_partner(orm.Model):
                         pricelist_ids[0], type,
                         name, sequence, context=context)
                     pricelist_item_obj.create(cr, uid, vals, context=context)
-            # Create the Default price defined in the main list price
-            main_pricelist_id = self._get_main_pricelist_id(
-                cr, uid, list_type, context=context)
-            name = current.name + ' ' + _('Item')
-            sequence = self._get_default_item_sequence(cr, uid, context=context)
-            vals = self._get_default_pricelist_item_vals(
-                cr, uid, current, version_id,
-                main_pricelist_id, type,
-                name, sequence, context=context)
-            pricelist_item_obj.create(cr, uid, vals, context=context)
+            if self._create_default_item(cr, uid, version_id, current,
+                                         type, list_type, context=context):
+                # Create the Default price defined in the main list price
+                main_pricelist_id = self._get_main_pricelist_id(
+                    cr, uid, list_type, context=context)
+                name = current.name + ' ' + _('Item')
+                sequence = self._get_default_item_sequence(cr, uid, context=context)
+                vals = self._get_default_pricelist_item_vals(
+                    cr, uid, current, version_id,
+                    main_pricelist_id, type,
+                    name, sequence, context=context)
+                pricelist_item_obj.create(cr, uid, vals, context=context)
         return True
 
     def _get_dates_item_split(self, cr, uid, pricelist_items, context=None):

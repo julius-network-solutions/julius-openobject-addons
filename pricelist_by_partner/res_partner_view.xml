@@ -5,12 +5,13 @@
         <record id="view_partner_property_form" model="ir.ui.view">
             <field name="name">res.partner.product.property.form.inherit</field>
             <field name="model">res.partner</field>
-            <field name="inherit_id" ref="product.view_partner_property_form"/>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="priority">40</field>
             <field name="arch" type="xml">
                 <field name="property_product_pricelist" position="attributes">
                     <attribute name="domain">[('type', '=', 'sale'), ('partner_id', '=', active_id)]</attribute>
                 </field>
-                <field name="property_product_pricelist" position="attributes">
+                <field name="property_product_pricelist_purchase" position="attributes">
                     <attribute name="domain">[('type', '=', 'purchase'), ('partner_id', '=', active_id)]</attribute>
                 </field>
                 <page string="Sales &amp; Purchases" position="after">
