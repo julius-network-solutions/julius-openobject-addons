@@ -66,7 +66,10 @@ class procurement_order(orm.Model):
                     if product_available_qty < 0:
                         quantity_to_make = abs(min(move_qty, product_available_qty))
                     else:
-                        quantity_to_make = min(move_qty, product_available_qty)
+                        if product_available_qty >= move_qty:
+                            quantity_to_make = 0
+                        else:
+                            quantity_to_make = move_qty - product_available_qty
                 else:
                     if product_available_qty < 0:
                         quantity_to_make = min(move_qty, -product_available_qty)
@@ -90,6 +93,8 @@ class procurement_order(orm.Model):
                         # to the quantity to get
                         quantity_to_make -= bought_quantity
                         quantity_to_make = min(move_qty, quantity_to_make)
+                        if quantity_to_make < 0:
+                            quantity_to_make = 0
                 if procurement.state in ('draft','exception','confirmed'):
                     write_vals = {
                         'product_qty': quantity_to_make,

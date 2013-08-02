@@ -206,6 +206,100 @@ class procurement_order(orm.Model):
         if special_ids:
             res = self._special_make_mo(cr, uid, special_ids, res, context=context)
         return res
+
+    def _special_make_po(self, cr, uid, special_ids, res=None, context=None):
+        """ Make purchase order from procurement
+        @return: New created Purchase Orders procurement wise
+        """
+        if res is None: res = {}
+        if context is None: context = {}
+        ids = special_ids
+        if ids:
+            company = self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id
+            partner_obj = self.pool.get('res.partner')
+            uom_obj = self.pool.get('product.uom')
+            pricelist_obj = self.pool.get('product.pricelist')
+            prod_obj = self.pool.get('product.product')
+            acc_pos_obj = self.pool.get('account.fiscal.position')
+            seq_obj = self.pool.get('ir.sequence')
+            warehouse_obj = self.pool.get('stock.warehouse')
+            for procurement in self.browse(cr, uid, ids, context=context):
+                if procurement.product_qty:
+                    res_id = procurement.move_id.id
+                    partner = procurement.product_id.seller_id # Taken Main Supplier of Product of Procurement.
+                    seller_qty = procurement.product_id.seller_qty
+                    partner_id = partner.id
+                    address_id = partner_obj.address_get(cr, uid, [partner_id], ['delivery'])['delivery']
+                    pricelist_id = partner.property_product_pricelist_purchase.id
+                    warehouse_id = warehouse_obj.search(cr, uid, [('company_id', '=', procurement.company_id.id or company.id)], context=context)
+                    uom_id = procurement.product_id.uom_po_id.id
+        
+                    qty = uom_obj._compute_qty(cr, uid, procurement.product_uom.id, procurement.product_qty, uom_id)
+                    if seller_qty:
+                        qty = max(qty,seller_qty)
+        
+                    price = pricelist_obj.price_get(cr, uid, [pricelist_id], procurement.product_id.id, qty, partner_id, {'uom': uom_id})[pricelist_id]
+        
+                    schedule_date = self._get_purchase_schedule_date(cr, uid, procurement, company, context=context)
+                    purchase_date = self._get_purchase_order_date(cr, uid, procurement, company, schedule_date, context=context)
+        
+                    #Passing partner_id to context for purchase order line integrity of Line name
+                    new_context = context.copy()
+                    new_context.update({'lang': partner.lang, 'partner_id': partner_id})
+        
+                    product = prod_obj.browse(cr, uid, procurement.product_id.id, context=new_context)
+                    taxes_ids = procurement.product_id.supplier_taxes_id
+                    taxes = acc_pos_obj.map_tax(cr, uid, partner.property_account_position, taxes_ids)
+        
+                    name = product.partner_ref
+                    if product.description_purchase:
+                        name += '\n'+ product.description_purchase
+                    line_vals = {
+                        'name': name,
+                        'product_qty': qty,
+                        'product_id': procurement.product_id.id,
+                        'product_uom': uom_id,
+                        'price_unit': price or 0.0,
+                        'date_planned': schedule_date.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+                        'move_dest_id': res_id,
+                        'taxes_id': [(6,0,taxes)],
+                    }
+                    name = seq_obj.get(cr, uid, 'purchase.order') or _('PO: %s') % procurement.name
+                    po_vals = {
+                        'name': name,
+                        'origin': procurement.origin,
+                        'partner_id': partner_id,
+                        'location_id': procurement.location_id.id,
+                        'warehouse_id': warehouse_id and warehouse_id[0] or False,
+                        'pricelist_id': pricelist_id,
+                        'date_order': purchase_date.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+                        'company_id': procurement.company_id.id,
+                        'fiscal_position': partner.property_account_position and partner.property_account_position.id or False,
+                        'payment_term_id': partner.property_supplier_payment_term.id or False,
+                    }
+                    res[procurement.id] = self.create_procurement_purchase_order(cr, uid, procurement, po_vals, line_vals, context=new_context)
+                    self.write(cr, uid, [procurement.id], {'state': 'running', 'purchase_id': res[procurement.id]})
+                else:
+                    self.write(cr, uid, [procurement.id], {'state': 'running'})
+            self.message_post(cr, uid, ids, body=_("Draft Purchase Order created"), context=context)
+        return res
+    
+    def make_po(self, cr, uid, ids, context=None):
+        """ Make purchase order from procurement
+        @return: New created Purchase Orders procurement wise
+        """
+        if context is None: context = {}
+        res = {}
+        procurement_obj = self.pool.get('procurement.order')
+        normal_ids = [x.id for x in procurement_obj.browse(cr, uid, ids, context=context) 
+            if not x.location_id or not x.location_id.special_location]
+        special_ids = [x.id for x in procurement_obj.browse(cr, uid, ids, context=context) 
+            if x.location_id and x.location_id.special_location]
+        if normal_ids:
+            res = super(procurement_order, self).make_po(cr, uid, normal_ids, context=None)
+        if special_ids:
+            res = self._special_make_po(cr, uid, special_ids, res, context=context)
+        return res
     
     def _get_purchase_schedule_date(self, cr, uid, procurement, company, context=None):
         res = super(procurement_order, self)._get_purchase_schedule_date(cr, uid, procurement, company, context=context)
