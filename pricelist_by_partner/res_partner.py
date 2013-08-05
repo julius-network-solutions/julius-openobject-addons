@@ -233,6 +233,34 @@ class product_pricelist_items_partner(orm.Model):
     def _create_default_item(self, cr, uid, version_id, current,
                              type, list_type, context=None):
         return True
+    
+    def _check_if_create_category_item(self, cr, uid, version_id,
+                                       current, category, type,
+                                       list_type, context=None):
+        return True
+    
+    def _create_categories_items(self, cr, uid, version_id, current,
+            category, type, list_type, context=None):
+        if context is None:
+            context = {}
+        if self._check_if_create_category_item(cr, uid, version_id,
+                                               current, category, type,
+                                               list_type, context=context):
+            pricelist_item_obj = self.pool.get('product.pricelist.item')
+            pricelist_obj = self.pool.get('product.pricelist')
+            pricelist_ids = pricelist_obj.search(cr, uid, [
+               ('partner_category_id', '=', category.id),
+               ('type', '=', list_type)
+               ], limit=1, context=context)
+            if pricelist_ids:
+                sequence = self._get_category_item_sequence(cr, uid, category, context=context)
+                name = category.name + ' ' + _('Item')
+                vals = self._get_default_pricelist_item_vals(
+                    cr, uid, current, version_id,
+                    pricelist_ids[0], type,
+                    name, sequence, context=context)
+                pricelist_item_obj.create(cr, uid, vals, context=context)
+        return True
 
     def _create_default_pricelist_item(self,
             cr, uid, version_id, current,
@@ -244,23 +272,13 @@ class product_pricelist_items_partner(orm.Model):
         if context is None:
             context = {}
         pricelist_item_obj = self.pool.get('product.pricelist.item')
-        pricelist_obj = self.pool.get('product.pricelist')
         if type == 'partner':
             # Create the default item for all the list
             # defined in the categories of the partner
             for category in current.category_id:
-                pricelist_ids = pricelist_obj.search(cr, uid, [
-                   ('partner_category_id', '=', category.id),
-                   ('type', '=', list_type)
-                   ], limit=1, context=context)
-                if pricelist_ids:
-                    sequence = self._get_category_item_sequence(cr, uid, category, context=context)
-                    name = category.name + ' ' + _('Item')
-                    vals = self._get_default_pricelist_item_vals(
-                        cr, uid, current, version_id,
-                        pricelist_ids[0], type,
-                        name, sequence, context=context)
-                    pricelist_item_obj.create(cr, uid, vals, context=context)
+                self._create_categories_items(cr, uid, version_id,
+                                              current, category,
+                                              type, list_type, context=context)
             if self._create_default_item(cr, uid, version_id, current,
                                          type, list_type, context=context):
                 # Create the Default price defined in the main list price
@@ -423,7 +441,7 @@ class product_pricelist_items_partner(orm.Model):
 
     def _get_item_vals(self, cr, uid, version_id, 
                        base_id, min_quantity, discount, 
-                       price, seq, current, item, name=False, 
+                       price, seq, type, current, item, name=False, 
                        context=None):
         if name == False:
             name = _('Item')
@@ -440,7 +458,7 @@ class product_pricelist_items_partner(orm.Model):
         }
 
     def _create_pricelist_items(self, cr, uid, 
-            version_id, current, pricelist_items, list_type,
+            version_id, current, pricelist_items, type, list_type,
             date_start=False, date_end=False, context=None):
         """ This method can be called if you want to create
         a price list item which tells the system everything is 
@@ -496,7 +514,7 @@ class product_pricelist_items_partner(orm.Model):
                 name = current.name + ' ' + _('Item')
                 vals = self._get_item_vals(cr, uid,
                     version_id, base_id, min_quantity, discount,
-                    price, seq, current, item, name, context=context)
+                    price, seq, type, current, item, name, context=context)
                 pricelist_item_obj.create(cr, uid, vals, context=context)
         return True
 
@@ -547,7 +565,7 @@ class product_pricelist_items_partner(orm.Model):
                 # Create price list items for
                 # the current record, and current version
                 self._create_pricelist_items(cr, uid, version_id,
-                    current, items, list_type,
+                    current, items, type, list_type,
                     date_start, date_end, context=context)
         return True
 
