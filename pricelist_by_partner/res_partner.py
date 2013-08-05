@@ -703,7 +703,17 @@ class res_partner_category(orm.Model):
         for category_id in ids:
             res[category_id] = True
         return res
-    
+
+    def _get_item_category_sale(self, cr, uid, ids, context=None):
+        res = self.browse(cr, uid, ids, context=context)
+        ids2 = [x.partner_category_id.id for x in res if x.partner_category_id and x.type == 'sale']
+        return ids2
+
+    def _get_item_category_purchase(self, cr, uid, ids, context=None):
+        res = self.browse(cr, uid, ids, context=context)
+        ids2 = [x.partner_category_id.id for x in res if x.partner_category_id and x.type == 'purchase']
+        return ids2
+
     _columns = {
         'pricelist_items_ids': fields.one2many('product.pricelist.items.partner', 'partner_category_id',
                                                'Defined price', domain=[('type', '=', 'sale')]),
@@ -712,10 +722,20 @@ class res_partner_category(orm.Model):
         'list_to_compute_sale': fields.function(_get_compute_list, string='List price to compute', type='boolean',
             store = {
                 'res.partner.category': (lambda self, cr, uid, ids, c={}: ids, ['pricelist_items_ids'], 20),
+                'product.pricelist.items.partner': (_get_item_category_sale, ['partner_category_id','product_id',
+                                                                         'product_category_id','min_quantity',
+                                                                         'price','discount',
+                                                                         'date_start','date_end',
+                                                                        'type'], 30),
             }),
         'list_to_compute_purchase': fields.function(_get_compute_list, string='List price to compute', type='boolean',
             store = {
                 'res.partner.category': (lambda self, cr, uid, ids, c={}: ids, ['pricelist_items_purchase_ids'], 20),
+                'product.pricelist.items.partner': (_get_item_category_purchase, ['partner_category_id','product_id',
+                                                                         'product_category_id','min_quantity',
+                                                                         'price','discount',
+                                                                         'date_start','date_end',
+                                                                        'type'], 30),
             }),
         'pricelist_sale_id': fields.many2one('product.pricelist', 'Sale List Price',),
         'pricelist_purchase_id': fields.many2one('product.pricelist', 'Purchase List Price',),
@@ -771,7 +791,17 @@ class res_partner(orm.Model):
             ('category_id', 'in', ids),
             ], context=context)
         return ids2
-    
+
+    def _get_item_partner_sale(self, cr, uid, ids, context=None):
+        res = self.browse(cr, uid, ids, context=context)
+        ids2 = [x.partner_id.id for x in res if x.partner_id and x.type == 'sale']
+        return ids2
+
+    def _get_item_partner_purchase(self, cr, uid, ids, context=None):
+        res = self.browse(cr, uid, ids, context=context)
+        ids2 = [x.partner_id.id for x in res if x.partner_id and x.type == 'purchase']
+        return ids2
+
     _columns = {
         'pricelist_items_ids': fields.one2many('product.pricelist.items.partner',
                 'partner_id', 'Defined sale price', domain=[('type', '=', 'sale')]),
@@ -785,11 +815,21 @@ class res_partner(orm.Model):
             store = {
                 'res.partner.category': (_get_children_category, ['pricelist_sale_id'], 10),
                 'res.partner': (lambda self, cr, uid, ids, c={}: ids, ['pricelist_items_ids', 'category_id'], 20),
+                'product.pricelist.items.partner': (_get_item_partner_sale, ['partner_id','product_id',
+                                                                        'product_category_id','min_quantity',
+                                                                        'price','discount',
+                                                                        'date_start','date_end',
+                                                                        'type'], 30),
             }),
         'list_to_compute_purchase': fields.function(_get_compute_list, string='List price to compute', type='boolean',
             store = {
                 'res.partner.category': (_get_children_category, ['pricelist_purchase_id'], 10),
                 'res.partner': (lambda self, cr, uid, ids, c={}: ids, ['pricelist_items_purchase_ids', 'category_id'], 20),
+                'product.pricelist.items.partner': (_get_item_partner_purchase, ['partner_id','product_id',
+                                                                        'product_category_id','min_quantity',
+                                                                        'price','discount',
+                                                                        'date_start','date_end',
+                                                                        'type'], 30),
             }),
     }
 

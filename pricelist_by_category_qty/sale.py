@@ -58,7 +58,6 @@ class sale_order(orm.Model):
         return res
     
     def _check_if_edit(self, cr, uid, res, context=None):
-#        return True
         if context is None:
             context = {}
         price_list_item_obj = self.pool.get('product.pricelist.item')
