@@ -11,7 +11,7 @@
                     <button
                         name="compute_global_discount"
                         string="Compute global discount"
-                        type="object" states="draft"
+                        type="object" states="draft,sent"
                         class="oe_highlight"/>
                 </button>
             </field>
