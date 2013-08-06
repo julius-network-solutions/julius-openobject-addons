@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 15:34+0000\n"
-"PO-Revision-Date: 2013-06-10 15:34+0000\n"
+"POT-Creation-Date: 2013-08-05 14:17+0000\n"
+"PO-Revision-Date: 2013-08-05 14:17+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,31 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pricelist_by_partner
+#: model:ir.actions.act_window,name:pricelist_by_partner.action_clean_pricelist_data_sale
+#: model:ir.ui.menu,name:pricelist_by_partner.menu_action_clean_pricelist_data_sale
+msgid "Sales List Price generation"
+msgstr "Génération des prix de ventes"
+
+#. module: pricelist_by_partner
 #: view:res.partner.category:0
 msgid "Pricelist items for purchase"
 msgstr "Prix convenus pour les achats"
+
+#. module: pricelist_by_partner
+#: view:clean.pricelist.data:0
+msgid "Generate purchase prices"
+msgstr "Générer les prix d'achats"
+
+#. module: pricelist_by_partner
+#: constraint:product.pricelist.items.partner:0
+msgid "You cannot have 2 pricelist items that overlap!"
+msgstr "Vous ne pouvez pas avoir 2 éléments qui se chevauchent !"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_category_pricelist_sale_id
+#: field:res.partner.category,pricelist_sale_id:0
+msgid "Sale List Price"
+msgstr "Liste de prix de ventes"
 
 #. module: pricelist_by_partner
 #: view:res.partner:0
@@ -26,16 +48,37 @@ msgid "Sales & Purchases"
 msgstr "Achats-Ventes"
 
 #. module: pricelist_by_partner
-#: code:addons/pricelist_by_partner/res_partner.py:540
+#: model:ir.ui.menu,name:pricelist_by_partner.menu_action_clean_pricelist_data_main_menu
+msgid "List price management"
+msgstr "Gestion des listes de prix"
+
+#. module: pricelist_by_partner
+#: code:addons/pricelist_by_partner/res_partner.py:607
 #, python-format
 msgid "List price"
 msgstr "Liste de prix"
 
 #. module: pricelist_by_partner
-#: code:addons/pricelist_by_partner/res_partner.py:261
-#, python-format
-msgid "Version"
-msgstr "Version"
+#: view:clean.pricelist.data:0
+msgid "Generate sale List prices"
+msgstr "Générer les listes de prix de ventes"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_partner_category_id
+#: field:product.pricelist,partner_category_id:0
+msgid "Partner Category"
+msgstr "Catégorie de partenaire"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_product_category_id
+#: field:product.pricelist.items.partner,product_category_id:0
+msgid "Product category"
+msgstr "Catégorie de produit"
+
+#. module: pricelist_by_partner
+#: model:ir.model,name:pricelist_by_partner.model_clean_pricelist_data
+msgid "clean.pricelist.data"
+msgstr "Nettoyage de liste de prix"
 
 #. module: pricelist_by_partner
 #: model:ir.model,name:pricelist_by_partner.model_product_pricelist_items_partner
@@ -51,26 +94,87 @@ msgid "Pricelist items"
 msgstr "Prix convenus"
 
 #. module: pricelist_by_partner
+#: view:res.partner.category:0
+msgid "Defined Sale Prices"
+msgstr "Prix de ventes définis"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_product_id
+#: field:product.pricelist.items.partner,product_id:0
+msgid "Product"
+msgstr "Article"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_price
+#: field:product.pricelist.items.partner,price:0
+msgid "Price"
+msgstr "Prix"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_partner_category_id
+#: field:product.pricelist.items.partner,partner_category_id:0
+msgid "Partner category"
+msgstr "Catégorie de partenaire"
+
+#. module: pricelist_by_partner
+#: view:res.partner:0
+msgid "Price list for Purchases"
+msgstr "Liste de remises pour les achats"
+
+#. module: pricelist_by_partner
+#: code:addons/pricelist_by_partner/res_partner.py:223
+#: code:addons/pricelist_by_partner/res_partner.py:257
+#: code:addons/pricelist_by_partner/res_partner.py:287
+#: code:addons/pricelist_by_partner/res_partner.py:447
+#: code:addons/pricelist_by_partner/res_partner.py:514
+#, python-format
+msgid "Item"
+msgstr "Elément"
+
+#. module: pricelist_by_partner
+#: view:clean.pricelist.data:0
+msgid "Sales Price lists"
+msgstr "Liste de prix de ventes"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_min_quantity
+#: field:product.pricelist.items.partner,min_quantity:0
+msgid "Min. Quantity"
+msgstr "Quantité min."
+
+#. module: pricelist_by_partner
 #: model:ir.model,name:pricelist_by_partner.model_product_pricelist
 msgid "Pricelist"
 msgstr "Liste de prix"
 
 #. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_type
 #: field:product.pricelist.items.partner,type:0
 msgid "Pricelist Type"
 msgstr "Type de liste de prix"
 
 #. module: pricelist_by_partner
 #: view:res.partner:0
+#: view:res.partner.category:0
 msgid "Create Update the Pricelist"
 msgstr "Créer / MàJ la liste de prix"
 
 #. module: pricelist_by_partner
-#: code:addons/pricelist_by_partner/res_partner.py:286
-#: code:addons/pricelist_by_partner/res_partner.py:358
-#, python-format
-msgid "Item"
-msgstr "Elément"
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_category_pricelist_purchase_id
+#: field:res.partner.category,pricelist_purchase_id:0
+msgid "Purchase List Price"
+msgstr "Liste de prix d'achat"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_name
+#: field:product.pricelist.items.partner,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: pricelist_by_partner
+#: help:product.pricelist.items.partner,min_quantity:0
+msgid "Specify the minimum quantity that needs to be bought/sold for the rule to apply."
+msgstr "Indiquez la quantité minimale à acheter/vendre pour que la règle s'applique."
 
 #. module: pricelist_by_partner
 #: view:res.partner:0
@@ -78,7 +182,27 @@ msgid "Price list for Sales"
 msgstr "Liste de remises pour les ventes"
 
 #. module: pricelist_by_partner
+#: model:ir.actions.act_window,name:pricelist_by_partner.action_clean_pricelist_data_purchase
+#: model:ir.ui.menu,name:pricelist_by_partner.menu_action_clean_pricelist_data_purchase
+msgid "Purchases List Price generation"
+msgstr "Génération des prix d'achats"
+
+#. module: pricelist_by_partner
+#: view:clean.pricelist.data:0
+msgid "Generate purchase List prices"
+msgstr "Générer les listes de prix d'achats"
+
+#. module: pricelist_by_partner
+#: view:clean.pricelist.data:0
+msgid "Generate sale prices"
+msgstr "Générer les prix de ventes"
+
+#. module: pricelist_by_partner
 #: model:ir.model,name:pricelist_by_partner.model_res_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_partner_id
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_partner_id
+#: field:product.pricelist,partner_id:0
+#: field:product.pricelist.items.partner,partner_id:0
 msgid "Partner"
 msgstr "Partenaire"
 
@@ -88,14 +212,23 @@ msgid "Partner Categories"
 msgstr "Catégories de partenaires"
 
 #. module: pricelist_by_partner
-#: field:res.partner.category,pricelist_items_purchase_ids:0
-msgid "Defined price"
-msgstr "Prix convenus d'achats"
-
-#. module: pricelist_by_partner
 #: view:res.partner.category:0
 msgid "Pricelist items for sale"
 msgstr "Prix convenus pour les ventes"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_category_pricelist_items_ids
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_category_pricelist_items_purchase_ids
+#: field:res.partner.category,pricelist_items_ids:0
+#: field:res.partner.category,pricelist_items_purchase_ids:0
+msgid "Defined price"
+msgstr "Prix convenus de ventes"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_discount
+#: field:product.pricelist.items.partner,discount:0
+msgid "Discount (%)"
+msgstr "Remise (%)"
 
 #. module: pricelist_by_partner
 #: view:product.pricelist.items.partner:0
@@ -103,9 +236,30 @@ msgid "Purchases"
 msgstr "Achats"
 
 #. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_date_end
+#: field:product.pricelist.items.partner,date_end:0
+msgid "Date End"
+msgstr "Date de fin"
+
+#. module: pricelist_by_partner
+#: view:clean.pricelist.data:0
+msgid "Purchases Pricelists"
+msgstr "Liste de prix d'achats"
+
+#. module: pricelist_by_partner
+#: view:res.partner.category:0
+msgid "Defined Purchase Prices"
+msgstr "Prix convenus d'achats"
+
+#. module: pricelist_by_partner
 #: constraint:product.pricelist.items.partner:0
 msgid "Pricelist item 'Date Start' must be before 'Date End'."
 msgstr "L'élément de remise doit avoir une date de début inférieure ou égale à la date de fin."
+
+#. module: pricelist_by_partner
+#: view:clean.pricelist.data:0
+msgid "Clean all the inactive pricelist data"
+msgstr "Nettoyer les données de liste de prix inactives"
 
 #. module: pricelist_by_partner
 #: view:product.pricelist.items.partner:0
@@ -113,24 +267,71 @@ msgid "Sales"
 msgstr "Ventes"
 
 #. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_complete_pricelist_items_purchase_ids
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_pricelist_items_purchase_ids
 #: field:res.partner,complete_pricelist_items_purchase_ids:0
 #: field:res.partner,pricelist_items_purchase_ids:0
 msgid "Defined purchase price"
-msgstr "Prix convenus d'achats"
+msgstr "Prix convenus d'achat"
 
 #. module: pricelist_by_partner
-#: code:addons/pricelist_by_partner/res_partner.py:162
+#: code:addons/pricelist_by_partner/res_partner.py:190
+#: code:addons/pricelist_by_partner/res_partner.py:192
+#, python-format
+msgid "Version"
+msgstr "Version"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_category_list_to_compute_purchase
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_category_list_to_compute_sale
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_list_to_compute_purchase
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_list_to_compute_sale
+#: field:res.partner,list_to_compute_purchase:0
+#: field:res.partner,list_to_compute_sale:0
+#: field:res.partner.category,list_to_compute_purchase:0
+#: field:res.partner.category,list_to_compute_sale:0
+msgid "List price to compute"
+msgstr "Liste de prix à calculer"
+
+#. module: pricelist_by_partner
+#: code:addons/pricelist_by_partner/res_partner.py:121
 #, python-format
 msgid "Input Error!"
 msgstr "Erreur de saisie !"
 
 #. module: pricelist_by_partner
-#: view:res.partner:0
-msgid "Price list for Purchases"
-msgstr "Liste de remises pour les achats"
+#: view:clean.pricelist.data:0
+msgid "Cancel"
+msgstr "Anneler"
 
 #. module: pricelist_by_partner
-#: constraint:product.pricelist.items.partner:0
-msgid "You cannot have 2 pricelist items that overlap!"
-msgstr "Vous ne pouvez pas avoir 2 éléments qui se chevauchent !"
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_complete_pricelist_items_ids
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_res_partner_pricelist_items_ids
+#: field:res.partner,complete_pricelist_items_ids:0
+#: field:res.partner,pricelist_items_ids:0
+msgid "Defined sale price"
+msgstr "Prix de vente convenu"
+
+#. module: pricelist_by_partner
+#: model:ir.model.fields,field_description:pricelist_by_partner.field_product_pricelist_items_partner_date_start
+#: field:product.pricelist.items.partner,date_start:0
+msgid "Date Start"
+msgstr "Date de début"
+
+#. module: pricelist_by_partner
+#: view:clean.pricelist.data:0
+msgid "Clean data"
+msgstr "Nettoyer les données"
+
+#. module: pricelist_by_partner
+#: view:clean.pricelist.data:0
+#: model:ir.actions.act_window,name:pricelist_by_partner.action_clean_pricelist_data
+#: model:ir.ui.menu,name:pricelist_by_partner.menu_action_clean_pricelist_data
+msgid "Pricelist cleaner"
+msgstr "Nettoyeur de liste de prix"
+
+#. module: pricelist_by_partner
+#: view:clean.pricelist.data:0
+msgid "or"
+msgstr "ou"
 

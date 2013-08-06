@@ -20,25 +20,27 @@
 #################################################################################
 
 {
-    "name" : "Special quantity to procure",
+    "name" : "Discount by quantities of product category",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Warehouse Management",
+    "category" : "Sales Management",
     "depends" : [
         'sale',
-        'sale_stock',
-        "stock_special_location",
     ],
     "description": """
-    This module will check if the move is due to a specific location.
-    If this is a special location, then the sale_order will create the picking and the associated procurement as usual
-    but the quantity to procure will be adjusted in function of the availability of the product at the planned date.
+    This module will add a button inside the sale order and will compute the discount
+    not by line but by quantities of the same product category, in the same sale order.
+    e.g.:
+    You've defined 10% discount for Category A for 100 PCE min in the List price.
+    You try to sell 50 Pieces of Product A and 50 Pieces of Product B (defined on Category A).
+    The OnChange in the line will compute the price of the product as usual.
+    Then you click on the new button. The unit price will be updated as you've sold 50+50 = 100 pieces of the same category!
+    => you will have 10% discount on both lines !
     """,
     "demo" : [],
     "data" : [
-        "procurement.xml",
-        "wizard/schedulers_all_view.xml",
+        'sale_view.xml',
     ],
     'installable' : True,
     'active' : False,

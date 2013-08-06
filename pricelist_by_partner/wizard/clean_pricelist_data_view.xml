@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <menuitem
+            name="List price management"
+            id="menu_action_clean_pricelist_data_main_menu"
+            parent="product.menu_product_pricelist_main"
+            sequence="30"/>
+
+        <record id="view_clean_pricelist_data_sale_form" model="ir.ui.view">
+            <field name="name">clean.pricelist.data.form</field>
+            <field name="model">clean.pricelist.data</field>
+            <field name="arch" type="xml">
+                <form string="Sales Price lists" version="7.0">
+                    <group>
+                        <separator string="Generate sale List prices"/>
+                    </group>
+                    <footer>
+                        <button string="Generate sale prices" name="create_pricelist_sale_data" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_clean_pricelist_data_sale" model="ir.actions.act_window">
+            <field name="name">Sales List Price generation</field>
+            <field name="res_model">clean.pricelist.data</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_clean_pricelist_data_sale_form"/>
+        </record>
+        <menuitem action="action_clean_pricelist_data_sale"
+            id="menu_action_clean_pricelist_data_sale"
+            parent="menu_action_clean_pricelist_data_main_menu"
+            sequence="10"/>
+
+        <record id="view_clean_pricelist_data_purchase_form" model="ir.ui.view">
+            <field name="name">clean.pricelist.data.form</field>
+            <field name="model">clean.pricelist.data</field>
+            <field name="arch" type="xml">
+                <form string="Purchases Pricelists" version="7.0">
+                    <group>
+                        <separator string="Generate purchase List prices"/>
+                    </group>
+                    <footer>
+                        <button string="Generate purchase prices" name="create_pricelist_purchase_data" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_clean_pricelist_data_purchase" model="ir.actions.act_window">
+            <field name="name">Purchases List Price generation</field>
+            <field name="res_model">clean.pricelist.data</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_clean_pricelist_data_purchase_form"/>
+        </record>
+        <menuitem action="action_clean_pricelist_data_purchase"
+            id="menu_action_clean_pricelist_data_purchase"
+            parent="menu_action_clean_pricelist_data_main_menu"
+            sequence="20"/>
+
+        <record id="view_clean_pricelist_data_form" model="ir.ui.view">
+            <field name="name">clean.pricelist.data.form</field>
+            <field name="model">clean.pricelist.data</field>
+            <field name="arch" type="xml">
+                <form string="Pricelist cleaner" version="7.0">
+                    <group>
+                        <separator string="Clean all the inactive pricelist data"/>
+                    </group>
+                    <footer>
+                        <button string="Clean data" name="clean_pricelist_data" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_clean_pricelist_data" model="ir.actions.act_window">
+            <field name="name">Pricelist cleaner</field>
+            <field name="res_model">clean.pricelist.data</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_clean_pricelist_data_form"/>
+        </record>
+        <menuitem action="action_clean_pricelist_data"
+            id="menu_action_clean_pricelist_data"
+            parent="menu_action_clean_pricelist_data_main_menu"
+            sequence="30"/>
+
+    </data>
+</openerp>
