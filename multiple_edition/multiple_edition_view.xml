@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <form string="Field Relation">                
                     <separator string="placeholder"/>
-                    <button name="save_relations" string="Save" colspan="4" type="object" icon="gtk-ok" />
+                    <button name="save_relations" string="Save" colspan="4" type="object" class="oe_highlight"/>
                 </form>
             </field>
         </record>
@@ -44,7 +44,8 @@
 		             	<field name="int_value" class="oe_inline" colspan="4" attrs="{'invisible':[('field_type','!=','integer')]}"/>
 		             	<field name="text_value" class="oe_inline" colspan="4" attrs="{'invisible':[('field_type','!=','text')]}"/>
 		             	<field name="float_value" class="oe_inline" colspan="4" attrs="{'invisible':[('field_type','!=','float')]}"/>
-		             	<button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relation" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','many2one')]}"/>
+		             	<button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relation" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','selection')]}"/>
+						<button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relation" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','many2one')]}"/>
 	             		<button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relations" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','one2many')]}"/>
 	             		<button name="%(action_field_relation)d" context="{'multiple_edition_id': active_id}" string="Relations" colspan="4" type="action" icon="gtk-execute" attrs="{'invisible':[('field_type','!=','many2many')]}"/>
 	            	</div>
