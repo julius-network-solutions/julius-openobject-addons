@@ -34,11 +34,14 @@ class account_journal(orm.Model):
         result = self.browse(cr, user, ids, context=context)
         res = []
         for rs in result:
+            currency = False
             if rs.currency:
                 currency = rs.currency
             else:
                 currency = rs.company_id.currency_id
-            name = "%s " % (rs.code)
+            name = "%s" % (rs.code)
+            if currency:
+                name += " - %s" % (currency.name,)
             res += [(rs.id, name)]
         return res
 
