@@ -38,18 +38,4 @@ class account_account(orm.Model):
             print res
         return res
     
-#     def name_get(self, cr, uid, ids, context=None):
-#         if not ids:
-#             return []
-#         res = []
-#         result = self.browse(cr, uid, ids, context=context)
-#         for rs in result:
-#             name = rs.code
-#             if name:
-#                 vals = {
-#                          'name': name,
-#                          }
-#                 self.write(cr, uid, rs.id, vals, context=context)
-#         return res
-    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
