@@ -31,9 +31,8 @@
     'depends': [
         'account',
     ],
-    'init_xml': [],
-    'update_xml': [],
-    'demo_xml': [],
+    'data': [],
+    'demo': [],
     'installable': True,
     'active': False,
 }

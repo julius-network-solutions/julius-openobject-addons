@@ -41,7 +41,7 @@ class account_journal(orm.Model):
                 currency = rs.company_id.currency_id
             name = "%s" % (rs.code)
             if currency:
-                name += " - %s" % (currency.name,)
+                name += " (%s)" % (currency.name,)
             res += [(rs.id, name)]
         return res
 
