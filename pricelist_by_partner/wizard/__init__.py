@@ -19,29 +19,6 @@
 #
 #################################################################################
 
-{
-    "name" : "Special quantity to procure",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Warehouse Management",
-    "depends" : [
-        'sale',
-        'sale_stock',
-        "stock_special_location",
-    ],
-    "description": """
-    This module will check if the move is due to a specific location.
-    If this is a special location, then the sale_order will create the picking and the associated procurement as usual
-    but the quantity to procure will be adjusted in function of the availability of the product at the planned date.
-    """,
-    "demo" : [],
-    "data" : [
-        "procurement.xml",
-        "wizard/schedulers_all_view.xml",
-    ],
-    'installable' : True,
-    'active' : False,
-}
+import clean_pricelist_data
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

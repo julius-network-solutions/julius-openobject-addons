@@ -20,25 +20,21 @@
 #################################################################################
 
 {
-    "name" : "Special quantity to procure",
-    "version" : "0.1",
+    "name" : "Product Partner code",
+    "version" : "1.0",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Warehouse Management",
+    "category" : "Sales Management",
     "depends" : [
-        'sale',
-        'sale_stock',
-        "stock_special_location",
+        'product',
     ],
     "description": """
-    This module will check if the move is due to a specific location.
-    If this is a special location, then the sale_order will create the picking and the associated procurement as usual
-    but the quantity to procure will be adjusted in function of the availability of the product at the planned date.
+    Add a new object which allow to define partner codes for products
     """,
     "demo" : [],
     "data" : [
-        "procurement.xml",
-        "wizard/schedulers_all_view.xml",
+        'security/ir.model.access.csv',
+        'product_view.xml',
     ],
     'installable' : True,
     'active' : False,

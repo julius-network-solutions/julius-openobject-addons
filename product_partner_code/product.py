@@ -18,30 +18,24 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-{
-    "name" : "Special quantity to procure",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Warehouse Management",
-    "depends" : [
-        'sale',
-        'sale_stock',
-        "stock_special_location",
-    ],
-    "description": """
-    This module will check if the move is due to a specific location.
-    If this is a special location, then the sale_order will create the picking and the associated procurement as usual
-    but the quantity to procure will be adjusted in function of the availability of the product at the planned date.
-    """,
-    "demo" : [],
-    "data" : [
-        "procurement.xml",
-        "wizard/schedulers_all_view.xml",
-    ],
-    'installable' : True,
-    'active' : False,
-}
+class product_tag(orm.Model):
+    _name = "product.partner.code"
+    _rec_name = 'code'
+    
+    _columns = {
+        'code': fields.char('Code', required=True, size=64),
+        'product_id': fields.many2one('product.product', 'Product', required=True),
+        'partner_id': fields.many2one('res.partner', 'Partner', required=True),
+    }
+    
+class product_product(orm.Model):
+    _inherit = 'product.product'
+    
+    _columns = {
+        'partner_code_ids': fields.one2many('product.partner.code', 'product_id', 'Product partner codes'),
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

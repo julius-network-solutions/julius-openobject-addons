@@ -2,10 +2,11 @@
 <openerp>
 	<data>
 
-        <record id="product_sacatec_form_inherit" model="ir.ui.view">
-            <field name="name">product.sacatec.view.form</field>
+        <record id="product_normal_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.product.view.form</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="priority">25</field>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='delay']" position="inside">
                     <label for="date_percentage" attrs="{'invisible':[('type','=','service')]}"/>
@@ -16,8 +17,8 @@
 			</field>
         </record>
 
-        <record id="company_sacatec_form_inherit" model="ir.ui.view">
-            <field name="name">company.sacatec.view.form</field>
+        <record id="view_company_form_inherit" model="ir.ui.view">
+            <field name="name">company.view.form</field>
             <field name="model">res.company</field>
             <field name="priority">25</field>
             <field name="inherit_id" ref="base.view_company_form"/>

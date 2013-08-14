@@ -56,8 +56,8 @@
             </field>
         </record>
 
-        <record id="product_girard_sudron_form_inherit" model="ir.ui.view">
-            <field name="name">product.girard.sudron.view.form</field>
+        <record id="product_product_form_inherit" model="ir.ui.view">
+            <field name="name">product.product.view.form</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
@@ -69,7 +69,7 @@
 
 		<!--  kanban view   -->
 
-       	<record model="ir.ui.view" id="product_girard_sudron_kanban">
+       	<record model="ir.ui.view" id="product_product_kanban">
             <field name="name">Product Product Tag Kanban</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_kanban_view"/>

@@ -60,20 +60,30 @@ class product_product(orm.Model):
         return res
     
     _columns = {
-        'price_data': fields.float('Price Data', digits_compute=dp.get_precision('Product Multi Price')),
-        'price_type': fields.selection([('1_unit', '1 Unit'),('10_unit', '10 Units'),('100_unit', '100 Units'),('1000_unit', '1000 Units')],'Price Type'),
+        'price_data': fields.float('Price Data',
+            digits_compute=dp.get_precision('Product Multi Price')),
+        'price_type': fields.selection([
+            ('1_unit', '1 Unit'),
+            ('10_unit', '10 Units'),
+            ('100_unit', '100 Units'),
+            ('1000_unit', '1000 Units')
+            ],'Price Type'),
         'price_1_unit': fields.function(
-            _compute_multiple_price, type='float', string='Price 1 Unit', 
-            digits_compute=dp.get_precision('Product Multi Price'), multi="price", store=True),
+            _compute_multiple_price, type='float', string='Price 1 Unit',
+            digits_compute=dp.get_precision('Product Multi Price'),
+            multi="price", store=True),
         'price_10_unit': fields.function(
-            _compute_multiple_price, type='float', string='Price 10 Units', 
-            digits_compute=dp.get_precision('Product Multi Price'), multi="price", store=True),
+            _compute_multiple_price, type='float', string='Price 10 Units',
+            digits_compute=dp.get_precision('Product Multi Price'),
+            multi="price", store=True),
         'price_100_unit': fields.function(
             _compute_multiple_price, type='float', string='Price 100 Units', 
-            digits_compute=dp.get_precision('Product Multi Price'), multi="price", store=True),
+            digits_compute=dp.get_precision('Product Multi Price'),
+            multi="price", store=True),
         'price_1000_unit': fields.function(
             _compute_multiple_price, type='float', string='Price 1000 Units', 
-            digits_compute=dp.get_precision('Product Multi Price'), multi="price", store=True),
+            digits_compute=dp.get_precision('Product Multi Price'),
+            multi="price", store=True),
     }
     
     _defaults = {

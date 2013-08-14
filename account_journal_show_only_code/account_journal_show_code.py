@@ -19,29 +19,31 @@
 #
 #################################################################################
 
-{
-    "name" : "Special quantity to procure",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Warehouse Management",
-    "depends" : [
-        'sale',
-        'sale_stock',
-        "stock_special_location",
-    ],
-    "description": """
-    This module will check if the move is due to a specific location.
-    If this is a special location, then the sale_order will create the picking and the associated procurement as usual
-    but the quantity to procure will be adjusted in function of the availability of the product at the planned date.
-    """,
-    "demo" : [],
-    "data" : [
-        "procurement.xml",
-        "wizard/schedulers_all_view.xml",
-    ],
-    'installable' : True,
-    'active' : False,
-}
+from openerp.osv import osv, fields, orm
+from openerp.tools.translate import _
 
+class account_journal(orm.Model):
+    
+    _inherit = 'account.journal'
+   
+    def name_get(self, cr, user, ids, context=None):
+        if not ids:
+            return []
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        result = self.browse(cr, user, ids, context=context)
+        res = []
+        for rs in result:
+            currency = False
+            if rs.currency:
+                currency = rs.currency
+            else:
+                currency = rs.company_id.currency_id
+            name = "%s" % (rs.code)
+            if currency:
+                name += " (%s)" % (currency.name,)
+            res += [(rs.id, name)]
+        return res
+
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

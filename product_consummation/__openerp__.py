@@ -20,25 +20,22 @@
 #################################################################################
 
 {
-    "name" : "Special quantity to procure",
+    "name" : "Product Consummation",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Warehouse Management",
+    "category" : "Purchase Management",
     "depends" : [
-        'sale',
-        'sale_stock',
-        "stock_special_location",
+        'purchase',
+        'stock',
+        'account',
     ],
     "description": """
-    This module will check if the move is due to a specific location.
-    If this is a special location, then the sale_order will create the picking and the associated procurement as usual
-    but the quantity to procure will be adjusted in function of the availability of the product at the planned date.
+    Product Cosummation
     """,
     "demo" : [],
     "data" : [
-        "procurement.xml",
-        "wizard/schedulers_all_view.xml",
+        'product_view.xml',
     ],
     'installable' : True,
     'active' : False,
