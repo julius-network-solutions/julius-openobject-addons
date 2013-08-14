@@ -29,13 +29,15 @@ class account_account(orm.Model):
     def name_get(self, cr, uid, ids, context=None):
         if not ids:
             return []
+        if isinstance(ids, (int, long)):
+            ids = [ids]
         reads = self.read(cr, uid, ids, ['code'], context=context)
         res=[]
         for record in reads:
-            if record['code']:
+            name = ''
+            if record.get('code'):
                 name = record['code']
             res.append((record['id'], name))
-            print res
         return res
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

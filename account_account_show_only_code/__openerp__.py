@@ -24,16 +24,15 @@
     'version': '1.0',
     'category': 'Accounting & Finance',
     'description': """
-        This module shows the code only
+        This module shows the account code only
     """,
     'author': 'Julius Network Solutions',
     'website': 'http://www.julius.fr',
     'depends': [
         'account',
     ],
-    'init_xml': [],
-    'update_xml': [],
-    'demo_xml': [],
+    'demo': [],
+    'data': [],
     'installable': True,
     'active': False,
 }
