@@ -22,9 +22,22 @@
 {
     "name": 'Multiple Edition',
     "version": '1.0',
-    "description": """ This module give the possibility to edit
-    several record of a table. """,
+    "description": """ 
+This module give the possibility to edit
+----------------------------------------
+
+*Several record of a table
+
+This module allows you to make one-time changes on all of your products.
+
+Just check the list of product that requires modification, then choose multiple edition on "more" menu.
+
+CHoose the field type and the value.
+
+Suitable for all objects, you only have to define the objects for which you want to add this option in the configuration part of OpenERP.  
+""",
     "author": 'Julius Network Solutions',
+    'images': ['images/wizard.jpeg', 'images/product.jpeg', 'images/multi.jpeg'],
     "website": 'http://www.julius.fr/',
     "depends": [
         'base',
