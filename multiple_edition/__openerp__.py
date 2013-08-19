@@ -23,12 +23,7 @@
     "name": 'Multiple Edition',
     "version": '1.0',
     "description": """ 
-This module give the possibility to edit
-----------------------------------------
-
-*Several record of a table
-
-This module allows you to make one-time changes on all of your products.
+This module give the possibility to edit several record of a table.
 
 Just check the list of product that requires modification, then choose multiple edition on "more" menu.
 
