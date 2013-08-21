@@ -24,6 +24,7 @@
     "name" : "Account Export Report",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
+    'images': ['images/export.jpeg', 'images/menu.jpeg'],
     "website" : "www.julius.fr",
     "category" : "Generic Modules/Others",
     "depends" : [
@@ -32,7 +33,22 @@
         "report_aeroo",
         "report_aeroo_ooo",
     ],
-    "description" : """ Export Account Report """,
+    "description" : """ 
+Export Account Report
+---------------------
+*Interface easy to use
+
+You have access to a window that allows you to filter the accounting information you want to analyze via a new menu.
+
+*Choose the informations to export
+
+This module provides:
+
+You can also choose whether you want to export the account children  informations.
+
+The ability to export the accounting lines records with all the relevant analytical informations and return an ODS file (Use with Excel, OpenOffice)
+
+""",
     "init_xml" : [],
     "demo_xml" : [],
     "update_xml" : [
