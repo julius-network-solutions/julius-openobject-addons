@@ -18,36 +18,23 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-{
-    "name"      : "Bank statement import with specific filters",
-    "version"   : "1.0",
-    "author"    : "Julius Network Solutions",
-    "category"  : "Accounting & Finance",
-    'images': ['images/bankconfiguration.jpeg', 'images/AddBankstatement.jpeg', 'images/Bankstatementform.jpeg'],
-    "description": """
-Module provides functionality to import bank statements from another files than coda with parser.
+class res_partner(orm.Model):
+    _inherit = "res.partner"
 
-*Set in your accounts configuration and other information by default
-
-*Add bank statements
-
-*View and change your bank statements
-    """,
-    "depends"   : [
-        "account",
-        "account_voucher",
-    ],
-    "demo"  : [],
-    "data": [
-        "security/ir.model.access.csv",
-        "data/filters_data.xml",
-        "config_view.xml",
-        "wizard/statement_import.xml",
-    ],
-    "active"    : False,
-    "installable" : True,
-}
-
+    def name_get(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        res = super(res_partner,self).name_get(cr, uid, ids, context=context)
+        res2 = []
+        for partner_id, name in res:
+            record = self.read(cr, uid, partner_id, ['ref'], context=context)
+            new_name = (record['ref'] and '[' + record['ref'] + '] - ' or '') + name
+            res2.append((partner_id, new_name))
+        return res2
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

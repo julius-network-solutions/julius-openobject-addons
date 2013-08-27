@@ -20,34 +20,21 @@
 #################################################################################
 
 {
-    "name"      : "Bank statement import with specific filters",
-    "version"   : "1.0",
-    "author"    : "Julius Network Solutions",
-    "category"  : "Accounting & Finance",
-    'images': ['images/bankconfiguration.jpeg', 'images/AddBankstatement.jpeg', 'images/Bankstatementform.jpeg'],
-    "description": """
-Module provides functionality to import bank statements from another files than coda with parser.
-
-*Set in your accounts configuration and other information by default
-
-*Add bank statements
-
-*View and change your bank statements
+    'name': 'Account Tax regeneration',
+    'version': '1.0',
+    'category': 'Accounting & Finance',
+    'description': """
+        This module give you the opportunity to regenerate taxes from templates
     """,
-    "depends"   : [
-        "account",
-        "account_voucher",
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr',
+    'depends': [
+        'account',
     ],
-    "demo"  : [],
-    "data": [
-        "security/ir.model.access.csv",
-        "data/filters_data.xml",
-        "config_view.xml",
-        "wizard/statement_import.xml",
-    ],
-    "active"    : False,
-    "installable" : True,
+    'demo': [],
+    'data': [],
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-
