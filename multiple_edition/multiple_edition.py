@@ -20,8 +20,7 @@
 #################################################################################
 
 from lxml import etree
-import openerp.tools
-from openerp.osv import fields, osv, orm
+from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
 class field_relation(orm.TransientModel):
