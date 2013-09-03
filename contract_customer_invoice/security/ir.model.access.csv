@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_period_contract_user,period.contract.user,model_period_contract,contract_customer_invoice.group_contract_user,1,0,0,0
+access_period_contract_manager,period.contract.manager,model_period_contract,contract_customer_invoice.group_contract_manager,1,1,1,1
+access_create_invoice_user,create.invoice.user,model_create_invoice,contract_customer_invoice.group_contract_user,1,0,0,0
+access_create_invoice_manager,create.invoice.manager,model_create_invoice,contract_customer_invoice.group_contract_manager,1,1,1,1

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+		<record id="view_create_invoice_wizard" model="ir.ui.view">
+		    <field name="name">Create Invoice</field>
+		    <field name="model">create.invoice</field>
+		    <field name="arch" type="xml">
+    		    <form string="Create Invoice" version="7.0">
+	           		<label string="Select the type of invoice you want to create" colspan="4"/>	       
+	                <button string="Customer invoice" icon="gtk-ok" name="customer_invoice" type="object"/>
+	                <!-- <button string="Supplier invoice" icon="gtk-ok" name="supplier_invoice" type="object"/> -->
+	                <button string="Cancel" icon="gtk-cancel" special="cancel"/>
+		    	</form>
+			</field>
+		</record>
+
+        <act_window
+            id="act_acc_analytic_acc_create_invoice"
+            name="Create Invoice"
+            res_model="create.invoice"
+            src_model="account.analytic.account"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            />
+    </data>
+</openerp>
