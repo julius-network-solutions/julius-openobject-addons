@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_admin_opposition_all,admin_opposition_all,model_admin_opposition,,1,0,0,0
+access_admin_opposition_manager,admin_opposition_manager,model_admin_opposition,sale_blocked.group_quotation_validate_manager,1,1,1,1
