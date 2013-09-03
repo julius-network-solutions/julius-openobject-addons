@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Task Work View -->
+        
+        <record id="view_task_work_form_with_project" model="ir.ui.view">
+            <field name="name">project.task.work.form.with.project</field>
+            <field name="model">project.task.work</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="project.view_task_work_form"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="before">
+                    <field name="project_id"/>
+                </field>
+            </field>
+        </record>
+        
+        <record id="view_task_work_tree_with_project" model="ir.ui.view">
+            <field name="name">project.task.work.tree.with.project</field>
+            <field name="model">project.task.work</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="project.view_task_work_tree"/>
+            <field name="arch" type="xml">
+                <field name="date" position="after">
+                    <field name="project_id"/>
+                </field>
+            </field>
+        </record>
+        
+        <record id="view_task_calendar_inherit" model="ir.ui.view">
+            <field name="name">project.task.work.calendar</field>
+            <field name="model">project.task.work</field>
+            <field name="type">calendar</field>
+            <field name="inherit_id" ref="project_task_work_calendar_view.view_task_work_calendar"/>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="project_id"/>
+                </field>
+            </field>
+        </record>
+    
+    </data>
+</openerp>

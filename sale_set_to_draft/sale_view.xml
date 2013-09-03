@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="sale_set_to_draft_view">
+            <field name="name">sale.set.to.draft</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <button name="cancel" position="before">
+                    <button name="action_cancel_draft" states="cancel" string="Set to Draft" type="object"/>           
+                </button>
+            </field>
+        </record>
+
+    </data>
+</openerp>
