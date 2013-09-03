@@ -19,8 +19,7 @@
 #
 #################################################################################
 
-import openerp.tools
-from openerp.osv import fields, osv, orm
+from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
 class invoice_grouped_from_sale_order(orm.Model):
