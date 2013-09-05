@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+
+        <!--<record id="view_account_followup_print_select_form" model="ir.ui.view">
+            <field name="name">account_followup.print.select.form</field>
+            <field name="model">account_followup.print.select</field>
+            <field name="arch" type="xml">
+                <form string="Send follow-ups" version="7.0">
+                    <header>
+                        <button name="do_process" string="Send emails and generate letters" type="object" class="oe_highlight"/>
+                    </header>
+                    <p class ="oe_grey">
+                        This action will send follow-up emails, print the letters and
+                        set the manual actions per customer, according to the follow-up levels defined. 
+                    </p>
+                    <group col="4">
+                        <field name="partner_id" groups="base.group_multi_company"/>
+                        <field name="level" groups="base.group_no_one"/>
+                    </group>
+                </form>
+            </field>
+        </record>-->
+        <record id="account_followup_print_select_validate" model="ir.ui.view">
+            <field name="name">account.followup.print.select.validate.form</field>
+            <field name="model">account_followup.print.select.validate</field>
+            <field name="arch" type="xml">
+                <form string="Send follow-ups" version="7.0">
+                    <p class ="oe_grey">
+                        This action will send follow-up emails, print the letters and
+                        set the manual actions per customer, according to the follow-up levels defined.
+                        This will be done only on selected partners
+                    </p>
+                    <footer>
+                        <button name="do_process" string="Send emails and generate letters" type="object" class="oe_highlight"/>
+                            or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="account_followup_print_select_validate_confirm"
+                multi="True"
+                key2="client_action_multi" name="Confirm Selection"
+                res_model="account_followup.print.select.validate"
+                src_model="account_followup.print.select"
+                view_mode="form" target="new" view_type="form"/>
+
+        <record id="view_account_followup_print_select_tree" model="ir.ui.view">
+            <field name="name">account_followup.print.select.tree</field>
+            <field name="model">account_followup.print.select</field>
+            <field name="arch" type="xml">
+                <tree string="Send follow-ups" version="7.0">
+                    <field name="partner_id"/>
+                    <field name="level"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_account_followup_sending_partner_list" model="ir.actions.act_window">
+            <field name="name">Send Follow-Ups</field>
+            <field name="res_model">account_followup.print.select</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="view_account_followup_print" model="ir.ui.view">
+            <field name="name">account.followup.print.form</field>
+            <field name="model">account_followup.print</field>
+            <field name="inherit_id" ref="account_followup.view_account_followup_print"/>
+            <field name="priority">50</field>
+            <field name="arch" type="xml">
+                <button name="do_process" position="attributes">
+                    <attribute name="name">do_process2</attribute>
+                </button>
+            </field>
+        </record>
+
+    </data>
+</openerp>
