@@ -51,7 +51,7 @@ class account_followup_print_select(orm.TransientModel):
                                  required=True, readonly=True),
         'followup_print_id': fields.many2one('account_followup.print',
                                              'Follow Up Level',
-                                             required=True, readonly=True),
+                                             readonly=True),
         'state': fields.selection([
             ('draft', 'Draft'),
             ('done', 'Done')
@@ -146,10 +146,13 @@ class account_followup_print(orm.TransientModel):
         action_model, action_id = mod_obj.get_object_reference(cr, uid,
             'account_followup_choose_partners', 'action_account_followup_sending_partner_list')
         
-        if action_model and select_ids:
+        if action_model:
             action_pool = self.pool.get(action_model)
             action = action_pool.read(cr, uid, action_id, context=context)
-            action['domain'] = "[('id','in', ["+','.join(map(str,select_ids))+"])]"
+            if select_ids:
+                action['domain'] = "[('id','in', ["+','.join(map(str,select_ids))+"])]"
+            else:
+                action['domain'] = "[('id','in', [0])]"
         return action
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

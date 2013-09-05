@@ -32,14 +32,9 @@ This module will adds a step to send the letters and mails to the customers.
     'images': [],
     'depends': ['account_followup'],
     'data': [
-#        'security/ir.model.access.csv',
         'wizard/account_followup_print_view.xml',
     ],
     'demo': ['account_followup_demo.xml'],
-    'test': [
-        'test/account_followup.yml',
-        #TODO 'test/account_followup_report.yml', --> Need to wait for second step in order to check report (expects after first)
-    ],
     'installable': True,
     'auto_install': False,
 }
