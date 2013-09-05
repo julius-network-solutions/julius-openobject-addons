@@ -69,7 +69,9 @@ class account_followup_print_select(orm.TransientModel):
         to_update = {}
         followup_print_ids = []
         parent_obj = self.pool.get('account_followup.print')
-        company_id = self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.id
+        user_obj = self.pool.get('res.users')
+        company_id = user_obj.browse(
+            cr, uid, uid, context=context).company_id.id
         for current in self.browse(cr, uid, ids, context=context):
             if current.state == 'done':
                 continue
@@ -82,25 +84,42 @@ class account_followup_print_select(orm.TransientModel):
                 }
             if current.followup_print_id.id not in followup_print_ids:
                 followup_print_ids.append(current.followup_print_id.id)
-        date = parent_obj.browse(cr, uid, followup_print_ids, context=context)[0].date
-        data = parent_obj.read(cr, uid, followup_print_ids, [], context=context)[0]
+        date = parent_obj.browse(cr, uid,
+                                 followup_print_ids, context=context)[0].date
+        data = parent_obj.read(cr, uid,
+                               followup_print_ids, [], context=context)[0]
         data['followup_id'] = data['followup_id'][0]
 
         #Update partners
-        parent_obj.do_update_followup_level(cr, uid, to_update, partner_list, date, context=context)
+        parent_obj.do_update_followup_level(cr, uid,
+                                            to_update, partner_list,
+                                            date, context=context)
         #process the partners (send mails...)
-        restot = parent_obj.process_partners(cr, uid, partner_list, data, context=context)
+        restot = parent_obj.process_partners(cr, uid,
+                                             partner_list, data,
+                                             context=context)
         #clear the manual actions if nothing is due anymore
-        nbactionscleared = parent_obj.clear_manual_actions(cr, uid, partner_list, context=context)
+        nbactionscleared = parent_obj.clear_manual_actions(
+            cr, uid, partner_list, context=context)
         if nbactionscleared > 0:
-            restot['resulttext'] = restot['resulttext'] + "<li>" +  _("%s partners have no credits and as such the action is cleared") %(str(nbactionscleared)) + "</li>" 
+            restot['resulttext'] = restot['resulttext'] + "<li>" + \
+                _("%s partners have no credits and as such the action is cleared") \
+                %(str(nbactionscleared)) + "</li>" 
         res = restot['action']
 
         #return the next action
         mod_obj = self.pool.get('ir.model.data')
-        model_data_ids = mod_obj.search(cr, uid, [('model','=','ir.ui.view'),('name','=','view_account_followup_sending_results')], context=context)
-        resource_id = mod_obj.read(cr, uid, model_data_ids, fields=['res_id'], context=context)[0]['res_id']
-        context.update({'description': restot['resulttext'], 'needprinting': restot['needprinting'], 'report_data': res})
+        model_data_ids = mod_obj.search(cr, uid, [
+            ('model','=','ir.ui.view'),
+            ('name','=','view_account_followup_sending_results')
+            ], context=context)
+        resource_id = mod_obj.read(cr, uid,
+            model_data_ids, fields=['res_id'], context=context)[0]['res_id']
+        context.update({
+                        'description': restot['resulttext'],
+                        'needprinting': restot['needprinting'],
+                        'report_data': res
+                        })
         self.write(cr, uid, ids, {'state': 'done'}, context=context)
         return {
             'name': _('Send Letters and Emails: Actions Summary'),
@@ -136,21 +155,25 @@ class account_followup_print(orm.TransientModel):
             partner_id = (partner_id - company_id) / 10000
             level = to_update[key].get('level')
             move_line_id = int(key)
-            select_ids.append(select_obj.create(cr, uid, {
-                                                'partner_id': partner_id,
-                                                'level': level,
-                                                'move_line_id': move_line_id,
-                                                'followup_print_id': followup_print_id,
-                                                }, context=context))
+            vals = {
+                'partner_id': partner_id,
+                'level': level,
+                'move_line_id': move_line_id,
+                'followup_print_id': followup_print_id,
+                }
+            select_ids.append(select_obj.create(cr, uid,
+                                                vals, context=context))
         mod_obj = self.pool.get('ir.model.data')
         action_model, action_id = mod_obj.get_object_reference(cr, uid,
-            'account_followup_choose_partners', 'action_account_followup_sending_partner_list')
+            'account_followup_choose_partners',
+            'action_account_followup_sending_partner_list')
         
         if action_model:
             action_pool = self.pool.get(action_model)
             action = action_pool.read(cr, uid, action_id, context=context)
             if select_ids:
-                action['domain'] = "[('id','in', ["+','.join(map(str,select_ids))+"])]"
+                action['domain'] = "[('id','in', [" + \
+                    ','.join(map(str,select_ids))+"])]"
             else:
                 action['domain'] = "[('id','in', [0])]"
         return action
