@@ -1,0 +1,47 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* subscription_default_date
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-05 13:20+0000\n"
+"PO-Revision-Date: 2013-09-05 13:20+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: subscription_default_date
+#: selection:subscription.document.fields,value:0
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: subscription_default_date
+#: field:subscription.subscription,first_day:0
+msgid "First day"
+msgstr "Premier jour"
+
+#. module: subscription_default_date
+#: model:ir.model,name:subscription_default_date.model_subscription_document_fields
+msgid "Subscription Document Fields"
+msgstr "Champs du contrat d'abonnement !"
+
+#. module: subscription_default_date
+#: selection:subscription.document.fields,value:0
+msgid "Start Date"
+msgstr "Date de début"
+
+#. module: subscription_default_date
+#: help:subscription.subscription,first_day:0
+msgid "This field is used to be able to specify the first day of the subscription and also to be able to compute the last day of the subscription"
+msgstr "Ce champs est utilisé pour être capable de spécifier le premier jour de l'abonnement ainsi que de calculer la date de fin de l'abonnement"
+
+#. module: subscription_default_date
+#: model:ir.model,name:subscription_default_date.model_subscription_subscription
+msgid "Subscription"
+msgstr "Abonnement"
+
