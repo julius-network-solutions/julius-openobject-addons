@@ -105,13 +105,13 @@ class account_invoice(orm.Model):
             contract = contract_obj.browse(cr, uid, contract_id, context=context)
             vals = {
                 'partner_id': contract.partner_id.id or False,
-                'address_invoice_id': contract.contact_id.id or False, 
+#                 'address_invoice_id': contract.contact_id.id or False, 
                 'payment_term': contract.payment_term_id.id or False,
             }
         else:
             vals = {
                 'partner_id': False,
-                'address_invoice_id': False, 
+#                 'address_invoice_id': False, 
                 'payment_term': False,
             }
         return {'value': vals}
