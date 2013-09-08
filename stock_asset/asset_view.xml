@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	
+		<!-- Stock Move View -->
+		<record id="view_picking_in_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_in_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+				<xpath expr="/form/notebook/page[@string='General Information']/field[@name='move_lines']/tree/field[@name='state']" position="after">
+                    <field name="generate_asset" invisible="1"/>
+                </xpath>
+                <xpath expr="/form/notebook/page[@string='General Information']/field[@name='move_lines']/form/group/field[@name='location_dest_id']" position="after">
+                    <field name="generate_asset" invisible="1"/>
+                </xpath>
+            </field>       
+        </record>
+        
+		<!-- Account Asset View -->
+		<record id="view_account_asset_search_inherit" model="ir.ui.view">
+            <field name="name">account.asset.asset.search</field>
+            <field name="model">account.asset.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_search"/>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="product_id"/>
+                    <field name="prodlot_id"/>
+                    <field name="picking_id"/>
+                </field>
+            </field>       
+        </record>
+        
+		<record id="view_account_asset_asset_tree_inherit" model="ir.ui.view">
+            <field name="name">account.asset.asset.tree</field>
+            <field name="model">account.asset.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_asset_tree"/>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="product_id"/>
+                    <field name="prodlot_id"/>
+                    <field name="picking_id"/>
+                </field>
+            </field>       
+        </record>
+		
+	    <record id="view_account_asset_asset_form_inherit" model="ir.ui.view">
+            <field name="name">account.asset.asset.form</field>
+            <field name="model">account.asset.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_asset_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <field name="product_id"/>
+                    <field name="prodlot_id"/>
+                    <field name="picking_id"/>
+                    <field name="move_id"/>
+                </field>
+            </field>       
+        </record>
+        
+        <record id="view_product_product_form_inherit" model="ir.ui.view">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="supply_method" position="after">
+                    <field name="financial_asset"/>
+                </field>
+            </field>       
+        </record>
+        
+	</data>
+</openerp>

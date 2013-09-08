@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    
+        <record id="account_journal_asset" model="account.journal">
+            <field name="name">Temporay Journal</field>
+            <field name="code">TEMP</field>
+            <field name="type">general</field>
+            <field name="view_id">3</field>
+        </record>
+	
+		<record id="account_account_asset" model="account.account">
+            <field name="name">Temporary Account</field>
+            <field name="code">TEMP</field>
+            <field name="user_type" ref="l10n_fr.account_type_immobilisations"/>
+            <field name="view_id">3</field>
+        </record>
+	
+		<!-- Asset Category Data -->
+        <record id="account_asset_category_misc_operational" model="account.asset.category">
+            <field name="account_expense_depreciation_id" ref="account_account_asset"/>
+            <field name="account_asset_id" ref="account_account_asset"/>
+            <field name="account_depreciation_id" ref="account_account_asset"/>
+            <field name="journal_id" ref="account_journal_asset"/>
+            <field name="name">MISC Operational</field>
+            <field name="method_number">5</field>
+        </record>
+        
+	</data>
+</openerp>

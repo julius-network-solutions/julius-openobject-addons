@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        ##############################################################################
+        #
+        #    account_invoice_merge_no_unlink module for OpenERP,  
+        #    Copyright (C) 2011 Zeekom ([http://www.Zeekom.fr/]) 
+        #              Damien CRIER [damien.crier@syleam.fr]
+        #
+        #    This file is a part of account_invoice_merge_no_unlink
+        #
+        #    account_invoice_merge_no_unlink is free software: you can redistribute it and/or modify
+        #    it under the terms of the GNU General Public License as published by
+        #    the Free Software Foundation, either version 3 of the License, or
+        #    (at your option) any later version.
+        #
+        #    account_invoice_merge_no_unlink is distributed in the hope that it will be useful,
+        #    but WITHOUT ANY WARRANTY; without even the implied warranty of
+        #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        #    GNU General Public License for more details.
+        #
+        #    You should have received a copy of the GNU General Public License
+        #    along with this program.  If not, see [http://www.gnu.org/licenses/].
+        #
+        ##############################################################################
+
+        <record id="view_account_invoice_merge_no_unlink_link_tree" model="ir.ui.view">
+            <field name="name">account.invoice.merge.link.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="priority" eval="28"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <field name="merged_invoice_id"/>
+                </field>
+            </field>
+        </record>
+        
+        <record id="view_account_invoice_merge_no_unlink_link_form" model="ir.ui.view">
+            <field name="name">account.invoice.merge.link.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="priority" eval="28"/>
+            <field name="arch" type="xml">
+                <field name="move_id" position="after">
+                    <field name="merged_invoice_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_account_invoice_supplier_merge_link_form" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.merge.link.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="priority" eval="28"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <field name="merged_invoice_id"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
