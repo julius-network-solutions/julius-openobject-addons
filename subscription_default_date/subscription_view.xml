@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_subscription_form" model="ir.ui.view">
+            <field name="name">subscription.subscription.form</field>
+            <field name="model">subscription.subscription</field>
+            <field name="inherit_id" ref="subscription.view_subscription_form"/>
+            <field name="arch" type="xml">
+            	<field name="doc_source" position="after">
+                    <field name="first_day"/>
+                </field>
+         	</field>
+      	</record>
+
+    </data>
+</openerp>
+

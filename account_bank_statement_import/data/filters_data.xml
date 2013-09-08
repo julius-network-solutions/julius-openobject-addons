@@ -31,6 +31,12 @@
 			<field name="filter">bnp</field>
 			<field name="active" eval="False"/>
 		</record>
+    
+        <record model="account.bankimport.filters" id="filters_bps">
+            <field name="name">BPS</field>
+            <field name="filter">bps</field>
+            <field name="active" eval="False"/>
+        </record>
 	
 		<record model="account.bankimport.filters" id="filters_cfonb">
 			<field name="name">CFONB</field>

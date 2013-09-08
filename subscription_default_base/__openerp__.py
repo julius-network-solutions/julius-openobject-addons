@@ -19,6 +19,24 @@
 #
 #################################################################################
 
-import wizard
+{
+    'name': 'Recurring Documents default Base',
+    'version': '1.0',
+    'category': 'Tools',
+    'description': """
+Create recurring documents.
+===========================
+
+This module is an inheritance on the subscription module
+which allows to add new features in the default values to copy.
+    """,
+    'author': 'Julius Network Solutions',
+    'depends': ['subscription'],
+    'data': [],
+    'demo': [],
+    'installable': True,
+    'auto_install': False,
+    'images': [],
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

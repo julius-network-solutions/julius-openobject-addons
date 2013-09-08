@@ -19,6 +19,29 @@
 #
 #################################################################################
 
-import wizard
+{
+    'name': 'Recurring Documents default date computed',
+    'version': '1.0',
+    'category': 'Tools',
+    'description': """
+Create recurring documents.
+===========================
+
+This module allows to get the start or the end date of the subscription
+(e.g. On invoice get the end date for the related end date)
+    """,
+    'author': 'Julius Network Solutions',
+    'depends': [
+        'subscription',
+        'subscription_default_base',
+        ],
+    'data': [
+        'subscription_view.xml',
+    ],
+    'demo': [],
+    'installable': True,
+    'auto_install': False,
+    'images': [],
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -19,6 +19,26 @@
 #
 #################################################################################
 
-import wizard
+{
+    'name': 'Recurring Documents default Partner',
+    'version': '1.0',
+    'category': 'Tools',
+    'description': """
+Create recurring documents.
+===========================
+
+This module allows to get the partner linked to the subscription as default value
+    """,
+    'author': 'Julius Network Solutions',
+    'depends': [
+        'subscription',
+        'subscription_default_base',
+        ],
+    'data': [],
+    'demo': [],
+    'installable': True,
+    'auto_install': False,
+    'images': [],
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
