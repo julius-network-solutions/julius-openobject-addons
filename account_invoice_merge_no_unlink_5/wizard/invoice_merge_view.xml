@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+		<record model="ir.ui.view" id="view_invoice_merge_form">
+            <field name="name">account.invoice.merge.form</field>
+            <field name="model">account.invoice.merge</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+				<form string="Merge invoices">
+    				<separator colspan="4" string="Do you really want to create the invoices ?" />
+                    <newline/>
+                    <label string="
+Please note that: &#10; &#10;
+Invoices will only be merged if: &#10;
+* Invoices are in draft &#10;
+* Invoices belong to the same supplier &#10;
+Lines will only be merged if: &#10;
+* Order lines are exactly the same except for the product,quantity and unit &#10;
+" colspan="4"/>                
+                    <newline/>             
+                    <field name="grouped" invisible="1"/>
+                    <field name="journal_id"/>
+					<separator string="" colspan="4"/>
+					<group col="2" colspan="4">
+	                    <button type="object" icon="gtk-cancel" special="cancel" string="Cancel"/>
+	                    <button type="object" icon="gtk-ok" name="mergeInvoices" string="Merge invoices"/>
+					</group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="act_win_invoice_merge">
+            <field name="name">Merge Invoices</field>
+            <field name="res_model">account.invoice.merge</field>
+            <field name="src_model">account.invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+        
+        <record model="ir.values" id="invoice_merge_value">
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="object" eval="1" />
+            <field name="name">Merge Invoices</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('act_win_invoice_merge'))" />
+            <field name="key">action</field>
+            <field name="model">account.invoice</field>
+        </record>
+
+    </data>
+</openerp>

@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions (<http://www.julius.fr/>) contact@julius.fr
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -14,35 +14,34 @@
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
+
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
 
 {
-    'name': 'Stock picking fill production lot',
-    'version': '1.0',
-    "category" : "Warehouse management",
-	'description':"""
-    This module adds an action on the picking.
-    You can fill move lines with a selection of production lot
+    "name" : "Stock Asset Customization",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Customs Modules",
+    "depends" : [
+                "account",
+                "account_asset",
+                "stock",
+    ],
+    "description": """
+    This module link the Stock module to the Asset module
     """,
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr/',
-    'depends': [
-        'stock',
-        'stock_picking_location',
-        'stock_picking_fill_move',
+    "init_xml" : [],
+    "demo_xml" : [],
+    "data" : [
+        "asset_data.xml",
+        "asset_view.xml",
     ],
-    'data': [
-        'wizard/picking_fill_view.xml',
-        'data/type.xml',
-        'stock_view.xml',
-    ],
-    'demo': [],
-    'installable': True,
-    'active': False,
-    'license': 'GPL-3',
+    'installable' : True,
+    'active' : False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

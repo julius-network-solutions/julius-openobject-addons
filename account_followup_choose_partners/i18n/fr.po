@@ -1,0 +1,120 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* account_followup_choose_partners
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-05 08:37+0000\n"
+"PO-Revision-Date: 2013-09-05 08:37+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_followup_choose_partners
+#: view:account_followup.print.select.validate:0
+msgid "Send emails and generate letters"
+msgstr "Envoyer les courriels et générer les lettres"
+
+#. module: account_followup_choose_partners
+#: model:ir.model,name:account_followup_choose_partners.model_account_followup_print_select_validate
+msgid "account_followup.print.select.validate"
+msgstr "account_followup.print.select.validate"
+
+#. module: account_followup_choose_partners
+#: view:account_followup.print.select.validate:0
+msgid "This action will send follow-up emails, print the letters and\n"
+"                        set the manual actions per customer, according to the follow-up levels defined.\n"
+"                        This will be done only on selected partners"
+msgstr "Cette action va envoyer les emails de relance, imprimer les lettres et\n"
+"                        rentrer les action manuelles par client, en fonction des niveaux de relance définis.\n"
+"                        Cela ne sera fait que sur les clients sélectionnés"
+
+#. module: account_followup_choose_partners
+#: model:ir.model,name:account_followup_choose_partners.model_account_followup_print
+msgid "Print Follow-up & Send Mail to Customers"
+msgstr "Imprimer les relances et envoyer les courriels aux clients"
+
+#. module: account_followup_choose_partners
+#: view:account_followup.print:0
+msgid "do_process2"
+msgstr "do_process2"
+
+#. module: account_followup_choose_partners
+#: field:account_followup.print.select,move_line_id:0
+msgid "Move line"
+msgstr "Move line"
+
+#. module: account_followup_choose_partners
+#: model:ir.actions.act_window,name:account_followup_choose_partners.action_account_followup_sending_partner_list
+msgid "Send Follow-Ups"
+msgstr "Envoyer les relances"
+
+#. module: account_followup_choose_partners
+#: code:addons/account_followup_choose_partners/wizard/account_followup_print.py:96
+#, python-format
+msgid "%s partners have no credits and as such the action is cleared"
+msgstr "%s partenaire(s) n'a/ont pas de crédit, donc l'action est effacée."
+
+#. module: account_followup_choose_partners
+#: field:account_followup.print.select,state:0
+msgid "State"
+msgstr "Etat"
+
+#. module: account_followup_choose_partners
+#: field:account_followup.print.select,followup_print_id:0
+#: field:account_followup.print.select,level:0
+msgid "Follow Up Level"
+msgstr "Niveau de relance"
+
+#. module: account_followup_choose_partners
+#: selection:account_followup.print.select,state:0
+msgid "Done"
+msgstr "Fait"
+
+#. module: account_followup_choose_partners
+#: field:account_followup.print.select,partner_id:0
+msgid "Partner"
+msgstr "Client"
+
+#. module: account_followup_choose_partners
+#: view:account_followup.print.select.validate:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: account_followup_choose_partners
+#: selection:account_followup.print.select,state:0
+msgid "Draft"
+msgstr "Brouillon"
+
+#. module: account_followup_choose_partners
+#: view:account_followup.print.select:0
+#: view:account_followup.print.select.validate:0
+msgid "Send follow-ups"
+msgstr "Envoyer les relances"
+
+#. module: account_followup_choose_partners
+#: model:ir.actions.act_window,name:account_followup_choose_partners.account_followup_print_select_validate_confirm
+msgid "Confirm Selection"
+msgstr "Confirmer la sélection"
+
+#. module: account_followup_choose_partners
+#: code:addons/account_followup_choose_partners/wizard/account_followup_print.py:106
+#, python-format
+msgid "Send Letters and Emails: Actions Summary"
+msgstr "Envoyer les lettres et courriels : résumé des actions"
+
+#. module: account_followup_choose_partners
+#: view:account_followup.print.select.validate:0
+msgid "or"
+msgstr "ou"
+
+#. module: account_followup_choose_partners
+#: model:ir.model,name:account_followup_choose_partners.model_account_followup_print_select
+msgid "Select Customers to Print Follow-up & Send Mail to Customers"
+msgstr "Sélectionnez les clients à relancer par lettre ou email"
+

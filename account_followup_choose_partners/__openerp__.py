@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions (<http://www.julius.fr/>) contact@julius.fr
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,29 +20,23 @@
 #################################################################################
 
 {
-    'name': 'Stock picking fill production lot',
+    'name': 'Payment Follow-up Management',
     'version': '1.0',
-    "category" : "Warehouse management",
-	'description':"""
-    This module adds an action on the picking.
-    You can fill move lines with a selection of production lot
-    """,
+    'category': 'Accounting & Finance',
+    'description': """
+This module will adds a step to send the letters and mails to the customers.
+
+""",
     'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr/',
-    'depends': [
-        'stock',
-        'stock_picking_location',
-        'stock_picking_fill_move',
-    ],
+    'website': 'http://www.julius.fr',
+    'images': [],
+    'depends': ['account_followup'],
     'data': [
-        'wizard/picking_fill_view.xml',
-        'data/type.xml',
-        'stock_view.xml',
+        'wizard/account_followup_print_view.xml',
     ],
-    'demo': [],
+    'demo': ['account_followup_demo.xml'],
     'installable': True,
-    'active': False,
-    'license': 'GPL-3',
+    'auto_install': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <!--  form view   -->
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.view.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            	<field name="active" position="after">
+        			<field name="admin_opposition"/>
+            	</field>
+            </field>
+       	</record>
+
+       	<record id="view_admin_opposition_form" model="ir.ui.view">
+            <field name="name">admin.opposition.view.form</field>
+            <field name="model">admin.opposition</field>
+            <field name="arch" type="xml">
+            	<form string="Admin Opposition" version="7.0">
+            		<group>
+						<field name="name"/>
+						<field name="code"/>
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_admin_opposition_tree" model="ir.ui.view">
+            <field name="name">admin.opposition.view.tree</field>
+            <field name="model">admin.opposition</field>
+            <field name="arch" type="xml">
+            	<tree string="Admin Opposition">
+					<field name="name"/>
+					<field name="code"/>
+				</tree>
+			</field>
+		</record>
+
+        <record id="view_admin_opposition_search" model="ir.ui.view">
+            <field name="name">admin.opposition.view.search</field>
+            <field name="model">admin.opposition</field>
+            <field name="arch" type="xml">
+                <search string="Admin Opposition">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <filter name="is_blocked" string="Blocked" domain="[('blocked', '=', True)]"/>
+                    <filter name="is_not_blocked" string="Not blocked" domain="[('blocked', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_partner_admin_opposition" model="ir.actions.act_window">
+            <field name="name">Admin Opposition</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">admin.opposition</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem id="menu_partner_admin_opposition"
+                  action="action_partner_admin_opposition"
+                  name="Admin Opposition"
+                  parent="base.menu_config_address_book"
+                  sequence="10"
+                  groups="sale_blocked.group_quotation_validate_manager"/>
+
+	</data>
+</openerp>

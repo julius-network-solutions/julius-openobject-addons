@@ -57,18 +57,17 @@ class create_invoice(orm.Model):
             context = {}
         active_id = context.get('active_id')
         contract_data = contract_obj.browse(cr, uid, active_id, context=context)
-        partner_id = context.get('partner_id')
-        company_id = context.get('company_id')
-        contact_id = context.get('contact_id')
+        partner_id = context.get('partner_id') or contract_data.partner_id.id
+        company_id = context.get('company_id') or contract_data.company_id.id
         account_invoice_obj = self.pool.get('account.invoice')
         values = account_invoice_obj.onchange_partner_id(cr, uid, ids, type, partner_id)
         account_id = values['value']['account_id']
+        print partner_id
         new_id = account_invoice_obj.create(cr,uid,{
                 'type': type,
                 'contract_id':active_id,
                 'partner_id':partner_id,
                 'company_id':company_id,
-                'address_invoice_id':contact_id, 
                 'account_id':account_id,
                 'payment_term':contract_data.payment_term_id.id,        
             },context=context)

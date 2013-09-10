@@ -1,0 +1,163 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data noupdate="1">
+        <record id="account_invoice_0" model="account.invoice">
+            <field name="account_id" ref="account.a_recv"/>
+            <field eval="0" name="reconciled"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="currency_id" ref="base.EUR"/>
+            <field name="address_invoice_id" ref="base.res_partner_address_zen"/>
+            <field name="partner_id" ref="base.res_partner_3"/>
+            <field name="address_contact_id" ref="base.res_partner_address_zen"/>
+            <field eval="&quot;&quot;&quot;none&quot;&quot;&quot;" name="reference_type"/>
+            <field name="journal_id" ref="account.sales_journal"/>
+            <field eval="&quot;&quot;&quot;draft&quot;&quot;&quot;" name="state"/>
+            <field eval="&quot;&quot;&quot;out_invoice&quot;&quot;&quot;" name="type"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc1" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC1] Basic PC&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_0"/>
+            <field eval="450.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="2.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc1"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc2" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC3] Medium PC&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_0"/>
+            <field eval="900.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="2.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc3"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc3" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC4] Customizable PC&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_0"/>
+            <field eval="1200.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="1.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc4"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="account_invoice_1" model="account.invoice">
+            <field name="account_id" ref="account.a_recv"/>
+            <field eval="0" name="reconciled"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="currency_id" ref="base.EUR"/>
+            <field name="address_invoice_id" ref="base.res_partner_address_zen"/>
+            <field name="partner_id" ref="base.res_partner_3"/>
+            <field name="address_contact_id" ref="base.res_partner_address_zen"/>
+            <field eval="&quot;&quot;&quot;none&quot;&quot;&quot;" name="reference_type"/>
+            <field name="journal_id" ref="account.sales_journal"/>
+            <field eval="&quot;&quot;&quot;draft&quot;&quot;&quot;" name="state"/>
+            <field eval="&quot;&quot;&quot;out_invoice&quot;&quot;&quot;" name="type"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc01" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC1] Basic PC&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_1"/>
+            <field eval="450.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="3.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc1"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc02" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC2] Basic+ PC (assembly on order)&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_1"/>
+            <field eval="750.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="1.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc2"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="account_invoice_2" model="account.invoice">
+            <field name="account_id" ref="account.a_recv"/>
+            <field eval="0" name="reconciled"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="currency_id" ref="base.EUR"/>
+            <field name="address_invoice_id" ref="base.res_partner_address_7"/>
+            <field name="partner_id" ref="base.res_partner_4"/>
+            <field name="address_contact_id" ref="base.res_partner_address_7"/>
+            <field eval="&quot;&quot;&quot;none&quot;&quot;&quot;" name="reference_type"/>
+            <field name="journal_id" ref="account.sales_journal"/>
+            <field eval="&quot;&quot;&quot;draft&quot;&quot;&quot;" name="state"/>
+            <field eval="&quot;&quot;&quot;out_invoice&quot;&quot;&quot;" name="type"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc21" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC1] Basic PC&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_2"/>
+            <field eval="450.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="2.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc1"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc22" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC3] Medium PC&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_2"/>
+            <field eval="900.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="2.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc3"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc23" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC4] Customizable PC&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_2"/>
+            <field eval="1200.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="1.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc4"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="account_invoice_3" model="account.invoice">
+            <field name="account_id" ref="account.a_recv"/>
+            <field eval="0" name="reconciled"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="currency_id" ref="base.EUR"/>
+            <field name="address_invoice_id" ref="base.res_partner_address_7"/>
+            <field name="partner_id" ref="base.res_partner_4"/>
+            <field name="address_contact_id" ref="base.res_partner_address_7"/>
+            <field eval="&quot;&quot;&quot;none&quot;&quot;&quot;" name="reference_type"/>
+            <field name="journal_id" ref="account.sales_journal"/>
+            <field eval="&quot;&quot;&quot;draft&quot;&quot;&quot;" name="state"/>
+            <field eval="&quot;&quot;&quot;out_invoice&quot;&quot;&quot;" name="type"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc31" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC1] Basic PC&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_3"/>
+            <field eval="450.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="1.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc1"/>
+        </record>
+        <record id="account_invoice_line_pcbasicpc32" model="account.invoice.line">
+            <field name="uos_id" ref="product.product_uom_unit"/>
+            <field eval="&quot;&quot;&quot;[PC3] Medium PC&quot;&quot;&quot;" name="name"/>
+            <field name="invoice_id" ref="account_invoice_3"/>
+            <field eval="900.0" name="price_unit"/>
+            <field name="account_id" ref="account.a_sale"/>
+            <field eval="[(6,0,[])]" name="invoice_line_tax_id"/>
+            <field eval="2.0" name="quantity"/>
+            <field name="product_id" ref="product.product_product_pc3"/>
+        </record>
+    </data>
+</openerp>

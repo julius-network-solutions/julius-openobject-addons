@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="group_quotation_validate_manager" model="res.groups">
+            <field name="name">Sale validation with admin opposition</field>
+            <field name="category_id" ref="base.module_category_usability"/>
+        </record>
+
+    </data>
+</openerp>

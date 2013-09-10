@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions (<http://www.julius.fr/>) contact@julius.fr
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,30 +19,26 @@
 #
 #################################################################################
 
-{
-    'name': 'Stock picking fill production lot',
-    'version': '1.0',
-    "category" : "Warehouse management",
-	'description':"""
-    This module adds an action on the picking.
-    You can fill move lines with a selection of production lot
-    """,
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr/',
-    'depends': [
-        'stock',
-        'stock_picking_location',
-        'stock_picking_fill_move',
-    ],
-    'data': [
-        'wizard/picking_fill_view.xml',
-        'data/type.xml',
-        'stock_view.xml',
-    ],
-    'demo': [],
-    'installable': True,
-    'active': False,
-    'license': 'GPL-3',
-}
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
+
+class res_partner(orm.Model):
+    _inherit = "res.partner"
+    
+    _columns = {
+        'admin_opposition': fields.many2one('admin.opposition', 'Admin opposition'),
+    }
+
+class admin_opposition(orm.Model):
+    _name = "admin.opposition"
+    
+    _columns = {
+        'code': fields.char('Code', size=64, required=True),
+        'name': fields.char('Name', size=64, required=True),
+        'block_order': fields.boolean('Block order'),
+    }
+    _defaults = {
+        'block_order': True,
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
