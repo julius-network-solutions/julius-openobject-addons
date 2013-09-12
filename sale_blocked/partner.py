@@ -31,6 +31,7 @@ class res_partner(orm.Model):
 
 class admin_opposition(orm.Model):
     _name = "admin.opposition"
+    _description = "Admin Opposition"
     
     _columns = {
         'code': fields.char('Code', size=64, required=True),

@@ -22,6 +22,7 @@
             		<group>
 						<field name="name"/>
 						<field name="code"/>
+                        <field name="block_order"/>
 					</group>
 				</form>
 			</field>
@@ -34,6 +35,7 @@
             	<tree string="Admin Opposition">
 					<field name="name"/>
 					<field name="code"/>
+                    <field name="block_order"/>
 				</tree>
 			</field>
 		</record>
@@ -45,8 +47,8 @@
                 <search string="Admin Opposition">
                     <field name="name"/>
                     <field name="code"/>
-                    <filter name="is_blocked" string="Blocked" domain="[('blocked', '=', True)]"/>
-                    <filter name="is_not_blocked" string="Not blocked" domain="[('blocked', '=', False)]"/>
+                    <filter name="is_blocked" string="Blocked" domain="[('block_order', '=', True)]"/>
+                    <filter name="is_not_blocked" string="Not blocked" domain="[('block_order', '=', False)]"/>
                 </search>
             </field>
         </record>
@@ -61,9 +63,24 @@
         <menuitem id="menu_partner_admin_opposition"
                   action="action_partner_admin_opposition"
                   name="Admin Opposition"
-                  parent="base.menu_config_address_book"
-                  sequence="10"
+                  parent="base.menu_base_config"
+                  sequence="50"
                   groups="sale_blocked.group_quotation_validate_manager"/>
+
+       <record id="view_res_partner_filter" model="ir.ui.view">
+            <field name="name">res.partner.select</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <separator/>
+                    <filter name="is_opposition" help="Got an admin opposition"
+                        domain="[('admin_opposition', '!=', False)]"/>
+                    <filter name="not_opposition" help="Don't got an admin opposition"
+                        domain="[('admin_opposition', '=', False)]"/>
+                </field>
+            </field>
+        </record>
 
 	</data>
 </openerp>
