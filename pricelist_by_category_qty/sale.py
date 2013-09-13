@@ -85,37 +85,49 @@ class sale_order(orm.Model):
         if context is None:
             context = {}
         order_line_obj = self.pool.get('sale.order.line')
-        price_list_obj = self.pool.get('product.pricelist')
         for sale in self.browse(cr, uid, ids, context=context):
+            if sale.state in ('draft','sent'):
+                line_ids = [x.id for x in sale.order_line]
+                order_line_obj.compute_global_discount(cr, uid, line_ids, context=context)
+        return True
+
+class sale_order_line(orm.Model):
+    _inherit = 'sale.order.line'
+
+    def compute_global_discount(self,cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        price_list_obj = self.pool.get('product.pricelist')
+        order_obj = self.pool.get('sale.order')
+        for line in self.browse(cr, uid, ids, context=context):
+            sale = line.order_id
             context['date'] = sale.date_order
             partner_id = sale.partner_id.id
-            for line in sale.order_line:
-                if line.product_id:
-                    pricelist_id = sale.pricelist_id.id
-                    product_id = line.product_id.id
-                    qty = self._get_quantity_to_compute(cr, uid, line, context=context)
-                    res = self._get_price_of_line(cr, uid, product_id,
-                        qty, partner_id, pricelist_id, context=context)
-                    while True:
-                        new_pricelist_id = self._get_child_pricelist(cr, uid,
-                                                                     res, context=context)
-                        if not new_pricelist_id:
-                            break
-                        res = self._get_price_of_line(cr, uid, product_id,
-                            qty, partner_id, new_pricelist_id, context=context)
-                        pricelist_id = new_pricelist_id
-                    price_unit = False
-                    if self._check_if_edit(cr, uid, res, context=context):
-                        price_unit = res.get(line.product_id.id, {}).get(pricelist_id, False)
-                    else:
-                        price_unit = price_list_obj.price_get(cr, uid,
-                            [pricelist_id], product_id, line.product_uom_qty,
-                            partner=sale.partner_id.id, context=context)[pricelist_id]
-                    if price_unit is not False:
-                        order_line_obj.write(cr, uid,
-                                             line.id, {'price_unit': price_unit},
-                                             context=context)
-                        
+            if line.product_id:
+                pricelist_id = sale.pricelist_id.id
+                product_id = line.product_id.id
+                qty = order_obj._get_quantity_to_compute(cr, uid, line, context=context)
+                res = order_obj._get_price_of_line(cr, uid, product_id,
+                    qty, partner_id, pricelist_id, context=context)
+                while True:
+                    new_pricelist_id = order_obj._get_child_pricelist(cr, uid,
+                                                                 res, context=context)
+                    if not new_pricelist_id:
+                        break
+                    res = order_obj._get_price_of_line(cr, uid, product_id,
+                        qty, partner_id, new_pricelist_id, context=context)
+                    pricelist_id = new_pricelist_id
+                price_unit = False
+                if order_obj._check_if_edit(cr, uid, res, context=context):
+                    price_unit = res.get(line.product_id.id, {}).get(pricelist_id, False)
+                else:
+                    price_unit = price_list_obj.price_get(cr, uid,
+                        [pricelist_id], product_id, line.product_uom_qty,
+                        partner=sale.partner_id.id, context=context)[pricelist_id]
+                if price_unit is not False:
+                    self.write(cr, uid,
+                               line.id, {'price_unit': price_unit},
+                               context=context)
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
