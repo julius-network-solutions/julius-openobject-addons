@@ -41,6 +41,7 @@ class purchase_order(orm.Model):
         #Creation of the Sale Order
         for po in self.browse(cr ,uid, ids, context=context):
             company_id = res_company_obj.search(cr, uid, [('partner_id','=',po.partner_id.id)], context=context)
+            print company_id
             vals = {
                 'state' : 'draft',
                 'partner_id' : po.company_id.partner_id.id,
