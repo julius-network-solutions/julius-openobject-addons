@@ -5,7 +5,7 @@
         <record id="view_order_form_inherit" model="ir.ui.view">
             <field name="name">sale.order.form.inherit</field>
             <field name="model">sale.order</field>
-            <field name="priority">25</field>
+            <field name="priority">30</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <field name="amount_untaxed_financial_discounted" position="attributes">

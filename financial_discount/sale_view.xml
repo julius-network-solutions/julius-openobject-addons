@@ -12,7 +12,7 @@
                     <group style="width: 65%%">
                         <label for="financial_discount_percentage"/>
                         <div>
-	                        <field name="financial_discount_percentage"/>
+	                        <field name="financial_discount_percentage" class="oe_inline"/>
 							<button name="generate_financial_discount" string="Generate Financial Discount"  
 								attrs="{'invisible':[('financial_discount_percentage','=','0')]}" class="oe_edit_only" type="object"/> 
                         </div>

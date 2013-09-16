@@ -12,7 +12,7 @@
                     <group style="width: 65%%">
                         <label for="global_discount_percentage"/>
                         <div>
-	                        <field name="global_discount_percentage"/>
+	                        <field name="global_discount_percentage" class="oe_inline"/>
 							<button name="generate_global_discount" string="Generate Discount"  
 								attrs="{'invisible':[('global_discount_percentage','=','0')]}" class="oe_edit_only" type="object"/> 
                         </div>
