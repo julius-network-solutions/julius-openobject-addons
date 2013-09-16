@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="invoice_with_origin_form" model="ir.ui.view">
+            <field name="name">account.invoice.form with origin</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="date_due" position="after">
+                    <field name="origin_invoice_id"
+                        attrs="{'invisible': [('type', 'not in', ['in_refund', 'out_refund'])]}"
+                        domain="[('type', 'in', ('in_invoice', 'out_invoice')),
+                                ('partner_id', '=', partner_id),
+                                ('state', 'not in', ('draft', 'cancel'))]"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

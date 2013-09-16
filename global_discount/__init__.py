@@ -19,27 +19,7 @@
 #
 #################################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
-
-class res_partner(orm.Model):
-    _inherit = "res.partner"
-    
-    _columns = {
-        'admin_opposition': fields.many2one('admin.opposition', 'Admin opposition'),
-    }
-
-class admin_opposition(orm.Model):
-    _name = "admin.opposition"
-    _description = "Admin Opposition"
-    
-    _columns = {
-        'code': fields.char('Code', size=64, required=True),
-        'name': fields.char('Name', size=64, required=True),
-        'block_order': fields.boolean('Block order'),
-    }
-    _defaults = {
-        'block_order': True,
-    }
+import sale
+import stock
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

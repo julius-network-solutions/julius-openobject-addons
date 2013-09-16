@@ -20,26 +20,32 @@
 #################################################################################
 
 from openerp.osv import fields, orm
+from openerp import netsvc
 from openerp.tools.translate import _
 
-class res_partner(orm.Model):
-    _inherit = "res.partner"
-    
+class sale_order(orm.Model):
+    _inherit = "sale.order"
+
     _columns = {
-        'admin_opposition': fields.many2one('admin.opposition', 'Admin opposition'),
+        'block_without_payment': fields.boolean(
+            'Block order Without Payment', readonly=True,
+            states={
+                    'draft': [('readonly', False)],
+                    'sent': [('readonly', False)],
+                    }),
+        'marked_as_paid': fields.boolean('Marked as Paid', readonly=True),
+    }
+    
+    _defaults = {
+        'block_without_payment': False,
+        'marked_as_paid': False,
     }
 
-class admin_opposition(orm.Model):
-    _name = "admin.opposition"
-    _description = "Admin Opposition"
-    
-    _columns = {
-        'code': fields.char('Code', size=64, required=True),
-        'name': fields.char('Name', size=64, required=True),
-        'block_order': fields.boolean('Block order'),
-    }
-    _defaults = {
-        'block_order': True,
-    }
+    def set_marked_as_paid(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        return self.write(cr, uid, ids, {
+            'marked_as_paid': True,
+            }, context=context)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

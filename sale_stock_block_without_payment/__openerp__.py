@@ -19,27 +19,27 @@
 #
 #################################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
-
-class res_partner(orm.Model):
-    _inherit = "res.partner"
-    
-    _columns = {
-        'admin_opposition': fields.many2one('admin.opposition', 'Admin opposition'),
-    }
-
-class admin_opposition(orm.Model):
-    _name = "admin.opposition"
-    _description = "Admin Opposition"
-    
-    _columns = {
-        'code': fields.char('Code', size=64, required=True),
-        'name': fields.char('Name', size=64, required=True),
-        'block_order': fields.boolean('Block order'),
-    }
-    _defaults = {
-        'block_order': True,
-    }
+{
+    "name" : "Block Delivery if not payment",
+    "version" : "1.0",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Sale Management",
+    "depends" : [
+        'sale',
+        'stock',
+    ],
+    "description": """
+    This Module will allows to block a picking and
+    all his moves while the order is not defined as paid.
+    """,
+    "demo" : [],
+    "data" : [
+        "sale_view.xml",
+        "stock_view.xml",
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

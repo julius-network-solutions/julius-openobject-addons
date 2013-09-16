@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="picking_block_without_payment_view" model="ir.ui.view">
+            <field name="name">stock.picking.out.without.payment.form</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_out_form"/>
+            <field name="arch" type="xml">
+                <button name="action_process" position="replace">
+                    <button name="action_process" string="Confirm &amp; Transfer"
+                        groups="stock.group_stock_user" type="object" class="oe_highlight"
+                        attrs="{'invisible':['|', ('state', '!=', 'assigned'), ('sale_order_blocked', '=', True)]}"/>
+                </button>
+                <field name="move_type" position="after">
+                    <field name="sale_order_blocked"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

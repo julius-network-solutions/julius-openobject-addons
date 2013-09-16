@@ -299,11 +299,11 @@
 				<separator string="Inventory Valuation" position="before">
             		<field name="contract_id" domain="[('is_a_contract','=',True)]" group="contract_customer_invoice.group_contract_manager"/>
                 </separator>
-                <field name="list_price" position="replace">
-                    <field name="list_price" attrs="{'invisible':[('contract_id','!=',False)]}"/>
+                <field name="list_price" position="attributes">
+                    <attribute name="attrs">{'invisible':[('contract_id','!=',False)]}</attribute>
                 </field>
-                <field name="standard_price" position="replace">
-                    <field name="standard_price" nolabel="1" attrs="{'invisible':[('contract_id','!=',False)],'readonly':[('cost_method','=','average')]}" groups="base.group_extended"/>
+                <field name="standard_price" position="attributes">
+                    <attribute name="attrs">{'invisible':[('contract_id','!=',False)],'readonly':[('cost_method','=','average')]}</attribute>
                 </field>
             </field>
         </record>

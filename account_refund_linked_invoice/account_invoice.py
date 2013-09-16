@@ -19,27 +19,34 @@
 #
 #################################################################################
 
-from openerp.osv import fields, orm
+from openerp.osv import osv, fields, orm
 from openerp.tools.translate import _
 
-class res_partner(orm.Model):
-    _inherit = "res.partner"
+class account_invoice(orm.Model):
     
+    _inherit = 'account.invoice'
+
     _columns = {
-        'admin_opposition': fields.many2one('admin.opposition', 'Admin opposition'),
+        'origin_invoice_id': fields.many2one('account.invoice', 'Origin invoice',
+            domain=[
+                ('type', 'in', ('in_invoice', 'out_invoice')),
+                ('state', 'not in', ('draft', 'cancel'))
+            ], readonly=True, states={'draft':[('readonly',False)]}),
     }
 
-class admin_opposition(orm.Model):
-    _name = "admin.opposition"
-    _description = "Admin Opposition"
-    
-    _columns = {
-        'code': fields.char('Code', size=64, required=True),
-        'name': fields.char('Name', size=64, required=True),
-        'block_order': fields.boolean('Block order'),
-    }
-    _defaults = {
-        'block_order': True,
-    }
+    def _prepare_refund(self, cr, uid, invoice,
+                        date=None, period_id=None,
+                        description=None, journal_id=None,
+                        context=None):
+        res = super(account_invoice, self)._prepare_refund(cr, uid, invoice,
+                        date=date, period_id=period_id,
+                        description=description, journal_id=journal_id,
+                        context=context)
+        res['origin_invoice_id'] = invoice.id
+        origin = ''
+        if res.get('origin'):
+            origin = res.get('origin')
+        res['origin'] = invoice.number + (origin and ':' + origin or '')
+        return res
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
