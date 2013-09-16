@@ -1,0 +1,83 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* financial_discount
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-16 14:56+0000\n"
+"PO-Revision-Date: 2013-09-16 16:58+0100\n"
+"Last-Translator: Yvan Patry <yvan@julius.fr>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: financial_discount
+#: model:ir.model.fields,field_description:financial_discount.field_sale_order_financial_discount_percentage
+#: field:sale.order,financial_discount_percentage:0
+msgid "Financial Discount Percentage"
+msgstr "Pourcentage d'Escompte"
+
+#. module: financial_discount
+#: model:ir.model.fields,field_description:financial_discount.field_sale_order_line_financial_discount
+#: field:sale.order.line,financial_discount:0
+msgid "Global Discount"
+msgstr "Remise Globale"
+
+#. module: financial_discount
+#: view:sale.order:0
+msgid "{'invisible':[('financial_discount_is_present','=',False)]}"
+msgstr "{'invisible':[('financial_discount_is_present','=',False)]}"
+
+#. module: financial_discount
+#: model:ir.model.fields,field_description:financial_discount.field_sale_order_amount_untaxed_financial_discounted
+#: field:sale.order,amount_untaxed_financial_discounted:0
+msgid "Untaxed Amount With Financial Discount"
+msgstr "Montant Hors Taxe Avec Escompte"
+
+#. module: financial_discount
+#: view:sale.order:0
+msgid "Generate Financial Discount"
+msgstr "Générer Escompte"
+
+#. module: financial_discount
+#: model:ir.model.fields,field_description:financial_discount.field_sale_order_amount_tax_financial_discounted
+#: field:sale.order,amount_tax_financial_discounted:0
+msgid "Taxes With Financial Discount"
+msgstr "Taxes Avec Escompte"
+
+#. module: financial_discount
+#: model:ir.model,name:financial_discount.model_stock_picking
+msgid "Picking List"
+msgstr "Opération de manutention"
+
+#. module: financial_discount
+#: model:product.template,name:financial_discount.product_financial_discount_product_template
+msgid "Financial Discount"
+msgstr "Escompte"
+
+#. module: financial_discount
+#: model:ir.model.fields,field_description:financial_discount.field_sale_order_amount_total_financial_discounted
+#: field:sale.order,amount_total_financial_discounted:0
+msgid "Total With Financial Discount"
+msgstr "Total avec Escompte"
+
+#. module: financial_discount
+#: model:ir.model,name:financial_discount.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: financial_discount
+#: model:ir.model.fields,field_description:financial_discount.field_sale_order_financial_discount_is_present
+#: field:sale.order,financial_discount_is_present:0
+msgid "Financial Discount Present"
+msgstr "Escompte Présent"
+
+#. module: financial_discount
+#: model:ir.model,name:financial_discount.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de commandes de vente"
+
