@@ -24,30 +24,48 @@ import openerp.addons.decimal_precision as dp
 
 class sale_order(orm.Model):
     _inherit = "sale.order"
-    
+
+    def _check_if_ecotax(self, cr, uid, line, context=None):
+        if context is None:
+            context = {}
+        if not line.product_id or \
+            (not line.product_id.ecotax_type in ['1','2'] and \
+            not line.product_id.categ_id.ecotax_type in ['1','2']):
+            return False
+        return True
+
+    def _update_product_list(self, cr, uid, line, product_list, context=None):
+        if context is None:
+            context = {}
+        if line.product_id.ecotax_product_id and \
+            line.product_id.ecotax_product_id.id not in product_list.keys():
+            product_list.update({
+                line.product_id.ecotax_product_id.id: line.product_uom_qty
+                })
+        elif line.product_id.ecotax_product_id:
+            product_list[line.product_id.ecotax_product_id.id] += line.product_uom_qty
+        elif line.product_id.categ_id.ecotax_product_id and \
+            line.product_id.categ_id.ecotax_product_id.id not in product_list.keys():
+            product_list.update({
+                line.product_id.categ_id.ecotax_product_id.id: line.product_uom_qty
+                })
+        elif line.product_id.categ_id.ecotax_product_id:
+            product_list[line.product_id.categ_id.ecotax_product_id.id] += line.product_uom_qty
+        return product_list
+
     def generate_ecotax_line(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         line_obj = self.pool.get('sale.order.line')
         for sale in self.browse(cr, uid, ids, context=context):
             product_list = {}
-            if sale.state not in ('draft,sent'):
+            if sale.state not in ('draft','sent'):
                 continue
             for line in sale.order_line:
-                if not line.product_id or \
-                    (not line.product_id.ecotax_type in ['1','2'] and \
-                     not line.product_id.categ_id.ecotax_type in ['1','2']):
+                if not self._check_if_ecotax(cr, uid, line, context=context):
                     continue
-                if line.product_id.ecotax_product_id and \
-                    line.product_id.ecotax_product_id.id not in product_list.keys():
-                    product_list.update({line.product_id.ecotax_product_id.id: line.product_uom_qty})
-                elif line.product_id.ecotax_product_id:
-                    product_list[line.product_id.ecotax_product_id.id] += line.product_uom_qty
-                elif line.product_id.categ_id.ecotax_product_id and \
-                    line.product_id.categ_id.ecotax_product_id.id not in product_list.keys():
-                    product_list.update({line.product_id.categ_id.ecotax_product_id.id: line.product_uom_qty})
-                elif line.product_id.categ_id.ecotax_product_id:
-                    product_list[line.product_id.categ_id.ecotax_product_id.id] += line.product_uom_qty
+                product_list = self._update_product_list(
+                    cr, uid, line, product_list, context=context)
             line_obj._genrate_ecotax_lines(cr, uid, sale, product_list, context=context)
         return True
     
