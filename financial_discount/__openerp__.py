@@ -20,24 +20,22 @@
 #################################################################################
 
 {
-    "name" : "Block Delivery if not payment",
-    "version" : "1.0",
+    "name" : "Financial Discount",
+    "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sale Management",
+    "category" : "Sales Modules",
     "depends" : [
-        'sale',
-        'stock',
+        "sale",
     ],
     "description": """
-    This Module will allows to block a picking and
-    all his moves while the order is not defined as paid.
+    Sale Module for Girard Sudron.
+    Adds the company need for sales
     """,
     "demo" : [],
     "data" : [
-        "sale_view.xml",
-        "stock_view.xml",
-        "account_view.xml",
+          "sale_view.xml",
+          "data/product_data.xml"
     ],
     'installable' : True,
     'active' : False,

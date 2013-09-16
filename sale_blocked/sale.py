@@ -62,7 +62,8 @@ class sale_order(orm.Model):
         for sale in self.browse(cr, uid, ids, context=context):
             manager = self.user_has_groups(cr, uid,
                 'sale_blocked.group_quotation_validate_manager', context=context)
-            if sale.partner_id.admin_opposition and not manager:
+            if sale.partner_id and sale.partner_id.admin_opposition and \
+                sale.partner_id.admin_opposition.block_order and not manager:
                 raise orm.except_orm(_('Warning!'),
                     _('You cannot confirm a sale order for a client with opposition %s.\n'
                       'Ask one of the accounting manager to confirm this sale.')

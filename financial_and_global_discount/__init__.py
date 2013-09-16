@@ -19,28 +19,7 @@
 #
 #################################################################################
 
-{
-    "name" : "Block Delivery if not payment",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sale Management",
-    "depends" : [
-        'sale',
-        'stock',
-    ],
-    "description": """
-    This Module will allows to block a picking and
-    all his moves while the order is not defined as paid.
-    """,
-    "demo" : [],
-    "data" : [
-        "sale_view.xml",
-        "stock_view.xml",
-        "account_view.xml",
-    ],
-    'installable' : True,
-    'active' : False,
-}
+import sale
+import stock
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<!-- Sale View -->
+        <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="priority">30</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="amount_untaxed_financial_discounted" position="attributes">
+                    <attribute name="attrs">{'invisible':[('financial_discount_is_present','=',False),('all_discount_is_present','=',False)]}</attribute>
+                </field>
+                <field name="amount_tax_financial_discounted" position="attributes">
+                    <attribute name="attrs">{'invisible':[('financial_discount_is_present','=',False),('all_discount_is_present','=',False)]}</attribute>
+                </field>
+                <field name="amount_total_financial_discounted" position="attributes">
+                    <attribute name="attrs">{'invisible':[('financial_discount_is_present','=',False),('all_discount_is_present','=',False)]}</attribute>
+                </field>
+                <field name="amount_untaxed_discounted" position="attributes">
+                    <attribute name="attrs">{'invisible':[('all_discount_is_present','=',False),('discount_is_present','=',False)]}</attribute>
+                </field>
+                <field name="amount_tax_discounted" position="attributes">
+                    <attribute name="attrs">{'invisible':[('all_discount_is_present','=',False),('discount_is_present','=',False)]}</attribute>
+                </field>
+                <field name="amount_total_discounted" position="attributes">
+                    <attribute name="attrs">{'invisible':[('all_discount_is_present','=',False),('discount_is_present','=',False)]}</attribute>
+                </field>
+            	<field name="amount_untaxed" position="after">
+            	    <field name="all_discount_is_present" invisible="1"/>        	
+            		<field name="amount_untaxed_all_discounted" attrs="{'invisible':['|',('financial_discount_is_present','=',True),('discount_is_present','=',True)]}"
+        				widget='monetary' options="{'currency_field': 'currency_id'}" />           	
+            	</field>
+            	<field name="amount_tax" position="after">
+            		<field name="amount_tax_all_discounted" attrs="{'invisible':['|',('financial_discount_is_present','=',True),('discount_is_present','=',True)]}"
+            			widget='monetary' options="{'currency_field': 'currency_id'}" />           	
+            	</field>
+				<field name="amount_total" position="after">
+            		<field name="amount_total_all_discounted" attrs="{'invisible':['|',('financial_discount_is_present','=',True),('discount_is_present','=',True)]}"
+        			 	widget='monetary' 
+            			options="{'currency_field': 'currency_id'}"/>           	
+            	</field> 
+			</field>
+        </record>
+	</data>
+</openerp>
+
+        
+                            
