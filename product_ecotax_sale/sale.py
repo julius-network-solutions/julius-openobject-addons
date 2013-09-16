@@ -113,6 +113,7 @@ class sale_order_line(orm.Model):
                     'order_id': sale.id,
                     'product_id': product_id,
                     'product_uom_qty': product_list[product_id],
+                    'sequence': 1000,
                 })
                 self.create(cr, uid, vals, context=context)
         return True

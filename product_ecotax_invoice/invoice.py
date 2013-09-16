@@ -87,16 +87,16 @@ class account_invoice(orm.Model):
     
 class account_invoice_line(orm.Model):
     _inherit = "account.invoice.line"
-    
+
     _columns = {
         'ecotax': fields.boolean('Ecotax line'),
     }
-    
+
     _defaults = {
         'ecotax': False,
         'sequence': 1,
     }
-    
+
     def _genrate_ecotax_lines(self, cr, uid, invoice,
                               product_list, context=None):
         if context is None:
