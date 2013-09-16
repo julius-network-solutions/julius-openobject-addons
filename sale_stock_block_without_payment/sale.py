@@ -33,7 +33,8 @@ class sale_order(orm.Model):
                     'draft': [('readonly', False)],
                     'sent': [('readonly', False)],
                     }),
-        'marked_as_paid': fields.boolean('Marked as Paid', readonly=True),
+        'marked_as_paid': fields.boolean('Marked as Paid',
+                                         readonly=True),
     }
     
     _defaults = {
@@ -48,4 +49,25 @@ class sale_order(orm.Model):
             'marked_as_paid': True,
             }, context=context)
 
+    def set_marked_as_unpaid(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        return self.write(cr, uid, ids, {
+            'marked_as_paid': False,
+            }, context=context)
+    
+    def onchange_payment_term(self, cr, uid, ids,
+                              payment_term, context=None):
+        if context is None:
+            context = {}
+        res = {'value': {'block_without_payment': False}}
+        if payment_term:
+            term_obj = self.pool.get('account.payment.term')
+            payment = term_obj.read(cr, uid, payment_term,
+                                    ['block_without_payment'],
+                                    context=context)
+            if payment.get('block_without_payment'):
+                val = payment['block_without_payment']
+                res['value']['block_without_payment'] = val
+        return res
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

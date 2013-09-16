@@ -22,68 +22,71 @@ from openerp.osv import fields, orm
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
 
-class sale_order(orm.Model):
-    _inherit = "sale.order"
+class account_invoice(orm.Model):
+    _inherit = "account.invoice"
     
     def generate_ecotax_line(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
-        line_obj = self.pool.get('sale.order.line')
-        for sale in self.browse(cr, uid, ids, context=context):
+        line_obj = self.pool.get('account.invoice.line')
+        for invoice in self.browse(cr, uid, ids, context=context):
             product_list = {}
-            if sale.state not in ('draft,sent'):
+            if invoice.state != 'draft':
                 continue
-            for line in sale.order_line:
+            for line in invoice.invoice_line:
                 if not line.product_id or \
                     (not line.product_id.ecotax_type in ['1','2'] and \
                      not line.product_id.categ_id.ecotax_type in ['1','2']):
                     continue
                 if line.product_id.ecotax_product_id and \
                     line.product_id.ecotax_product_id.id not in product_list.keys():
-                    product_list.update({line.product_id.ecotax_product_id.id: line.product_uom_qty})
+                    product_list.update({line.product_id.ecotax_product_id.id: line.quantity})
                 elif line.product_id.ecotax_product_id:
-                    product_list[line.product_id.ecotax_product_id.id] += line.product_uom_qty
+                    product_list[line.product_id.ecotax_product_id.id] += line.quantity
                 elif line.product_id.categ_id.ecotax_product_id and \
                     line.product_id.categ_id.ecotax_product_id.id not in product_list.keys():
-                    product_list.update({line.product_id.categ_id.ecotax_product_id.id: line.product_uom_qty})
+                    product_list.update({line.product_id.categ_id.ecotax_product_id.id: line.quantity})
                 elif line.product_id.categ_id.ecotax_product_id:
-                    product_list[line.product_id.categ_id.ecotax_product_id.id] += line.product_uom_qty
-            line_obj._genrate_ecotax_lines(cr, uid, sale, product_list, context=context)
+                    product_list[line.product_id.categ_id.ecotax_product_id.id] += line.quantity
+            line_obj._genrate_ecotax_lines(cr, uid, invoice, product_list, context=context)
         return True
     
     def _amount_ecotax(self, cr, uid, ids, field_name, arg, context=None):
         cur_obj = self.pool.get('res.currency')
         res = {}
-        for order in self.browse(cr, uid, ids, context=context):
-            res[order.id] = {
+        for invoice in self.browse(cr, uid, ids, context=context):
+            res[invoice.id] = {
                 'amount_ecotax': 0.0,
             }
             val = 0.0
-            cur = order.pricelist_id.currency_id
-            for line in order.order_line:
+            cur = invoice.currency_id
+            for line in invoice.invoice_line:
                 if line.ecotax:
-                    
                     val += line.price_subtotal
-            res[order.id]['amount_ecotax'] = cur_obj.round(cr, uid, cur, val)
+            res[invoice.id]['amount_ecotax'] = cur_obj.round(cr, uid, cur, val)
         return res
     
-    def _get_orders(self, cr, uid, ids, context=None):
+    def _get_invoices(self, cr, uid, ids, context=None):
         result = {}
-        for line in self.pool.get('sale.order.line').browse(cr, uid, ids, context=context):
-            result[line.order_id.id] = True
+        for line in self.pool.get('account.invoice.line').browse(
+                                        cr, uid, ids, context=context):
+            result[line.invoice_id.id] = True
         return result.keys()
     
     _columns = {
-        'amount_ecotax': fields.function(_amount_ecotax, digits_compute=dp.get_precision('Account'), 
+        'amount_ecotax': fields.function(_amount_ecotax,
+            digits_compute=dp.get_precision('Account'), 
             string='Included ecotax', store={
-                'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line'], 10),
-                'sale.order.line': (_get_orders, ['price_unit', 'tax_id', 'discount', 'product_uom_qty', 'ecotax'], 20),
+                'account.invoice': (lambda self, cr, uid, ids, c={}: ids, ['invoice_line'], 10),
+                'account.invoice.line': (_get_invoices,
+                     ['price_unit', 'invoice_line_tax_id', 'discount', 'quantity', 'ecotax'],
+                     20),
             },
             multi='sums', help="The included ecotax amount."),
     }
     
-class sale_order_line(orm.Model):
-    _inherit = "sale.order.line"
+class account_invoice_line(orm.Model):
+    _inherit = "account.invoice.line"
     
     _columns = {
         'ecotax': fields.boolean('Ecotax line'),
@@ -91,28 +94,34 @@ class sale_order_line(orm.Model):
     
     _defaults = {
         'ecotax': False,
+        'sequence': 1,
     }
     
-    def _genrate_ecotax_lines(self, cr, uid, sale, product_list, context=None):
+    def _genrate_ecotax_lines(self, cr, uid, invoice,
+                              product_list, context=None):
         if context is None:
             context = {}
         line_to_del_ids = self.search(cr, uid, [
-                ('order_id', '=', sale.id),
+                ('invoice_id', '=', invoice.id),
                 ('ecotax', '=', True),
-                ('state', '=', 'draft'),
+                ('invoice_id.state', '=', 'draft'),
             ], context=context)
         self.unlink(cr, uid, line_to_del_ids, context=context)
         for product_id in product_list.keys():
-            res = self.product_id_change(cr, uid, [], sale.pricelist_id.id, product_id, qty=product_list[product_id],
-                    uom=False, partner_id=sale.partner_id.id,
-                    update_tax=False, date_order=sale.date_order, context=context)
+            res = self.product_id_change(cr, uid, [], product=product_id,
+                uom_id=False, qty=product_list[product_id], name='',
+                type='out_invoice', partner_id=invoice.partner_id.id,
+                fposition_id=invoice.fiscal_position.id,
+                price_unit=False, currency_id=invoice.currency_id.id,
+                context=context)
             vals = res.get('value')
             if vals:
                 vals.update({
                     'ecotax': True,
-                    'order_id': sale.id,
+                    'invoice_id': invoice.id,
                     'product_id': product_id,
-                    'product_uom_qty': product_list[product_id],
+                    'quantity': product_list[product_id],
+                    'sequence': 1000,
                 })
                 self.create(cr, uid, vals, context=context)
         return True
