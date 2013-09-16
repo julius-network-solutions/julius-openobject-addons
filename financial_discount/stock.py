@@ -24,7 +24,7 @@ from openerp.tools.translate import _
 
 class stock_picking(orm.Model):
     _inherit = "stock.picking"
-    def _generate_discount_invoice_line(self, cr, uid, picking, invoice, sale_order_id, context=None):
+    def _generate_financial_discount_invoice_line(self, cr, uid, picking, invoice, sale_order_id, context=None):
         invoice_obj = self.pool.get('account.invoice')
         picking_obj = self.pool.get('stock.picking')
         invoice_line_obj = self.pool.get('account.invoice.line')
@@ -34,17 +34,17 @@ class stock_picking(orm.Model):
         value = {}
         sale_order = sale_order_obj.browse(cr, uid, sale_order_id, context=context)
         if sale_order.global_discount_percentage != 0.00:
-            discount = sale_order.global_discount_percentage / 100
+            discount = sale_order.financial_discount_percentage / 100
             res = 0
             for line in invoice.invoice_line:
-                if line.global_discount == False:
+                if line.financial_discount == False:
                     qty = line.quantity
                     pu = line.price_unit
                     sub = qty * pu
                     res += sub
             discount_value = res * discount
             data_obj = self.pool.get('ir.model.data')
-            model, product_id = data_obj.get_object_reference(cr, uid, 'global_discount', 'product_global_discount')
+            model, product_id = data_obj.get_object_reference(cr, uid, 'financial_discount', 'product_financial_discount')
             res = line_obj.product_id_change(cr, uid, [],
                 pricelist=sale_order.pricelist_id.id,
                 product=product_id, qty=1,
@@ -75,7 +75,7 @@ class stock_picking(orm.Model):
         for picking in picking_obj.browse(cr, uid, res.keys(), context=context):
             invoice = invoice_obj.browse(cr, uid, res[picking.id], context=context)
             sale_order_id = sale_order_obj.search(cr, uid, [('name','=', picking.origin)], context=context)[0]
-            invoice_line = self._generate_discount_invoice_line(cr, uid, picking, invoice, sale_order_id, context=context)
+            invoice_line = self._generate_financial_discount_invoice_line(cr, uid, picking, invoice, sale_order_id, context=context)
             if invoice_line != {}:
                 invoice_line_obj.create(cr, uid, invoice_line)
                 invoice_obj.button_compute(cr, uid, [invoice.id], context=context)
