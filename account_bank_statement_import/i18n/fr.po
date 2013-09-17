@@ -1,89 +1,319 @@
-# French translation for openobject-addons
-# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
-# This file is distributed under the same license as the openobject-addons package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* account_bank_statement_import
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: openobject-addons\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-01-11 11:14+0000\n"
-"PO-Revision-Date: 2011-01-19 12:00+0000\n"
-"Last-Translator: lolivier <olivier.lenoir@free.fr>\n"
-"Language-Team: French <fr@li.org>\n"
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-16 14:47+0000\n"
+"PO-Revision-Date: 2013-09-16 14:47+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-01-25 06:24+0000\n"
-"X-Generator: Launchpad (build 12177)\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
 
-#. module: account_coda
-#: model:ir.model,name:account_coda.model_account_coda_import
-msgid "Account Coda Import"
-msgstr "Importer les comptes"
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,journal_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_journal_id
+msgid "Bank Journal"
+msgstr "Journal de Banque"
 
-#. module: account_coda
-#: field:account.coda,name:0
-msgid "Coda file"
-msgstr "Fichier d'import"
+#. module: account_bank_statement_import
+#: model:ir.actions.act_window,name:account_bank_statement_import.action_bank_statement_import
+#: model:ir.ui.menu,name:account_bank_statement_import.menu_account_bank statement file_import
+msgid "Import bank statement file"
+msgstr "Import de relevé de banque"
 
-#. module: account_coda
-#: view:account.coda:0
-msgid "Coda import"
-msgstr "Import du fichier"
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,note:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_note
+msgid "Log"
+msgstr "Log"
 
-#. module: account_coda
-#: model:ir.ui.menu,name:account_coda.menu_account_coda_statement
-msgid "Coda Import Logs"
-msgstr "Historique des imports de relevés"
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/bank_statement_import.py:300
+#, python-format
+msgid "Unknown Error"
+msgstr "Erreur Inconnue"
 
-#. module: account_coda
-#: model:ir.ui.menu,name:account_coda.menu_account_coda_import
-msgid "Import Coda Statements"
-msgstr "Importer les relevés de compte"
+#. module: account_bank_statement_import
+#: model:ir.model,name:account_bank_statement_import.model_account_config_settings
+msgid "account.config.settings"
+msgstr "account.config.settings"
 
-#. module: account_coda
-#: view:account.coda.import:0
-#: model:ir.actions.act_window,name:account_coda.action_account_coda_import
-msgid "Import Coda Statement"
-msgstr "Importer les relevés de compte"
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/bank_statement_import.py:302
+#, python-format
+msgid "Sum up:"
+msgstr "Somme:"
 
-#. module: account_coda
-#: field:account.bank.statement,coda_id:0
-msgid "Coda"
-msgstr "Fichier"
+#. module: account_bank_statement_import
+#: view:account.bankimport.filters:0
+#: model:ir.actions.act_window,name:account_bank_statement_import.action_bankimport_filters
+#: model:ir.ui.menu,name:account_bank_statement_import.bankimport_filters
+msgid "Bank Statement Filters"
+msgstr "Filtres de relevé de banque"
 
-#. module: account_coda
-#: view:account.coda.import:0
-msgid "Result of Imported Coda Statements"
-msgstr "Résultat de l'import des relevés"
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,file_fname:0
+#: field:account.bankimport.filters,name:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_file_fname
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bankimport_filters_name
+msgid "Filename"
+msgstr "Nom du fichier"
 
-#. module: account_coda
-#: help:account.coda.import,def_receivable:0
-msgid ""
-"Set here the receivable account that will be used, by default, if the "
-"partner is not found"
-msgstr ""
-"Définir ici le compte à recevoir qui sera utilisé par défaut si le "
-"partenaire n'est pas trouvé"
+#. module: account_bank_statement_import
+#: field:account.config.settings,def_awaiting_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_config_settings_def_awaiting_id
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_res_company_def_awaiting_id
+#: field:res.company,def_awaiting_id:0
+msgid "Default Account for Unrecognized Movement"
+msgstr "Compte pour les mouvement non identifié"
 
-#. module: account_coda
-#: field:account.coda.import,coda:0
-#: model:ir.actions.act_window,name:account_coda.act_account_payment_account_bank_statement
-msgid "Coda File"
+#. module: account_bank_statement_import
+#: model:ir.actions.act_window,name:account_bank_statement_import.action_bank_statement_imported
+msgid "Imported bank statements"
+msgstr "Relevé de banque importé"
+
+#. module: account_bank_statement_import
+#: view:account.bank.statement.import:0
+msgid "Import"
+msgstr "Import"
+
+#. module: account_bank_statement_import
+#: model:ir.model,name:account_bank_statement_import.model_account_bankimport_filters
+msgid "Define the filters, which is related to the file"
+msgstr "Définisser le filtre, en fonction de votre fichier"
+
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,receivable_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_receivable_id
+msgid "Receivable Account"
+msgstr "Compte Débiteur"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/bank_statement_import.py:303
+#, python-format
+msgid "Number of error:"
+msgstr "Nombre d'erreur:"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/bank_statement_import.py:310
+#, python-format
+msgid "Result"
+msgstr "Résultat"
+
+#. module: account_bank_statement_import
+#: view:account.bank.statement.import:0
+msgid "Import Bank statement file"
+msgstr "Import de relevé de banque"
+
+#. module: account_bank_statement_import
+#: field:account.bankimport.filters,filter:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bankimport_filters_filter
+msgid "Filtername"
+msgstr "Nom du filtre"
+
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,date_format:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_date_format
+msgid "Date Format"
+msgstr "Format de la date"
+
+#. module: account_bank_statement_import
+#: field:account.config.settings,def_date_format:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_config_settings_def_date_format
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_res_company_def_date_format
+#: field:res.company,def_date_format:0
+msgid "Default Date Format"
+msgstr "Format de la date par defaut"
+
+#. module: account_bank_statement_import
+#: help:account.bank.statement.import,payable_id:0
+msgid "Set here the payable account that will be used, by default, if the partner is not found"
+msgstr "Configurer ici le compte créditeur qui sera utilisé par defaut si le partenaire n'est pas trouvé"
+
+#. module: account_bank_statement_import
+#: view:account.bank.statement.import:0
+msgid "Import Parameters"
+msgstr "Importé les Paramétres"
+
+#. module: account_bank_statement_import
+#: field:account.bankimport.filters,active:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bankimport_filters_active
+msgid "Active"
+msgstr "Actif"
+
+#. module: account_bank_statement_import
+#: field:account.config.settings,def_filter_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_config_settings_def_filter_id
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_res_company_def_filter_id
+#: field:res.company,def_filter_id:0
+msgid "Default Filter"
+msgstr "Filtre par défaut"
+
+#. module: account_bank_statement_import
+#: view:res.company:0
+msgid "Import Bank Statements"
+msgstr "Importé les relevés de banques"
+
+#. module: account_bank_statement_import
+#: view:account.config.settings:0
+msgid "Bank Statement import"
+msgstr "Import de relevé de banque"
+
+#. module: account_bank_statement_import
+#: field:account.config.settings,def_payable_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_config_settings_def_payable_id
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_res_company_def_payable_id
+#: field:res.company,def_payable_id:0
+msgid "Default Payable Account"
+msgstr "Compte Créditeur par défaut"
+
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,payable_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_payable_id
+msgid "Payable Account"
+msgstr "Compte Créditeur"
+
+#. module: account_bank_statement_import
+#: model:ir.model,name:account_bank_statement_import.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,file_data:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_file_data
+msgid "File to import"
 msgstr "Fichier à importer"
 
-#. module: account_coda
-#: model:ir.model,name:account_coda.model_account_bank_statement
-msgid "Bank Statement"
-msgstr "Relevé bancaire"
+#. module: account_bank_statement_import
+#: view:account.bankimport.filters:0
+msgid "Actives"
+msgstr "Actives"
 
-#. module: account_coda
-#: model:ir.actions.act_window,name:account_coda.action_account_coda
-msgid "Coda Logs"
-msgstr "Historique d'imports"
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,filter_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_filter_id
+msgid "Filter"
+msgstr "Filtre"
 
-#. module: account_coda
-#: view:account.coda:0
-msgid "Coda Import"
-msgstr "Importer le fichier"
+#. module: account_bank_statement_import
+#: view:account.bank.statement.import:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/bank_statement_import.py:225
+#, python-format
+msgid "The bank statement file has been imported"
+msgstr "Le relevé de banque à été importé"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/bank_statement_import.py:289
+#, python-format
+msgid "Application Error:"
+msgstr "Erreur de l'Application:"
+
+#. module: account_bank_statement_import
+#: view:account.bankimport.filters:0
+msgid "Not Actives"
+msgstr "Pas Actifs"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/filters/coda.py:122
+#, python-format
+msgid "The bank account %s is not defined for the partner %s.\n"
+""
+msgstr "Le compte %s n'est pas défini pour le partenaire %s.\n"
+""
+
+#. module: account_bank_statement_import
+#: view:account.bank.statement.import:0
+msgid "Bank statement file report"
+msgstr "File de rapport d'import de relevé de banque"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/bank_statement_import.py:295
+#, python-format
+msgid "System Error:"
+msgstr "Erreur Système:"
+
+#. module: account_bank_statement_import
+#: view:account.config.settings:0
+msgid "Configure your company bank import filters"
+msgstr "Configurer les filtres de votre société"
+
+#. module: account_bank_statement_import
+#: field:account.config.settings,def_bank_journal_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_config_settings_def_bank_journal_id
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_res_company_def_bank_journal_id
+#: field:res.company,def_bank_journal_id:0
+msgid "Default Bank Journal"
+msgstr "Journal de banque par défaut"
+
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,statement_update:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_statement_update
+msgid "Update Statement"
+msgstr "Mettre à jour le relevé"
+
+#. module: account_bank_statement_import
+#: view:account.bank.statement.import:0
+msgid "Open Imported Bank Statements"
+msgstr "Ouvrir les relevés importés"
+
+#. module: account_bank_statement_import
+#: model:ir.model,name:account_bank_statement_import.model_account_bank_statement_import
+msgid "account.bank.statement.import"
+msgstr "account.bank.statement.import"
+
+#. module: account_bank_statement_import
+#: help:account.bank.statement.import,receivable_id:0
+msgid "Set here the receivable account that will be used, by default, if the partner is not found"
+msgstr "Mettez le compte créditeur qui sera utilisé, par défaut, si le partenaire n'est pas trouvé"
+
+#. module: account_bank_statement_import
+#: help:account.bank.statement.import,awaiting_id:0
+msgid "Set here the default account that will be used, if the partner is found but does not have the bank account, or if he is domiciled"
+msgstr "Mettez le compte qui sera utilisé, par défaut, si le partenaire est trouvé mais n'as pas de compte en banque"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/bank_statement_import.py:223
+#, python-format
+msgid "Errors:"
+msgstr "Erreurs:"
+
+#. module: account_bank_statement_import
+#: view:account.bank.statement.import:0
+msgid "Accounting Parameters"
+msgstr "Paramétres Comptable"
+
+#. module: account_bank_statement_import
+#: field:account.bank.statement.import,awaiting_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_import_awaiting_id
+msgid "Account for Unrecognized Movement"
+msgstr "Compte pour les mouvement non reconnus"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/wizard/bank_statement_import.py:302
+#, python-format
+msgid "Number of statements:"
+msgstr "Nombre de relevés:"
+
+#. module: account_bank_statement_import
+#: field:account.config.settings,def_receivable_id:0
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_account_config_settings_def_receivable_id
+#: model:ir.model.fields,field_description:account_bank_statement_import.field_res_company_def_receivable_id
+#: field:res.company,def_receivable_id:0
+msgid "Default Receivable Account"
+msgstr "Compte Créditeur par défaut"
+
+#. module: account_bank_statement_import
+#: view:account.bank.statement.import:0
+msgid "or"
+msgstr "ou"
+

@@ -94,7 +94,7 @@ def get_data(self, cr, uid, ids, recordlist, data):
         ## First Line Special Process ##
         if line[0:2] == '01':
             
-            bank_statement['date'] = time.strftime( '%d/%m/%y', time.strptime(line[34:40], date_format))
+            bank_statement['date'] = time.strftime( '%m/%d/%Y', time.strptime(line[34:40], date_format))
             
             ## Balance Start Computation ##
             num = int(line[19:20]) or 2
@@ -109,7 +109,7 @@ def get_data(self, cr, uid, ids, recordlist, data):
             line_name = pointor
             st_line['ref'] = line[81:88]
             st_line['name'] = line[48:79]
-            st_line['date'] = time.strftime( '%d/%m/%y', time.strptime(line[34:40], date_format))
+            st_line['date'] = time.strftime( '%m/%d/%Y', time.strptime(line[34:40], date_format))
             st_line['extra_note'] = ''
             st_line['partner_id'] = False
             ## Value Computation ##
@@ -156,8 +156,8 @@ def get_data(self, cr, uid, ids, recordlist, data):
     bank_statement['total_amount'] = bank_statement["balance_end_real"] - bank_statement["balance_start"]
     bank_statement["bank_statement_line"] = bank_statement_lines
     period_id = account_period_obj.search(cr, uid, [
-            ('date_start', '<=', time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(st_line['date'], '%d/%m/%y'))), 
-            ('date_stop', '>=', time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(st_line['date'], '%d/%m/%y'))),
+            ('date_start', '<=', time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(st_line['date'], '%m/%d/%Y'))), 
+            ('date_stop', '>=', time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(st_line['date'], '%m/%d/%Y'))),
         ])
     bank_statement['period_id'] = period_id and period_id[0] or False
     bank_statement['journal_id'] = data['journal_id'][0]
