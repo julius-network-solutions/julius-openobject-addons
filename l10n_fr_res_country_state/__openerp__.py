@@ -25,18 +25,19 @@
     "author" : "Julius Network Solutions",
     "website": "http://www.julius.fr",
     "category" : "Localisation",
-    "description": """This module adds states for France into res_country_state Object.""",
+    "description": """
+    This module adds states for France into res_country_state Object.
+    """,
     "depends" : [
-        'base'
+        'base',
     ],
-    "init_xml" : [],
-    "update_xml" : [
+    "demo" : [],
+    "data" : [
         "data/res.country.state.csv",
     ],
     "test": [],
-    "demo_xml" : [],
     "active": False,
-    "installable": True
+    "installable": True,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
