@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+ 	<data>
+
+        <record id="view_res_partner_filter_inherit" model="ir.ui.view">
+            <field name="name">res partner search view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <field name="category_id" position="attributes">
+                    <attribute name="filter_domain">['|',('category_id','ilike', self),('category_id.parent_id','ilike', self)]</attribute>
+                </field>
+            </field>
+        </record>
+
+	</data>
+</openerp>
