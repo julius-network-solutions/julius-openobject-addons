@@ -37,7 +37,7 @@ class account_followup_print_select_validate(orm.TransientModel):
         select_obj = self.pool.get('account_followup.print.select')
         return select_obj.do_process(cr, uid, active_ids, context=context)
 
-class account_followup_print_select(orm.TransientModel):
+class account_followup_print_select(orm.Model):
     _name = 'account_followup.print.select'
     _description = 'Select Customers to Print Follow-up & Send Mail to Customers'
     _columns = {
