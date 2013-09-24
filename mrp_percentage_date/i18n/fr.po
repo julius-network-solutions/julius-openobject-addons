@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-19 13:26+0000\n"
-"PO-Revision-Date: 2013-07-19 13:26+0000\n"
+"POT-Creation-Date: 2013-09-23 13:20+0000\n"
+"PO-Revision-Date: 2013-09-23 13:20+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,15 +16,16 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: mrp_percentage_date
-#: model:ir.model,name:mrp_percentage_date.model_product_product
-msgid "Product"
-msgstr "Article"
+#: code:addons/mrp_percentage_date/procurement.py:284
+#, python-format
+msgid "Draft Purchase Order created"
+msgstr "Commande d'achat brouillon créée"
 
 #. module: mrp_percentage_date
-#: view:product.product:0
-#: view:res.company:0
-msgid "/ 100"
-msgstr "/ 100"
+#: field:product.product,date_percentage:0
+#: field:res.company,date_percentage:0
+msgid "Date percentage"
+msgstr "Pourcentage de date"
 
 #. module: mrp_percentage_date
 #: field:procurement.order,special_location:0
@@ -42,23 +43,24 @@ msgid "Companies"
 msgstr "Sociétés"
 
 #. module: mrp_percentage_date
+#: model:ir.model,name:mrp_percentage_date.model_product_product
+msgid "Product"
+msgstr "Article"
+
+#. module: mrp_percentage_date
 #: model:ir.model,name:mrp_percentage_date.model_procurement_order
 msgid "Procurement"
 msgstr "Approvisionnement"
 
 #. module: mrp_percentage_date
-#: model:ir.model,name:mrp_percentage_date.model_stock_location
-msgid "Location"
-msgstr "Emplacement"
+#: view:product.product:0
+#: view:res.company:0
+msgid "/ 100"
+msgstr "/ 100"
 
 #. module: mrp_percentage_date
-#: field:product.product,date_percentage:0
-#: field:res.company,date_percentage:0
-msgid "Date percentage"
-msgstr "Pourcentage de date"
-
-#. module: mrp_percentage_date
-#: field:stock.location,special_location:0
-msgid "Special Location"
-msgstr "Emplacement spécial"
+#: code:addons/mrp_percentage_date/procurement.py:267
+#, python-format
+msgid "PO: %s"
+msgstr "OA: %s"
 
