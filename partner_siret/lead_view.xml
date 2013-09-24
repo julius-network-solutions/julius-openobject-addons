@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+       <record id="crm_case_form_view_leads_siret" model="ir.ui.view">
+            <field name="name">crm.lead.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_leads"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="before">
+                    <field name="siret"/>
+                </field>
+            </field>
+       </record>
+       
+       <record id="crm_case_form_view_oppor_siret" model="ir.ui.view">
+            <field name="name">crm.opprtunity.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+            <field eval="50" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="partner_name" position="after">
+                    <field name="siret"/>
+                </field>
+            </field>
+        </record>
+        
+    </data>
+</openerp>

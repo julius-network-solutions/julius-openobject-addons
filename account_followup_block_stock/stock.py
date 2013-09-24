@@ -35,10 +35,10 @@ class stock_picking(orm.Model):
             result['warning']['message'] or ''
         warning_title = result.get('warning') and \
             result['warning']['title'] or ''
-        if part:
+        if partner_id:
             res_partner_obj = self.pool.get('res.partner')
             partner = res_partner_obj.browse(
-                cr, uid, part, context=context)
+                cr, uid, partner_id, context=context)
             opposition = partner.latest_followup_level_id
             if not opposition and partner.parent_id:
                 opposition = partner.parent_id.latest_followup_level_id

@@ -290,8 +290,8 @@
                 </field>
             </field>
         </record>
-        <!-- Product -->
-        <record id="view_product_product_form_inherit" model="ir.ui.view">
+        <!-- Product 
+        <record id="view_contract_product_form_inherit" model="ir.ui.view">
             <field name="name">product.product.form.inherit</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="stock.view_normal_property_acc_form"/>
@@ -306,7 +306,7 @@
                     <attribute name="attrs">{'invisible':[('contract_id','!=',False)],'readonly':[('cost_method','=','average')]}</attribute>
                 </field>
             </field>
-        </record>
+        </record>-->
 		
     </data>
 </openerp>

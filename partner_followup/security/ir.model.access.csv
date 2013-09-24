@@ -1,0 +1,3 @@
+"id","name","model_id/id","group_id/id","perm_read","perm_write","perm_create","perm_unlink"
+"access_account_followup_followup_user","account.followup employee","account_followup.model_account_followup_followup","base.group_user",1,0,0,0
+"access_account_followup_followup_line_user","account.followup.line employee","account_followup.model_account_followup_followup_line","base.group_user",1,0,0,0

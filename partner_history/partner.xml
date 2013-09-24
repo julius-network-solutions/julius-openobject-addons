@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	
+       <record id="view_partner_form_history" model="ir.ui.view">
+            <field name="name">res.partner.form.history</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <page string="History" position="after">
+                    <page string="Flat History">
+                        <div class="oe_chatter">
+                            <field name="history_ids">
+                                <tree>
+                                    <field name="date"/>
+                                    <field name="author_id"/>
+                                    <field name="object_name"/>
+                                    <field name="body_txt"/>
+                                </tree>
+                            </field>
+                        </div>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+	</data>
+</openerp>

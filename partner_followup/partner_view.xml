@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Partner form View -->
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="priority">30</field>
+            <field name="arch" type="xml">
+                <div name="buttons" position="after">
+                    <div name="followup_visible"
+                        attrs="{'invisible': [('followup_level', '=', False)]}"
+                        groups="base.group_user">
+                        <h1 style="color:red">
+                            <field name="followup_level"/>
+                        </h1>
+                    </div>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</openerp>

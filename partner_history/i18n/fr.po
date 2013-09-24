@@ -1,0 +1,37 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* partner_history
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-11 12:49+0000\n"
+"PO-Revision-Date: 2013-04-11 14:53+0100\n"
+"Last-Translator: Yvan <yvan@julius.fr>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: partner_history
+#: field:mail.message,object_name:0
+msgid "Object Name"
+msgstr "Source"
+
+#. module: partner_history
+#: model:ir.model,name:partner_history.model_mail_message
+msgid "Message"
+msgstr "Message"
+
+#. module: partner_history
+#: model:ir.model,name:partner_history.model_res_partner
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: partner_history
+#: view:res.partner:0
+msgid "Flat History"
+msgstr "Historique Plat"
+
