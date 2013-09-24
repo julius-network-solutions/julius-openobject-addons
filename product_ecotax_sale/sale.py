@@ -62,6 +62,7 @@ class sale_order(orm.Model):
             if sale.state not in ('draft','sent'):
                 continue
             for line in sale.order_line:
+                print line
                 if not self._check_if_ecotax(cr, uid, line, context=context):
                     continue
                 product_list = self._update_product_list(
@@ -80,7 +81,6 @@ class sale_order(orm.Model):
             cur = order.pricelist_id.currency_id
             for line in order.order_line:
                 if line.ecotax:
-                    
                     val += line.price_subtotal
             res[order.id]['amount_ecotax'] = cur_obj.round(cr, uid, cur, val)
         return res
@@ -121,17 +121,22 @@ class sale_order_line(orm.Model):
             ], context=context)
         self.unlink(cr, uid, line_to_del_ids, context=context)
         for product_id in product_list.keys():
-            res = self.product_id_change(cr, uid, [], sale.pricelist_id.id, product_id, qty=product_list[product_id],
+            res = self.product_id_change(cr, uid, [], sale.pricelist_id.id,
+                    product_id, qty=product_list[product_id],
                     uom=False, partner_id=sale.partner_id.id,
-                    update_tax=False, date_order=sale.date_order, context=context)
+                    update_tax=True, date_order=sale.date_order,
+                    fiscal_position=sale.fiscal_position and sale.fiscal_position.id or False,
+                    context=context)
             vals = res.get('value')
             if vals:
+                tax_id = vals.get('tax_id', [])
                 vals.update({
                     'ecotax': True,
                     'order_id': sale.id,
                     'product_id': product_id,
                     'product_uom_qty': product_list[product_id],
                     'sequence': 1000,
+                    'tax_id': [(6, 0, tax_id)],
                 })
                 self.create(cr, uid, vals, context=context)
         return True
