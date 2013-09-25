@@ -1,0 +1,97 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* split_picking
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-25 10:58+0000\n"
+"PO-Revision-Date: 2013-09-25 10:58+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: split_picking
+#: code:addons/split_picking/wizard/split_picking_wizard.py:70
+#, python-format
+msgid "Please inform a quantity (upper than 0)"
+msgstr "Veuillez saisir une quantité (suppérieure à 0)"
+
+#. module: split_picking
+#: model:ir.actions.act_window,name:split_picking.action_split_picking
+#: view:split.picking:0
+msgid "Split Picking"
+msgstr "Diviser Livraison"
+
+#. module: split_picking
+#: view:split.picking:0
+msgid "or"
+msgstr "ou"
+
+#. module: split_picking
+#: field:split.picking,period:0
+msgid "Period"
+msgstr "Période"
+
+#. module: split_picking
+#: field:split.picking,number:0
+msgid "Number"
+msgstr "Numéro"
+
+#. module: split_picking
+#: view:split.picking:0
+msgid "I want to split the selection into"
+msgstr "Je veux diviser la sélection en"
+
+#. module: split_picking
+#: model:ir.model,name:split_picking.model_split_picking
+msgid "split.picking"
+msgstr "split.picking"
+
+#. module: split_picking
+#: code:addons/split_picking/wizard/split_picking_wizard.py:69
+#: code:addons/split_picking/wizard/split_picking_wizard.py:76
+#, python-format
+msgid "Warning"
+msgstr "Attention"
+
+#. module: split_picking
+#: view:split.picking:0
+msgid "Split"
+msgstr "Diviser"
+
+#. module: split_picking
+#: selection:split.picking,period:0
+msgid "Year"
+msgstr "Année"
+
+#. module: split_picking
+#: view:split.picking:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: split_picking
+#: selection:split.picking,period:0
+msgid "Month"
+msgstr "Mois"
+
+#. module: split_picking
+#: selection:split.picking,period:0
+msgid "Day"
+msgstr "Jour"
+
+#. module: split_picking
+#: code:addons/split_picking/wizard/split_picking_wizard.py:77
+#, python-format
+msgid "This picking is not in the proper state"
+msgstr "Cette livraison n'est pas dans un bon état"
+
+#. module: split_picking
+#: selection:split.picking,period:0
+msgid "Week"
+msgstr "Semaine"
+
