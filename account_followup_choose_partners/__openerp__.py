@@ -20,7 +20,7 @@
 #################################################################################
 
 {
-    'name': 'Payment Follow-up Management',
+    'name': 'Payment Follow-up Management Choose partners',
     'version': '1.0',
     'category': 'Accounting & Finance',
     'description': """

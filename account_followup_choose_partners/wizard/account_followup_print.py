@@ -33,6 +33,7 @@ class account_followup_print_select_validate(orm.TransientModel):
     def do_process(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
+        print context
         active_ids = context.get('active_ids')
         select_obj = self.pool.get('account_followup.print.select')
         return select_obj.do_process(cr, uid, active_ids, context=context)
@@ -41,6 +42,7 @@ class account_followup_print_select(orm.TransientModel):
     _name = 'account_followup.print.select'
     _description = 'Select Customers to Print Follow-up & Send Mail to Customers'
     _columns = {
+        'name': fields.char('Name', size=128),
         'partner_id': fields.many2one('res.partner', 'Partner',
                                       required=True, readonly=True),
         'move_line_id': fields.many2one('account.move.line',
@@ -63,6 +65,7 @@ class account_followup_print_select(orm.TransientModel):
         }
 
     def do_process(self, cr, uid, ids, context=None):
+        print context
         if context is None:
             context = {}
         partner_list = []
@@ -176,6 +179,7 @@ class account_followup_print(orm.TransientModel):
                     ','.join(map(str,select_ids))+"])]"
             else:
                 action['domain'] = "[('id','in', [0])]"
+        print action
         return action
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
