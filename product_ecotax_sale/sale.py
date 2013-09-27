@@ -62,7 +62,6 @@ class sale_order(orm.Model):
             if sale.state not in ('draft','sent'):
                 continue
             for line in sale.order_line:
-                print line
                 if not self._check_if_ecotax(cr, uid, line, context=context):
                     continue
                 product_list = self._update_product_list(
