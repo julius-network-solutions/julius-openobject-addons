@@ -49,7 +49,8 @@ class stock_move(orm.Model):
         return {
             'shop': False,
             'warehouse': False,
-            'location': move.location_id.id,
+            'location': move and move.location_id and \
+            move.location_id.id or False,
             'states': states,
             'what': what,
         }
