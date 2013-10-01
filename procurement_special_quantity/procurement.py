@@ -81,8 +81,8 @@ class procurement_order(orm.Model):
                     order_line_obj = self.pool.get('purchase.order.line')
                     line_ids = order_line_obj.search(cr, uid, [
                          ('product_id', '=', procurement.product_id.id),
-                         ('state', '=', 'draft'),
-                         ('order_id.state', '=', 'draft'),
+                         ('state', 'in', ('draft','confirmed')),
+                         ('order_id.state', 'in', ('draft','sent','confirmed','approved','except_picking','except_invoice')),
                          ('move_dest_id.state', '!=', 'cancel'),
                          ('move_dest_id.location_dest_id', '=', procurement.location_id.id),
                          ('date_planned', '<=', procurement.date_planned),
