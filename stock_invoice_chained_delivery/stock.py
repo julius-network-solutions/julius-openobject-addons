@@ -19,6 +19,27 @@
 #
 #################################################################################
 
-import partner_merger
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
+
+class stock_move(orm.Model):
+    _inherit = "stock.move"
+
+    def _prepare_chained_picking(self, cr, uid, picking_name,
+            picking, picking_type, moves_todo, context=None):
+        res = super(stock_move, self)._prepare_chained_picking(
+            cr, uid, picking_name, picking, picking_type, moves_todo, context=context)
+        res['invoice_state'] = picking.invoice_state
+        return res
+
+    def create_chained_picking(self, cr, uid, moves, context=None):
+        new_moves = super(stock_move, self).create_chained_picking(
+            cr, uid, moves, context=context)
+        picking_obj = self.pool.get('stock.picking')
+        for picking, todo in self._chain_compute(cr, uid, moves, context=context).items():
+            if picking:
+                picking_obj.write(cr, uid,
+                                  picking.id, {'invoice_state': 'none'}, context=context)
+        return new_moves
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

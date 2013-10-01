@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,7 +18,14 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-import wizard
+class res_partner(orm.Model):
+    _inherit = 'res.partner'
+    
+    _columns = {
+        'product_code_ids': fields.one2many('product.partner.code', 'partner_id', 'Product partner codes'),
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

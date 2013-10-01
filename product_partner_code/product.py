@@ -23,6 +23,7 @@ from openerp.tools.translate import _
 
 class product_tag(orm.Model):
     _name = "product.partner.code"
+    _description = "Partner product code"
     _rec_name = 'code'
     
     _columns = {

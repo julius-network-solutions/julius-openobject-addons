@@ -26,6 +26,7 @@
     "website" : "http://julius.fr",
     "category" : "Sales Management",
     "depends" : [
+        'base',
         'product',
     ],
     "description": """
@@ -35,6 +36,7 @@
     "data" : [
         'security/ir.model.access.csv',
         'product_view.xml',
+        'partner_view.xml',
     ],
     'installable' : True,
     'active' : False,

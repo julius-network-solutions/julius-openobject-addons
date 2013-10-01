@@ -37,7 +37,7 @@ This modules fix the tax computation when generating the expenses accounting dat
     'depends': ['hr_expense'],
     'data': [],
     'test': [],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }

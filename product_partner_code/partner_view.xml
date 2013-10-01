@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <record id="res_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.product.code.view.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field eval="16" name="priority"/>
+            <field name="arch" type="xml">
+                <page string="History" position="before">
+                    <page string="Product references">
+                        <group colspan="4" col="4">
+                            <separator string="Product codes"/>
+                            <field name="product_code_ids" nolabel="1" colspan="4" mode="tree">
+                                <tree string="Product codes" editable="bottom">
+                                    <field name="code"/>
+                                    <field name="product_id"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -116,12 +116,14 @@ class account_invoice_line(orm.Model):
                 context=context)
             vals = res.get('value')
             if vals:
+                invoice_line_tax_id = vals.get('invoice_line_tax_id', [])
                 vals.update({
                     'ecotax': True,
                     'invoice_id': invoice.id,
                     'product_id': product_id,
                     'quantity': product_list[product_id],
                     'sequence': 1000,
+                    'invoice_line_tax_id': [(6, 0, invoice_line_tax_id)]
                 })
                 self.create(cr, uid, vals, context=context)
         return True

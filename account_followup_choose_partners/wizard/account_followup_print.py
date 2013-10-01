@@ -41,6 +41,7 @@ class account_followup_print_select(orm.TransientModel):
     _name = 'account_followup.print.select'
     _description = 'Select Customers to Print Follow-up & Send Mail to Customers'
     _columns = {
+        'name': fields.char('Name', size=128),
         'partner_id': fields.many2one('res.partner', 'Partner',
                                       required=True, readonly=True),
         'move_line_id': fields.many2one('account.move.line',
@@ -130,7 +131,7 @@ class account_followup_print_select(orm.TransientModel):
             'views': [(resource_id,'form')],
             'type': 'ir.actions.act_window',
             'target': 'new',
-            }
+        }
 
 class account_followup_print(orm.TransientModel):
     _inherit = 'account_followup.print'

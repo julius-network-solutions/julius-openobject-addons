@@ -104,15 +104,17 @@ class purchase_order_line(orm.Model):
         self.unlink(cr, uid, line_to_del_ids, context=context)
         for product_id in product_list.keys():
             res = self.onchange_product_id(cr, uid, [], purchase.pricelist_id.id, product_id, qty=product_list[product_id],
-                    uom_id=False, partner_id=purchase.partner_id.id, date_order=purchase.date_order, context=context)
+                    uom_id=False, partner_id=purchase.partner_id.id, date_order=purchase.date_order,
+                    fiscal_position_id=purchase.fiscal_position and purchase.fiscal_position.id or False, context=context)
             vals = res.get('value')
             if vals:
+                taxes_id = vals.get('taxes_id', [])
                 vals.update({
                     'ecotax': True,
                     'order_id': purchase.id,
                     'product_id': product_id,
                     'product_qty': product_list[product_id],
-                    'taxes_id': [(6, 0, [])],
+                    'taxes_id': [(6, 0, taxes_id)],
                 })
                 self.create(cr, uid, vals, context=context)
         return True
