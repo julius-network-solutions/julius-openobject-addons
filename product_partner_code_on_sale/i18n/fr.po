@@ -1,0 +1,28 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* product_partner_code_on_sale
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-02 10:38+0000\n"
+"PO-Revision-Date: 2013-10-02 10:38+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_partner_code_on_sale
+#: model:ir.model.fields,field_description:product_partner_code_on_sale.field_sale_order_line_product_partner_code
+#: field:sale.order.line,product_partner_code:0
+msgid "Product Partner Code"
+msgstr "Références produits partenaire"
+
+#. module: product_partner_code_on_sale
+#: model:ir.model,name:product_partner_code_on_sale.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de commandes de vente"
+

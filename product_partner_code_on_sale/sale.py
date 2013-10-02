@@ -24,21 +24,24 @@ from openerp.tools.translate import _
 class sale_order_line(orm.Model):
     _inherit = 'sale.order.line'
     
-    def _get_product_partner_code(self, cr, uid, ids, name, args, context=None):
+    def _get_product_partner_code(self, cr, uid, ids,
+                                  name, args, context=None):
         if context is None:
             context = {}
         res = {}
         product_partner_code_obj = self.pool.get('product.partner.code')
         for line in self.browse(cr, uid, ids, context=context):
             res[line.id] = ''
-            partner_id = line.order_id.partner_id
-            if line.product_id and partner_id:
+            partner = line.order_id.partner_id
+            product = line.product_id
+            if product and partner:
                 code_ids = product_partner_code_obj.search(cr, uid, [
-                    ('product_id', '=', line.product_id.id),
-                    ('partner_id', '=', partner_id.id),
+                    ('product_id', '=', product.id),
+                    ('partner_id', '=', partner.id),
                     ], limit=1, context=context)
                 if code_ids:
-                    code = product_partner_code_obj.browse(cr, uid, code_ids[0], context=context).code or ''
+                    code = product_partner_code_obj.browse(cr, uid,
+                        code_ids[0], context=context).code or ''
                     res[line.id] = code
         return res
     

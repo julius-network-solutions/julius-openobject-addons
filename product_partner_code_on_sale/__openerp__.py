@@ -29,10 +29,11 @@
         'base',
         'product',
         'sale',
-        'product_partner_code'
+        'product_partner_code',
     ],
     "description": """
-    Add a new object which allow to define partner codes for products
+    Add a new object which allow to define partner codes
+    for products and to display it on sale order lines
     """,
     "demo" : [],
     "data" : [

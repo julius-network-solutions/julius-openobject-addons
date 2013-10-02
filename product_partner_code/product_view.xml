@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
+    <data>
 
         <record id="product_product_form_inherit" model="ir.ui.view">
             <field name="name">product.product.partner.code.view.form</field>
@@ -21,6 +21,57 @@
                 </page>
             </field>
         </record>
+
+        <record id="partner_product_code_form" model="ir.ui.view">
+            <field name="name">product.partner.code.form</field>
+            <field name="model">product.partner.code</field>
+            <field name="arch" type="xml">
+                <form string="Product partner codes" version="7.0">
+                    <group>
+                        <field name="code"/>
+                        <field name="product_id"/>
+                        <field name="partner_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="partner_product_code_tree" model="ir.ui.view">
+            <field name="name">product.partner.code.tree</field>
+            <field name="model">product.partner.code</field>
+            <field name="arch" type="xml">
+                <tree string="Product partner codes" editable="top">
+                    <field name="code"/>
+                    <field name="product_id"/>
+                    <field name="partner_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="partner_product_code_search" model="ir.ui.view">
+            <field name="name">product.partner.code.search</field>
+            <field name="model">product.partner.code</field>
+            <field name="arch" type="xml">
+                <search string="Product partner codes">
+                    <field name="code"/>
+                    <field name="product_id"/>
+                    <field name="partner_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_partner_product_code_form">
+            <field name="name">Product partner codes</field>
+            <field name="res_model">product.partner.code</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="partner_product_code_tree"/>
+        </record>
+        
+        <menuitem name="Product partner codes"
+            id="menu_action_partner_product_code_form"
+            parent="product.prod_config_main"
+            action="action_partner_product_code_form"/>
 
     </data>
 </openerp>

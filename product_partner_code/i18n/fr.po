@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-01 14:00+0000\n"
-"PO-Revision-Date: 2013-10-01 14:00+0000\n"
+"POT-Creation-Date: 2013-10-02 10:26+0000\n"
+"PO-Revision-Date: 2013-10-02 10:26+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -29,8 +29,11 @@ msgid "Code"
 msgstr "Référence"
 
 #. module: product_partner_code
+#: model:ir.actions.act_window,name:product_partner_code.action_partner_product_code_form
 #: model:ir.model.fields,field_description:product_partner_code.field_product_product_partner_code_ids
 #: model:ir.model.fields,field_description:product_partner_code.field_res_partner_product_code_ids
+#: model:ir.ui.menu,name:product_partner_code.menu_action_partner_product_code_form
+#: view:product.partner.code:0
 #: field:product.product,partner_code_ids:0
 #: field:res.partner,product_code_ids:0
 msgid "Product partner codes"
@@ -45,6 +48,11 @@ msgstr "Références partenaires"
 #: model:ir.model,name:product_partner_code.model_product_partner_code
 msgid "Partner product code"
 msgstr "Références produits partenaires"
+
+#. module: product_partner_code
+#: view:product.product:0
+msgid "Sales"
+msgstr "Barème Général"
 
 #. module: product_partner_code
 #: view:res.partner:0
