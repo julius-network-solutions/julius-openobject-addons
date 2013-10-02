@@ -21,6 +21,7 @@
 
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
+from openerp import pooler
 
 class clean_pricelist_data(orm.TransientModel):
     _name = 'clean.pricelist.data'
@@ -48,8 +49,9 @@ class clean_pricelist_data(orm.TransientModel):
 
     def _get_partner_domain_sale(self, cr, uid, context=None):
         return [
-            ('is_company', '=', True),
-            ('list_to_compute_sale', '=', True)
+            '|', ('is_company', '=', True),
+            ('parent_id', '=', False),
+            ('list_to_compute_sale', '=', True),
         ]
 
     def _get_category_domain_purchase(self, cr, uid, context=None):
@@ -57,8 +59,9 @@ class clean_pricelist_data(orm.TransientModel):
 
     def _get_partner_domain_purchase(self, cr, uid, context=None):
         return [
-            ('is_company', '=', True),
-            ('list_to_compute_purchase', '=', True)
+            '|', ('is_company', '=', True),
+            ('parent_id', '=', False),
+            ('list_to_compute_purchase', '=', True),
         ]
     
     def _update_list_price(self, cr, uid, obj,
@@ -124,5 +127,69 @@ class clean_pricelist_data(orm.TransientModel):
             if not list_ids:
                 break
         return {'type': 'ir.actions.act_window_close'}
+
+    def _clean_pricelist_data(self, cr, uid, ids=None, use_new_cursor=False, context=None):
+        if context is None:
+            context = {}
+        try:
+            if use_new_cursor:
+                cr = pooler.get_db(use_new_cursor).cursor()
+            self.clean_pricelist_data(cr, uid, ids, context=context)
+            if use_new_cursor:
+                cr.commit()
+        finally:
+            if use_new_cursor:
+                try:
+                    cr.close()
+                except Exception:
+                    pass
+        return {}
+
+    def _create_pricelist_sale_data(self, cr, uid, ids=None, use_new_cursor=False, context=None):
+        if context is None:
+            context = {}
+        try:
+            if use_new_cursor:
+                cr = pooler.get_db(use_new_cursor).cursor()
+            self.create_pricelist_sale_data(cr, uid, ids, context=context)
+            if use_new_cursor:
+                cr.commit()
+        finally:
+            if use_new_cursor:
+                try:
+                    cr.close()
+                except Exception:
+                    pass
+        return {}
+
+    def _create_pricelist_purchase_data(self, cr, uid, ids=None, use_new_cursor=False, context=None):
+        if context is None:
+            context = {}
+        try:
+            if use_new_cursor:
+                cr = pooler.get_db(use_new_cursor).cursor()
+            self.create_pricelist_purchase_data(cr, uid, ids, context=context)
+            if use_new_cursor:
+                cr.commit()
+        finally:
+            if use_new_cursor:
+                try:
+                    cr.close()
+                except Exception:
+                    pass
+        return {}
+
+    def run_generator(self, cr, uid, automatic=False, use_new_cursor=False, context=None):
+        ''' Runs through scheduler.
+        @param use_new_cursor: False or the dbname
+        '''
+        if use_new_cursor:
+            use_new_cursor = cr.dbname
+        self._clean_pricelist_data(cr, uid, use_new_cursor=use_new_cursor, context=context)
+        print 'finished1'
+        self._create_pricelist_sale_data(cr, uid, use_new_cursor=use_new_cursor, context=context)
+        print 'finished2'
+        self._create_pricelist_purchase_data(cr, uid, use_new_cursor=use_new_cursor, context=context)
+        print 'finished3'
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
