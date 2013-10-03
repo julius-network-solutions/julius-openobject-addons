@@ -34,7 +34,7 @@ class account_export_report(orm.Model):
         'analytic_account_ids': fields.many2many('account.analytic.account', 'analytic_account_export_rel','account_export_id', 'analytic_account_id','Analytic Accounts'),
     }
     _defaults = {
-        'company_id': lambda s,cr,uid,c: s.pool.get('res.company')._company_default_get(cr, uid, 'res.partner.address', context=c),
+        'company_id': lambda s,cr,uid,c: s.pool.get('res.company')._company_default_get(cr, uid, 'res.partner', context=c),
     }
     
     def print_report(self, cr, uid, ids, context=None):

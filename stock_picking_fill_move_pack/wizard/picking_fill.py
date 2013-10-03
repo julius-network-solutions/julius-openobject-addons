@@ -27,7 +27,7 @@ class stock_picking_fill(orm.TransientModel):
     _inherit = 'stock.picking.fill'
     
     def _get_vals_pack(self, cr, uid, current, picking_id, location_id,
-            location_dest_id, address_id=False, context=None):
+            location_dest_id, context=None):
         res = []
         move_obj = self.pool.get('stock.move')
         if not current.pack_ids:
@@ -42,7 +42,7 @@ class stock_picking_fill(orm.TransientModel):
             for serial in serial_lines:
                 prodlot = serial.serial_id
                 result_vals = move_obj.onchange_product_id(cr, uid, [], prod_id=prodlot.product_id.id,
-                                loc_id=location_id, loc_dest_id=location_dest_id, address_id=address_id or False)
+                                loc_id=location_id, loc_dest_id=location_dest_id)
                 line_vals = result_vals and result_vals.get('value') or False
                 if line_vals:
                     line_vals.update({'picking_id': picking_id})
@@ -65,7 +65,7 @@ class stock_picking_fill(orm.TransientModel):
                 quantity = prod_prod[product_id]
                 if quantity and quantity > 0:
                     result_vals = move_obj.onchange_product_id(cr, uid, [], prod_id=product_id,
-                                    loc_id=location_id, loc_dest_id=location_dest_id, address_id=address_id or False)
+                                    loc_id=location_id, loc_dest_id=location_dest_id)
                     line_vals = result_vals and result_vals.get('value') or False
                     if line_vals:
                         line_vals.update({
@@ -88,12 +88,11 @@ class stock_picking_fill(orm.TransientModel):
             picking_id = picking.id
             location_id = picking.location_id and picking.location_id.id or False
             location_dest_id = picking.location_dest_id and picking.location_dest_id.id or False
-            address_id = picking.address_id.id
             if not location_id or not location_dest_id:
                 return []
         if current.type_id.code == 'pack':
             res = self._get_vals_pack(cr, uid, current, picking_id=picking_id, location_id=location_id,
-                    location_dest_id=location_dest_id, address_id=address_id, context=context)
+                    location_dest_id=location_dest_id, context=context)
         return res
     
     _columns = {

@@ -60,8 +60,8 @@ class stock_move(orm.Model):
                 # Move of date asset on rely
                 if move.picking_id and move.picking_id.purchase_id and move.picking_id.purchase_id.partner_id:
                     partner_id = move.picking_id.purchase_id.partner_id.id
-                elif move.picking_id and move.picking_id.address_id and move.picking_id.address_id.partner_id:
-                    partner_id = move.picking_id.address_id.partner_id.id
+                elif move.picking_id and move.picking_id.partner_id:
+                    partner_id = move.picking_id.partner_id.id
                 category_id = model_data.get_object_reference(cr, uid, 'stock_asset', 'account_asset_category_misc_operational')[1]
                 # Process #
                 create_vals = {

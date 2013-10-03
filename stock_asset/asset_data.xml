@@ -12,7 +12,7 @@
 		<record id="account_account_asset" model="account.account">
             <field name="name">Temporary Account</field>
             <field name="code">TEMP</field>
-            <field name="user_type" ref="l10n_fr.account_type_immobilisations"/>
+            <field name="user_type" ref="account.data_account_type_asset"/>
             <field name="view_id">3</field>
         </record>
 	
