@@ -26,10 +26,6 @@
     "website" : "http://julius.fr",
     "depends" : [
         "stock",
-        "stock_tracking_add_move",
-        "stock_tracking_add_pack",
-        "stock_tracking_add_prodlot",
-        "stock_tracking_add_product",
         "stock_tracking_extended",
     ],
     "init_xml" : [],

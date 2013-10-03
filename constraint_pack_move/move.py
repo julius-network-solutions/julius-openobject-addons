@@ -19,10 +19,10 @@
 #
 #################################################################################
 
-from osv import osv, fields
-from tools.translate import _
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-class stock_move(osv.osv):  
+class stock_move(orm.Model):  
     _inherit = 'stock.move'
 
     def _check_pack_id(self, cr, uid, ids, context=None):
@@ -45,6 +45,5 @@ class stock_move(osv.osv):
         
     _constraints = [(_check_pack_id, 'This production lot is already in another Pack', ['prodlot_id'])]
     
-stock_move()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
