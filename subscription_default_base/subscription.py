@@ -49,6 +49,16 @@ class subscription_subscription(orm.Model):
         if f.value=='date':
             value = time.strftime(DEFAULT_SERVER_DATE_FORMAT)
         return value
+    
+    def _get_sub_document(self, cr, uid, row, model_name, context=None):
+        if context is None:
+            context = {}
+        doc_obj = self.pool.get('subscription.document')
+        document_ids = doc_obj.search(cr, uid, [
+            ('model.model', '=', model_name)
+            ], context=context)
+        doc = doc_obj.browse(cr, uid, document_ids, context=context)[0]
+        return doc
 
     def model_copy(self, cr, uid, ids, context=None):
         if context is None:
@@ -69,11 +79,8 @@ class subscription_subscription(orm.Model):
                                        '\nThis one does not exist!'))
 
             default = {'state':'draft'}
-            doc_obj = self.pool.get('subscription.document')
-            document_ids = doc_obj.search(cr, uid, [
-                ('model.model','=',model_name)
-                ], context=context)
-            doc = doc_obj.browse(cr, uid, document_ids)[0]
+            
+            doc = self._get_sub_document(cr, uid, row, model_name, context=context)
             for f in doc.field_ids:
                 default[f.field.name] = self._get_specific_defaut_values(
                     cr, uid, row['id'], f, context=context)
