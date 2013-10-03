@@ -186,10 +186,7 @@ class clean_pricelist_data(orm.TransientModel):
         if use_new_cursor:
             use_new_cursor = cr.dbname
         self._clean_pricelist_data(cr, uid, use_new_cursor=use_new_cursor, context=context)
-        print 'finished1'
         self._create_pricelist_sale_data(cr, uid, use_new_cursor=use_new_cursor, context=context)
-        print 'finished2'
         self._create_pricelist_purchase_data(cr, uid, use_new_cursor=use_new_cursor, context=context)
-        print 'finished3'
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
