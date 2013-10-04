@@ -52,7 +52,6 @@ class stock_picking_out(orm.Model):
         res = {}
         for picking in self.browse(cr, uid, ids, context=context):
             blocked = False
-            print 'yo'
             if picking.sale_id and picking.sale_id.block_without_payment \
                 and not picking.sale_id.marked_as_paid:
                 blocked = True

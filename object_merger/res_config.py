@@ -116,7 +116,6 @@ class object_merger_settings(orm.TransientModel):
             if not field_obj.search(cr, uid, [
                 ('name', '=', field_name),
                 ('model', '=', 'object.merger')], context=context):
-                print field_name
                 field_data = {
                     'model': 'object.merger',
                     'model_id': object_merger_ids and object_merger_ids[0] or False,

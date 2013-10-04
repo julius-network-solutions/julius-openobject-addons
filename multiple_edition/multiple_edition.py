@@ -109,7 +109,6 @@ class multiple_edition(orm.TransientModel):
         model_obj = self.pool.get('ir.model')
         if context is None:
             context = {}
-        print context
         temp = context.get('active_model')
         model_ids = model_obj.search(cr, uid, [('model', '=', temp)], limit=1, context=context)
         if model_ids:
