@@ -27,6 +27,9 @@ from openerp.tools.translate import _
 class sale_order(orm.Model):
     _inherit = "sale.order"
     
+    _columns = {
+        'purchase_order_id' : fields.many2one('purchase.order','Purchase Order',readonly=True)
+    }
     ######################################################
     ### TODO : Mgt of access rights for Multi Company
     ######################################################
@@ -36,29 +39,35 @@ class sale_order(orm.Model):
         purchase_order_obj = self.pool.get('purchase.order')
         purchase_order_line_obj = self.pool.get('purchase.order.line')
         res_company_obj = self.pool.get('res.company')
+        res_partner_obj = self.pool.get('res.partner')
+        stock_warehouse_obj = self.pool.get('stock.warehouse')
         purchase_order_tax_obj = self.pool.get('purchase.order.tax')
         #Creation of the Purchase Order
         for so in self.browse(cr ,uid, ids, context=context):
-            company_id = res_company_obj.search(cr, uid, [('partner_id','=',so.partner_id.id)], context=context)
+            company_id = res_company_obj.search(cr, uid, [('partner_id.name','=',so.partner_id.name)], context=context)
+            partner_id = res_partner_obj.search(cr, uid, [('name','=',so.company_id.name),('company_id','=',company_id)], context=context)
+            warehouse_id = stock_warehouse_obj.search(cr, uid, [('company_id','=',company_id)], context=context)
+            warehouse = stock_warehouse_obj.browse(cr, uid, warehouse_id[0],context=context)
             vals = {
                 'state' : 'draft',
-                'partner_id' : so.company_id.partner_id.id,
+                'partner_id' : partner_id[0],
                 'company_id' : company_id[0],
                 'origin' : so.name,
                 'payment_term_id' : so.payment_term.id,
                 'fiscal_position' : so.fiscal_position.id,
                 'date_order' : so.date_order,
                 'pricelist_id' : so.company_id.partner_id.property_product_pricelist.id,
-                'location_id' : 12, #Pop up
+                'warehouse_id' : warehouse_id[0],
+                'location_id' : warehouse.lot_output_id.id,
                 'invoice_method' : 'order',
             }
             po_id = purchase_order_obj.create(cr, uid, vals, context=context)
             po = purchase_order_obj.browse(cr , uid, po_id, context=context)
-            self.write(cr, uid, so.id, {'client_order_ref': po.name}, context = context)
+            self.write(cr, uid, so.id, {'client_order_ref': po.name,'purchase_order_id': po_id}, context = context)
             #Creation of the Purchase Order Line
             for line in so.order_line:
                 values = {
-                      'product_id' : line.product_id.id,
+                      'product_id' : line.product_id.id or '',
                       'name' : line.name,
                       'product_qty' : line.product_uom_qty,
                       'price_unit' : line.price_unit,

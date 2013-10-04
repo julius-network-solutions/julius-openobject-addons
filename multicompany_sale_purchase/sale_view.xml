@@ -6,9 +6,16 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <field name="partner_id" position="after">
-					<button name="sale_to_purchase" string="Create Purchase Order" type="object" class="oe_highlight"/>
-                </field>
+                <notebook position="before">
+                    <group>
+                        <group>
+							<button name="sale_to_purchase" string="Create Purchase Order" type="object" class="oe_highlight"/>
+	                	</group>
+	                	<group>
+							<field name="purchase_order_id"/>
+						</group>
+                	</group>
+				</notebook>
 			</field>
         </record>
 	</data>
