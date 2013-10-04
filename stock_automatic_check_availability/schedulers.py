@@ -21,6 +21,7 @@
 
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
+from openerp import pooler
 
 class stock_picking(orm.Model):
     _inherit = "stock.picking"
@@ -32,6 +33,7 @@ class stock_picking(orm.Model):
         '''
         self._check_availability_order_by_date(cr, uid, \
                 use_new_cursor=use_new_cursor, context=context)
+        return True
         
     def _check_move_list_assign(self, cr, uid, move_ids, context=None):
         if context is None:
