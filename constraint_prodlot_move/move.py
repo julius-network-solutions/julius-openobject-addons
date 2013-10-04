@@ -19,10 +19,10 @@
 #
 #################################################################################
 
-from osv import osv, fields
-from tools.translate import _
+from openerp.osv import fields, orm, osv
+from openerp.tools.translate import _
 
-class stock_move(osv.osv):  
+class stock_move(orm.Model):  
     _inherit = 'stock.move'
 
     def _check_destination_id(self, cr, uid, ids, context=None):
@@ -47,7 +47,5 @@ class stock_move(osv.osv):
         return True
         
     _constraints = [(_check_destination_id, 'The Origin of this move does not match the current position of this serial',['prodlot_id'])]
-    
-stock_move()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
