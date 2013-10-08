@@ -49,9 +49,21 @@ class purchase_order(orm.Model):
         #Creation of the Sale Order
         for po in self.browse(cr ,1, ids, context=context):
             company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',po.partner_id.name)], context=context)
+            if not company_id:
+                raise orm.except_orm(_('Warning'),
+                                     _('This partner is not avaible for EDI')) 
             partner_id = res_partner_obj.search(cr, 1, [('name','=',po.company_id.name),('company_id','=',company_id)], context=context)
+            if not partner_id:                
+                raise orm.except_orm(_('Warning'),
+                                     _('This partner is not avaible for EDI'))
             sale_shop_id = sale_shop_obj.search(cr, 1, [('company_id','=',company_id)], context=context)
+            if not sale_shop_id:                
+                raise orm.except_orm(_('Warning'),
+                                     _('This partner is not avaible for EDI'))
             warehouse_id = stock_warehouse_obj.search(cr, 1, [('company_id','=',company_id)], context=context)
+            if not warehouse_id:                
+                raise orm.except_orm(_('Warning'),
+                                     _('This partner is not avaible for EDI'))
             warehouse = stock_warehouse_obj.browse(cr, 1, warehouse_id[0],context=context)
             vals = {
                 'state' : 'draft',
@@ -79,7 +91,7 @@ class purchase_order(orm.Model):
                     name=line.name, partner_id=partner_id[0], lang=False, update_tax=False,
                     date_order=po.date_order, packaging=False, fiscal_position=po.fiscal_position.id,
                     flag=False, context=context)
-                res['value'].update({'order_id' : so_id})
+                res['value'].update({'order_id' : so_id, 'price_unit' : line.price_unit})
                 taxes = []
                 for tax in line.product_id.taxes_id:
                     if tax.company_id.id == company_id[0]:

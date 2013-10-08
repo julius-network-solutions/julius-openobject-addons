@@ -46,8 +46,17 @@ class sale_order(orm.Model):
         #Creation of the Purchase Order
         for so in self.browse(cr ,1, ids, context=context):
             company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',so.partner_id.name)], context=context)
+            if not company_id:
+                raise orm.except_orm(_('Warning'),
+                                     _('This partner is not avaible for EDI'))    
             partner_id = res_partner_obj.search(cr, 1, [('name','=',so.company_id.name),('company_id','=',company_id)], context=context)
+            if not partner_id:                
+                raise orm.except_orm(_('Warning'),
+                                     _('This partner is not avaible for EDI')) 
             warehouse_id = stock_warehouse_obj.search(cr, 1, [('company_id','=',company_id)], context=context)
+            if not warehouse_id:                
+                raise orm.except_orm(_('Warning'),
+                                     _('This partner is not avaible for EDI')) 
             warehouse = stock_warehouse_obj.browse(cr, 1, warehouse_id[0],context=context)
             vals = {
                 'state' : 'draft',
@@ -70,7 +79,7 @@ class sale_order(orm.Model):
                 res = purchase_order_line_obj.onchange_product_id(cr, 1, [], so.company_id.partner_id.property_product_pricelist.id, line.product_id.id, 
                     qty=line.product_uom_qty, uom_id=False, partner_id=partner_id[0], date_order=so.date_order,
                     fiscal_position_id=False, context=context)
-                res['value'].update({'order_id' : po_id})
+                res['value'].update({'order_id' : po_id, 'price_unit' : line.price_unit})
                 taxes = []
                 for tax in line.product_id.supplier_taxes_id:
                     if tax.company_id.id == company_id[0]:
