@@ -42,12 +42,13 @@ class sale_order(orm.Model):
         res_partner_obj = self.pool.get('res.partner')
         stock_warehouse_obj = self.pool.get('stock.warehouse')
         purchase_order_tax_obj = self.pool.get('purchase.order.tax')
+        account_tax_obj = self.pool.get('account.tax')
         #Creation of the Purchase Order
-        for so in self.browse(cr ,uid, ids, context=context):
-            company_id = res_company_obj.search(cr, uid, [('partner_id.name','=',so.partner_id.name)], context=context)
-            partner_id = res_partner_obj.search(cr, uid, [('name','=',so.company_id.name),('company_id','=',company_id)], context=context)
-            warehouse_id = stock_warehouse_obj.search(cr, uid, [('company_id','=',company_id)], context=context)
-            warehouse = stock_warehouse_obj.browse(cr, uid, warehouse_id[0],context=context)
+        for so in self.browse(cr ,1, ids, context=context):
+            company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',so.partner_id.name)], context=context)
+            partner_id = res_partner_obj.search(cr, 1, [('name','=',so.company_id.name),('company_id','=',company_id)], context=context)
+            warehouse_id = stock_warehouse_obj.search(cr, 1, [('company_id','=',company_id)], context=context)
+            warehouse = stock_warehouse_obj.browse(cr, 1, warehouse_id[0],context=context)
             vals = {
                 'state' : 'draft',
                 'partner_id' : partner_id[0],
@@ -61,21 +62,22 @@ class sale_order(orm.Model):
                 'location_id' : warehouse.lot_output_id.id,
                 'invoice_method' : 'order',
             }
-            po_id = purchase_order_obj.create(cr, uid, vals, context=context)
-            po = purchase_order_obj.browse(cr , uid, po_id, context=context)
-            self.write(cr, uid, so.id, {'client_order_ref': po.name,'purchase_order_id': po_id}, context = context)
+            po_id = purchase_order_obj.create(cr, 1, vals, context=context)
+            po = purchase_order_obj.browse(cr , 1, po_id, context=context)
+            self.write(cr, 1, so.id, {'client_order_ref': po.name,'purchase_order_id': po_id}, context = context)
             #Creation of the Purchase Order Line
             for line in so.order_line:
-                values = {
-                      'product_id' : line.product_id.id or '',
-                      'name' : line.name,
-                      'product_qty' : line.product_uom_qty,
-                      'price_unit' : line.price_unit,
-                      'order_id' : po_id,
-                      'product_uom' : 1, #Hardcode..
-                      'date_planned': so.date_order #Pop up
-                }
-                pol_id = purchase_order_line_obj.create(cr, uid, values, context=context)
-#                 for taxe in line.taxes_id:
-#                     sale_order_tax_obj.create(cr, uid, {'ord_id' : pol_id,'tax_id':taxe.id}, context=context)
+                res = purchase_order_line_obj.onchange_product_id(cr, 1, [], so.company_id.partner_id.property_product_pricelist.id, line.product_id.id, 
+                    qty=line.product_uom_qty, uom_id=False, partner_id=partner_id[0], date_order=so.date_order,
+                    fiscal_position_id=False, context=context)
+                res['value'].update({'order_id' : po_id})
+                taxes = []
+                for tax in line.product_id.supplier_taxes_id:
+                    if tax.company_id.id == company_id[0]:
+                        taxes.append(tax.id)
+                if taxes:
+                    res['value'].update({'taxes_id': [(6, 0, taxes)]})
+                if not line.product_id.company_id or line.product_id.company_id == company_id:
+                    res['value'].update({'product_id' : line.product_id.id})
+                pol_id = purchase_order_line_obj.create(cr, 1, res['value'], context=context)
         return True

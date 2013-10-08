@@ -38,7 +38,8 @@ Multi Company Sale and Purchase module provides:
     "demo": [],
     "data": [
          "purchase_view.xml",
-         "sale_view.xml"
+         "sale_view.xml",
+         "security/multicompany_security.xml"
     ],
     "active": False,
     "installable": True,

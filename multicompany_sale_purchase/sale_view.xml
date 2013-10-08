@@ -6,16 +6,12 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <notebook position="before">
-                    <group>
-                        <group>
-							<button name="sale_to_purchase" string="Create Purchase Order" type="object" class="oe_highlight"/>
-	                	</group>
-	                	<group>
-							<field name="purchase_order_id"/>
-						</group>
-                	</group>
-				</notebook>
+                <field name="company_id" position="after">
+                    <group groups="multicompany_sale_purchase.group_multicompany_edi">
+						<button name="sale_to_purchase" string="Create Purchase Order" type="object" class="oe_link" colspan="2"/>
+						<field name="purchase_order_id"/>
+					</group>
+				</field>
 			</field>
         </record>
 	</data>
