@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+       	<record id="view_sale_configurable_form" model="ir.ui.view">
+            <field name="name">sale.configurable.view.form</field>
+            <field name="model">sale.configurable</field>
+            <field name="arch" type="xml">
+            	<form string="Sale configurable" version="7.0">
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name"/>
+                        </h1>
+                    </div>
+            		<group colspan="2" col="4">
+						<field name="field_to_test"/>
+                        <field name="test"/>
+                        <field name="value_to_test"
+                            attrs="{'required': [('test', 'not in', ['is_set', 'is_not_set'])]}"/>
+                        <field name="type_to_test"/>
+                        <field name="company_id"/>
+                        <field name="active"/>
+                    </group>
+                    <group colspan="4" col="4">
+                        <group string="Blocking" colspan="2">
+                            <group colspan="4" col="4">
+                                <label align="0.0" string="This part is defined on all fields of the sale order. This will block the order if the configuration is verified for all users not in chosen groups."/>
+                            </group>
+                            <newline/>
+                            <field name="block"/>
+                            <newline/>
+                            <group attrs="{'invisible': [('block', '=', False)]}" colspan="4">
+                                <field name="block_to_print"
+                                    attrs="{'required': [('block', '=', True)]}"/>
+                                <field name="block_value_to_print"/>
+                                <field name="groups"/>
+                            </group>
+                        </group>
+                        <group string="Warning" colspan="2">
+                            <group colspan="4" col="4">
+                                <label align="0.0" string="This part is defined on the partner_id field of the sale order. This will give you back a warning on change of the partner if the configuration is verified."/>
+                            </group>
+                            <newline/>
+                            <field name="warning"/>
+                            <newline/>
+                            <group attrs="{'invisible': [('warning', '=', False)]}" colspan="4">
+                                <field name="warning_to_print"
+                                    attrs="{'required': [('warning', '=', True)]}"/>
+                                <field name="warning_value_to_print"/>
+                            </group>
+                        </group>
+                    </group>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_sale_configurable__tree" model="ir.ui.view">
+            <field name="name">sale.configurable.view.tree</field>
+            <field name="model">sale.configurable</field>
+            <field name="arch" type="xml">
+            	<tree string="Sale configurable">
+                    <field name="name"/>
+                    <field name="field_to_test"/>
+                    <field name="test"/>
+                    <field name="value_to_test"/>
+                    <field name="warning"/>
+                    <field name="block"/>
+                    <field name="company_id"/>
+				</tree>
+			</field>
+		</record>
+
+        <record id="view_sale_configurable_search" model="ir.ui.view">
+            <field name="name">sale.configurable.view.search</field>
+            <field name="model">sale.configurable</field>
+            <field name="arch" type="xml">
+                <search string="Sale configurable">
+                    <field name="name"/>
+                    <field name="field_to_test"/>
+                    <field name="value_to_test"/>
+                    <filter name="is_blocked" string="Blocked" domain="[('block', '=', True)]"/>
+                    <filter name="is_not_blocked" string="Not blocked" domain="[('block', '=', False)]"/>
+                    <filter name="is_warning" string="Blocked" domain="[('warning', '=', True)]"/>
+                    <filter name="is_not_warning" string="Not blocked" domain="[('warning', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_sale_configurable_opposition" model="ir.actions.act_window">
+            <field name="name">Sale configurable</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.configurable</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem id="menu_sale_configurable"
+                  action="action_sale_configurable_opposition"
+                  name="Sale configurable"
+                  parent="base.menu_base_config"
+                  sequence="50"/>
+
+	</data>
+</openerp>
