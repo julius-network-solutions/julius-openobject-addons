@@ -1,0 +1,194 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* sale_configurable_confirmation
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-08 14:05+0000\n"
+"PO-Revision-Date: 2013-10-08 14:05+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,block_value_to_print:0
+#: field:sale.configurable,warning_value_to_print:0
+msgid "Value to print"
+msgstr "Valeur à imprimer"
+
+#. module: sale_configurable_confirmation
+#: view:sale.configurable:0
+msgid "Not blocked"
+msgstr "Non bloquante"
+
+#. module: sale_configurable_confirmation
+#: selection:sale.configurable,test:0
+msgid ">="
+msgstr ">="
+
+#. module: sale_configurable_confirmation
+#: model:ir.model,name:sale_configurable_confirmation.model_sale_configurable
+msgid "Sale configurable confirmation"
+msgstr "Confirmation de vente configurable"
+
+#. module: sale_configurable_confirmation
+#: selection:sale.configurable,test:0
+msgid "<="
+msgstr "<="
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,field_to_test:0
+msgid "Field to test"
+msgstr "Champ à tester"
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,test:0
+msgid "Test"
+msgstr "Test"
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,block_to_print:0
+msgid "Text to print"
+msgstr "Texte à imprimer"
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,warning_to_print:0
+msgid "Warning to print"
+msgstr "Avertissement à retourner"
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,type_to_test:0
+msgid "Type of value tested"
+msgstr "Type de valeur testée"
+
+#. module: sale_configurable_confirmation
+#: selection:sale.configurable,test:0
+msgid "!="
+msgstr "!="
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,value_to_test:0
+msgid "Value to test"
+msgstr "Valeur à tester"
+
+#. module: sale_configurable_confirmation
+#: selection:sale.configurable,test:0
+msgid "Is not set"
+msgstr "N'est pas défini"
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,company_id:0
+msgid "Company"
+msgstr "Société"
+
+#. module: sale_configurable_confirmation
+#: help:sale.configurable,block_to_print:0
+#: help:sale.configurable,warning_to_print:0
+msgid "You can choose to display some specific data related to some value.\n"
+"Put %s in the text to print it."
+msgstr "Vous pouvez choisir de retourner des données spécifiques liée une valeur.\n"
+"Inscivez %s dans le texte pour l'imprimer."
+
+#. module: sale_configurable_confirmation
+#: code:addons/sale_configurable_confirmation/sale.py:220
+#: view:sale.configurable:0
+#: field:sale.configurable,warning:0
+#, python-format
+msgid "Warning"
+msgstr "Avertissement"
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,groups:0
+msgid "Groups"
+msgstr "Groupes"
+
+#. module: sale_configurable_confirmation
+#: field:sale.configurable,active:0
+msgid "Active"
+msgstr "Actif"
+
+#. module: sale_configurable_confirmation
+#: help:sale.configurable,value_to_test:0
+msgid "Choose the value to test.\n"
+"Enter the fixed value if fixed, or set the field to test if variable"
+msgstr "Choisissez la valeur à tester.\n"
+"Entrez une valeur fixe si 'Fixe', ou définissez le champ à tester si variable"
+
+#. module: sale_configurable_confirmation
+#: view:sale.configurable:0
+msgid "Blocking"
+msgstr "Bloquage"
+
+#. module: sale_configurable_confirmation
+#: view:sale.configurable:0
+#: field:sale.configurable,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: sale_configurable_confirmation
+#: selection:sale.configurable,test:0
+msgid "Is set"
+msgstr "Est défini"
+
+#. module: sale_configurable_confirmation
+#: selection:sale.configurable,type_to_test:0
+msgid "Variable"
+msgstr "Variable"
+
+#. module: sale_configurable_confirmation
+#: selection:sale.configurable,type_to_test:0
+msgid "Fixed"
+msgstr "Valeur fixe"
+
+#. module: sale_configurable_confirmation
+#: view:sale.configurable:0
+msgid "This part is defined on all fields of the sale order. This will block the order if the configuration is verified for all users not in chosen groups."
+msgstr "Cette partie est définie sur tous les champs de la commande de vente. La commande sera bloquée si la configuration et que l'utilisateur ne fait pas parti d'un des groupes choisi."
+
+#. module: sale_configurable_confirmation
+#: help:sale.configurable,block_value_to_print:0
+#: help:sale.configurable,warning_value_to_print:0
+msgid "Choose here the value you want to print to replace the %s.\n"
+"You can get many values. You should just separate them with ',' and no space"
+msgstr "Choisissez ici la valeur que vous voulez retourner pour remplacer le %s du texte.\n"
+"Vous pouvez récuperer plusieurs valeur. Vous devez juste séparer vos valeurs avec ',' et pas d'espace."
+
+#. module: sale_configurable_confirmation
+#: model:ir.actions.act_window,name:sale_configurable_confirmation.action_sale_configurable_opposition
+#: model:ir.ui.menu,name:sale_configurable_confirmation.menu_sale_configurable
+#: view:sale.configurable:0
+msgid "Sale blocking configurable"
+msgstr "Configuration de blocage"
+
+#. module: sale_configurable_confirmation
+#: code:addons/sale_configurable_confirmation/sale.py:268
+#, python-format
+msgid "Warning!"
+msgstr "Avertissement !"
+
+#. module: sale_configurable_confirmation
+#: view:sale.configurable:0
+msgid "This part is defined on the partner_id field of the sale order. This will give you back a warning on change of the partner if the configuration is verified."
+msgstr "Cette partie est liée au champ partner_id de la commande de vente. Il vous retournera un avertissement si la configuration est verifiée."
+
+#. module: sale_configurable_confirmation
+#: help:sale.configurable,field_to_test:0
+msgid "Choose here the field name to test"
+msgstr "Choisissez ici le nom du champ à tester"
+
+#. module: sale_configurable_confirmation
+#: model:ir.model,name:sale_configurable_confirmation.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: sale_configurable_confirmation
+#: view:sale.configurable:0
+#: field:sale.configurable,block:0
+msgid "Blocked"
+msgstr "Bloquer"
+

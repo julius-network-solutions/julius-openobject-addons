@@ -6,7 +6,7 @@
             <field name="name">sale.configurable.view.form</field>
             <field name="model">sale.configurable</field>
             <field name="arch" type="xml">
-            	<form string="Sale configurable" version="7.0">
+            	<form string="Sale blocking configurable" version="7.0">
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Name"/>
@@ -16,8 +16,9 @@
 						<field name="field_to_test"/>
                         <field name="test"/>
                         <field name="value_to_test"
-                            attrs="{'required': [('test', 'not in', ['is_set', 'is_not_set'])]}"/>
-                        <field name="type_to_test"/>
+                            attrs="{'required': [('test', 'not in', ['is_set', 'is_not_set'])], 'invisible': [('test', 'in', ['is_set', 'is_not_set'])]}"/>
+                        <field name="type_to_test"
+                            attrs="{'invisible': [('test', 'in', ['is_set', 'is_not_set'])]}"/>
                         <field name="company_id"/>
                         <field name="active"/>
                     </group>
@@ -58,7 +59,7 @@
             <field name="name">sale.configurable.view.tree</field>
             <field name="model">sale.configurable</field>
             <field name="arch" type="xml">
-            	<tree string="Sale configurable">
+            	<tree string="Sale blocking configurable">
                     <field name="name"/>
                     <field name="field_to_test"/>
                     <field name="test"/>
@@ -74,7 +75,7 @@
             <field name="name">sale.configurable.view.search</field>
             <field name="model">sale.configurable</field>
             <field name="arch" type="xml">
-                <search string="Sale configurable">
+                <search string="Sale blocking configurable">
                     <field name="name"/>
                     <field name="field_to_test"/>
                     <field name="value_to_test"/>
@@ -87,7 +88,7 @@
         </record>
 
         <record id="action_sale_configurable_opposition" model="ir.actions.act_window">
-            <field name="name">Sale configurable</field>
+            <field name="name">Sale blocking configurable</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.configurable</field>
             <field name="view_type">form</field>
@@ -95,7 +96,7 @@
 
         <menuitem id="menu_sale_configurable"
                   action="action_sale_configurable_opposition"
-                  name="Sale configurable"
+                  name="Sale blocking configurable"
                   parent="base.menu_base_config"
                   sequence="50"/>
 

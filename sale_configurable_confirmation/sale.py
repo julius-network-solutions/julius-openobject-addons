@@ -30,7 +30,8 @@ class sale_configurable(orm.Model):
 
     _columns = {
         'name': fields.char('Name', size=128, required=True),
-        'field_to_test': fields.char('Field to test', size=256, required=True),
+        'field_to_test': fields.char('Field to test', size=256,
+            required=True, help="Choose here the field name to test"),
         'test': fields.selection([
             ('<', '<'),
             ('<=', '<='),
@@ -41,17 +42,34 @@ class sale_configurable(orm.Model):
             ('is_set', 'Is set'),
             ('is_not_set', 'Is not set'),
             ], string='Test', required=True),
-        'value_to_test': fields.char('Value to test', size=256),
+        'value_to_test': fields.char('Value to test', size=256,
+            help="Choose the value to test.\n" \
+                 "Enter the fixed value if fixed, " \
+                 "or set the field to test if variable"),
         'type_to_test': fields.selection([
             ('fixed', 'Fixed'),
             ('variable', 'Variable')
             ], string='Type of value tested', required=True),
         'warning': fields.boolean('Warning'),
-        'warning_to_print': fields.text('Warning to print', translate=True),
-        'warning_value_to_print': fields.char('Value to print', size=256),
-        'block': fields.boolean('Block'),
-        'block_to_print': fields.text('Block to print', translate=True),
-        'block_value_to_print': fields.char('Value to print', size=256),
+        'warning_to_print': fields.text('Warning to print', translate=True,
+            help="You can choose to display some specific " \
+                 "data related to some value.\n" \
+                 "Put %s in the text to print it."),
+        'warning_value_to_print': fields.char('Value to print', size=512,
+            help="Choose here the value you want to print " \
+                 "to replace the %s.\n" \
+                 "You can get many values. You should just " \
+                 "separate them with ',' and no space"),
+        'block': fields.boolean('Blocked'),
+        'block_to_print': fields.text('Text to print', translate=True,
+            help="You can choose to display some specific " \
+                 "data related to some value.\n" \
+                 "Put %s in the text to print it."),
+        'block_value_to_print': fields.char('Value to print', size=512,
+            help="Choose here the value you want to print " \
+                 "to replace the %s.\n" \
+                 "You can get many values. You should just " \
+                 "separate them with ',' and no space"),
         'groups': fields.many2many('res.groups',
                                    'ir_sale_configurable_group_rel',
                                    'config_id', 'group_id', 'Groups'),
@@ -75,19 +93,20 @@ class sale_order(orm.Model):
         return obj
 
     def _test_value(self, cr, uid, obj,
-                    blocking, base_obj, context=None):
+                    blocking, base_obj,
+                    value_to_test, context=None):
         if context is None:
             context = {}
         test = blocking.test
         if not test in ('is_set', 'is_not_set'):
             if blocking.type_to_test == 'variable':
-                values_to_test = blocking.value_to_test.split('.')
+                values_to_test = value_to_test.split('.')
                 value = base_obj
                 for field in values_to_test:
                     value = self._get_object_value(
                         cr, uid, value, field, context=context)
             else:
-                value = blocking.value_to_test
+                value = value_to_test
         else:
             if test == 'is_set':
                 if obj != True and obj != None and \
@@ -174,9 +193,11 @@ class sale_order(orm.Model):
             ], context=context)
         user_obj = self.pool.get('res.users')
         group_ids = [x.id for x in 
-            user_obj.browse(cr, SUPERUSER_ID, uid, context=context).groups_id]
+            user_obj.browse(cr, SUPERUSER_ID,
+                            uid, context=context).groups_id]
         for blocking in confirmation_obj.browse(cr, uid,
-                                                blocking_ids, context=context):
+                                                blocking_ids,
+                                                context=context):
             stop = False
             valid_group_ids = [x.id for x in blocking.groups]
             for group in valid_group_ids:
@@ -195,7 +216,9 @@ class sale_order(orm.Model):
                         if obj.__getitem__('parent_id'):
                             obj = obj.__getitem__('parent_id')
                 if not self._test_value(cr, uid, obj,
-                                        blocking, sale, context=context):
+                                        blocking, sale,
+                                        blocking.value_to_test,
+                                        context=context):
                     to_display = self._value_display(cr, uid,
                         sale, blocking, blocking.block_to_print,
                         blocking.block_value_to_print, context=context)
@@ -241,14 +264,19 @@ class sale_order(orm.Model):
                         if obj.__getitem__('parent_id'):
                             obj = obj.__getitem__('parent_id')
                     obj = self._get_object_value(cr, uid, obj, field, context=context)
+                value_to_test = blocking.value_to_test
+                if value_to_test.startswith('partner_id'):
+                    value_to_test = value_to_test.replace('partner_id.', '', 1)
                 if not self._test_value(cr, uid, obj,
-                                        blocking, partner, context=context):
+                                        blocking, partner.parent_id or partner,
+                                        value_to_test, context=context):
                     to_display = self._value_display(cr, uid,
-                        partner.parent_id or partner, blocking, blocking.warning_to_print,
+                        partner.parent_id or partner, blocking,
+                        blocking.warning_to_print,
                         blocking.warning_value_to_print, context=context)
                     if not warning_title:
                         warning_title = _('Warning!')
-                    warning_msgs += to_display
+                    warning_msgs += to_display + '\n'
         if warning_msgs:
             warning = {
                'title': warning_title,
