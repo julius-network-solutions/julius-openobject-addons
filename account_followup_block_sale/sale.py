@@ -52,8 +52,8 @@ class sale_order(orm.Model):
                                   "this sale order if you're not in "
                                   "the accounting department")
                 else:
-                   warn_msg += _("But, this follow up will not block the "
-                                 "confirmation of this sale order")
+                    warn_msg += _("But, this follow up will not block the "
+                                  "confirmation of this sale order")
                 warning_msgs += warn_msg
         if warning_msgs:
             warning = {
