@@ -148,7 +148,7 @@ msgstr "Valeur fixe"
 #. module: sale_configurable_confirmation
 #: view:sale.configurable:0
 msgid "This part is defined on all fields of the sale order. This will block the order if the configuration is verified for all users not in chosen groups."
-msgstr "Cette partie est définie sur tous les champs de la commande de vente. La commande sera bloquée si la configuration et que l'utilisateur ne fait pas parti d'un des groupes choisi."
+msgstr "Cette partie est définie sur tous les champs de la commande de vente. La commande sera bloquée si la configuration est vérifiée et que l'utilisateur ne fait pas parti d'un des groupes choisi."
 
 #. module: sale_configurable_confirmation
 #: help:sale.configurable,block_value_to_print:0

@@ -252,35 +252,35 @@ class sale_order(orm.Model):
 #                    ('company_id', '=', sale.company_id.id),
                     ('warning', '=', True),
                 ], context=context)
-        for blocking in confirmation_obj.browse(cr, uid,
-                                                blocking_ids, context=context):
-            if blocking.warning:
-                fields_to_test = blocking.field_to_test.split('.')
-                obj = partner
-                for field in fields_to_test:
-                    if field == 'partner_id':
-                        continue
-                    if obj and obj.__hasattr__('parent_id'):
-                        if obj.__getitem__('parent_id'):
-                            obj = obj.__getitem__('parent_id')
-                    obj = self._get_object_value(cr, uid, obj, field, context=context)
-                value_to_test = blocking.value_to_test
-                if value_to_test.startswith('partner_id'):
-                    value_to_test = value_to_test.replace('partner_id.', '', 1)
-                if not self._test_value(cr, uid, obj,
-                                        blocking, partner.parent_id or partner,
-                                        value_to_test, context=context):
-                    to_display = self._value_display(cr, uid,
-                        partner.parent_id or partner, blocking,
-                        blocking.warning_to_print,
-                        blocking.warning_value_to_print, context=context)
-                    if not warning_title:
-                        warning_title = _('Warning!')
-                    warning_msgs += to_display + '\n'
+            for blocking in confirmation_obj.browse(cr, uid,
+                                                    blocking_ids, context=context):
+                if blocking.warning:
+                    fields_to_test = blocking.field_to_test.split('.')
+                    obj = partner
+                    for field in fields_to_test:
+                        if field == 'partner_id':
+                            continue
+                        if obj and obj.__hasattr__('parent_id'):
+                            if obj.__getitem__('parent_id'):
+                                obj = obj.__getitem__('parent_id')
+                        obj = self._get_object_value(cr, uid, obj, field, context=context)
+                    value_to_test = blocking.value_to_test
+                    if value_to_test.startswith('partner_id'):
+                        value_to_test = value_to_test.replace('partner_id.', '', 1)
+                    if not self._test_value(cr, uid, obj,
+                                            blocking, partner.parent_id or partner,
+                                            value_to_test, context=context):
+                        to_display = self._value_display(cr, uid,
+                            partner.parent_id or partner, blocking,
+                            blocking.warning_to_print,
+                            blocking.warning_value_to_print, context=context)
+                        if not warning_title:
+                            warning_title = _('Warning!')
+                        warning_msgs += to_display + '\n'
         if warning_msgs:
             warning = {
                'title': warning_title,
-               'message' : warning_msgs,
+               'message': warning_msgs,
             }
             result.update({'warning': warning})
         return result
