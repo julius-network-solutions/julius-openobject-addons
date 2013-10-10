@@ -44,7 +44,6 @@ class stock_move(orm.Model):
             ids = [ids]
         # Loop #
         for move in self.browse(cr, uid, ids, context=context): 
-            print move
             asset_ids = []
             asset_ids = asset_obj.search(cr, uid, [('move_id','=',move.id)], limit=1)
             if (move.state == 'done' and asset_ids == [] and (move.generate_asset == True or move.product_id.financial_asset == True)):
