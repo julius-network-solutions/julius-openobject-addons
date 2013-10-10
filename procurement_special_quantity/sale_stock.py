@@ -112,7 +112,7 @@ class procurement_order(orm.Model):
         if special_ids:
             self.write(cr, uid, special_ids, {'state': 'confirmed', 'message': ''})
         if normal_ids:
-            return super(procurement_order, self).action_confirm(self, cr, uid, ids, context=context)
+            return super(procurement_order, self).action_confirm(self, cr, uid, normal_ids, context=context)
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

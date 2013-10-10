@@ -68,30 +68,30 @@ class procurement_order(orm.Model):
                 })
                 # We get here the total of pieces available for real now
                 product_available_qty += move_obj._get_specific_available_qty(cr, uid, procurement.move_id, context=c)
-#                if to_buy:
-#                    if product_available_qty < 0:
-#                        quantity_to_make = abs(min(move_qty, product_available_qty))
-#                    else:
-#                        if product_available_qty >= move_qty:
-#                            quantity_to_make = 0
-#                        else:
-#                            quantity_to_make = move_qty - product_available_qty
-#                else:
-                if (move_qty + product_available_qty) >= 0:
-                    # If we've got enough products we don't need
-                    # to procure new products
-                    if product_available_qty > 0:
-                        # If the available quantity is positive
-                        # this means that we don't need
-                        # to procure any product
-                        quantity_to_make = 0
-                    else:
-                        # If negative, we have to get
-                        # the minimum quantity between
-                        # the move quantity and available quantity
+                if to_buy:
+                    if product_available_qty < 0:
                         quantity_to_make = abs(min(move_qty, product_available_qty))
+                    else:
+                        if product_available_qty >= move_qty:
+                            quantity_to_make = 0
+                        else:
+                            quantity_to_make = move_qty - product_available_qty
                 else:
-                    quantity_to_make = move_qty
+                    if (move_qty + product_available_qty) >= 0:
+                        # If we've got enough products we don't need
+                        # to procure new products
+                        if product_available_qty > 0:
+                            # If the available quantity is positive
+                            # this means that we don't need
+                            # to procure any product
+                            quantity_to_make = 0
+                        else:
+                            # If negative, we have to get
+                            # the minimum quantity between
+                            # the move quantity and available quantity
+                            quantity_to_make = abs(min(move_qty, product_available_qty))
+                    else:
+                        quantity_to_make = move_qty
                 if to_buy:
                     # We get here the quantity of bought quantity
                     # which have not been validated yet
