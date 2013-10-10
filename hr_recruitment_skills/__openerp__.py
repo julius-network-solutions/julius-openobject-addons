@@ -20,21 +20,21 @@
 #################################################################################
 
 {
-    "name" : "Global Discount",
+    "name" : "HR recruitment skills",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Modules",
+    "category" : "Human Resources",
     "depends" : [
-        "sale",
+        "web_filter_and_condition",
+        "hr_recruitment",
     ],
     "description": """
-    Module to manage a global discount in sale orders
+    Module to manage skills for hr recruitment.
     """,
     "demo" : [],
     "data" : [
-          "sale_view.xml",
-          "data/product_data.xml"
+        "hr_view.xml",
     ],
     'installable' : True,
     'active' : False,

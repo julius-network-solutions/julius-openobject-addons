@@ -19,25 +19,6 @@
 #
 #################################################################################
 
-{
-    "name" : "Global Discount",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Modules",
-    "depends" : [
-        "sale",
-    ],
-    "description": """
-    Module to manage a global discount in sale orders
-    """,
-    "demo" : [],
-    "data" : [
-          "sale_view.xml",
-          "data/product_data.xml"
-    ],
-    'installable' : True,
-    'active' : False,
-}
+import hr_job
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

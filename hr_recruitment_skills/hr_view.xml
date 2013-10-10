@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_employee_category_form" model="ir.ui.view">
+            <field name="name">hr.employee.category.form</field>
+            <field name="model">hr.employee.category</field>
+            <field name="inherit_id" ref="hr.view_employee_category_form"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="after">
+                    <field name="is_skill"/>
+                </field>
+           </field>
+        </record>
+
+        <record id="view_employee_category_list" model="ir.ui.view">
+            <field name="name">hr.employee.category.form</field>
+            <field name="model">hr.employee.category</field>
+            <field name="inherit_id" ref="hr.view_employee_category_list"/>
+            <field name="arch" type="xml">
+                <field name="complete_name" position="after">
+                    <field name="is_skill"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_employee_category_search" model="ir.ui.view">
+            <field name="name">hr.employee.category.search</field>
+            <field name="model">hr.employee.category</field>
+            <field name="arch" type="xml">
+                <search string="Search employees categories">
+                    <field name="name"/>
+                    <filter name="is_skill" string="Is skill" domain="[('is_skill', '=', True)]"/>
+                    <filter name="is_not_skill" string="Is not skill" domain="[('is_skill', '=', False)]"/>
+                    <separator/>
+                    <field name="parent_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_job_form">
+            <field name="name">hr.job.form</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <div class="oe_title" position="after">
+                    <group colspan="4" col="4">
+                        <field name="skill_ids" widget="many2many_tags" colspan="3"/>
+                        <button name="open_list_of_applicants"
+                            type="object"
+                            string="Applicants"
+                            states="recruit"
+                            context="{'skill_ids': skill_ids}" colspan="1"/>
+                    </group>
+                </div>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_job_filter">
+            <field name="name">hr.job.search</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_job_filter"/>
+            <field name="arch" type="xml">
+                <field name="department_id" position="after">
+                    <separator string="Skills"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_crm_case_jobs_filter" model="ir.ui.view">
+            <field name="name">Jobs - Recruitment Search</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.view_crm_case_jobs_filter"/>
+            <field name="arch" type="xml">
+                <field name="categ_ids" position="after">
+                    <separator string="Skills"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="crm_case_form_view_job" model="ir.ui.view">
+            <field name="name">Jobs - Recruitment form</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
+            <field name="arch" type="xml">
+                <field name="categ_ids" position="after">
+                    <button name="open_list_of_jobs"
+                        type="object"
+                        string="Jobs"
+                        states="draft,open,pending"
+                        context="{'skill_ids': categ_ids}"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

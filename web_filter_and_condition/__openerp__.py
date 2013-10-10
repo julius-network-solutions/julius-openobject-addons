@@ -20,22 +20,22 @@
 #################################################################################
 
 {
-    "name" : "Global Discount",
-    "version" : "0.1",
+    "name" : "Web and condition on filters",
+    "version" : "1.0",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Modules",
+    "category" : "Hidden",
     "depends" : [
-        "sale",
+        "web",
     ],
     "description": """
-    Module to manage a global discount in sale orders
+    Add 'filter_condition='and' in a filter inside a search view and
+    your filters working on the same fields will work like an "and",
+    not an "or".
     """,
     "demo" : [],
-    "data" : [
-          "sale_view.xml",
-          "data/product_data.xml"
-    ],
+    "data" : [],
+    'js': ['static/src/js/*.js'],
     'installable' : True,
     'active' : False,
 }

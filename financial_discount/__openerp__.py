@@ -29,8 +29,7 @@
         "sale",
     ],
     "description": """
-    Sale Module for Girard Sudron.
-    Adds the company need for sales
+    Module to manage a financial discount in sale orders
     """,
     "demo" : [],
     "data" : [
