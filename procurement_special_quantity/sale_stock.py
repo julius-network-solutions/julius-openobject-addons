@@ -41,12 +41,19 @@ class sale_order(orm.Model):
             if move.location_id.special_location:
                 c = context.copy()
                 c.update({
-                    'states': ('confirmed','waiting','assigned','done'),
+                    'states': ('confirmed','waiting','assigned'),
 #                    'states_in': ('confirmed','waiting','assigned','done'),
 #                    'state_out': ('assigned','done'),
-                    'to_date': move.date_expected,
+                    'to_date': procurement.date_planned,
                 })
                 product_available_qty = move_obj._get_specific_available_qty(cr, uid, move, context=c)
+                # We get here the total of pieces available at the wanted date
+                c.update({
+                    'states': ('done',),
+                    'to_date': False,
+                })
+                # We get here the total of pieces available for real now
+                product_available_qty += move_obj._get_specific_available_qty(cr, uid, move, context=c)
                 if res.get('product_qty'):
                     product_qty = res.get('product_qty') - product_available_qty
                     if product_qty > 0:

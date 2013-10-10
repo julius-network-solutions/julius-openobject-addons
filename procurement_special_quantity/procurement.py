@@ -68,30 +68,15 @@ class procurement_order(orm.Model):
                 })
                 # We get here the total of pieces available for real now
                 product_available_qty += move_obj._get_specific_available_qty(cr, uid, procurement.move_id, context=c)
-                if to_buy:
-                    if product_available_qty < 0:
-                        quantity_to_make = abs(min(move_qty, product_available_qty))
-                    else:
-                        if product_available_qty >= move_qty:
-                            quantity_to_make = 0
-                        else:
-                            quantity_to_make = move_qty - product_available_qty
-                else:
-                    if (move_qty + product_available_qty) >= 0:
-                        # If we've got enough products we don't need
-                        # to procure new products
-                        if product_available_qty > 0:
-                            # If the available quantity is positive
-                            # this means that we don't need
-                            # to procure any product
-                            quantity_to_make = 0
-                        else:
-                            # If negative, we have to get
-                            # the minimum quantity between
-                            # the move quantity and available quantity
-                            quantity_to_make = abs(min(move_qty, product_available_qty))
-                    else:
-                        quantity_to_make = move_qty
+#                if to_buy:
+#                    if product_available_qty < 0:
+#                        quantity_to_make = abs(min(move_qty, product_available_qty))
+#                    else:
+#                        if product_available_qty >= move_qty:
+#                            quantity_to_make = 0
+#                        else:
+#                            quantity_to_make = move_qty - product_available_qty
+#                else:
                 if to_buy:
                     # We get here the quantity of bought quantity
                     # which have not been validated yet
@@ -105,13 +90,31 @@ class procurement_order(orm.Model):
                          ('date_planned', '<=', procurement.date_planned),
                          ], context=context)
                     bought_quantity = reduce(lambda x,y: x+y, [z.product_qty for z in order_line_obj.browse(cr, uid, line_ids, context=context)], 0)
-                    if bought_quantity > 0:
-                        # We remove the bought quantity
-                        # to the quantity to get
-                        quantity_to_make -= bought_quantity
-                        quantity_to_make = min(move_qty, quantity_to_make)
-                        if quantity_to_make < 0:
-                            quantity_to_make = 0
+                    product_available_qty += bought_quantity
+                if (move_qty + product_available_qty) >= 0:
+                    # If we've got enough products we don't need
+                    # to procure new products
+                    if product_available_qty > 0:
+                        # If the available quantity is positive
+                        # this means that we don't need
+                        # to procure any product
+                        quantity_to_make = 0
+                    else:
+                        # If negative, we have to get
+                        # the minimum quantity between
+                        # the move quantity and available quantity
+                        quantity_to_make = abs(min(move_qty, product_available_qty))
+                else:
+                    quantity_to_make = move_qty
+                print 'quantity_to_make:', quantity_to_make
+#                    if bought_quantity > 0:
+#                        # We remove the bought quantity
+#                        # to the quantity to get
+#                        quantity_to_make -= bought_quantity
+#                        print bought_quantity
+#                        quantity_to_make = min(move_qty, quantity_to_make)
+#                        if quantity_to_make < 0:
+#                            quantity_to_make = 0
                 if procurement.state in ('draft','exception','confirmed'):
                     write_vals = {
                         'product_qty': quantity_to_make,
