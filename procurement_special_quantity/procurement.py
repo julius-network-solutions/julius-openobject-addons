@@ -36,7 +36,7 @@ class procurement_order(orm.Model):
         'parent_procurement_id': fields.many2one('procurement.order', 'Parent procurement'),
         'linked_procurement_ids': fields.many2one('procurement.order', 'parent_procurement_id', 'Linked procurements'),
     }
-    
+
     def button_check_quantity_to_make(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -53,28 +53,45 @@ class procurement_order(orm.Model):
             if procurement.special_location:
                 c = context.copy()
                 c.update({
-                    'states': ('confirmed','waiting','assigned','done'),
-#                        'states_in': ('confirmed','waiting','assigned','done'),
-#                        'state_out': ('assigned','done'),
+                    'states': ('confirmed','waiting','assigned'),
+#                    'states_in': ('confirmed','waiting','assigned','done'),
+#                    'state_out': ('assigned','done'),
                     'to_date': procurement.date_planned,
                 })
                 # This is the move quantity
                 move_qty = procurement.move_id.product_qty
                 # We get here the total of pieces available at the wanted date
                 product_available_qty = move_obj._get_specific_available_qty(cr, uid, procurement.move_id, context=c)
-                if to_buy:
-                    if product_available_qty < 0:
+                c.update({
+                    'states': ('done',),
+                    'to_date': False,
+                })
+                # We get here the total of pieces available for real now
+                product_available_qty += move_obj._get_specific_available_qty(cr, uid, procurement.move_id, context=c)
+#                if to_buy:
+#                    if product_available_qty < 0:
+#                        quantity_to_make = abs(min(move_qty, product_available_qty))
+#                    else:
+#                        if product_available_qty >= move_qty:
+#                            quantity_to_make = 0
+#                        else:
+#                            quantity_to_make = move_qty - product_available_qty
+#                else:
+                if (move_qty + product_available_qty) >= 0:
+                    # If we've got enough products we don't need
+                    # to procure new products
+                    if product_available_qty > 0:
+                        # If the available quantity is positive
+                        # this means that we don't need
+                        # to procure any product
+                        quantity_to_make = 0
+                    else:
+                        # If negative, we have to get
+                        # the minimum quantity between
+                        # the move quantity and available quantity
                         quantity_to_make = abs(min(move_qty, product_available_qty))
-                    else:
-                        if product_available_qty >= move_qty:
-                            quantity_to_make = 0
-                        else:
-                            quantity_to_make = move_qty - product_available_qty
                 else:
-                    if product_available_qty < 0:
-                        quantity_to_make = min(move_qty, -product_available_qty)
-                    else:
-                        quantity_to_make = min(move_qty, product_available_qty)
+                    quantity_to_make = move_qty
                 if to_buy:
                     # We get here the quantity of bought quantity
                     # which have not been validated yet
@@ -189,7 +206,7 @@ class procurement_order(orm.Model):
                     ('state', '=', 'confirmed'),
                     ('procure_method', '=', 'make_to_order'),
                     ('product_id.supply_method', '=', 'produce'),
-                    ], offset=offset_produce, limit=500, order='priority, date_planned', context=context)
+                    ], offset=offset_produce, limit=500, order='priority, move_id, date_planned', context=context)
                 for proc in procurement_obj.browse(cr, uid, produce_ids, context=context):
                     if maxdate >= proc.date_planned:
                         wf_service.trg_validate(uid, 'procurement.order', proc.id, 'button_check', cr)
@@ -210,7 +227,7 @@ class procurement_order(orm.Model):
                     ('procure_method', '=', 'make_to_order'),
                     ('product_id.supply_method', '=', 'produce'),
                     ('location_id.special_location', '=', True),
-                    ], offset=offset_special_produce, limit=500, order='priority, date_planned, origin', context=context)
+                    ], offset=offset_special_produce, limit=500, order='priority, move_id, date_planned, origin', context=context)
                 for proc in procurement_obj.browse(cr, uid, special_produce_ids, context=context):
                     to_confirm_ids = procurement_obj.button_check_quantity_to_make(cr, uid, [proc.id], context=context)
                     for proc in procurement_obj.browse(cr, uid, to_confirm_ids, context=context):
@@ -226,7 +243,7 @@ class procurement_order(orm.Model):
                     ('state', '=', 'confirmed'),
                     ('procure_method', '=', 'make_to_order'), 
                     ('product_id.supply_method', '=', 'buy'),
-                    ], offset=offset_buy, limit=500, order='priority, date_planned', context=context)
+                    ], offset=offset_buy, limit=500, order='priority, move_id, date_planned', context=context)
                 for proc in procurement_obj.browse(cr, uid, buy_ids, context=context):
                     if maxdate >= proc.date_planned:
                         wf_service.trg_validate(uid, 'procurement.order', proc.id, 'button_check', cr)
@@ -247,7 +264,7 @@ class procurement_order(orm.Model):
                     ('procure_method', '=', 'make_to_order'),
                     ('product_id.supply_method', '=', 'buy'),
                     ('location_id.special_location', '=', True),
-                    ], offset=offset_special_buy, limit=500, order='priority, date_planned, origin', context=context)
+                    ], offset=offset_special_buy, limit=500, order='priority, move_id, date_planned, origin', context=context)
                 for proc in procurement_obj.browse(cr, uid, special_buy_ids, context=context):
                     to_confirm_ids = procurement_obj.button_check_quantity_to_make(cr, uid, [proc.id], context=context)
                     for proc in procurement_obj.browse(cr, uid, to_confirm_ids, context=context):
