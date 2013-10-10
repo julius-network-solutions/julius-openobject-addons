@@ -34,14 +34,26 @@ class stock_production_lot(orm.Model):
             move_ids = move_obj.search(cr, uid, [
                         ('prodlot_id','=',prodlot.id),
                         ('state','=','done')
-                    ], order='date', limit=1, context=context)
+                    ], order='date desc',context=context)
             if move_ids:
                 result[prodlot.id] = move_obj.browse(cr, uid, move_ids[0], context=context).location_dest_id.id
         return result
+
+    def _get_prod_lot(self, cr, uid, ids, context=None):
+        res = set()
+        obj = self.pool.get('stock.move')
+        for move in obj.browse(cr, uid, ids, context=context):
+            res.add(move.prodlot_id.id)
+        return list(res)
     
     _columns = {
         'current_location_id': fields.function(_get_current_location, type='many2one',
-                relation='stock.location', string='Current Location', store=True),
+                relation='stock.location', string='Current Location', store={
+                'stock.production.lot':
+                    (lambda self, cr, uid, ids, c=None: ids, ['move_ids'], 10),
+                'stock.move':
+                    (_get_prod_lot, [], 20),
+                }),
     }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
