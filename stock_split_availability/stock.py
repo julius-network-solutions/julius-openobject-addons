@@ -45,7 +45,8 @@ class stock_move(orm.Model):
             ('product_id', 'many2one'),
         ]
         
-    def _get_context_check(self, cr, uid, move, what=('in'), states=('assigned','done'), context=None):
+    def _get_context_check(self, cr, uid,
+        move, what=('in'), states=('assigned','done'), context=None):
         return {
             'shop': False,
             'warehouse': False,
@@ -59,22 +60,27 @@ class stock_move(orm.Model):
         if context is None:
             context = {}
         c = context.copy()
-        what = ('in')
+        product_obj = self.pool.get('product.product')
+        what = ('in',)
         states = context.get('states')
         if not states:
-            states = ('assigned','done')
+            states = ('assigned', 'done')
         states_in = context.get('states_in')
         if not states_in:
             states_in = states
         states_out = context.get('states_out')
         if not states_out:
             states_out = states
-        c.update(self._get_context_check(cr, uid, move, what=what, states=states_in, context=context))
-        stock = self.pool.get('product.product').get_product_available(cr, uid, [move.product_id.id], context=c)
+        c.update(self._get_context_check(
+            cr, uid, move, what=what, states=states_in, context=context))
+        stock = product_obj.get_product_available(
+            cr, uid, [move.product_id.id], context=c)
         incoming_qty = stock.get(move.product_id.id, 0.0)
-        what = ('out')
-        c.update(self._get_context_check(cr, uid, move, what=what, states=states_out, context=context))
-        stock = self.pool.get('product.product').get_product_available(cr, uid, [move.product_id.id], context=c)
+        what = ('out',)
+        c.update(self._get_context_check(
+            cr, uid, move, what=what, states=states_out, context=context))
+        stock = product_obj.get_product_available(
+            cr, uid, [move.product_id.id], context=c)
         outgoing_qty = stock.get(move.product_id.id, 0.0)
         available_qty = incoming_qty + outgoing_qty
         return available_qty
@@ -84,8 +90,10 @@ class stock_move(orm.Model):
             context = {}
         if self.search(cr, uid, [('id', '=', move_id)], context=context):
             move = self.browse(cr, uid, move_id, context=context)
-            if move.state in ('confirmed', 'waiting', 'assigned') and move.split_move:
-                fields_to_check = self._fields_to_check(cr, uid, context=context)
+            if move.state in \
+                ('confirmed', 'waiting', 'assigned') and move.split_move:
+                fields_to_check = self._fields_to_check(
+                    cr, uid, context=context)
                 ids_to_remove = []
                 domain_search = []
                 for field, ttype in fields_to_check:
@@ -108,12 +116,14 @@ class stock_move(orm.Model):
                                 domain_search += [
                                     (field, '=', False),
                                 ]
-                move_to_merge_ids = self.search(cr, uid, domain_search, context=context)
+                move_to_merge_ids = self.search(
+                    cr, uid, domain_search, context=context)
                 if len(move_to_merge_ids) > 1:
                     move_to_keep_id = move_to_merge_ids[0]
                     product_qty = 0
                     product_uos_qty = 0
-                    for move in self.browse(cr, uid, move_to_merge_ids, context=context):
+                    for move in self.browse(
+                        cr, uid, move_to_merge_ids, context=context):
                         product_qty += move.product_qty
                         product_uos_qty += move.product_uos_qty
                         if move.id != move_to_keep_id:
@@ -122,8 +132,11 @@ class stock_move(orm.Model):
                         'product_qty': product_qty,
                         'product_uos_qty': product_uos_qty,
                     }
-                    self.write(cr, uid, move_to_keep_id, update_vals, context=context)
-                    self.write(cr, uid, ids_to_remove, {'state': 'draft'}, context=context)
+                    self.write(cr, uid,
+                               move_to_keep_id,
+                               update_vals, context=context)
+                    self.write(cr, uid, ids_to_remove,
+                               {'state': 'draft'}, context=context)
                     self.unlink(cr, uid, ids_to_remove, context=context)
         return True
     
@@ -131,9 +144,13 @@ class stock_move(orm.Model):
         if context is None:
             context = {}
         new_move_id = False
-        available_quantity = self._get_specific_available_qty(cr, uid, move, context=context)
+        context['states_in'] = ('done',)
+        context['states_out'] = ('assigned', 'done',)
+        available_quantity = self._get_specific_available_qty(
+            cr, uid, move, context=context)
         #TODO: Get the good value for the available_uos_qty
         available_uos_qty = available_quantity
+        print available_quantity
         if available_quantity and available_quantity < move.product_qty:
 #            if available_quantity > 0:
 #                quantity_rest = 0
@@ -155,7 +172,8 @@ class stock_move(orm.Model):
                     'product_uos_qty': uos_qty_rest,
                     'state': move.state,
                 }
-                new_move_id = self.copy(cr, uid, move.id, default=copy_val, context=context)
+                new_move_id = self.copy(
+                    cr, uid, move.id, default=copy_val, context=context)
         return new_move_id
     
     def action_assign(self, cr, uid, ids, context=None):
@@ -170,9 +188,10 @@ class stock_move(orm.Model):
             # Split moves
             if move.state in ('confirmed', 'waiting'):
                 if move.split_move:
-                    new_move_id = self._split_move(cr, uid, move, context=context)
+                    new_move_id = self._split_move(
+                        cr, uid, move, context=context)
                     if new_move_id:
-                        todo.append(new_move_id)
+                        tomerge.append(new_move_id)
                 todo.append(move.id)
         res = self.check_assign(cr, uid, todo, context=context)
         
@@ -180,5 +199,18 @@ class stock_move(orm.Model):
         for move_id in todo:
             self._merge_move(cr, uid, move_id, context=context)
         return res
+
+    def cancel_assign(self, cr, uid, ids, context=None):
+        """ Changes the state to confirmed.
+        @return: True
+        """
+        
+        if context is None:
+            context = {}
+        super(stock_move, self).cancel_assign(
+            cr, uid, ids, context=context)
+        for move_id in ids:
+            self._merge_move(cr, uid, move_id, context=context)
+        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

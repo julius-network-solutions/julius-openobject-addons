@@ -35,7 +35,7 @@ class stock_picking(orm.Model):
                 use_new_cursor=use_new_cursor, context=context)
         return True
         
-    def _check_move_list_assign(self, cr, uid, move_ids, context=None):
+    def _check_move_list_assign(self, cr, uid, move_ids, picking_ids, context=None):
         if context is None:
             context = {}
         move_obj = self.pool.get('stock.move')
@@ -85,7 +85,7 @@ class stock_picking(orm.Model):
         move_ids = move_obj.search(cr, uid,
                     move_search_domain, order='date_expected', context=context)
         # Go through the move assign function
-        self._check_move_list_assign(cr, uid, move_ids, context=context)
+        self._check_move_list_assign(cr, uid, move_ids, picking_ids, context=context)
         if use_new_cursor:
             cr.commit()
             cr.close()
