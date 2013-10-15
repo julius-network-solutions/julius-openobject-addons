@@ -38,6 +38,31 @@ class stock_production_lot(orm.Model):
             if move_ids:
                 result[prodlot.id] = move_obj.browse(cr, uid, move_ids[0], context=context).location_dest_id.id
         return result
+    
+    def _get_current_tracking(self, cr, uid, ids, field_name, arg, context=None):
+        result = {}
+        serial_obj = self.pool.get('serial.stock.tracking')
+        move_obj = self.pool.get('stock.move')
+        for prodlot in self.browse(cr, uid, ids, context=context):
+            result[prodlot.id] = False
+            move_ids = move_obj.search(cr, uid, [
+                        ('prodlot_id','=',prodlot.id),
+                        ('state','=','done')
+                    ], order='date desc',context=context)
+            if move_ids:
+                result[prodlot.id] = move_obj.browse(cr, uid, move_ids[0], context=context).tracking_id.id
+                if result[prodlot.id] is not False and move_obj.browse(cr, uid, move_ids[0], context=context).state == 'done':
+                    serial_ids = serial_obj.search(cr, uid, [('serial_id','=',prodlot.id)], context=context)
+                    if ids:
+                        serial_obj.write(cr, uid, serial_ids, {'tracking_id' : result[prodlot.id]}, context=context)
+                    else:
+                        vals = {
+                            'tracking_id': result[prodlot.id],
+                            'serial_ids': prodlot.id,
+                            'quantity': move_obj.browse(cr, uid, move_ids[0], context=context).quantity
+                        }
+                        serial_obj.create(cr, uid, vals, context=context)
+        return result
 
     def _get_prod_lot(self, cr, uid, ids, context=None):
         res = set()
@@ -49,6 +74,13 @@ class stock_production_lot(orm.Model):
     _columns = {
         'current_location_id': fields.function(_get_current_location, type='many2one',
                 relation='stock.location', string='Current Location', store={
+                'stock.production.lot':
+                    (lambda self, cr, uid, ids, c=None: ids, ['move_ids'], 10),
+                'stock.move':
+                    (_get_prod_lot, [], 20),
+                }),
+        'current_tracking_id': fields.function(_get_current_tracking, type='many2one',
+                relation='stock.tracking', string='Current Tracking', store={
                 'stock.production.lot':
                     (lambda self, cr, uid, ids, c=None: ids, ['move_ids'], 10),
                 'stock.move':
