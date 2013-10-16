@@ -43,6 +43,7 @@ class hr_job(orm.Model):
                                       'skill_id',
                                       'Skills',
                                       domain=[('is_skill', '=', True)]),
+        'applicant_ids': fields.many2many('hr.applicant', 'job_applicant_rel','job_id','applicant_id', 'Applicants'),
     }
 
     def open_list_of_applicants(self, cr, uid, ids, context=None):
@@ -59,6 +60,7 @@ class hr_job(orm.Model):
             act_context.update({'skill_ids': skill_ids})
             for skill_id in skill_ids:
                 act_context.update({('search_default_skill_%s' %str(skill_id)): 1})
+            act_context.update({'job_id': ids[0]})
             action['context'] = act_context
         return action
 
@@ -88,7 +90,22 @@ class hr_job(orm.Model):
             res['arch'] = unicode(res['arch'],
                 'utf8').replace('<separator string="Skills"/>', xml)
         return res
-
+    
+    def add_job(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        if context.get('applicant_id'):
+            applicant_obj = self.pool.get('hr.applicant')
+            applicant_id = context.get('applicant_id')
+            job_ids = []
+            for job_id in ids:
+                applicant = applicant_obj.browse(cr, uid, applicant_id, context=context)
+                if applicant.job_ids:
+                    job_ids = [x.id for x in applicant.job_ids]
+                job_ids.append(job_id)
+                applicant_obj.write(cr, uid, [applicant_id], {'job_ids': [(6, 0, job_ids)]}, context=context)
+        return True
+    
 class hr_applicant(orm.Model):
     _inherit = "hr.applicant"
 
@@ -98,6 +115,7 @@ class hr_applicant(orm.Model):
                                       'job_id',
                                       'categ_id',
                                       'Categories'),
+        'job_ids': fields.many2many('hr.job', 'applicant_job_rel','applicant_id','job_id', 'Jobs'),
     }
 
     def open_list_of_jobs(self, cr, uid, ids, context=None):
@@ -114,6 +132,7 @@ class hr_applicant(orm.Model):
             act_context.update({'skill_ids': skill_ids})
             for skill_id in skill_ids:
                 act_context.update({('search_default_skill_%s' %str(skill_id)): 1})
+            act_context.update({'applicant_id': ids[0]})
             action['context'] = act_context
         return action
 
@@ -143,5 +162,24 @@ class hr_applicant(orm.Model):
             res['arch'] = unicode(res['arch'],
                 'utf8').replace('<separator string="Skills"/>', xml)
         return res
+    
+    def add_applicant(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        job_id = False
+        if context.get('job_id'):
+            job_id = context.get('job_id')
+        elif context.get('active_model') == 'hr.job' and context.get('active_id'):
+            job_id = context.get('active_id')
+        if job_id:
+            job_obj = self.pool.get('hr.job')
+            applicant_ids = []
+            for applicant_id in ids:
+                job = job_obj.browse(cr, uid, job_id, context=context)
+                if job.applicant_ids:
+                    applicant_ids = [x.id for x in job.applicant_ids]
+                applicant_ids.append(applicant_id)
+                job_obj.write(cr, uid, [job_id], {'applicant_ids': [(6, 0, applicant_ids)]}, context=context)
+        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

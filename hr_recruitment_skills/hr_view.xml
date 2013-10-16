@@ -50,9 +50,28 @@
                             type="object"
                             string="Applicants"
                             states="recruit"
-                            context="{'skill_ids': skill_ids}" colspan="1"/>
-                    </group>
+							class="oe_link"
+                            context="{'skill_ids': skill_ids, 'job_id': active_id}" colspan="1"/>
+					</group>
                 </div>
+                <field name="requirements" position="after">
+		      		<field name="applicant_ids" colspan="4" nolabel="1"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_job_tree">
+            <field name="name">hr.job.tree</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_tree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <button name="add_job"
+                            type="object"
+                            string="Add Job"
+							icon="gtk-execute"
+                            context="{'applicant_id': context.get('applicant_id', False)}"/>
+                </field>
             </field>
         </record>
 
@@ -86,9 +105,26 @@
                 <field name="categ_ids" position="after">
                     <button name="open_list_of_jobs"
                         type="object"
-                        string="Jobs"
+                        string="Select Jobs"
                         states="draft,open,pending"
-                        context="{'skill_ids': categ_ids}"/>
+                        context="{'skill_ids': categ_ids, 'applicant_id': active_id}" 
+						class="oe_link"/>
+					<field name="job_ids" colspan="4" nolabel="1" readonly="0"/>
+                </field>
+            </field>
+        </record> 
+
+       <record model="ir.ui.view" id="crm_case_tree_view_job_skills">
+            <field name="name">hr.applicant.tree</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.crm_case_tree_view_job"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <button name="add_applicant"
+                            type="object"
+                            string="Add Applicant"
+							icon="gtk-execute"
+                            context="{'job_id': context.get('job_id', False)}"/>
                 </field>
             </field>
         </record>
