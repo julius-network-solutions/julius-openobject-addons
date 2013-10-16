@@ -53,13 +53,17 @@ class stock_production_lot(orm.Model):
                 result[prodlot.id] = move_obj.browse(cr, uid, move_ids[0], context=context).tracking_id.id
                 if result[prodlot.id] is not False and move_obj.browse(cr, uid, move_ids[0], context=context).state == 'done':
                     serial_ids = serial_obj.search(cr, uid, [('serial_id','=',prodlot.id)], context=context)
-                    if ids:
+                    print 'serials_ids' , serial_ids
+                    if serial_ids:
+                        print 'write'
                         serial_obj.write(cr, uid, serial_ids, {'tracking_id' : result[prodlot.id]}, context=context)
                     else:
+                        print 'create'
                         vals = {
                             'tracking_id': result[prodlot.id],
-                            'serial_ids': prodlot.id,
-                            'quantity': move_obj.browse(cr, uid, move_ids[0], context=context).quantity
+                            'serial_id': prodlot.id,
+                            'product_id': move_obj.browse(cr, uid, move_ids[0], context=context).product_id,
+                            'quantity': move_obj.browse(cr, uid, move_ids[0], context=context).product_qty,
                         }
                         serial_obj.create(cr, uid, vals, context=context)
         return result
