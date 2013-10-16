@@ -79,7 +79,7 @@ class sale_order(orm.Model):
                 res = purchase_order_line_obj.onchange_product_id(cr, 1, [], so.company_id.partner_id.property_product_pricelist.id, line.product_id.id, 
                     qty=line.product_uom_qty, uom_id=False, partner_id=partner_id[0], date_order=so.date_order,
                     fiscal_position_id=False, context=context)
-                res['value'].update({'order_id' : po_id, 'price_unit' : line.price_unit})
+                res['value'].update({'order_id' : po_id, 'price_unit' : line.price_unit,'name' : line.name})
                 taxes = []
                 for tax in line.product_id.supplier_taxes_id:
                     if tax.company_id.id == company_id[0]:
