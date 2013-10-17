@@ -1,0 +1,85 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* hr_recruitment_skills
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-14 15:25+0000\n"
+"PO-Revision-Date: 2013-10-14 15:25+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_recruitment_skills
+#: view:hr.applicant:0
+msgid "Select Jobs"
+msgstr "Selectionner Les Postes"
+
+#. module: hr_recruitment_skills
+#: field:hr.applicant,job_ids:0
+msgid "Jobs"
+msgstr "Postes"
+
+#. module: hr_recruitment_skills
+#: view:hr.job:0
+msgid "Add Job"
+msgstr "Ajout Poste"
+
+#. module: hr_recruitment_skills
+#: view:hr.applicant:0
+#: view:hr.job:0
+#: field:hr.job,skill_ids:0
+msgid "Skills"
+msgstr "Compétences"
+
+#. module: hr_recruitment_skills
+#: model:ir.model,name:hr_recruitment_skills.model_hr_employee_category
+msgid "Employee Category"
+msgstr "Catégorie de l'employé"
+
+#. module: hr_recruitment_skills
+#: view:hr.employee.category:0
+msgid "Search employees categories"
+msgstr "Rechecher des catégorie d'employés"
+
+#. module: hr_recruitment_skills
+#: model:ir.model,name:hr_recruitment_skills.model_hr_applicant
+msgid "Applicant"
+msgstr "Candidat"
+
+#. module: hr_recruitment_skills
+#: field:hr.employee.category,is_skill:0
+msgid "Is Skill"
+msgstr "Compétence"
+
+#. module: hr_recruitment_skills
+#: model:ir.model,name:hr_recruitment_skills.model_hr_job
+msgid "Job Description"
+msgstr "Description du poste"
+
+#. module: hr_recruitment_skills
+#: view:hr.employee.category:0
+msgid "Is not skill"
+msgstr "N'est pas une compétence"
+
+#. module: hr_recruitment_skills
+#: view:hr.applicant:0
+msgid "Add Applicant"
+msgstr "Ajout d'un candidat"
+
+#. module: hr_recruitment_skills
+#: view:hr.employee.category:0
+msgid "Is skill"
+msgstr "Est une compétence"
+
+#. module: hr_recruitment_skills
+#: view:hr.job:0
+#: field:hr.job,applicant_ids:0
+msgid "Applicants"
+msgstr "Candidats"
+
