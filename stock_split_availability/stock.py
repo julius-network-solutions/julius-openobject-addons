@@ -43,6 +43,7 @@ class stock_move(orm.Model):
             ('state', 'char'),
             ('prodlot_id', 'many2one'),
             ('product_id', 'many2one'),
+            ('date_expected', 'char'),
         ]
         
     def _get_context_check(self, cr, uid,
@@ -150,7 +151,6 @@ class stock_move(orm.Model):
             cr, uid, move, context=context)
         #TODO: Get the good value for the available_uos_qty
         available_uos_qty = available_quantity
-        print available_quantity
         if available_quantity and available_quantity < move.product_qty:
 #            if available_quantity > 0:
 #                quantity_rest = 0
