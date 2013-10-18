@@ -30,9 +30,6 @@ class sale_order(orm.Model):
     _columns = {
         'purchase_order_id' : fields.many2one('purchase.order','Purchase Order',readonly=True)
     }
-    ######################################################
-    ### TODO : Mgt of access rights for Multi Company
-    ######################################################
     def sale_to_purchase(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -45,6 +42,11 @@ class sale_order(orm.Model):
         account_tax_obj = self.pool.get('account.tax')
         #Creation of the Purchase Order
         for so in self.browse(cr ,1, ids, context=context):
+            if so.purchase_order_id:
+                raise orm.except_orm(_('Warning!'),
+                                    _('You already had a purchase order for this sale order '
+                                      'Please delete the %s if you want to create a new one')
+                                    % (so.purchase_order_id.name))
             company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',so.partner_id.name)], context=context)
             if not company_id:
                 raise orm.except_orm(_('Warning'),
@@ -68,8 +70,9 @@ class sale_order(orm.Model):
                 'date_order' : so.date_order,
                 'pricelist_id' : so.company_id.partner_id.property_product_pricelist.id,
                 'warehouse_id' : warehouse_id[0],
-                'location_id' : warehouse.lot_output_id.id,
+                'location_id' : warehouse.lot_stock_id.id,
                 'invoice_method' : 'order',
+                'sale_order_id' : so.id,
             }
             po_id = purchase_order_obj.create(cr, 1, vals, context=context)
             po = purchase_order_obj.browse(cr , 1, po_id, context=context)
