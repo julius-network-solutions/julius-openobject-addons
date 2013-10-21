@@ -30,6 +30,18 @@ class sale_order(orm.Model):
     _columns = {
         'purchase_order_id' : fields.many2one('purchase.order','Purchase Order',readonly=True)
     }
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if context is None:
+            context = {}
+        res_company_obj = self.pool.get('res.company')
+        res = super(sale_order, self).write(cr, uid, ids, vals, context=context)
+        for so in self.browse(cr ,1, ids, context=context):
+            company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',so.partner_id.name)], context=context)
+            if vals.get('state') == 'manual' and company_id and not so.purchase_order_id: 
+                self.sale_to_purchase(cr, uid, ids, context=context)
+        return res
+    
     def sale_to_purchase(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -76,7 +88,7 @@ class sale_order(orm.Model):
             }
             po_id = purchase_order_obj.create(cr, 1, vals, context=context)
             po = purchase_order_obj.browse(cr , 1, po_id, context=context)
-            self.write(cr, 1, so.id, {'client_order_ref': po.name,'purchase_order_id': po_id}, context = context)
+            self.write(cr, 1, [so.id], {'client_order_ref': po.name,'purchase_order_id': po_id}, context = context)
             #Creation of the Purchase Order Line
             for line in so.order_line:
                 res = purchase_order_line_obj.onchange_product_id(cr, 1, [], so.company_id.partner_id.property_product_pricelist.id, line.product_id.id, 

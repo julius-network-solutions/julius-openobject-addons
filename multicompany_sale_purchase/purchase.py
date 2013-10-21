@@ -32,6 +32,18 @@ class purchase_order(orm.Model):
         'sale_order_id' : fields.many2one('sale.order','Sale Order',readonly=True)
     }
     
+    def write(self, cr, uid, ids, vals, context=None):
+        if context is None:
+            context = {}
+        res_company_obj = self.pool.get('res.company')
+        res = super(purchase_order, self).write(cr, uid, ids, vals, context=context)
+        for so in self.browse(cr ,1, ids, context=context):
+            company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',so.partner_id.name)], context=context)
+            if vals.get('state') == 'approved' and company_id and not so.sale_order_id:
+                self.purchase_to_sale(cr, uid, ids, context=context)
+        return res
+    
+    
     def purchase_to_sale(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -85,7 +97,7 @@ class purchase_order(orm.Model):
             }
             so_id = sale_order_obj.create(cr, 1, vals, context=context)
             so = sale_order_obj.browse(cr , 1, so_id, context=context)
-            self.write(cr, 1, po.id, {'partner_ref': so.name, 'sale_order_id': so_id}, context = context)
+            self.write(cr, 1, [po.id], {'partner_ref': so.name, 'sale_order_id': so_id}, context = context)
             #Creation of the Sale Order Line
             for line in po.order_line:
                 res = sale_order_line_obj.product_id_change(cr, 1, ids,

@@ -160,7 +160,9 @@ class stock_picking(orm.Model):
                 if purchase.sale_order_id:
                     vals['location_id'] = location_multi_id
                     vals['location_dest_id'] = warehouse.lot_stock_id.id
-        return super(stock_picking, self).create(cr, uid, vals, context=context)
+        res = super(stock_picking, self).create(cr, uid, vals, context=context)
+        self.edi_link(cr, uid, [res], context)
+        return res
     
 class stock_picking_out(orm.Model):
     _inherit = 'stock.picking.out'
