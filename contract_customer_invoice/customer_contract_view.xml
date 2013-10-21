@@ -35,9 +35,6 @@
                 <field name="partner_id" position="replace">
                 	<field name="partner_id"/>
                 </field>
-                <!--<field name="contact_id" position="replace">
-                    <field name="contact_id" domain="[('partner_id','=',partner_id)]"/>
-                </field>-->
                 <field name="date_start" position="replace"/>
                 <field name="date" position="replace">
                     <field name="client_num"/>
@@ -230,17 +227,6 @@
 				</button>            
 			</field>
         </record>
-        <!--<record id="view_account_analytic_account_form_inherit_3" model="ir.ui.view">
-            <field name="name">account.analytic.account.form.inherit</field>
-            <field name="model">account.analytic.account</field>
-            <field name="inherit_id" ref="hr_timesheet.account_analytic_account_form_form"/>
-            <field name="arch" type="xml">
-                <page string="Invoice Analysis" position="replace"/>
-                <page string="Stats by month" position="replace"/>
-                <page string="Stats by user" position="replace"/>
-            </field>
-        </record>-->
-        
 
 	    <!-- Invoice -->
         <record id="view_account_invoice_form_inherit" model="ir.ui.view">
@@ -304,23 +290,6 @@
                 </field>
             </field>
         </record>
-        <!-- Product 
-        <record id="view_contract_product_form_inherit" model="ir.ui.view">
-            <field name="name">product.product.form.inherit</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="stock.view_normal_property_acc_form"/>
-            <field name="arch" type="xml">
-				<separator string="Inventory Valuation" position="before">
-            		<field name="contract_id" domain="[('is_a_contract','=',True)]" group="contract_customer_invoice.group_contract_manager"/>
-                </separator>
-                <field name="list_price" position="attributes">
-                    <attribute name="attrs">{'invisible':[('contract_id','!=',False)]}</attribute>
-                </field>
-                <field name="standard_price" position="attributes">
-                    <attribute name="attrs">{'invisible':[('contract_id','!=',False)],'readonly':[('cost_method','=','average')]}</attribute>
-                </field>
-            </field>
-        </record>-->
 		
     </data>
 </openerp>
