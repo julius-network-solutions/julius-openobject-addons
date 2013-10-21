@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_hr_job_form" model="ir.ui.view">
+            <field name="name">hr.job.form</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <button name="job_open" position="after">
+                    <button name="get_duration" string="Get duration" type="object"/>
+                </button>
+            </field>
+        </record>
+
+    </data>
+</openerp>

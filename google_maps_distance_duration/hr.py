@@ -19,27 +19,25 @@
 #
 #################################################################################
 
-{
-    "name": 'Email confirmation',
-    "version": '1.0',
-    "description": """ This module give the possibility to edit
-    several record of a table. """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'mail',
-        'portal',
-    ],
-    "init_xml": [],
-    "data": [
-           "email_confirmation_view.xml",
-           "wizard/confirmation_view.xml",
-    ],
-    "demo": [],
-    "installable": True,
-    "active": False,
-    "category" : "Base extra Modules",
-    "test": [],
-}
+from .google_maps import GoogleMaps
+from openerp.osv import orm, fields
+import datetime
+import time
+
+class hr_job(orm.Model):
+    _inherit = 'hr.job'
+
+    def get_duration(self, cr, uid, ids, context=None):
+        origin = 'Paris'
+        destination = 'Paris'
+        departure_time = context.get('departure_time')
+        if not departure_time:
+            n = datetime.datetime.now()
+            departure_time = int(time.mktime(n.timetuple()))
+        maps = GoogleMaps()
+        duration = maps.duration(origin, destination, mode='transit', departure_time=departure_time)
+        distance = maps.distance(origin, destination, mode='transit', departure_time=departure_time)
+        print duration, distance
+        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

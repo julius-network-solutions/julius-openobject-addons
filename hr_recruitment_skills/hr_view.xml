@@ -45,7 +45,7 @@
             <field name="arch" type="xml">
                 <div class="oe_title" position="after">
                     <group colspan="4" col="4">
-                        <field name="skill_ids" widget="many2many_tags" colspan="3"/>
+                        <field name="skill_ids" widget="many2many_tags" colspan="3" domain="[('parent_id','!=',False)]"/>
                         <button name="open_list_of_applicants"
                             type="object"
                             string="Applicants"
@@ -91,7 +91,8 @@
             <field name="model">hr.applicant</field>
             <field name="inherit_id" ref="hr_recruitment.view_crm_case_jobs_filter"/>
             <field name="arch" type="xml">
-                <field name="categ_ids" position="after">
+                <field name="categ_ids" position="replace">
+                    <field name="categ_ids" widget="many2many_tags" domain="[('parent_id','!=',False)]"/>
                     <separator string="Skills"/>
                 </field>
             </field>
@@ -102,7 +103,8 @@
             <field name="model">hr.applicant</field>
             <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
             <field name="arch" type="xml">
-                <field name="categ_ids" position="after">
+                <field name="categ_ids" position="replace">
+                    <field name="categ_ids" widget="many2many_tags" domain="[('parent_id','!=',False)]"/>
                     <button name="open_list_of_jobs"
                         type="object"
                         string="Select Jobs"

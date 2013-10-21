@@ -91,7 +91,7 @@ class purchase_order(orm.Model):
                     name=line.name, partner_id=partner_id[0], lang=False, update_tax=False,
                     date_order=po.date_order, packaging=False, fiscal_position=po.fiscal_position.id,
                     flag=False, context=context)
-                res['value'].update({'order_id' : so_id, 'price_unit' : line.price_unit})
+                res['value'].update({'order_id' : so_id, 'price_unit' : line.price_unit, 'product_uom_qty' : line.product_qty,'name': line.name})
                 taxes = []
                 for tax in line.product_id.taxes_id:
                     if tax.company_id.id == company_id[0]:

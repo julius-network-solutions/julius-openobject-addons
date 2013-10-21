@@ -19,27 +19,6 @@
 #
 #################################################################################
 
-{
-    "name": 'Email confirmation',
-    "version": '1.0',
-    "description": """ This module give the possibility to edit
-    several record of a table. """,
-    "author": 'Julius Network Solutions',
-    "website": 'http://www.julius.fr/',
-    "depends": [
-        'mail',
-        'portal',
-    ],
-    "init_xml": [],
-    "data": [
-           "email_confirmation_view.xml",
-           "wizard/confirmation_view.xml",
-    ],
-    "demo": [],
-    "installable": True,
-    "active": False,
-    "category" : "Base extra Modules",
-    "test": [],
-}
+#import hr
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
