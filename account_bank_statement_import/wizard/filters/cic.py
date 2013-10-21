@@ -33,12 +33,11 @@ def get_data(self, cr, uid, ids, recordlist, data):
     line_statement_obj = self.pool.get('account.bank.statement.line')
     journal_obj = self.pool.get('account.journal')
     journal_code = journal_obj.browse(cr, uid, data['journal_id']).code
-    
+    print data
     if not data:
         data = {}
     
     date_format = data.get('date_format') or '%Y/%m/%d'
-    
     bank_statements = []
     i = 0        
     first_line = True
@@ -70,6 +69,9 @@ def get_data(self, cr, uid, ids, recordlist, data):
         entry_date = line_list[0].replace('"','')
 #        if len(entry_date.split("/")[2]) == 2 :
 #            entry_date = str(entry_date.split("/")[0]) + "/" + str(entry_date.split("/")[1]) + "/20" + str(entry_date.split("/")[2])
+        print date
+        print date_format
+        print time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(date, date_format))
         st_line['date'] = time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(date, date_format))
         st_line['entry_date'] = time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(entry_date, date_format))
         st_line['val_date'] = time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(date, date_format))

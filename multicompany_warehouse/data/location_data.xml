@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="multicompany_location" model="stock.location">
+            <field name="name">Location for Inter-Companies Transfers</field>
+            <field name="usage">transit</field>
+            <field name="active">True</field>
+            <field name="chained_location_type">none</field>
+            <field name="chained_auto_packing">manual</field>
+            <field name="company_id">False</field>
+        </record>
+    </data>
+</openerp>

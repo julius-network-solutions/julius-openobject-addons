@@ -32,9 +32,18 @@ class purchase_order(orm.Model):
         'sale_order_id' : fields.many2one('sale.order','Sale Order',readonly=True)
     }
     
-    ######################################################
-    ### TODO : Mgt of access rights for Multi Company
-    ######################################################
+    def write(self, cr, uid, ids, vals, context=None):
+        if context is None:
+            context = {}
+        res_company_obj = self.pool.get('res.company')
+        res = super(purchase_order, self).write(cr, uid, ids, vals, context=context)
+        for so in self.browse(cr ,1, ids, context=context):
+            company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',so.partner_id.name)], context=context)
+            if vals.get('state') == 'approved' and company_id and not so.sale_order_id:
+                self.purchase_to_sale(cr, uid, ids, context=context)
+        return res
+    
+    
     def purchase_to_sale(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -48,6 +57,11 @@ class purchase_order(orm.Model):
         account_tax_obj = self.pool.get('account.tax')
         #Creation of the Sale Order
         for po in self.browse(cr ,1, ids, context=context):
+            if po.sale_order_id:
+                raise orm.except_orm(_('Warning!'),
+                                    _('You already had a sale order for this purchase order '
+                                      'Please delete the %s if you want to create a new one')
+                                    % (po.sale_order_id.name))
             company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',po.partner_id.name)], context=context)
             if not company_id:
                 raise orm.except_orm(_('Warning'),
@@ -78,11 +92,12 @@ class purchase_order(orm.Model):
                 'pricelist_id' : po.company_id.partner_id.property_product_pricelist.id,
                 'picking_policy' : 'direct',
                 'order_policy' : 'manual',
-                'shop_id' : sale_shop_id[0], 
+                'shop_id' : sale_shop_id[0],
+                'purchase_order_id' : po.id, 
             }
             so_id = sale_order_obj.create(cr, 1, vals, context=context)
             so = sale_order_obj.browse(cr , 1, so_id, context=context)
-            self.write(cr, 1, po.id, {'partner_ref': so.name, 'sale_order_id': so_id}, context = context)
+            self.write(cr, 1, [po.id], {'partner_ref': so.name, 'sale_order_id': so_id}, context = context)
             #Creation of the Sale Order Line
             for line in po.order_line:
                 res = sale_order_line_obj.product_id_change(cr, 1, ids,
