@@ -148,4 +148,29 @@ class stock_picking_out(orm.Model):
                 if move.location_dest_id is False or move.location_dest_id != location_dest_id:
                     stock_move_obj.write(cr, uid, [move.id], {'location_dest_id': location_dest_id}, context=context)
         return True
+    
+class stock_picking(orm.Model):
+    _inherit = 'stock.picking'
+
+    def onchange_location(self, cr, uid, ids, location_id, context=None):
+        if context is None:
+            context = {}
+        stock_move_obj = self.pool.get('stock.move')
+        if ids:
+            pick = self.browse(cr, uid, ids[0], context=context)
+            for move in pick.move_lines:
+                if move.location_id is False or move.location_id != location_id:
+                    stock_move_obj.write(cr, uid, [move.id], {'location_id': location_id}, context=context)
+        return True
+    
+    def onchange_location_dest(self, cr, uid, ids, location_dest_id, context=None):
+        if context is None:
+            context = {}
+        stock_move_obj = self.pool.get('stock.move')
+        if ids:
+            pick = self.browse(cr, uid, ids[0], context=context)
+            for move in pick.move_lines:
+                if move.location_dest_id is False or move.location_dest_id != location_dest_id:
+                    stock_move_obj.write(cr, uid, [move.id], {'location_dest_id': location_dest_id}, context=context)
+        return True
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
