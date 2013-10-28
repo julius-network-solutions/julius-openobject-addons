@@ -17,9 +17,19 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
+#################################################################################
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-import product
-import res_country
+class res_country(orm.Model):
+    _inherit = "res.country"
+    
+    _columns = {
+        'subject_to_ecotax': fields.boolean('Subtject to ecotax')
+    }
+    
+    _defaults = {
+        'subject_to_ecotax': True,
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

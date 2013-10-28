@@ -58,15 +58,16 @@ class sale_order(orm.Model):
             context = {}
         line_obj = self.pool.get('sale.order.line')
         for sale in self.browse(cr, uid, ids, context=context):
-            product_list = {}
-            if sale.state not in ('draft','sent'):
-                continue
-            for line in sale.order_line:
-                if not self._check_if_ecotax(cr, uid, line, context=context):
+            if sale.partner_shipping_id.country_id.subject_to_ecotax is True:
+                product_list = {}
+                if sale.state not in ('draft','sent'):
                     continue
-                product_list = self._update_product_list(
-                    cr, uid, line, product_list, context=context)
-            line_obj._genrate_ecotax_lines(cr, uid, sale, product_list, context=context)
+                for line in sale.order_line:
+                    if not self._check_if_ecotax(cr, uid, line, context=context):
+                        continue
+                    product_list = self._update_product_list(
+                        cr, uid, line, product_list, context=context)
+                line_obj._genrate_ecotax_lines(cr, uid, sale, product_list, context=context)
         return True
     
     def _amount_ecotax(self, cr, uid, ids, field_name, arg, context=None):

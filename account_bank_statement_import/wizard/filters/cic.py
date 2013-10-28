@@ -56,7 +56,7 @@ def get_data(self, cr, uid, ids, recordlist, data):
             continue
         if len(line) <= 1:  # the end of the file has an empty line
             continue
-        line_list = line.split(',')
+        line_list = line.split(';')
         if line_list[1].replace('"','') == 'Date de valeur' :
             continue
            
@@ -69,9 +69,6 @@ def get_data(self, cr, uid, ids, recordlist, data):
         entry_date = line_list[0].replace('"','')
 #        if len(entry_date.split("/")[2]) == 2 :
 #            entry_date = str(entry_date.split("/")[0]) + "/" + str(entry_date.split("/")[1]) + "/20" + str(entry_date.split("/")[2])
-        print date
-        print date_format
-        print time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(date, date_format))
         st_line['date'] = time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(date, date_format))
         st_line['entry_date'] = time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(entry_date, date_format))
         st_line['val_date'] = time.strftime(DEFAULT_SERVER_DATE_FORMAT, time.strptime(date, date_format))
@@ -83,14 +80,15 @@ def get_data(self, cr, uid, ids, recordlist, data):
         st_line['extra_note'] = ''
         
         if line_list[2].replace('"',''):
-            st_line_amt = conversion.str2float(line_list[2].replace('"',''))
+            amount = line_list[2].replace(',','.')
+            st_line_amt = conversion.str2float(amount)
             st_line['account_id'] = data['payable_id'][0]
         elif line_list[3].replace('"',''):
-            st_line_amt = conversion.str2float(line_list[3].replace('"',''))
+            amount = line_list[3].replace(',','.')
+            st_line_amt = conversion.str2float(amount)
             st_line['account_id'] = data['receivable_id'][0]
-
+            
         st_line['amount'] = st_line_amt
-        
 #        '''Definition of a positive or negative value'''
 #        if st_line_amt.startswith('-'):
 #            st_line['account_id'] = data['payable_id']
