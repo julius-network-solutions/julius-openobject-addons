@@ -37,7 +37,7 @@ class stock_move(orm.Model):
             cr, uid, moves, context=context)
         picking_obj = self.pool.get('stock.picking')
         for picking, todo in self._chain_compute(cr, uid, moves, context=context).items():
-            if picking:
+            if picking and picking.type == 'out':
                 picking_obj.write(cr, uid,
                                   picking.id, {'invoice_state': 'none'}, context=context)
         return new_moves
