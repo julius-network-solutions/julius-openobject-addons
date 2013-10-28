@@ -37,7 +37,7 @@ class account_invoice(orm.Model):
         if not line.product_id or \
             (not line.product_id.ecotax_type in ['1','2'] and \
              not line.product_id.categ_id.ecotax_type in ['1','2'])and \
-             not line.order_id.partner_id.country_id.subject_to_ecotax is True:
+             not line.invoice_id.partner_id.country_id.subject_to_ecotax is True:
             return False
         return True
     
