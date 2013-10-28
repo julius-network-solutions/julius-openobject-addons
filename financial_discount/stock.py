@@ -33,7 +33,7 @@ class stock_picking(orm.Model):
         sale_order_obj = self.pool.get('sale.order')
         value = {}
         sale_order = sale_order_obj.browse(cr, uid, sale_order_id, context=context)
-        if sale_order.global_discount_percentage != 0.00:
+        if sale_order.financial_discount_percentage != 0.00:
             discount = sale_order.financial_discount_percentage / 100
             res = 0
             for line in invoice.invoice_line:
