@@ -19,26 +19,27 @@
 #
 #################################################################################
 
-{
-    "name" : "Product Ecotax",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
-        'product',
-        'sale',
-    ],
-    "description": """
-    Product Ecotax management
-    """,
-    "demo" : [],
-    "data" : [
-        'product_view.xml',
-        'res_country_view.xml',
-    ],
-    'installable' : True,
-    'active' : False,
-}
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
+
+class stock_move(orm.Model):
+    _inherit = "stock.move"
+
+    def _prepare_chained_picking(self, cr, uid, picking_name,
+            picking, picking_type, moves_todo, context=None):
+        res = super(stock_move, self)._prepare_chained_picking(
+            cr, uid, picking_name, picking, picking_type, moves_todo, context=context)
+        res['carrier_id'] = picking.carrier_id and picking.carrier_id.id or False
+        return res
+
+    def create_chained_picking(self, cr, uid, moves, context=None):
+        new_moves = super(stock_move, self).create_chained_picking(
+            cr, uid, moves, context=context)
+        picking_obj = self.pool.get('stock.picking')
+        for picking, todo in self._chain_compute(cr, uid, moves, context=context).items():
+            if picking and picking.type == 'out':
+                picking_obj.write(cr, uid,
+                                  picking.id, {'carrier_id': False}, context=context)
+        return new_moves
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -6,16 +6,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-18 15:29+0000\n"
-"PO-Revision-Date: 2013-06-18 15:29+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2013-10-28 15:39+0000\n"
+"PO-Revision-Date: 2013-10-28 16:45+0100\n"
+"Last-Translator: Mathieu Vatel <mathieu@julius.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
 
 #. module: product_ecotax
+#: model:ir.model.fields,field_description:product_ecotax.field_product_template_ecotax
 #: field:product.template,ecotax:0
 msgid "Ecotax product?"
 msgstr "Produit écotaxe?"
@@ -32,21 +33,52 @@ msgid "Product Category"
 msgstr "Catégorie d'articles"
 
 #. module: product_ecotax
+#: model:ir.model.fields,field_description:product_ecotax.field_product_category_ecotax_type
+#: model:ir.model.fields,field_description:product_ecotax.field_product_template_ecotax_type
 #: field:product.category,ecotax_type:0
 #: field:product.template,ecotax_type:0
 msgid "Ecotax"
 msgstr "Ecotaxe"
 
 #. module: product_ecotax
+#: model:ir.model.fields,field_description:product_ecotax.field_product_category_ecotax_product_id
+#: model:ir.model.fields,field_description:product_ecotax.field_product_template_ecotax_product_id
 #: field:product.category,ecotax_product_id:0
 #: field:product.template,ecotax_product_id:0
 msgid "Ecotax linked product"
 msgstr "Produit écotaxe lié"
 
 #. module: product_ecotax
+#: selection:product.category,ecotax_type:0
+msgid "Submitted and No Reportable"
+msgstr "Soumis et non déclarable"
+
+#. module: product_ecotax
 #: view:product.product:0
 msgid "Information"
 msgstr "Information"
+
+#. module: product_ecotax
+#: model:ir.model,name:product_ecotax.model_res_country
+msgid "Country"
+msgstr "Pays"
+
+#. module: product_ecotax
+#: model:ir.model.fields,field_description:product_ecotax.field_res_country_subject_to_ecotax
+#: field:res.country,subject_to_ecotax:0
+msgid "Subject to ecotax"
+msgstr "Sujet à éco-taxe"
+
+#. module: product_ecotax
+#: model:ir.model.fields,field_description:product_ecotax.field_sale_order_line_ecotax
+#: field:sale.order.line,ecotax:0
+msgid "Ecotax line"
+msgstr "Ligne éco-taxe"
+
+#. module: product_ecotax
+#: help:sale.order,amount_ecotax:0
+msgid "The included ecotax amount."
+msgstr "Montant éco-taxe incluse."
 
 #. module: product_ecotax
 #: model:ir.model,name:product_ecotax.model_product_template
@@ -68,6 +100,12 @@ msgstr "Bon de commande"
 #: selection:product.template,ecotax_type:0
 msgid "Submitted and Non-Reportable"
 msgstr "Soumis et non déclarable"
+
+#. module: product_ecotax
+#: model:ir.model.fields,field_description:product_ecotax.field_sale_order_amount_ecotax
+#: field:sale.order,amount_ecotax:0
+msgid "Included ecotax"
+msgstr "Dont éco-taxe"
 
 #. module: product_ecotax
 #: model:ir.model,name:product_ecotax.model_sale_order_line

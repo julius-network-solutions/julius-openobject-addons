@@ -30,8 +30,10 @@ class sale_order(orm.Model):
             context = {}
         if not line.product_id or \
             (not line.product_id.ecotax_type in ['1','2'] and \
-            not line.product_id.categ_id.ecotax_type in ['1','2']) and \
-            not line.order_id.partner_shipping_id.country_id.subject_to_ecotax is True:
+            not line.product_id.categ_id.ecotax_type in ['1','2']) \
+            or (line.order_id and line.order_id.partner_shipping_id and \
+            line.order_id.partner_shipping_id.country_id and \
+            not line.order_id.partner_shipping_id.country_id.subject_to_ecotax) or False:
             return False
         return True
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="product_ecotax_view_res_country_form" model="ir.ui.view">
+            <field name="name">res.country.view.form</field>
+            <field name="model">res.country</field>
+            <field name="inherit_id" ref="base.view_country_form"/>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="before">
+                    <field name="subject_to_ecotax"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

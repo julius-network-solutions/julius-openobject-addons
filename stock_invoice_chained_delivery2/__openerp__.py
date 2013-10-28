@@ -20,23 +20,19 @@
 #################################################################################
 
 {
-    "name" : "Product Ecotax",
+    "name" : "Stock Picking invoice the chained delivery inherit delivery",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Management",
+    "category" : "Warehouse Management",
     "depends" : [
-        'product',
-        'sale',
+        "delivery",
     ],
     "description": """
-    Product Ecotax management
+    Stock Picking invoice the chained delivery.
     """,
     "demo" : [],
-    "data" : [
-        'product_view.xml',
-        'res_country_view.xml',
-    ],
+    "data" : [],
     'installable' : True,
     'active' : False,
 }
