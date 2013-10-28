@@ -25,6 +25,29 @@ import openerp.addons.decimal_precision as dp
 class account_invoice(orm.Model):
     _inherit = "account.invoice"
     
+    _columns = {
+        'sale_order_ids': fields.many2many('sale.order', 'sale_order_invoice_rel',
+                                           'invoice_id', 'order_id', 'Sale Order',
+                                           readonly=True),
+    }
+    
+    def _check_if_ecotax(self, cr, uid, line, context=None):
+        if context is None:
+            context = {}
+        shipping = False
+        for sale in line.invoice_id.sale_order_ids:
+            if sale.partner_shipping_id.country_id.subject_to_ecotax is True:
+                shipping = True
+        if shipping is False:
+            if line.partner_id.country_id.subject_to_ecotax is True:
+                shipping = True
+        if not line.product_id or \
+            (not line.product_id.ecotax_type in ['1','2'] and \
+             not line.product_id.categ_id.ecotax_type in ['1','2'])and \
+             shipping is False:
+            return False
+        return True
+    
     def generate_ecotax_line(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -34,9 +57,7 @@ class account_invoice(orm.Model):
             if invoice.state != 'draft':
                 continue
             for line in invoice.invoice_line:
-                if not line.product_id or \
-                    (not line.product_id.ecotax_type in ['1','2'] and \
-                     not line.product_id.categ_id.ecotax_type in ['1','2']):
+                if not self._check_if_ecotax(cr, uid, line, context=context):
                     continue
                 if line.product_id.ecotax_product_id and \
                     line.product_id.ecotax_product_id.id not in product_list.keys():

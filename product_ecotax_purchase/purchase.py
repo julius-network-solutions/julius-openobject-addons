@@ -25,6 +25,16 @@ import openerp.addons.decimal_precision as dp
 class purchase_order(orm.Model):
     _inherit = "purchase.order"
     
+    def _check_if_ecotax(self, cr, uid, line, context=None):
+        if context is None:
+            context = {}
+        if not line.product_id or \
+            (not line.product_id.ecotax_type in ['1','2'] and \
+             not line.product_id.categ_id.ecotax_type in ['1','2'])and \
+             not line.order_id.partner_id.country_id.subject_to_ecotax is True:
+            return False
+        return True
+    
     def generate_ecotax_line(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -34,9 +44,7 @@ class purchase_order(orm.Model):
             if purchase.state != 'draft':
                 continue
             for line in purchase.order_line:
-                if not line.product_id or \
-                    (not line.product_id.ecotax_type in ['1','2'] and \
-                     not line.product_id.categ_id.ecotax_type in ['1','2']):
+                if not self._check_if_ecotax(cr, uid, line, context=context):
                     continue
                 if line.product_id.ecotax_product_id and \
                     line.product_id.ecotax_product_id.id not in product_list.keys():
