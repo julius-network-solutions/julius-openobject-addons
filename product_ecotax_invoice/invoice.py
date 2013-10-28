@@ -34,17 +34,10 @@ class account_invoice(orm.Model):
     def _check_if_ecotax(self, cr, uid, line, context=None):
         if context is None:
             context = {}
-        shipping = False
-        for sale in line.invoice_id.sale_order_ids:
-            if sale.partner_shipping_id.country_id.subject_to_ecotax is True:
-                shipping = True
-        if shipping is False:
-            if line.partner_id.country_id.subject_to_ecotax is True:
-                shipping = True
         if not line.product_id or \
             (not line.product_id.ecotax_type in ['1','2'] and \
              not line.product_id.categ_id.ecotax_type in ['1','2'])and \
-             shipping is False:
+             not line.order_id.partner_id.country_id.subject_to_ecotax is True:
             return False
         return True
     
