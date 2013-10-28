@@ -25,7 +25,7 @@ class res_country(orm.Model):
     _inherit = "res.country"
     
     _columns = {
-        'subject_to_ecotax': fields.boolean('Subtject to ecotax')
+        'subject_to_ecotax': fields.boolean('Subject to ecotax')
     }
     
     _defaults = {
