@@ -33,11 +33,14 @@ class field_relation(orm.TransientModel):
         if context is None:
             context = {}
         multiple_edition_id = context.get('multiple_edition_id')
+        multiple_obj = self.pool.get('multiple.edition')
+        field_obj = self.pool.get('ir.model.fields')
         if multiple_edition_id:
-            field_data = self.pool.get('multiple.edition').browse(cr, uid, multiple_edition_id, context).field_id
-            model =  self.pool.get('multiple.edition').browse(cr, uid, multiple_edition_id, context).model_id
-            field_type =  self.pool.get('multiple.edition').browse(cr, uid, multiple_edition_id, context).field_type
-            readonly = self.pool.get('ir.model.fields').browse(cr, uid, field_data.id, context).readonly
+            multi_edition = multiple_obj.browse(cr, uid, multiple_edition_id, context=context)
+            field_data = multi_edition.field_id
+            model = multi_edition.model_id
+            field_type = multi_edition.field_type
+            readonly = field_data.readonly
             if readonly == True:
                 raise orm.except_orm(_('Warning'), _('This field is not editable'))
             if field_type == "selection":
