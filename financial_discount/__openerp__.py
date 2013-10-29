@@ -24,7 +24,7 @@
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Modules",
+    "category" : "Sales Management",
     "depends" : [
         "sale",
     ],
@@ -33,8 +33,8 @@
     """,
     "demo" : [],
     "data" : [
-          "sale_view.xml",
-          "data/product_data.xml"
+        "sale_view.xml",
+        "data/product_data.xml",
     ],
     'installable' : True,
     'active' : False,

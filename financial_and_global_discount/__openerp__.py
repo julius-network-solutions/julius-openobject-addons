@@ -24,19 +24,18 @@
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Modules",
+    "category" : "Sales Management",
     "depends" : [
         "sale",
         "global_discount",
-        "financial_discount"
+        "financial_discount",
     ],
     "description": """
-    Sale Module for Girard Sudron.
-    Adds the company need for sales
+    Module to manage a financial and global discount at the same time in sale orders
     """,
     "demo" : [],
     "data" : [
-          "sale_view.xml",
+        "sale_view.xml",
     ],
     'installable' : True,
     'active' : False,
