@@ -223,9 +223,9 @@ class product_pricelist_items_partner(orm.Model):
                                          version_id, pricelist_id,
                                          type, name=False, sequence=5,
                                          context=None):
+        """ Getting the data for default the item """
         if name == False:
             name = _('Item')
-        """ Getting the data for default the item """
         vals = {
             'base': -2,
             'price_version_id': version_id,
@@ -239,9 +239,9 @@ class product_pricelist_items_partner(orm.Model):
                                          version_id, pricelist_id,
                                          type, name=False, sequence=5,
                                          context=None):
+        """ Getting the data for default the item """
         if name == False:
             name = _('Item')
-        """ Getting the data for default the item """
         vals = {
             'price_version_id': version_id,
             'base_pricelist_id': pricelist_id,
