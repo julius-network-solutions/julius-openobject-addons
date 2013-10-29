@@ -207,6 +207,10 @@ class product_pricelist_items_partner(orm.Model):
             main_pricelist_id = data_obj.get_object(cr, uid, 'product', 'list0').id
         return main_pricelist_id
 
+    def _get_default_purchase_item_sequence(self, cr, uid, context=None):
+        """ Return the default item sequence """
+        return 900
+
     def _get_default_item_sequence(self, cr, uid, context=None):
         """ Return the default item sequence """
         return 1000
@@ -214,6 +218,22 @@ class product_pricelist_items_partner(orm.Model):
     def _get_category_item_sequence(self, cr, uid, category, context=None):
         """ Return the partner category item sequence """
         return 500
+
+    def _get_default_pricelist_purchase_item_vals(self, cr, uid, current,
+                                         version_id, pricelist_id,
+                                         type, name=False, sequence=5,
+                                         context=None):
+        if name == False:
+            name = _('Item')
+        """ Getting the data for default the item """
+        vals = {
+            'base': -2,
+            'price_version_id': version_id,
+            'base_pricelist_id': False,
+            'sequence': sequence,
+            'name': name,
+        }
+        return vals
 
     def _get_default_pricelist_item_vals(self, cr, uid, current,
                                          version_id, pricelist_id,
@@ -285,6 +305,13 @@ class product_pricelist_items_partner(orm.Model):
                 main_pricelist_id = self._get_main_pricelist_id(
                     cr, uid, list_type, context=context)
                 name = current.name + ' ' + _('Item')
+                if list_type == 'purchase':
+                    sequence = self._get_default_purchase_item_sequence(cr, uid, context=context)
+                    vals = self._get_default_pricelist_purchase_item_vals(
+                        cr, uid, current, version_id,
+                        main_pricelist_id, type,
+                        name, sequence, context=context)
+                    pricelist_item_obj.create(cr, uid, vals, context=context)
                 sequence = self._get_default_item_sequence(cr, uid, context=context)
                 vals = self._get_default_pricelist_item_vals(
                     cr, uid, current, version_id,
