@@ -30,10 +30,19 @@ class stock_move(orm.Model):
         if context is None:
             context = {}
         stock_picking_obj = self.pool.get('stock.picking')
+        stock_prodlot_obj = self.pool.get('stock.production.lot')
         res = super(stock_move, self).write(cr, uid, ids, vals, context=context)
         if vals.get('state') == 'done':
             pick_id = self.browse(cr, uid, ids[0], context=context).picking_id.id
             pick = stock_picking_obj.browse(cr, uid, pick_id, context=context)
+            for move_line in pick.move_lines:
+                if move_line.prodlot_id:
+                    prodlot = move_line.prodlot_id
+                    company_id = prodlot.current_location_id and prodlot.current_location_id.company_id and prodlot.current_location_id.company_id.id or False
+                    print 'company_id' , company_id
+                    print 'current company_id', prodlot.company_id
+                    if company_id != prodlot.company_id:
+                        stock_prodlot_obj.write(cr, uid, prodlot.id, {'company_id': company_id},context=context)
             if pick.is_edi and pick.edi_id and pick.type == 'out':
                 prodlots = {}
                 for move_line in pick.move_lines:
