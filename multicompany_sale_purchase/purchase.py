@@ -35,9 +35,11 @@ class purchase_order(orm.Model):
     def write(self, cr, uid, ids, vals, context=None):
         if context is None:
             context = {}
+        if isinstance(ids, (int,long)):
+            ids = [ids]
         res_company_obj = self.pool.get('res.company')
         res = super(purchase_order, self).write(cr, uid, ids, vals, context=context)
-        for so in self.browse(cr ,1, ids, context=context):
+        for so in self.browse(cr, 1, ids, context=context):
             company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',so.partner_id.name)], context=context)
             if vals.get('state') == 'approved' and company_id and not so.sale_order_id:
                 self.purchase_to_sale(cr, uid, ids, context=context)
