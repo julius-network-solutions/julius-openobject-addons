@@ -48,7 +48,7 @@ def get_data(self, cr, uid, ids, recordlist, data):
         line_name = pointor
         st_line['extra_note'] = ''
         st_line['ref'] = line_splited[1]
-        st_line['date'] = line_splited[2]
+        st_line['date'] = time.strftime('%Y-%m-%d',time.strptime(st_line['date'], date_format))
         st_line['name'] = line_splited[3]
         amount = line_splited[4]
         # Format conversion
@@ -69,9 +69,7 @@ def get_data(self, cr, uid, ids, recordlist, data):
         st_line['partner_id'] = False
         
         # check of uniqueness of a field in the data base
-        print line_splited[2]
         date = time.strftime('%Y-%m-%d',time.strptime(st_line['date'], date_format))
-        print date        
         check_ids = self.pool.get('account.bank.statement.line').search(cr,uid,[('ref','=',line_splited[1]),('name','=',line_splited[3]),('date','=',date),('amount','=',amount)])
         if check_ids:
             continue        
@@ -85,8 +83,8 @@ def get_data(self, cr, uid, ids, recordlist, data):
     # Saving data at month level
     bank_statement['total_amount'] = total_amount
     bank_statement['journal_id'] = data['journal_id'][0]    
-    period_id = account_period_obj.search(cr, uid, [('date_start', '<=', time.strftime('%Y-%m-%d', time.strptime(st_line['date'], date_format))), ('date_stop', '>=', time.strftime('%Y-%m-%d', time.strptime(st_line['date'], date_format)))])
-    bank_statement['date'] = time.strftime('%Y/%m/%d',time.strptime(st_line['date'], date_format))
+    period_id = account_period_obj.search(cr, uid, [('date_start', '<=', date), ('date_stop', '>=',date)])
+    bank_statement['date'] = date
     bank_statement['period_id'] = period_id and period_id[0] or False
     bank_statements.append(bank_statement)
 
