@@ -30,7 +30,7 @@ def get_data(self, cr, uid, ids, recordlist, data):
     bank_statements = []
     pointor = 0
     line_cursor = 0
-    initial_lines = 7
+    initial_lines = 9
     total_amount = 0
     bank_statement = {}
     bank_statement_lines = {}
@@ -42,12 +42,13 @@ def get_data(self, cr, uid, ids, recordlist, data):
         if line_cursor < initial_lines:
             line_cursor += 1
             continue
-
+        print line
         line_splited = line.split(';') 
         st_line = {}
         line_name = pointor
         st_line['extra_note'] = ''
         st_line['ref'] = line_splited[1]
+        print line_splited[2]
         st_line['date'] = time.strftime('%Y-%m-%d',time.strptime(line_splited[2], date_format))
         st_line['name'] = line_splited[3]
         amount = line_splited[4]

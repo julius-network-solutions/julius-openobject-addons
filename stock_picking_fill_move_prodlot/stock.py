@@ -22,19 +22,6 @@
 from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
 
-class stock_production_lot_wizard(orm.Model):
-    _name = 'stock.production.lot.wizard'
-    
-    def refresh_current_location(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        stock_production_lot_obj = self.pool.get('stock.production.lot')
-        if context.get('active_ids'):
-            results = stock_production_lot_obj._get_current_location(cr, uid, context['active_ids'], field_name=None, arg=None, context=context)
-            for prodlot_id in results:
-                current_location_id = results[prodlot_id]
-                stock_production_lot_obj.write(cr, uid, prodlot_id, {'current_location_id' : current_location_id}, context=context)
-        return {'type': 'ir.actions.act_window_close'}
 
 class stock_production_lot(orm.Model):
     
