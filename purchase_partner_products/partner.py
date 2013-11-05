@@ -28,4 +28,5 @@ class res_partner(orm.Model):
     _columns = {
         'seller_product_ids': fields.one2many('product.supplierinfo', 'name', 'Product'),
     }
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
