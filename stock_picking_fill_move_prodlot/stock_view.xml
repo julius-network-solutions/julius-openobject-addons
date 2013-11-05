@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
+		
+		
 
 		<record id="view_picking_in_form_fill_prodlot" model="ir.ui.view">
 			<field name="name">Picking in fill with production lots</field>
@@ -37,6 +39,6 @@
 				</group>
 			</field>
 		</record>
-
+		
 	</data>
 </openerp>

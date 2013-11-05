@@ -30,7 +30,7 @@ def get_data(self, cr, uid, ids, recordlist, data):
     bank_statements = []
     pointor = 0
     line_cursor = 0
-    initial_lines = 7
+    initial_lines = 9
     total_amount = 0
     bank_statement = {}
     bank_statement_lines = {}
@@ -42,15 +42,14 @@ def get_data(self, cr, uid, ids, recordlist, data):
         if line_cursor < initial_lines:
             line_cursor += 1
             continue
-
         line_splited = line.split(';') 
         st_line = {}
         line_name = pointor
         st_line['extra_note'] = ''
         st_line['ref'] = line_splited[1]
-        st_line['date'] = line_splited[2]
-        st_line['name'] = line_splited[3]
-        amount = line_splited[4]
+        st_line['date'] = time.strftime('%Y-%m-%d',time.strptime(line_splited[3], date_format))
+        st_line['name'] = line_splited[4]
+        amount = line_splited[5]
         # Format conversion
         if '.' in amount:
             amount = amount.replace('.','')
@@ -68,8 +67,9 @@ def get_data(self, cr, uid, ids, recordlist, data):
         st_line['amount'] = amount
         st_line['partner_id'] = False
         
-        # check of uniqueness of a field in the data base            
-        check_ids = self.pool.get('account.bank.statement.line').search(cr,uid,[('ref','=',line_splited[1]),('name','=',line_splited[3]),('date','=',line_splited[2]),('amount','=',amount)])
+        # check of uniqueness of a field in the data base  
+        date = st_line['date']          
+        check_ids = self.pool.get('account.bank.statement.line').search(cr,uid,[('ref','=',line_splited[1]),('name','=',line_splited[3]),('date','=',date),('amount','=',amount)])
         if check_ids:
             continue        
         if not check_ids:   
@@ -82,8 +82,8 @@ def get_data(self, cr, uid, ids, recordlist, data):
     # Saving data at month level
     bank_statement['total_amount'] = total_amount
     bank_statement['journal_id'] = data['journal_id'][0]    
-    period_id = account_period_obj.search(cr, uid, [('date_start', '<=', time.strftime('%Y-%m-%d', time.strptime(st_line['date'], date_format))), ('date_stop', '>=', time.strftime('%Y-%m-%d', time.strptime(st_line['date'], date_format)))])
-    bank_statement['date'] = time.strftime('%Y/%m/%d',time.strptime(st_line['date'], date_format))
+    period_id = account_period_obj.search(cr, uid, [('date_start', '<=', date), ('date_stop', '>=', date)])
+    bank_statement['date'] = date
     bank_statement['period_id'] = period_id and period_id[0] or False
     bank_statements.append(bank_statement)
 

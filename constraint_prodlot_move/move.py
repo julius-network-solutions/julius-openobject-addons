@@ -26,14 +26,20 @@ class stock_move(orm.Model):
     _inherit = 'stock.move'
 
     def _check_destination_id(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
         for move_data in self.browse(cr, uid, ids, context=context):
             if move_data.prodlot_id.id:
+                if self.search(cr, uid, [('prodlot_id','=',move_data.prodlot_id.id),('state','=','done'),('date','>',move_data.date)], context=context, limit=1):
+                    return True
                 location_id = move_data.location_id.id
                 prodlot_id = move_data.prodlot_id.id
                 current_location_id = move_data.prodlot_id.current_location_id.id
+                print current_location_id
+                print location_id
                 if current_location_id and current_location_id != location_id:
                     name = move_data.prodlot_id.name
-                    raise osv.except_osv(_('Error'), _('The Origin of this move does not match the current position for this serial : %s') % name)
+#                     raise osv.except_osv(_('Error'), _('The Origin of this move does not match the current position for this serial : %s') % name)
                     return False
         return True
         

@@ -22,6 +22,7 @@
 from openerp.osv import fields, osv, orm
 from openerp.tools.translate import _
 
+
 class stock_production_lot(orm.Model):
     
     _inherit = 'stock.production.lot'
@@ -53,12 +54,9 @@ class stock_production_lot(orm.Model):
                 result[prodlot.id] = move_obj.browse(cr, uid, move_ids[0], context=context).tracking_id.id
                 if result[prodlot.id] is not False and move_obj.browse(cr, uid, move_ids[0], context=context).state == 'done':
                     serial_ids = serial_obj.search(cr, uid, [('serial_id','=',prodlot.id)], context=context)
-                    print 'serials_ids' , serial_ids
                     if serial_ids:
-                        print 'write'
                         serial_obj.write(cr, uid, serial_ids, {'tracking_id' : result[prodlot.id]}, context=context)
                     else:
-                        print 'create'
                         vals = {
                             'tracking_id': result[prodlot.id],
                             'serial_id': prodlot.id,
