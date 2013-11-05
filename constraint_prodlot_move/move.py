@@ -31,7 +31,6 @@ class stock_move(orm.Model):
         for move_data in self.browse(cr, uid, ids, context=context):
             if move_data.prodlot_id.id:
                 if self.search(cr, uid, [('prodlot_id','=',move_data.prodlot_id.id),('state','=','done'),('date','>',move_data.date)], context=context, limit=1):
-                    print 'youpiiiii'
                     return True
                 location_id = move_data.location_id.id
                 prodlot_id = move_data.prodlot_id.id
