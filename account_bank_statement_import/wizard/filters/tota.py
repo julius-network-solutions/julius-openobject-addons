@@ -68,8 +68,11 @@ def get_data(self, cr, uid, ids, recordlist, data):
         st_line['amount'] = amount
         st_line['partner_id'] = False
         
-        # check of uniqueness of a field in the data base            
-        check_ids = self.pool.get('account.bank.statement.line').search(cr,uid,[('ref','=',line_splited[1]),('name','=',line_splited[3]),('date','=',line_splited[2]),('amount','=',amount)])
+        # check of uniqueness of a field in the data base
+        print line_splited[2]
+        date = time.strftime('%Y-%m-%d',time.strptime(st_line['date'], date_format))
+        print date        
+        check_ids = self.pool.get('account.bank.statement.line').search(cr,uid,[('ref','=',line_splited[1]),('name','=',line_splited[3]),('date','=',date),('amount','=',amount)])
         if check_ids:
             continue        
         if not check_ids:   
