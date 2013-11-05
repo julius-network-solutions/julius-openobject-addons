@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
+		
+		
 
 		<record id="view_picking_in_form_fill_prodlot" model="ir.ui.view">
 			<field name="name">Picking in fill with production lots</field>
@@ -37,6 +39,29 @@
 				</group>
 			</field>
 		</record>
+		
+		<record id="view_stock_production_lot_wizard" model="ir.ui.view">
+		    <field name="name">Stock Production Lot Wizard</field>
+		    <field name="model">stock.production.lot.wizard</field>
+		    <field name="type">form</field>
+		    <field name="arch" type="xml">
+		        <form string="Refresh Current Location" version="7.0">
+		            <footer>
+		                <button string="Refresh Current Location" name="refresh_current_location" type="object" class="oe_highlight"/>
+		                or
+		                <button string="Cancel" class="oe_link" special="cancel"/>
+		            </footer>
+		        </form>
+		    </field>
+		</record>
+		
+		<act_window name="Refresh Current Location"
+            res_model="stock.production.lot.wizard"
+			src_model="stock.production.lot"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            id="act_stock_production_lot"/>
 
 	</data>
 </openerp>
