@@ -45,7 +45,7 @@ class stock_move(orm.Model):
         # Loop #
         for move in self.browse(cr, uid, ids, context=context): 
             asset_ids = []
-            asset_ids = asset_obj.search(cr, uid, [('move_id','=',move.id)], limit=1)
+            asset_ids = asset_obj.search(cr, uid, [('prodlot_id','=',move.prodlot_id.id)], limit=1)
             if (move.state == 'done' and asset_ids == [] and (move.generate_asset == True or move.product_id.financial_asset == True)):
                 # Initialization #
                 date = move.date
@@ -93,7 +93,7 @@ class account_asset_asset(orm.Model):
     }
     
     _sql_constraints = [
-        ('prodlot_unique', 'unique (prodlot_id)', 'This applicant is already link to a employee !'),
+        ('prodlot_unique', 'unique (prodlot_id)', 'This prodlot is already link to an asset !'),
     ]
 
 
