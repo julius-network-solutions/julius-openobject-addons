@@ -16,6 +16,7 @@
                                     <field name="author_id"/>
                                     <field name="object_name"/>
                                     <field name="body_txt"/>
+                                    <field name="attachment_ids" widget="many2many_binary"/>
                                 </tree>
                             </field>
                         </div>
