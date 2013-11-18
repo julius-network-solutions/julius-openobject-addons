@@ -56,7 +56,6 @@ class account_analytic_account(orm.Model):
         'period_ids': fields.one2many('period.contract','contract_id','Periods'),
         'invoice_ids': fields.one2many('account.invoice','contract_id','Invoices', readonly=True),
         'product_ids': one2many_mod('product.product','contract_id','Products'),
-        'is_a_contract': fields.boolean('Is a contract'),
         'sap_number': fields.char('SAP Number', size=64),
         'payment_term_id': fields.many2one('account.payment.term', 'Payment Term'),
     }
@@ -64,13 +63,12 @@ class account_analytic_account(orm.Model):
     _defaults = {
         'code': lambda self, cr, uid, context: self.pool.get('ir.sequence').next_by_code(cr, uid, 'account.analytic.contract'),
         'active': True,
-        'is_a_contract': True,
     }
     
     def create(self, cr, uid, vals, context=None):
         if context is None:
             context = {}
-        if vals.get('is_a_contract') == True:
+        if vals.get('type') == 'contract':
             if not vals.get('period_ids'):
                 raise osv.except_osv(_('Error'), _("Please specify at least one period !"))
         res = super(account_analytic_account, self).create(cr, uid, vals, context=context)
@@ -80,9 +78,9 @@ class account_analytic_account(orm.Model):
         if context is None:
             context = {}
         for contract in self.browse(cr, uid, ids, context=context):
-            is_contract = contract.is_a_contract
-            if 'is_a_contract' in vals.keys():
-                is_contract = vals.get('is_a_contract')
+            is_contract = False
+            if contract.type == 'contract':
+                is_contract = True
             if is_contract:
                 period = contract.period_ids
                 if vals.get('period_ids') and vals.get('period_ids')[0] and vals.get('period_ids')[0][2]:
