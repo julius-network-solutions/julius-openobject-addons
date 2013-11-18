@@ -2,7 +2,6 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,10 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp import netsvc
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
-
 
 class sale_order(orm.Model):
     _inherit = "sale.order"
@@ -106,3 +103,5 @@ class sale_order(orm.Model):
                     res['value'].update({'product_id' : line.product_id.id})
                 pol_id = purchase_order_line_obj.create(cr, 1, res['value'], context=context)
         return True
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

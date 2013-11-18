@@ -8,7 +8,6 @@
             <field name="arch" type="xml">
                 <field name="company_id" position="after">
                     <group groups="multicompany_sale_purchase.group_multicompany_edi">
-						<!--<button name="sale_to_purchase" string="Create Purchase Order" type="object" class="oe_link" colspan="2"/>-->
 						<field name="purchase_order_id"/>
 					</group>
 				</field>

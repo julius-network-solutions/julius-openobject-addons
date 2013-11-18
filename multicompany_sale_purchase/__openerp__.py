@@ -23,7 +23,6 @@
     "name": "Multi Company Sale and Purchase",
     "version": "1.0",
     "depends": [
-        "base",
         "purchase",
         "sale",
     ],
@@ -38,9 +37,9 @@ Multi Company Sale and Purchase module provides:
     "category": "Tools",
     "demo": [],
     "data": [
+        "security/multicompany_security.xml",
         "purchase_view.xml",
         "sale_view.xml",
-        "security/multicompany_security.xml"
     ],
     "active": False,
     "installable": True,
