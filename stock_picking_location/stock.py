@@ -74,31 +74,30 @@ class stock_move(orm.Model):
                 and self._get_default_location(cr, uid, 'location_dest_id', context) or False,
     }
     
-class stock_picking(orm.Model):
-    _inherit = 'stock.picking.in'
-    
-    def onchange_location(self, cr, uid, ids, location_id, context=None):
-        if context is None:
-            context = {}
-        stock_move_obj = self.pool.get('stock.move')
-        if ids:
-            pick = self.browse(cr, uid, ids[0], context=context)
-            for move in pick.move_lines:
-                if move.location_id is False or move.location_id != location_id:
-                    stock_move_obj.write(cr, uid, [move.id], {'location_id': location_id}, context=context)
-        return True
-    
-    def onchange_location_dest(self, cr, uid, ids, location_dest_id, context=None):
-        if context is None:
-            context = {}
-        stock_move_obj = self.pool.get('stock.move')
-        if ids:
-            pick = self.browse(cr, uid, ids[0], context=context)
-            for move in pick.move_lines:
-                if move.location_dest_id is False or move.location_dest_id != location_dest_id:
-                    stock_move_obj.write(cr, uid, [move.id], {'location_dest_id': location_dest_id}, context=context)
-        return True
-
+#class stock_picking(orm.Model):
+#    _inherit = 'stock.picking.in'
+#    
+#    def onchange_location(self, cr, uid, ids, location_id, context=None):
+#        if context is None:
+#            context = {}
+#        stock_move_obj = self.pool.get('stock.move')
+#        if ids:
+#            pick = self.browse(cr, uid, ids[0], context=context)
+#            for move in pick.move_lines:
+#                if move.location_id is False or move.location_id != location_id:
+#                    stock_move_obj.write(cr, uid, [move.id], {'location_id': location_id}, context=context)
+#        return True
+#    
+#    def onchange_location_dest(self, cr, uid, ids, location_dest_id, context=None):
+#        if context is None:
+#            context = {}
+#        stock_move_obj = self.pool.get('stock.move')
+#        if ids:
+#            pick = self.browse(cr, uid, ids[0], context=context)
+#            for move in pick.move_lines:
+#                if move.location_dest_id is False or move.location_dest_id != location_dest_id:
+#                    stock_move_obj.write(cr, uid, [move.id], {'location_dest_id': location_dest_id}, context=context)
+#        return True
 class stock_picking_in(orm.Model):
     _inherit = 'stock.picking.in'
     

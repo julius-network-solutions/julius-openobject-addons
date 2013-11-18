@@ -4,11 +4,9 @@
 		<record id="view_picking_out_form_add_edi" model="ir.ui.view">
 			<field name="name">Picking out add location</field>
 			<field name="model">stock.picking.out</field>
-			<field name="inherit_id" ref="stock_picking_location.view_picking_out_form_add_location"/>
+			<field name="inherit_id" ref="stock.view_picking_form"/>
 			<field name="arch" type="xml">
 				<field name="origin" position="after">
-					<!--<button name="edi_link" string="Create EDI Link" type="object" class="oe_link" colspan="2"/>-->
-                    <!--<field name="is_edi" readonly="1"/>-->
                     <field name="edi_id" readonly="1"/>
 				</field>
 			</field>
@@ -17,11 +15,9 @@
 		<record id="view_picking_in_form_add_edi" model="ir.ui.view">
 			<field name="name">Picking in add location</field>
 			<field name="model">stock.picking.in</field>
-			<field name="inherit_id" ref="stock_picking_location.view_picking_in_form_add_location"/>
+			<field name="inherit_id" ref="stock.view_picking_form"/>
 			<field name="arch" type="xml">				
 				<field name="origin" position="after">
-					<!--<button name="edi_link" string="Create EDI Link" type="object" class="oe_link" colspan="2"/>-->
-                    <!--<field name="is_edi" readonly="1"/>-->
                     <field name="edi_id" readonly="1"/>
 				</field>
 			</field>

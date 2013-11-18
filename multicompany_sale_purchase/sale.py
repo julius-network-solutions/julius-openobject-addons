@@ -59,23 +59,24 @@ class sale_order(orm.Model):
                                     _('You already had a purchase order for this sale order '
                                       'Please delete the %s if you want to create a new one')
                                     % (so.purchase_order_id.name))
-            company_id = res_company_obj.search(cr, 1, [('partner_id.name','=',so.partner_id.name)], context=context)
-            if not company_id:
+            company_ids = res_company_obj.search(cr, 1, [('partner_id.name','=',so.partner_id.name)], context=context)
+            if not company_ids:
                 raise orm.except_orm(_('Warning'),
-                                     _('This partner is not avaible for EDI'))    
+                                     _('This partner is not available for EDI'))    
+            company_id = company_ids[0]
             partner_id = res_partner_obj.search(cr, 1, [('name','=',so.company_id.name),('company_id','=',company_id)], context=context)
-            if not partner_id:                
+            if not partner_id:   
                 raise orm.except_orm(_('Warning'),
-                                     _('This partner is not avaible for EDI')) 
+                                     _('This partner is not available for EDI')) 
             warehouse_id = stock_warehouse_obj.search(cr, 1, [('company_id','=',company_id)], context=context)
             if not warehouse_id:                
                 raise orm.except_orm(_('Warning'),
-                                     _('This partner is not avaible for EDI')) 
+                                     _('This partner is not available for EDI')) 
             warehouse = stock_warehouse_obj.browse(cr, 1, warehouse_id[0],context=context)
             vals = {
                 'state' : 'draft',
                 'partner_id' : partner_id[0],
-                'company_id' : company_id[0],
+                'company_id' : company_id,
                 'origin' : so.name,
                 'payment_term_id' : so.payment_term.id,
                 'fiscal_position' : so.fiscal_position.id,
@@ -97,7 +98,7 @@ class sale_order(orm.Model):
                 res['value'].update({'order_id' : po_id, 'price_unit' : line.price_unit,'name' : line.name})
                 taxes = []
                 for tax in line.product_id.supplier_taxes_id:
-                    if tax.company_id.id == company_id[0]:
+                    if tax.company_id.id == company_id:
                         taxes.append(tax.id)
                 if taxes:
                     res['value'].update({'taxes_id': [(6, 0, taxes)]})
