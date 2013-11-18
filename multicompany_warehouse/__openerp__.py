@@ -22,10 +22,11 @@
 {
     "name": "Multi Company Warehouse",
     "version": "1.0",
-    "depends": ["base",
-                "multicompany_sale_purchase",
-                "stock",
-                "stock_picking_location",
+    "depends": [
+        "base",
+        "multicompany_sale_purchase",
+        "stock",
+        "stock_picking_location",
     ],
     "author": "Julius Network Solutions",
     'images': [],

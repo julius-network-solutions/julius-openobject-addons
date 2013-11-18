@@ -22,9 +22,10 @@
 {
     "name": "Multi Company Sale and Purchase",
     "version": "1.0",
-    "depends": ["base",
-                "purchase",
-                "sale",
+    "depends": [
+        "base",
+        "purchase",
+        "sale",
     ],
     "author": "Julius Network Solutions",
     'images': [],
@@ -37,9 +38,9 @@ Multi Company Sale and Purchase module provides:
     "category": "Tools",
     "demo": [],
     "data": [
-         "purchase_view.xml",
-         "sale_view.xml",
-         "security/multicompany_security.xml"
+        "purchase_view.xml",
+        "sale_view.xml",
+        "security/multicompany_security.xml"
     ],
     "active": False,
     "installable": True,
