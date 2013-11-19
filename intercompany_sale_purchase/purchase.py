@@ -61,7 +61,7 @@ class purchase_order(orm.Model):
     # Maybe change the way this linked sale order is generated
     def write(self, cr, uid, ids, vals, context=None):
         """
-        Inherit the write method for the purhcase order to create the
+        Inherit the write method for the purchase order to create the
         linked sale if related to an associate system company
         """
         if context is None:
@@ -69,7 +69,8 @@ class purchase_order(orm.Model):
         if isinstance(ids, (int,long)):
             ids = [ids]
         res_company_obj = self.pool.get('res.company')
-        res = super(purchase_order, self).write(cr, uid, ids, vals, context=context)
+        res = super(purchase_order, self).\
+            write(cr, uid, ids, vals, context=context)
         for po in self.browse(cr, 1, ids, context=context):
             company_ids = res_company_obj.search(
                 cr, SUPERUSER_ID, [
@@ -96,7 +97,7 @@ class purchase_order(orm.Model):
         This method checks if the partner is linked to a res company
         in the system. If yes, this will also checks if the sale shop
         and warehouse have been well customized.
-        return: the company, the partner, the sale shop and the warehouse 
+        return: the company, the partner, the sale shop and the warehouse
         """
         if context is None:
             context = {}

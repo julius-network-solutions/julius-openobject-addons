@@ -143,7 +143,7 @@ class stock_move(orm.Model):
             data_obj = self.pool.get('ir.model.data')
             # Get the id of the record location "multi-company"
             model, location_multi_id = data_obj.get_object_reference(
-                cr, uid, 'multicompany_warehouse', 'multicompany_location')
+                cr, uid, 'intercompany_warehouse', 'intercompany_location')
             # Getting the default warehouse of the company
             # to be able to get the warehouse default stock
             warehouse_ids = stock_warehouse_obj.search(
@@ -282,7 +282,7 @@ class stock_picking(orm.Model):
             data_obj = self.pool.get('ir.model.data')
             # Get the id of the record location "multi-company"
             model, location_multi_id = data_obj.get_object_reference(
-                cr, uid, 'multicompany_warehouse', 'multicompany_location')
+                cr, uid, 'intercompany_warehouse', 'intercompany_location')
             # Getting the default warehouse of the company
             # to be able to get the warehouse default stock
             warehouse_ids = stock_warehouse_obj.search(
@@ -436,3 +436,5 @@ class stock_picking_in(stock_picking):
         else:
             return super(stock_picking_in,
                 self).action_process(cr, uid, ids, context=context)
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

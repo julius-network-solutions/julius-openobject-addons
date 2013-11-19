@@ -242,7 +242,8 @@ class sale_order(orm.Model):
                 })
         return vals
 
-    def _get_purchase_pricelist(self, cr, uid, order, partner_id, context=None):
+    def _get_purchase_pricelist(self, cr, uid,
+                                order, partner_id, context=None):
         """
         This method will get the supplier list price
         """

@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <field name="company_id" position="after">
-                    <group groups="multicompany_sale_purchase.group_multicompany_edi">
+                    <group groups="intercompany_sale_purchase.group_intercompany_edi">
 						<field name="purchase_order_id"/>
 					</group>
 				</field>

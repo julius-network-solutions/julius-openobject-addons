@@ -20,7 +20,7 @@
 ##############################################################################
 
 {
-    "name": "Multi Company Sale and Purchase",
+    "name": "Inter Company Sale and Purchase",
     "version": "1.0",
     "depends": [
         "purchase",
@@ -29,11 +29,11 @@
     "author": "Julius Network Solutions",
     'images': [],
     "description": """
-Multi Company Sale and Purchase module
+Inter Company Sale and Purchase module
 ====================================
-This multi company sale and purchase module provides:
+This inter company sale and purchase module provides:
 --------------------------------------------
-    * Automatic creation of a purchase order when solding something to an partner linked to a system company.
+    * Automatic creation of a purchase order when selling something to an partner linked to a system company.
     * Automatic creation of a sale order when purchasing something to an partner linked to a system company.
     
     """,
@@ -41,7 +41,7 @@ This multi company sale and purchase module provides:
     "category": "Tools",
     "demo": [],
     "data": [
-        "security/multicompany_security.xml",
+        "security/intercompany_security.xml",
         "purchase_view.xml",
         "sale_view.xml",
     ],

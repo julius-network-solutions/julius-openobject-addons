@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="1">
-        <record id="multicompany_location" model="stock.location">
+        <record id="intercompany_location" model="stock.location">
             <field name="name">Location for Inter-Companies Transfers</field>
             <field name="usage">transit</field>
             <field name="active">True</field>

@@ -20,11 +20,11 @@
 ##############################################################################
 
 {
-    "name": "Multi Company Warehouse",
+    "name": "Inter Company Warehouse",
     "version": "1.0",
     "depends": [
         "stock",
-        "multicompany_sale_purchase",
+        "intercompany_sale_purchase",
         "stock_picking_location",
         "stock_picking_fill_move",
         "stock_picking_fill_move_prodlot",
@@ -32,14 +32,14 @@
     "author": "Julius Network Solutions",
     'images': [],
     "description": """
-Multi Company Warehouse module
+Inter Company Warehouse module
 ====================================
-This multi company warehouse module provides:
+This Inter company warehouse module provides:
 --------------------------------------------
     * Automatic creation of an incoming shipment linked to the delivery order when you use the native sale / purchase to an partner linked to a system company.
     * Automatic fill-in serial numbers to the move lines on the reception if the delivery have serial defined.
 
-This is based on the module "multicompany_sale_purchase".
+This is based on the module "intercompany_sale_purchase".
     """,
     "website": "http://julius.fr",
     "category": "Tools",
