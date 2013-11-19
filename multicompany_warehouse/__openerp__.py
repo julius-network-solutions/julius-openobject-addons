@@ -36,13 +36,10 @@ Multi Company Warehouse module
 ====================================
 This multi company warehouse module provides:
 --------------------------------------------
-    * Automatic creation of an incoming shipment linked to the
-delivery order when you use the native sale / purchase to an partner
-linked to a system company.
-    * Automatic fill-in serial numbers to the move lines on the reception
-if the delivery have serial defined.
+    * Automatic creation of an incoming shipment linked to the delivery order when you use the native sale / purchase to an partner linked to a system company.
+    * Automatic fill-in serial numbers to the move lines on the reception if the delivery have serial defined.
 
-This is based on the module "multicompany_sale_purchase"
+This is based on the module "multicompany_sale_purchase".
     """,
     "website": "http://julius.fr",
     "category": "Tools",

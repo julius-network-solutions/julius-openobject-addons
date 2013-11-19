@@ -33,10 +33,8 @@ Multi Company Sale and Purchase module
 ====================================
 This multi company sale and purchase module provides:
 --------------------------------------------
-    * Automatic creation of a purchase order when solding something
-to an partner linked to a system company.
-    * Automatic creation of a sale order when purchasing something
-to an partner linked to a system company.
+    * Automatic creation of a purchase order when solding something to an partner linked to a system company.
+    * Automatic creation of a sale order when purchasing something to an partner linked to a system company.
     
     """,
     "website": "http://julius.fr",
