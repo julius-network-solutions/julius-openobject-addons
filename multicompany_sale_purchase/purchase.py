@@ -23,11 +23,11 @@ from openerp.tools.translate import _
 
 class purchase_order(orm.Model):
     _inherit = "purchase.order"
-    
+
     _columns = {
         'sale_order_id' : fields.many2one('sale.order','Sale Order',readonly=True)
     }
-    
+
     def write(self, cr, uid, ids, vals, context=None):
         if context is None:
             context = {}
@@ -40,8 +40,7 @@ class purchase_order(orm.Model):
             if vals.get('state') == 'approved' and company_id and not so.sale_order_id:
                 self.purchase_to_sale(cr, uid, ids, context=context)
         return res
-    
-    
+
     def purchase_to_sale(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
