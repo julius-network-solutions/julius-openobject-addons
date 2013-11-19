@@ -57,12 +57,17 @@ class sale_order(orm.Model):
         return super(sale_order, self).\
             copy_data(cr, uid, id, default=default, context=context)
 
+    # TODO: Check this !
+    # Maybe change the way this linked purchase order is generated
     def write(self, cr, uid, ids, vals, context=None):
         """
-        Inherit the write method for the sale order
+        Inherit the write method for the sale order to create the
+        linked purchase if related to an associate system company
         """
         if context is None:
             context = {}
+        if isinstance(ids, (int,long)):
+            ids = [ids]
         res_company_obj = self.pool.get('res.company')
         res = super(sale_order, self).\
             write(cr, uid, ids, vals, context=context)
@@ -144,8 +149,8 @@ class sale_order(orm.Model):
 
     def _get_vals_for_edi_purchase(self, cr, uid, order,
                                    company_id, partner_id,
-                                   warehouse_id,
-                                   pricelist_id, context=None):
+                                   warehouse_id, pricelist_id,
+                                   context=None):
         """
         This method will return the defaults values to create the
         new purchase order linked to this sale order
@@ -153,21 +158,34 @@ class sale_order(orm.Model):
         if context is None:
             context = {}
         stock_warehouse_obj = self.pool.get('stock.warehouse')
+        ir_values = self.pool.get('ir.values')
+        partner_obj = self.pool.get('res.partner')
+
+        # Get the warehouse datas
         warehouse = stock_warehouse_obj.\
             browse(cr, SUPERUSER_ID, warehouse_id, context=context)
+
+        # Get default values
+        invoice_method = ir_values.get_default(
+            cr, uid, 'purchase.order', 'invoice_method') or 'order'
+        partner_address_id = partner_obj.\
+            address_get(cr, uid, [partner_id], ['default'])['default']
+
+        # Return the values
         return {
-            'state' : 'draft',
-            'partner_id' : partner_id,
-            'company_id' : company_id,
-            'origin' : order.name,
-            'payment_term_id' : order.payment_term.id,
-            'fiscal_position' : order.fiscal_position.id,
-            'date_order' : order.date_order,
-            'pricelist_id' : pricelist_id,
-            'warehouse_id' : warehouse_id,
-            'location_id' : warehouse.lot_stock_id.id,
-            'invoice_method' : 'order',
-            'sale_order_id' : order.id,
+            'state': 'draft',
+            'partner_id': partner_id,
+            'partner_address_id': partner_address_id,
+            'company_id': company_id,
+            'origin': order.name,
+            'payment_term_id': order.payment_term.id,
+            'fiscal_position': order.fiscal_position.id,
+            'date_order': order.date_order,
+            'pricelist_id': pricelist_id,
+            'warehouse_id': warehouse_id,
+            'location_id': warehouse.lot_stock_id.id,
+            'invoice_method': invoice_method,
+            'sale_order_id': order.id,
         }
 
     def _get_vals_for_edi_purchase_line(self, cr, uid, line,
@@ -190,6 +208,8 @@ class sale_order(orm.Model):
             partner_id=partner_id, date_order=line.order_id.date_order,
             fiscal_position_id=False, context=context)
         vals = res.get('value', {})
+
+        # Add the required info not added by the onchange
         vals.update({
             'order_id': purchase_id,
             'price_unit': line.price_unit,
@@ -209,7 +229,7 @@ class sale_order(orm.Model):
                 taxes.append(tax.id)
         if taxes:
             vals.update({
-                'taxes_id': [(6, 0, taxes)]
+                'taxes_id': [(6, 0, taxes)],
                 })
 
         # If the linked product is not specific to a company
@@ -218,7 +238,7 @@ class sale_order(orm.Model):
         if not line.product_id.company_id or \
             line.product_id.company_id == company_id:
             vals.update({
-                'product_id' : line.product_id.id
+                'product_id': line.product_id.id,
                 })
         return vals
 
@@ -246,38 +266,43 @@ class sale_order(orm.Model):
         purchase_order_obj = self.pool.get('purchase.order')
         purchase_line_obj = self.pool.get('purchase.order.line')
 
-        # Creation of the Purchase Order
+        # Creation of one purchase order by sale if it needs to
         for order in self.browse(cr, SUPERUSER_ID, ids, context=context):
             # If there is already a linked purchase order
             # raise an error !
             if order.purchase_order_id:
                 raise orm.except_orm(_('Warning!'),
-                                    _('You already had a purchase order '
-                                      'for this sale order.\n'
-                                      'Please delete the %s '
-                                      'if you want to create a new one')
-                                    % (order.purchase_order_id.name))
+                                     _('You already had a purchase order '
+                                       'for this sale order.\n'
+                                       'Please delete the %s '
+                                       'if you want to create a new one')
+                                     % (order.purchase_order_id.name))
 
             # Get the company linked, the supplier and company warehouse 
             company_id, partner_id, warehouse_id = self.\
                 _check_edi_partner(cr, uid, order, context=context)
+
             # Get the good purchase list price
             pricelist_id = self.\
                 _get_purchase_pricelist(cr, uid, order,
                                         partner_id, context=context)
+
             # Get the default values to create the linked purchase order
             vals = self._get_vals_for_edi_purchase(cr, uid, order,
                                                    company_id, partner_id,
                                                    warehouse_id,
                                                    pricelist_id,
                                                    context=context)
+
             # Create the linked purchase order without lines
-            purchase_id = purchase_order_obj.create(
-                cr, SUPERUSER_ID, vals, context=context)
+            purchase_id = purchase_order_obj.\
+                create(cr, SUPERUSER_ID, vals, context=context)
+
             # Read the linked purchase order name
             purchase = purchase_order_obj.read(
                 cr, SUPERUSER_ID, purchase_id, ['name'], context=context)
-            # Update the sale order with the ref name
+
+            # Update the current sale order with the ref name
             # and the linked purchase order
             self.write(cr, SUPERUSER_ID, [order.id], {
                 'client_order_ref': purchase['name'],
