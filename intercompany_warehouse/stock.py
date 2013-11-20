@@ -233,12 +233,12 @@ class stock_picking(orm.Model):
             context = {}
         domain = False
         picking = self.browse(cr, uid, picking_id, context=context)
-        if picking.sale_id and \
+        if self._name == 'stock.picking.out' and picking.sale_id and \
             picking.sale_id.purchase_order_id:
             # We try to find the associated purchase
             purchase_id = picking.sale_id.purchase_order_id.id
             domain = [('purchase_id', '=', purchase_id)]
-        elif picking.purchase_id and \
+        elif self._name == 'stock.picking.in' and picking.purchase_id and \
             picking.purchase_id.sale_order_id:
             # We try to find the associated sale
             sale_id = picking.purchase_id.sale_order_id.id
