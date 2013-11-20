@@ -33,7 +33,9 @@
         'stock',
         'stock_picking_location',
         'stock_picking_fill_move',
+        'stock_tracking_extended',
         'stock_production_lot_current_location',
+        'stock_production_lot_current_tracking',
     ],
     'data': [
         'wizard/picking_fill_view.xml',
