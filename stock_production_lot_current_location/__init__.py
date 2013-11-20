@@ -19,31 +19,6 @@
 #
 #################################################################################
 
-{
-    'name': 'Stock picking fill production lot',
-    'version': '1.0',
-    "category" : "Warehouse management",
-	'description':"""
-    This module adds an action on the picking.
-    You can fill move lines with a selection of production lot
-    """,
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr/',
-    'depends': [
-        'stock',
-        'stock_picking_location',
-        'stock_picking_fill_move',
-        'stock_production_lot_current_location',
-    ],
-    'data': [
-        'wizard/picking_fill_view.xml',
-        'data/type.xml',
-        'stock_view.xml',
-    ],
-    'demo': [],
-    'installable': True,
-    'active': False,
-    'license': 'GPL-3',
-}
+import stock
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

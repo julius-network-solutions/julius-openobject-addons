@@ -26,8 +26,7 @@
         "stock",
         "intercompany_sale_purchase",
         "stock_picking_location",
-        "stock_picking_fill_move",
-        "stock_picking_fill_move_prodlot",
+        "stock_production_lot_current_location",
     ],
     "author": "Julius Network Solutions",
     'images': [],
@@ -39,7 +38,7 @@ This Inter company warehouse module provides:
     * Automatic creation of an incoming shipment linked to the delivery order when you use the native sale / purchase to an partner linked to a system company.
     * Automatic fill-in serial numbers to the move lines on the reception if the delivery have serial defined.
 
-This is based on the module "intercompany_sale_purchase".
+You will have to install "intercompany_sale_purchase", "stock_picking_location" and "stock_production_lot_current_location" modules.
     """,
     "website": "http://julius.fr",
     "category": "Tools",
