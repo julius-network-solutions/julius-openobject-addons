@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="survey.survey_form"/>
             <field name="arch" type="xml">
                 <field name="type" position="after">
-                 	<field name="company_id"/>              
+                 	<field name="company_id" widget="selection"/>              
                 </field>
             </field>
         </record>
