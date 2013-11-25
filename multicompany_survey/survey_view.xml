@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+       	<record model="ir.ui.view" id="multicompany_survey">
+            <field name="name">multicompany.survey</field>
+            <field name="model">survey</field>
+            <field name="inherit_id" ref="survey.survey_form"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                 	<field name="company_id"/>              
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
+        
