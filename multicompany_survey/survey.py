@@ -29,5 +29,8 @@ class survey(orm.Model):
     _columns = {
         'company_id': fields.many2one('res.company', 'Company', required=False),
     }
+    _defaults = {
+        'company_id': lambda s, cr, uid, c: s.pool.get('res.company')._company_default_get(cr, uid, 'survey', context=c),
+    }
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
