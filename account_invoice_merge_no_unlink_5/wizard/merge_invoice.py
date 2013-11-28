@@ -37,7 +37,12 @@ class account_invoice_merge(osv.osv_memory):
         """
         mod_obj = self.pool.get('ir.model.data')
         act_obj =  self.pool.get('ir.actions.act_window')
-        xml_id = 'action_invoice_tree'
+        inv_obj = self.pool.get('account.invoice')
+        type = inv_obj.browse(cr, uid, context.get('active_id'), context=context).type
+        if type == 'in_invoice':
+            xml_id = 'action_invoice_tree2'
+        if type == 'out_invoice':
+            xml_id = 'action_invoice_tree1'
         result = mod_obj._get_id(cr, uid, 'account', xml_id)
         id = mod_obj.read(cr, uid, result, ['res_id'])['res_id']
         result = act_obj.read(cr, uid, id, context=context)
@@ -54,7 +59,7 @@ class account_invoice_merge(osv.osv_memory):
         current = self.browse(cr, uid, ids[0], context=context)
         invoice_ids = context.get('active_ids') or []
         new_invoice = inv_obj.merge_invoice(cr, uid, invoice_ids, current.grouped, current.journal_id and current.journal_id.id or False, context=context)
-        return self._openForm(cr, uid, "[('id','=', "+ str(new_invoice)  +")]")
+        return self._openForm(cr, uid, "[('id','=', "+ str(new_invoice)  +")]",context)
     
 account_invoice_merge()
 
