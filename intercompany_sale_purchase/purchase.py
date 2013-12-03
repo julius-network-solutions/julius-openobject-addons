@@ -168,9 +168,9 @@ class purchase_order(orm.Model):
         invoice_quantity = ir_values.get_default(
             cr, uid, 'sale.order', 'invoice_quantity') or 'order'
         invoice_partner_id = partner_obj.\
-            address_get(cr, uid, [partner_id], ['invoice'])['invoice']
+            address_get(cr, SUPERUSER_ID, [partner_id], ['invoice'])['invoice']
         delivery_partner_id = partner_obj.\
-            address_get(cr, uid, [partner_id], ['delivery'])['delivery']
+            address_get(cr, SUPERUSER_ID, [partner_id], ['delivery'])['delivery']
 
         # Return the values
         return {
