@@ -44,7 +44,7 @@ You have access to a window that allows you to filter the accounting information
 
 This module provides:
 
-You can also choose whether you want to export the account children  informations.
+You can also choose whether you want to export the account children informations.
 
 The ability to export the accounting lines records with all the relevant analytical informations and return an ODS file (Use with Excel, OpenOffice)
 
