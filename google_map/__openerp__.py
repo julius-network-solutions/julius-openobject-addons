@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,35 +19,27 @@
 #
 ##############################################################################
 
-{
-    "name": "Inter Company Sale and Purchase",
-    "version": "1.0",
-    "depends": [
-        "purchase",
-        "sale",
-    ],
-    "author": "Julius Network Solutions",
-    'images': [],
-    "description": """
-Inter Company Sale and Purchase module
-====================================
-This inter company sale and purchase module provides:
---------------------------------------------
-    * Automatic creation of a purchase order when selling something to an partner linked to a system company.
-    
-    * Automatic creation of a sale order when purchasing something to an partner linked to a system company.
-    
-    """,
-    "website": "http://julius.fr",
-    "category": "Tools",
-    "demo": [],
-    "data": [
-        "security/intercompany_security.xml",
-        "purchase_view.xml",
-        "sale_view.xml",
-    ],
-    "active": False,
-    "installable": True,
-}
 
+{
+    'name': 'Google Maps on Customers',
+    'version': '1.0',
+    'category': 'Customer Relationship Management',
+    'description': """
+The module adds Google Map field in partner address.
+====================================================
+
+Using this you can directly open Google Map from the URL widget.""",
+    'author': 'OpenERP SA',
+    'website': 'http://www.openerp.com',
+    'images': ['images/google_map.jpeg'],
+    'depends': ['base'],
+    'init_xml': [],
+    'update_xml': [
+                   'google_map_view.xml',
+                  ],
+    'demo_xml': [],
+    'installable': True,
+    'auto_install': False,
+    'certificate': '0029498930765',
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

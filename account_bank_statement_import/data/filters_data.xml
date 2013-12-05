@@ -79,6 +79,12 @@
 			<field name="filter">tota</field>
 			<field name="active" eval="False"/>
 		</record>
+		
+		<record model="account.bankimport.filters" id="filters_attajari">
+			<field name="name">ATTAJARI</field>
+			<field name="filter">attajari</field>
+			<field name="active" eval="False"/>
+		</record>
 
     </data>
 </openerp>
