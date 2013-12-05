@@ -85,6 +85,12 @@
 			<field name="filter">attajari</field>
 			<field name="active" eval="False"/>
 		</record>
+		
+		<record model="account.bankimport.filters" id="filters_argentina">
+			<field name="name">ARGENTINA</field>
+			<field name="filter">argentina</field>
+			<field name="active" eval="False"/>
+		</record>
 
     </data>
 </openerp>
