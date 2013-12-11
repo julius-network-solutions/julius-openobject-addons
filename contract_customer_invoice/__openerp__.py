@@ -31,7 +31,7 @@
         "product",
         "sale",
         "purchase",
-        "product_certificate",
+        "account_asset",
     ],
     "description": """
         Add new fields relation in analytic account (contract)

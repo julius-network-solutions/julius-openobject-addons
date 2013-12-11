@@ -28,7 +28,6 @@ class create_invoice(orm.Model):
     _name = 'create.invoice'
     
     def open_invoices(self, cr, uid, ids, invoice_id, type='out_invoice', context=None):
-        print type
         """ open a view on one of the given invoice_ids """
         ir_model_data = self.pool.get('ir.model.data')
         account_invoice_obj = self.pool.get('account.invoice')

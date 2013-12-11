@@ -42,7 +42,6 @@ class stock_production_lot(orm.Model):
                 if result[prodlot.id] is not False and move_obj.browse(cr, uid, move_ids[0], context=context).state == 'done':
                     serial_ids = serial_obj.search(cr, uid, [('serial_id','=',prodlot.id)], context=context)
                     product_ids = product_obj.search(cr, uid, [('product_id','=', prodlot.product_id.id),('tracking_id','=',prodlot.current_tracking_id.id)],context=context)
-                    print 'product ids', product_ids
                     if move.tracking_id != prodlot.current_tracking_id:
                         product_flag = True
                     if serial_ids:
@@ -55,7 +54,6 @@ class stock_production_lot(orm.Model):
                             'quantity': move.product_qty,
                         }
                         serial_obj.create(cr, uid, vals, context=context)
-                    print 'flag', product_flag
                     if product_ids and product_flag:
                         for product in product_obj.browse(cr, uid, product_ids, context=context):
                             qty = product.quantity
