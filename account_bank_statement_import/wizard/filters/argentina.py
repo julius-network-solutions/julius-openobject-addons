@@ -19,9 +19,20 @@
 #
 ##############################################################################
 
-from osv import fields, osv
 import time
 from datetime import datetime
+
+def _to_unicode(s):
+   try:
+       return s.decode('utf-8')
+   except UnicodeError:
+       try:
+           return s.decode('latin')
+       except UnicodeError:
+           try:
+               return s.encode('ascii')
+           except UnicodeError:
+               return s
 
 def get_data(self, cr, uid, ids, recordlist, data):
     
@@ -53,9 +64,9 @@ def get_data(self, cr, uid, ids, recordlist, data):
         st_line['ref'] = line_splited[2]
         amount = 0
         if line_splited[4]:
-            amount = unicode(line_splited[4])
+            amount = _to_unicode(line_splited[4])
         if line_splited[5]:
-            amount = unicode(line_splited[5])
+            amount = _to_unicode(line_splited[5])
         # Format conversion
         if '.' in amount:
             amount = amount.replace('.','')
