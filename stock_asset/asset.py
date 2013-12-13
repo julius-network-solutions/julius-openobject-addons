@@ -93,8 +93,6 @@ class account_asset_asset(orm.Model):
     }
     
     _sql_constraints = [
-        ('prodlot_unique', 'unique (prodlot_id)', 'This prodlot is already link to an asset !'),
+        ('prodlot_unique', 'unique (prodlot_id,company_id)', 'This prodlot is already link to an asset !'),
     ]
-
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
