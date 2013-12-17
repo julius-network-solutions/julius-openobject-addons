@@ -70,8 +70,8 @@ def get_data(self, cr, uid, ids, recordlist, data):
         # Format conversion
         if '.' in amount:
             amount = amount.replace('.','')
-        if '\xc2\xa0' in amount:
-            amount = amount.replace('\xc2\xa0','')
+#         if '\xc2\xa0' in amount:
+#             amount = amount.replace('\xc2\xa0','')
         if ' ' in amount:
             amount = amount.replace(' ','')
         if ',' in amount:
