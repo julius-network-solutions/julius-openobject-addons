@@ -72,10 +72,13 @@ def get_data(self, cr, uid, ids, recordlist, data):
             amount = amount.replace('.','')
 #         if '\xc2\xa0' in amount:
 #             amount = amount.replace('\xc2\xa0','')
-        if ' ' in amount:
-            amount = amount.replace(' ','')
+#         if ' ' in amount:
+#             amount = amount.replace(' ','')
         if ',' in amount:
             amount = amount.replace(',','.')
+            
+        amount = amount.split()
+        amount = "".join(amount)
         '''Definition of a positive or negative value'''
         if amount.startswith('-'):
             st_line['account_id'] = data['payable_id'][0]
