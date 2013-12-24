@@ -61,29 +61,31 @@ class stock_move(orm.Model):
         if context is None:
             context = {}
         c = context.copy()
-        product_obj = self.pool.get('product.product')
-        what = ('in',)
-        states = context.get('states')
-        if not states:
-            states = ('assigned', 'done')
-        states_in = context.get('states_in')
-        if not states_in:
-            states_in = states
-        states_out = context.get('states_out')
-        if not states_out:
-            states_out = states
-        c.update(self._get_context_check(
-            cr, uid, move, what=what, states=states_in, context=context))
-        stock = product_obj.get_product_available(
-            cr, uid, [move.product_id.id], context=c)
-        incoming_qty = stock.get(move.product_id.id, 0.0)
-        what = ('out',)
-        c.update(self._get_context_check(
-            cr, uid, move, what=what, states=states_out, context=context))
-        stock = product_obj.get_product_available(
-            cr, uid, [move.product_id.id], context=c)
-        outgoing_qty = stock.get(move.product_id.id, 0.0)
-        available_qty = incoming_qty + outgoing_qty
+        available_qty = 0
+        if move:
+            product_obj = self.pool.get('product.product')
+            what = ('in',)
+            states = context.get('states')
+            if not states:
+                states = ('assigned', 'done')
+            states_in = context.get('states_in')
+            if not states_in:
+                states_in = states
+            states_out = context.get('states_out')
+            if not states_out:
+                states_out = states
+            c.update(self._get_context_check(
+                cr, uid, move, what=what, states=states_in, context=context))
+            stock = product_obj.get_product_available(
+                cr, uid, [move.product_id.id], context=c)
+            incoming_qty = stock.get(move.product_id.id, 0.0)
+            what = ('out',)
+            c.update(self._get_context_check(
+                cr, uid, move, what=what, states=states_out, context=context))
+            stock = product_obj.get_product_available(
+                cr, uid, [move.product_id.id], context=c)
+            outgoing_qty = stock.get(move.product_id.id, 0.0)
+            available_qty = incoming_qty + outgoing_qty
         return available_qty
 
     def _merge_move(self, cr, uid, move_id, context=None):
