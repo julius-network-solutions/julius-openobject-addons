@@ -20,7 +20,7 @@
 ##############################################################################
 
 {"name": "Unrealized currency gain & loss",
- "version": "6.1",
+ "version": "7.0",
  "category": "Finance",
  "description": """
 Add a wizard to generate the unrealized currency gain & loss entries. This adjusts accounts' balance of account with a foreign currency.
@@ -57,7 +57,7 @@ For FR
              "res_currency_view.xml",
              "account_view.xml",
              "wizard/wizard_currency_revaluation_view.xml",
-             "wizard/print_currency_unrealized_report_view.xml",
+#              "wizard/print_currency_unrealized_report_view.xml",
 #              "report/report.xml",
              ],
     #"test": ["test/currency_revaluation.yml"],
