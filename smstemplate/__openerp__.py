@@ -27,7 +27,7 @@
     "depends": ["base",
                 "smsclient",
                 "email_template"],
-    "author": "Julius Network Solutions,SYLEAM,OpenERP SA",
+    "author": "Julius Network Solutions",
     'images': [],
     "description": """
 SMS Template module provides:
