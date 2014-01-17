@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_document_file_form_is_image" model="ir.ui.view">
+            <field name="name">ir.attachment.is.image</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="base.view_attachment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="is_image"/>
+                </xpath>
+                <field name="index_content" position="after">
+                    <newline/>
+                    <separator string="Image" colspan="4"/>
+                    <field name="image_data" widget="image" nolabel="1"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
