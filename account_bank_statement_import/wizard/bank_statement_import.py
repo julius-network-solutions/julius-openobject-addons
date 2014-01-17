@@ -211,7 +211,7 @@ class account_bank_statement_import(orm.TransientModel):
         seq_obj = self.pool.get('ir.sequence')
 
         data = self.read(cr, uid, ids[0],  context=context)
-
+        
         file_data = data['file_data']
         journal_id = data['journal_id'][0]
 

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2009 OpenERP SA (<http://openerp.com>)
-#    Copyright (C) 2011 SYLEAM (<http://syleam.fr/>)
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Author: Yannick Vaucher
+#    Copyright 2012 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -21,27 +19,9 @@
 #
 ##############################################################################
 
-{
-    "name": "SMS Template",
-    "version": "1.0",
-    "depends": ["base",
-                "smsclient",
-                "email_template"],
-    "author": "Julius Network Solutions",
-    'images': [],
-    "description": """
-SMS Template module provides:
--------------
-
-    """,
-    "website": "http://julius.fr",
-    "category": "Tools",
-    "demo": [],
-    "data": [
-             "smstemplate_view.xml"
-    ],
-    "active": False,
-    "installable": True,
-}
+import res_company
+import account
+import res_currency
+import wizard
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
