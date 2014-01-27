@@ -59,7 +59,8 @@ def get_data(self, cr, uid, ids, recordlist, data):
         st_line = {}
         line_name = pointor
         st_line['extra_note'] = ''
-        st_line['date'] = time.strftime('%Y-%m-%d',time.strptime(line_splited[0], date_format))
+        date_1 = time.strptime(line_splited[0], date_format)
+        st_line['date'] = time.strftime('%Y-%m-%d',date_1)
         st_line['name'] = line_splited[1]
         st_line['ref'] = line_splited[2]
         amount = 0
