@@ -40,6 +40,7 @@ class stock_move(orm.Model):
                 print location_id
                 if current_location_id and current_location_id != location_id:
                     name = move_data.prodlot_id.name
+                    print 'coucou'
 #                     raise osv.except_osv(_('Error'), _('The Origin of this move does not match the current position for this serial : %s') % name)
                     return False
         return True
