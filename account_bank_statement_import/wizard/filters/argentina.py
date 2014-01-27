@@ -40,7 +40,7 @@ def get_data(self, cr, uid, ids, recordlist, data):
     bank_statements = []
     pointor = 0
     line_cursor = 0
-    initial_lines = 12
+    initial_lines = 13
     total_amount = 0
     bank_statement = {}
     bank_statement_lines = {}
