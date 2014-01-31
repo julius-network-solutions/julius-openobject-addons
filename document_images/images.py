@@ -91,7 +91,6 @@ class document_images(orm.AbstractModel):
         res = []
         if context is None:
             context = {}
-        print self._name
         attachment_obj = self.pool.get('ir.attachment')
         domain += [('res_id', '=', res_id), ('res_model', '=', self._name)]
         res = attachment_obj.search(cr, uid,

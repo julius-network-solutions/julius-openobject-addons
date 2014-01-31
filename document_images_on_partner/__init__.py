@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,20 +19,6 @@
 #
 #################################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
-
-class sale_order_line(orm.Model):
-    _inherit = 'sale.order.line'
-
-    _columns = {
-        'emergency_costs': fields.float('Emergency Costs'),
-        'emergency_costs_line_id': fields.many2one('account.invoice.line', 'Emergency invoice line'),
-#        'emergency_costs_generated': fields.boolean('Emergency Costs Generated', readonly=True),
-    }
-    
-#    _defaults = {
-#        'emergency_costs_generated' : False,
-#    }
+import partner
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

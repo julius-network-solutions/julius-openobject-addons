@@ -22,7 +22,6 @@
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
-    
 class account_invoice(orm.Model):
     _inherit = "account.invoice"
     
@@ -33,14 +32,17 @@ class account_invoice(orm.Model):
         sale_obj = self.pool.get('sale.order')
         value = {}
         for invoice in self.browse(cr, uid, ids, context=context):
+            if invoice.state != 'draft':
+                continue
             invoice_lines = invoice.invoice_line
             for invoice_line in invoice_lines:
-                sale_line_ids = sale_line_obj.search(cr, uid, [('order_id.name','=',invoice_line.origin), ('product_id','=',invoice_line.product_id.id)],context=context)
-                for sale_line in sale_line_obj.browse(cr, uid, sale_line_ids, context=context):
-                    sale_order = sale_obj.browse(cr, uid, sale_line.order_id.id,context=context)
-                    if sale_line.emergency_costs != 0 and not sale_line.emergency_costs_generated:
+                for sale_line in invoice_line.sale_lines:
+                    if sale_line.emergency_costs != 0 \
+                        and not sale_line.emergency_costs_line_id:
+                        sale_order = sale_line.order_id
                         data_obj = self.pool.get('ir.model.data')
-                        model, product_id = data_obj.get_object_reference(cr, uid, 'emergency_costs', 'product_emergency_costs')
+                        model, product_id = data_obj.get_object_reference(
+                            cr, uid, 'emergency_costs', 'product_emergency_costs')
                         res = sale_line_obj.product_id_change(cr, uid, [],
                             pricelist=sale_order.pricelist_id.id,
                             product=product_id, qty=1,
@@ -50,13 +52,29 @@ class account_invoice(orm.Model):
                             context=context)
                         value = res.get('value')
                         if value:
-                            value['invoice_id'] = invoice.id
-                            value['product_id'] = product_id
-                            value['price_unit'] = sale_line.emergency_costs
-                            value['quantity'] = 1
-                            value['invoice_line_tax_id'] = value.get('tax_id') and [(6, 0, value.get('tax_id'))] or [(6, 0, [])]
-                        invoice_line_obj.create(cr, uid, value, context=context)
-                        sale_line_obj.write(cr, uid, [sale_line.id], {'emergency_costs_generated' : True}, context=context)
+                            value.update({
+                                'invoice_id': invoice.id,
+                                'product_id': product_id,
+                                'price_unit': sale_line.emergency_costs,
+                                'quantity': 1,
+                                'invoice_line_tax_id': value.get('tax_id') \
+                                     and [(6, 0, value.get('tax_id') or [])],
+                            })
+                        new_inv_line_id = invoice_line_obj.create(cr, uid, value, context=context)
+                        sale_line_obj.write(cr, uid,
+                            [sale_line.id],
+                            {'emergency_costs_line_id' : new_inv_line_id},
+                            context=context)
         return True
+
+class account_invoice_line(orm.Model):
+    _inherit = "account.invoice.line"
+
+    _columns = {
+        'sale_lines': fields.many2many('sale.order.line',
+                                       'sale_order_line_invoice_rel',
+                                       'invoice_id', 'order_line_id',
+                                       'Sale Lines', readonly=True),
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

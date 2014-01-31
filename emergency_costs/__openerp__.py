@@ -34,9 +34,9 @@
     """,
     "demo" : [],
     "data" : [
+        "data/product_data.xml",
         "sale_view.xml",
         "invoice_view.xml",
-        "data/product_data.xml",
     ],
     'installable' : False,
     'active' : False,

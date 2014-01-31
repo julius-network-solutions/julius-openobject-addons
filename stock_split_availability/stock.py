@@ -27,7 +27,10 @@ class stock_move(orm.Model):
     _inherit = "stock.move"
     
     _columns = {
-        'split_move': fields.boolean('Split move on check availability'),
+        'split_move': fields.boolean('Split move',
+            help="When there is an availability check, " \
+            "this action will split the move into 2 moves, " \
+            "one available, and one waiting for availablity."),
     }
     
     _defaults = {

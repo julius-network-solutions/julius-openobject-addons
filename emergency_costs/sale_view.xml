@@ -10,16 +10,13 @@
             <field name="arch" type="xml">
            		<xpath expr="//page[@string='Order Lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
    		        	<field name="emergency_costs"/>
-   		        	<field name="emergency_costs_generated"/>  
+   		        	<!-- <field name="emergency_costs_line_id"/> --> 
                 </xpath>
                 <xpath expr="//page[@string='Order Lines']/field[@name='order_line']/form//field[@name='price_unit']" position="after">
                     <field name="emergency_costs"/>
-                    <field name="emergency_costs_generated"/> 
+                    <field name="emergency_costs_line_id"/> 
                 </xpath>
 			</field>
         </record>
 	</data>
 </openerp>
-
-        
-                            
