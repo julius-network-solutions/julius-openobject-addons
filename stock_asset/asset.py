@@ -37,8 +37,10 @@ class stock_move(orm.Model):
     }
     
     def write(self, cr, uid, ids, vals, context=None):
+        user_obj = self.pool.get('res.users')
         model_data = self.pool.get('ir.model.data')
         asset_obj = self.pool.get('account.asset.asset')
+        asset_categ_obj = self.pool.get('account.asset.category')
         result = super(stock_move, self).write(cr, uid, ids, vals, context=context)
         if not isinstance(ids, list):
             ids = [ids]
@@ -61,7 +63,13 @@ class stock_move(orm.Model):
                     partner_id = move.picking_id.purchase_id.partner_id.id
                 elif move.picking_id and move.picking_id.partner_id:
                     partner_id = move.picking_id.partner_id.id
-                category_id = model_data.get_object_reference(cr, uid, 'stock_asset', 'account_asset_category_misc_operational')[1]
+                user = user_obj.read(cr, uid, uid, ['company_id'], context=context)
+                compagny_id = user.get('company_id', False)[0]
+                category_ids = asset_categ_obj.search(cr, uid, [('company_id','=',compagny_id)], limit=1)
+                if category_ids:
+                    category_id = category_ids[0]
+                else:
+                    category_id = model_data.get_object_reference(cr, uid, 'stock_asset', 'account_asset_category_misc_operational')[1]
                 # Process #
                 create_vals = {
                     'name': move.product_id.name,
