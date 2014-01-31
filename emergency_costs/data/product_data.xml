@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="product_emergency_costs" model="product.product">
+            <field name="name">Emergency Costs</field>
+            <field name="default_code">EC</field>
+            <field name="list_price">0</field>
+            <field name="price_data">0</field>
+            <field name="standard_price">0</field>
+            <field name="type">service</field>
+            <field name="taxes_id">[(6, 0, [])]</field>
+            <field name="supplier_taxes_id">[(6, 0, [])]</field>
+        </record>
+    </data>
+</openerp>
