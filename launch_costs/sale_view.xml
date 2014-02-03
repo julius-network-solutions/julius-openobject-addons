@@ -14,7 +14,7 @@
                 </xpath>
                 <xpath expr="//page[@string='Order Lines']/field[@name='order_line']/form//field[@name='price_unit']" position="after">
                     <field name="launch_costs"/>
-                    <field name="launch_costs_line_id"/> 
+                    <!-- <field name="launch_costs_line_id"/> --> 
                 </xpath>
             </field>
         </record>

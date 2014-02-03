@@ -54,7 +54,7 @@ class account_invoice(orm.Model):
                             value.update({
                                 'invoice_id': invoice.id,
                                 'product_id': product_id,
-                                'price_unit': sale_line.emergency_costs,
+                                'price_unit': sale_line.launch_costs,
                                 'quantity': 1,
                                 'invoice_line_tax_id': value.get('tax_id') \
                                      and [(6, 0, value.get('tax_id') or [])],
