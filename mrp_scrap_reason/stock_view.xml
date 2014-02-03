@@ -9,7 +9,6 @@
             <field name="arch" type="xml">
                 <group string="Traceability" position="after">
                     <group string="Scrap Reason">
-                        <label for="reason"/>
                         <field name="reason"/>
                         <field name="notes_reason"
                             attrs="{'required': [('reason', '=', -1)], 'invisible': [('reason', '!=', -1)]}"
