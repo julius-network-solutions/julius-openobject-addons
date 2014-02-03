@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <record id="view_stock_move_scrap_wizard_inherit" model="ir.ui.view">
+            <field name="name">stock.move.scrap.view.form</field>
+            <field name="model">stock.move.scrap</field>
+            <field name="inherit_id" ref="stock.view_stock_move_scrap_wizard"/>
+            <field name="arch" type="xml">
+                <field name="location_id" position="after">
+                    <div name="Reason" colspan="4">
+                        <label for="reason"/>
+                        <field name="reason"/>
+                        <field name="notes"
+                            attrs="{'required': [('reason', '=', -1)], 'invisible': [('reason', '!=', -1)]}"
+                            placeholder="Describe here the reason for scraping these products..."/>
+                    </div>
+                </field>
+			</field>
+        </record>
+
+    </data>
+</openerp>
