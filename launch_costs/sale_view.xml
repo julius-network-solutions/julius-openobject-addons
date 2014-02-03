@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
-		<!-- Sale View -->
+    <data>
+
+        <!-- Sale View -->
         <record id="view_order_form_inherit" model="ir.ui.view">
             <field name="name">sale.order.form.inherit</field>
             <field name="model">sale.order</field>
             <field name="priority">25</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-           		<xpath expr="//page[@string='Order Lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
-   		        	<field name="launch_costs"/>
-   		        	<field name="launch_costs_generated"/>  
+                <xpath expr="//page[@string='Order Lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                    <field name="launch_costs"/>
                 </xpath>
                 <xpath expr="//page[@string='Order Lines']/field[@name='order_line']/form//field[@name='price_unit']" position="after">
                     <field name="launch_costs"/>
-                    <field name="launch_costs_generated"/> 
+                    <field name="launch_costs_line_id"/> 
                 </xpath>
-			</field>
+            </field>
         </record>
-	</data>
-</openerp>
 
-        
-                            
+    </data>
+</openerp>                        

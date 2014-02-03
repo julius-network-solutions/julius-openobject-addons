@@ -40,7 +40,6 @@ class account_invoice(orm.Model):
                     if sale_line.emergency_costs != 0 \
                         and not sale_line.emergency_costs_line_id:
                         sale_order = sale_line.order_id
-                        data_obj = self.pool.get('ir.model.data')
                         model, product_id = data_obj.get_object_reference(
                             cr, uid, 'emergency_costs', 'product_emergency_costs')
                         res = sale_line_obj.product_id_change(cr, uid, [],
@@ -66,15 +65,5 @@ class account_invoice(orm.Model):
                             {'emergency_costs_line_id' : new_inv_line_id},
                             context=context)
         return True
-
-class account_invoice_line(orm.Model):
-    _inherit = "account.invoice.line"
-
-    _columns = {
-        'sale_lines': fields.many2many('sale.order.line',
-                                       'sale_order_line_invoice_rel',
-                                       'invoice_id', 'order_line_id',
-                                       'Sale Lines', readonly=True),
-    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

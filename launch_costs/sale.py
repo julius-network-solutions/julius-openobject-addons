@@ -27,11 +27,7 @@ class sale_order_line(orm.Model):
 
     _columns = {
         'launch_costs' : fields.float('Launch Costs'),
-        'launch_costs_generated' : fields.boolean('Launch Costs Generated'),
-    }
-    
-    _defaults = {
-        'launch_costs_generated' : False,
+        'launch_costs_line_id': fields.many2one('account.invoice.line', 'Launch Costs invoice line'),
     }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
