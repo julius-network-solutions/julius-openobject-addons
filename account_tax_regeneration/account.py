@@ -22,6 +22,9 @@
 from openerp.osv import osv, fields, orm
 from openerp.tools.translate import _
 
+class account_tax(orm.Model):
+    _inherit = 'account.tax'
+    
     def _generate_tax(self, cr, uid, tax_templates, tax_code_template_ref, company_id, context=None):
         """
         This method generate taxes from templates.
@@ -82,9 +85,6 @@ from openerp.tools.translate import _
         res.update({'tax_template_to_tax': tax_template_to_tax, 'account_dict': todo_dict})
         return res
 
-class account_tax(orm.Model):
-    
-    _inherit = 'account.tax'
    
     def regenerate_taxes(self, cr, uid, ids, context=None):
         if context is None:
