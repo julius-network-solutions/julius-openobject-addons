@@ -42,10 +42,6 @@ class stock_move(orm.Model):
         'notes_reason': fields.text('Notes'),
     }
 
-    _defaults = {
-        'reason': lambda *a: -1,
-    }
-
     def action_scrap(self, cr, uid, ids,
         product_qty, location_id, context=None):
         """ Move the scrap/damaged product into scrap location

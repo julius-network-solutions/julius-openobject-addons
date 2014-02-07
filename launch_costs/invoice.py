@@ -25,6 +25,15 @@ from openerp.tools.translate import _
 class account_invoice(orm.Model):
     _inherit = "account.invoice"
 
+    def _launch_line_to_create(self, cr, uid, line, context=None):
+        if context is None:
+            context = {}
+        res = False
+        if line.launch_costs != 0 \
+            and not line.launch_costs_line_id:
+            res = True
+        return res
+
     def generate_launch_costs_invoice_line(self, cr, uid, ids, context=None):
         invoice_line_obj = self.pool.get('account.invoice.line')
         sale_line_obj = self.pool.get('sale.order.line')
@@ -37,8 +46,8 @@ class account_invoice(orm.Model):
             invoice_lines = invoice.invoice_line
             for invoice_line in invoice_lines:
                 for sale_line in invoice_line.sale_lines:
-                    if sale_line.launch_costs != 0 \
-                        and not sale_line.launch_costs_line_id:
+                    if self._launch_line_to_create(cr, uid,
+                                                   sale_line, context=context):
                         sale_order = sale_line.order_id
                         model, product_id = data_obj.get_object_reference(
                             cr, uid, 'launch_costs', 'product_launch_costs')

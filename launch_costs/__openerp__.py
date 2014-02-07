@@ -21,7 +21,7 @@
 
 {
     "name" : "Launch Costs",
-    "version" : "0.1",
+    "version" : "0.2",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
     "category" : "Sales Management",

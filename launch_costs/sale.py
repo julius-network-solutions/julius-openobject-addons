@@ -30,4 +30,20 @@ class sale_order_line(orm.Model):
         'launch_costs_line_id': fields.many2one('account.invoice.line', 'Launch Costs invoice line'),
     }
 
+    def copy(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        if context is None:
+            context = {}
+        default['launch_costs_line_id'] = False
+        return super(sale_order_line, self).copy(cr, uid, id, default, context=context)
+
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        if context is None:
+            context = {}
+        default['launch_costs_line_id'] = False
+        return super(sale_order_line, self).copy_data(cr, uid, id, default, context=context)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

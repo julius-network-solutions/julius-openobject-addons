@@ -28,11 +28,22 @@ class sale_order_line(orm.Model):
     _columns = {
         'emergency_costs': fields.float('Emergency Costs'),
         'emergency_costs_line_id': fields.many2one('account.invoice.line', 'Emergency invoice line'),
-#        'emergency_costs_generated': fields.boolean('Emergency Costs Generated', readonly=True),
     }
-    
-#    _defaults = {
-#        'emergency_costs_generated' : False,
-#    }
 
+    def copy(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        if context is None:
+            context = {}
+        default['emergency_costs_line_id'] = False
+        return super(sale_order_line, self).copy(cr, uid, id, default, context=context)
+
+    def copy_data(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        if context is None:
+            context = {}
+        default['emergency_costs_line_id'] = False
+        return super(sale_order_line, self).copy_data(cr, uid, id, default, context=context)
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

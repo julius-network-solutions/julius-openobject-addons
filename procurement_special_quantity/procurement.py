@@ -37,6 +37,31 @@ class procurement_order(orm.Model):
         'linked_procurement_ids': fields.many2one('procurement.order', 'parent_procurement_id', 'Linked procurements'),
     }
 
+    def _get_quantity_to_make(self, cr, uid, to_buy,
+                              procurement, move_qty,
+                              product_available_qty,
+                              context=None):
+        if context is None:
+            context = {}
+        quantity_to_make = 0
+        print move_qty, product_available_qty
+        if (move_qty + product_available_qty) >= 0:
+            # If we've got enough products we don't need
+            # to procure new products
+            if product_available_qty > 0:
+                # If the available quantity is positive
+                # this means that we don't need
+                # to procure any product
+                quantity_to_make = 0
+            else:
+                # If negative, we have to get
+                # the minimum quantity between
+                # the move quantity and available quantity
+                quantity_to_make = abs(min(move_qty, product_available_qty))
+        else:
+            quantity_to_make = move_qty
+        return quantity_to_make
+
     def button_check_quantity_to_make(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -93,29 +118,31 @@ class procurement_order(orm.Model):
                          ], context=context)
                     bought_quantity = reduce(lambda x,y: x+y, [z.product_qty for z in order_line_obj.browse(cr, uid, line_ids, context=context)], 0)
                     product_available_qty += bought_quantity
-                if (move_qty + product_available_qty) >= 0:
-                    # If we've got enough products we don't need
-                    # to procure new products
-                    if product_available_qty > 0:
-                        # If the available quantity is positive
-                        # this means that we don't need
-                        # to procure any product
-                        quantity_to_make = 0
-                    else:
-                        # If negative, we have to get
-                        # the minimum quantity between
-                        # the move quantity and available quantity
-                        quantity_to_make = abs(min(move_qty, product_available_qty))
-                else:
-                    quantity_to_make = move_qty
-#                    if bought_quantity > 0:
-#                        # We remove the bought quantity
-#                        # to the quantity to get
-#                        quantity_to_make -= bought_quantity
-#                        print bought_quantity
-#                        quantity_to_make = min(move_qty, quantity_to_make)
-#                        if quantity_to_make < 0:
-#                            quantity_to_make = 0
+                quantity_to_make = self._get_quantity_to_make(cr, uid, to_buy,
+                    procurement, move_qty, product_available_qty, context=context)
+#                if (move_qty + product_available_qty) >= 0:
+#                    # If we've got enough products we don't need
+#                    # to procure new products
+#                    if product_available_qty > 0:
+#                        # If the available quantity is positive
+#                        # this means that we don't need
+#                        # to procure any product
+#                        quantity_to_make = 0
+#                    else:
+#                        # If negative, we have to get
+#                        # the minimum quantity between
+#                        # the move quantity and available quantity
+#                        quantity_to_make = abs(min(move_qty, product_available_qty))
+#                else:
+#                    quantity_to_make = move_qty
+##                    if bought_quantity > 0:
+##                        # We remove the bought quantity
+##                        # to the quantity to get
+##                        quantity_to_make -= bought_quantity
+##                        print bought_quantity
+##                        quantity_to_make = min(move_qty, quantity_to_make)
+##                        if quantity_to_make < 0:
+##                            quantity_to_make = 0
                 if procurement.state in ('draft','exception','confirmed'):
                     write_vals = {
                         'product_qty': quantity_to_make,
