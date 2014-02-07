@@ -26,12 +26,13 @@ class sale_order_line(orm.Model):
     _inherit = 'sale.order.line'
 
     _columns = {
-        'emergency_costs' : fields.float('Emergency Costs'),
-        'emergency_costs_generated' : fields.boolean('Emergency Costs Generated', readonly=True),
+        'emergency_costs': fields.float('Emergency Costs'),
+        'emergency_costs_line_id': fields.many2one('account.invoice.line', 'Emergency invoice line'),
+#        'emergency_costs_generated': fields.boolean('Emergency Costs Generated', readonly=True),
     }
     
-    _defaults = {
-        'emergency_costs_generated' : False,
-    }
+#    _defaults = {
+#        'emergency_costs_generated' : False,
+#    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

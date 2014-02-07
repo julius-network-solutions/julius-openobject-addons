@@ -20,27 +20,26 @@
 #################################################################################
 
 {
-    "name" : "Emergency Costs",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
-        "sale",
-        "account",
-        "sale_line_link_invoice_line",
-    ],
-    "description": """
-    Module to manage a Emergency Costs in sale orders
+    'name': 'Document Images on partners',
+    'version': '0.1',
+    'category': 'Base',
+    'description': """
+    Get a galery of images with the attached documents on a partner
     """,
-    "demo" : [],
-    "data" : [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr/',
+    'images': [
     ],
-    'installable' : True,
-    'active' : False,
+    'depends': [
+        'document_images',
+    ],
+    'data': [
+        'partner_view.xml',
+    ],
+    'demo': [],
+    'installable': True,
+    'active': False,
+    'license': 'AGPL-3',
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

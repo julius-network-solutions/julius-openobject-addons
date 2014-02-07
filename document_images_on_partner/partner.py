@@ -19,28 +19,11 @@
 #
 #################################################################################
 
-{
-    "name" : "Emergency Costs",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
-        "sale",
-        "account",
-        "sale_line_link_invoice_line",
-    ],
-    "description": """
-    Module to manage a Emergency Costs in sale orders
-    """,
-    "demo" : [],
-    "data" : [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
-    ],
-    'installable' : True,
-    'active' : False,
-}
+from openerp.osv import orm, fields
+from openerp.tools.translate import _
+
+class res_partner(orm.Model):
+    _name = 'res.partner'
+    _inherit = ['res.partner', 'document.images']
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

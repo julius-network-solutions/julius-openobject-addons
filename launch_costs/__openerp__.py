@@ -28,6 +28,7 @@
     "depends" : [
         "sale",
         "account",
+        'sale_line_link_invoice_line',
     ],
     "description": """
     Module to manage a Launch Costs in sale orders
@@ -38,7 +39,7 @@
         "invoice_view.xml",
         "data/product_data.xml",
     ],
-    'installable' : False,
+    'installable' : True,
     'active' : False,
 }
 

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_partner_form_add_images" model="ir.ui.view">
+            <field name="name">res.partner.images</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <page string="Internal Notes" position="after">
+                    <page string="Images">
+                        <field name="image_ids" mode="kanban">
+                            <kanban>
+                                <field name="image_data"/>
+                                <field name="name"/>
+                                <field name="color"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <t t-set="color" t-value="kanban_color(record.color.raw_value)"/>
+                                        <div t-att-class="color + (record.name.raw_value == 1 ? ' oe_kanban_color_alert' : '')" style="position: relative">
+                                            <a t-if="! read_only_mode" type="delete" style="position: absolute; right: 0; padding: 4px; diplay: inline-block">X</a>
+                                            <div class="oe_module_vignette">
+                                                <a type="open">
+                                                <t t-if="record.image_data and record.image_data.raw_value !== false">
+                                                    <img t-att-src="'data:image/png;base64,'+record.image_data.raw_value" class="oe_avatar oe_kanban_avatar_smallbox"/>
+                                                </t>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                            <form>
+                                <field name="image_data" nolabel="1" widget="image"/>
+                            </form>
+                        </field>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,24 +20,24 @@
 #################################################################################
 
 {
-    "name" : "Emergency Costs",
+    "name" : "MRP Scrap Reason",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Management",
+    "category" : "Manufacturing",
     "depends" : [
-        "sale",
-        "account",
-        "sale_line_link_invoice_line",
+        'mrp',
+        'stock',
     ],
     "description": """
-    Module to manage a Emergency Costs in sale orders
+    This module will add a new object reason for scraping components
     """,
     "demo" : [],
     "data" : [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
+        "security/ir.model.access.csv",
+        "wizard/scrap_view.xml",
+        "mrp_view.xml",
+        "stock_view.xml",
     ],
     'installable' : True,
     'active' : False,

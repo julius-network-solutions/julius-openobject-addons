@@ -21,7 +21,7 @@
 
 {
     "name" : "Stock split availability",
-    "version" : "1.0",
+    "version" : "1.1",
     "author" : "Julius Network Solutions",
     "description" : """
     This module will allow to split moves when there are some moves which are partially available.

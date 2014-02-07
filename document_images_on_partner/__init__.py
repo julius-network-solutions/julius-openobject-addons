@@ -19,28 +19,6 @@
 #
 #################################################################################
 
-{
-    "name" : "Emergency Costs",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
-        "sale",
-        "account",
-        "sale_line_link_invoice_line",
-    ],
-    "description": """
-    Module to manage a Emergency Costs in sale orders
-    """,
-    "demo" : [],
-    "data" : [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
-    ],
-    'installable' : True,
-    'active' : False,
-}
+import partner
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

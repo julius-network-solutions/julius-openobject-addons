@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <record id="stock_move_inherit_scrap_reason_form_view" model="ir.ui.view">
+            <field name="name">stock.move.view.form.inherit</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_form"/>
+            <field name="arch" type="xml">
+                <group string="Traceability" position="after">
+                    <group string="Scrap Reason">
+                        <field name="reason"/>
+                        <field name="notes_reason"
+                            attrs="{'required': [('reason', '=', -1)], 'invisible': [('reason', '!=', -1)]}"
+                            placeholder="Describe here the reason for scraping these products..."/>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+    </data>
+</openerp>

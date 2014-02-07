@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,28 +19,8 @@
 #
 #################################################################################
 
-{
-    "name" : "Emergency Costs",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
-        "sale",
-        "account",
-        "sale_line_link_invoice_line",
-    ],
-    "description": """
-    Module to manage a Emergency Costs in sale orders
-    """,
-    "demo" : [],
-    "data" : [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
-    ],
-    'installable' : True,
-    'active' : False,
-}
+import mrp
+import stock
+import wizard
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

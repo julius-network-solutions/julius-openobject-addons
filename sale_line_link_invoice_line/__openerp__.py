@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,25 +20,20 @@
 #################################################################################
 
 {
-    "name" : "Emergency Costs",
+    "name" : "Link sale line in invoice lines",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Management",
+    "category" : "Sale Management",
     "depends" : [
-        "sale",
-        "account",
-        "sale_line_link_invoice_line",
+        'account',
+        'sale',
     ],
     "description": """
-    Module to manage a Emergency Costs in sale orders
+    This Module adds the reversal link of sale lines to invoice lines.
     """,
     "demo" : [],
-    "data" : [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
-    ],
+    "data" : [],
     'installable' : True,
     'active' : False,
 }
