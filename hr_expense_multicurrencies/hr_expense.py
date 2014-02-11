@@ -55,7 +55,8 @@ class hr_expense_line(orm.Model):
             context = {}
         res = super(hr_expense_line, self)._amount(cr, uid, ids, field_name, arg, context=context)
         for id in ids:
-            res[id] = res[id] / self.browse(cr, uid, id, context=context).currency_rate
+            if self.browse(cr, uid, id, context=context).currency_rate and self.browse(cr, uid, id, context=context).currency_rate != 0:
+                res[id] = res[id] / self.browse(cr, uid, id, context=context).currency_rate
         return res
     
     def _get_currency_rate(self, cr, uid, ids, field_name, arg, context=None):
