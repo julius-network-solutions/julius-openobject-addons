@@ -19,6 +19,25 @@
 #
 #################################################################################
 
-import hr
+{
+    "name" : "HR Expense - Multi Currencies",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Human Ressources",
+    "depends" : [
+        "hr",
+        "hr_expense"
+    ],
+    "description": """
+    HR Expense - Multi Currencies, allow you to use multiple currencies in one expense.
+    """,
+    "demo" : [],
+    "data" : [
+        'hr_expense_view.xml',
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

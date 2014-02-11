@@ -33,10 +33,10 @@ Enter 2 addresses and the system will return a distance and a duration
     'website': 'http://www.julius.fr',
     'depends': [
         'base',
-#        'hr',
+        'hr',
         ],
     'data': [
-#        'hr_view.xml'
+        'hr_view.xml'
     ],
     'test': [],
     'installable': True,

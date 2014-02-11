@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_expenses_form">
+            <field name="name">hr.expense.expense.form</field>
+            <field name="model">hr.expense.expense</field>
+            <field name="inherit_id" ref="hr_expense.view_expenses_form"/>
+            <field name="arch" type="xml">
+                <button name="confirm" position="attributes">
+                    <attribute name="attrs">{'invisible':['|',('confirmed','=',False),('state','not int','draft')]}</attribute>
+                </button>
+                <button name="confirm" position="after">
+                    <button name="first_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible':[('confirmed','=',True)]}"
+                    		group="base.group_hr_user"/>
+                </button>
+				<field name="currency_id" position="after">
+                    <field name="confirmed" readonly="1"/>
+				</field>
+				<field name="line_ids" position="attributes">
+					<attribute name="attrs">{'readonly':['|',('confirmed','=',True)]}</attribute>			
+				</field>
+			</field>
+        </record>
+	</data>
+</openerp>
