@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_expenses_form">
+            <field name="name">hr.expense.expense.form</field>
+            <field name="model">hr.expense.expense</field>
+            <field name="inherit_id" ref="hr_expense.view_expenses_form"/>
+            <field name="arch" type="xml">   
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='unit_amount']" position="after">
+                    <field name="currency_id"/>
+					<field name="currency_rate"/>
+				</xpath>
+			</field>
+        </record>
+	</data>
+</openerp>

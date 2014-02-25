@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,6 +19,32 @@
 #
 #################################################################################
 
-import hr
+import time
+from datetime import datetime
+from dateutil import relativedelta
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+from openerp.osv import fields, orm
+from openerp import tools
+from tools import DEFAULT_SERVER_DATE_FORMAT
+from tools.translate import _
+from tools.safe_eval import safe_eval as eval
+import openerp.addons.decimal_precision as dp
+
+
+class hr_expense_expense(orm.Model):
+    _inherit = 'hr.expense.expense'
+    
+    def first_confirm(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        self.write(cr, uid, ids, {'confirmed': True}, context=context)
+        return True
+    
+    _columns = {
+        'confirmed': fields.boolean('Confirmed'),
+    }
+
+
+    _defaults = {
+        'confirmed': False,
+    }
