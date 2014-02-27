@@ -25,7 +25,7 @@
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Purchases Management",
+    "category" : "Purchase Management",
     "depends" : [
         "purchase",
     ],
