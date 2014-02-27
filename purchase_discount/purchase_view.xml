@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
-		<!-- Sale View -->
+    <data>
+
+        <!-- Purchase View -->
         <record id="purchase_order_form" model="ir.ui.view">
             <field name="name">purchase.order.form.inherit</field>
             <field name="model">purchase.order</field>
             <field name="priority">25</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
-        		<xpath expr="//field[@name='order_line']//tree//field[@name='price_unit']" position="after">
-        			<field name="discount"/>
-				</xpath>
-			</field>
+                <xpath expr="//field[@name='order_line']//tree//field[@name='price_unit']" position="after">
+                    <field name="discount"/>
+                </xpath>
+            </field>
         </record>
-	</data>
-</openerp>
 
-        
-                            
+    </data>
+</openerp>

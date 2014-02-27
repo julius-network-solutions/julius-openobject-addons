@@ -181,7 +181,9 @@ class stock_move(orm.Model):
                                update_vals, context=context)
                     self.write(cr, uid, ids_to_remove,
                                {'state': 'draft'}, context=context)
-                    self._do_operations_to_merge_move(cr, uid, move_to_keep_id, ids_to_remove, context=context)
+                    self._do_operations_to_merge_move(
+                        cr, uid, move_to_keep_id,
+                        ids_to_remove, context=context)
                     self.unlink(cr, uid, ids_to_remove, context=context)
         return True
     

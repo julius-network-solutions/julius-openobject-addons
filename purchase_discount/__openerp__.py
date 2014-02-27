@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 {
     "name" : "Purchase Discount",
+    'summary': 'Discount on purchase orders transmitted to invoices',
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
@@ -29,7 +30,9 @@
         "purchase",
     ],
     "description": """
-    Module to manage a discount in purchase orders
+    Manage discount in Purchase Orders
+==================================================
+    You can define discount inside purchase lines and this discount can be transmitted to the related invoices
     """,
     "demo" : [],
     "data" : [
