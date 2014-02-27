@@ -24,9 +24,9 @@
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Management",
+    "category" : "Purchases Management",
     "depends" : [
-        "sale",
+        "purchase",
     ],
     "description": """
     Module to manage a discount in purchase orders
