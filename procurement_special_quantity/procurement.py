@@ -84,7 +84,7 @@ class procurement_order(orm.Model):
                     'to_date': procurement.date_planned,
                 })
                 # This is the move quantity
-                move_qty = procurement.move_id.product_qty
+                move_qty = procurement.move_id.product_qty or 0
                 # We get here the total of pieces available at the wanted date
                 product_available_qty = move_obj._get_specific_available_qty(cr, uid, procurement.move_id, context=c)
                 c.update({

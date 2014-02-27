@@ -91,6 +91,32 @@ class stock_move(orm.Model):
             available_qty = incoming_qty + outgoing_qty
         return available_qty
 
+    def _do_operations_to_merge_move(self, cr, uid,
+        move_to_keep_id, ids_to_remove, context=None):
+        if context is None:
+            context = {}
+        procurement_obj = self.pool.get('procurement.order')
+        production_obj = self.pool.get('mrp.production')
+        move_to_write_ids = self.search(cr, uid, [
+            ('move_dest_id', 'in', ids_to_remove),
+            ], context=context)
+        self.write(cr, uid, move_to_write_ids, {
+            'move_dest_id': move_to_keep_id,
+            }, context=context)
+        proc_to_write_ids = procurement_obj.search(cr, uid, [
+            ('move_id', 'in', ids_to_remove),
+            ], context=context)
+        procurement_obj.write(cr, uid, proc_to_write_ids, {
+            'move_id': move_to_keep_id,
+            }, context=context)
+        prod_to_write_ids = production_obj.search(cr, uid, [
+            ('move_prod_id', 'in', ids_to_remove),
+            ], context=context)
+        production_obj.write(cr, uid, prod_to_write_ids, {
+            'move_prod_id': move_to_keep_id,
+            }, context=context)
+        return True
+
     def _merge_move(self, cr, uid, move_id, context=None):
         if context is None:
             context = {}
@@ -124,6 +150,18 @@ class stock_move(orm.Model):
                                 ]
                 move_to_merge_ids = self.search(
                     cr, uid, domain_search, context=context)
+                move_origin_ids = self.search(
+                    cr, uid, [
+                    ('move_dest_id', 'in', move_to_merge_ids),
+                    ('state', '!=', 'done'),
+                    ], context=context)
+                move_dest_ids = [x.move_dest_id.id
+                    for x in self.browse(cr, uid,
+                                         move_origin_ids, context=context)
+                    if x.move_dest_id]
+                for move in move_dest_ids:
+                    if move in move_to_merge_ids:
+                        move_to_merge_ids.remove(move)
                 if len(move_to_merge_ids) > 1:
                     move_to_keep_id = move_to_merge_ids[0]
                     product_qty = 0
@@ -143,6 +181,7 @@ class stock_move(orm.Model):
                                update_vals, context=context)
                     self.write(cr, uid, ids_to_remove,
                                {'state': 'draft'}, context=context)
+                    self._do_operations_to_merge_move(cr, uid, move_to_keep_id, ids_to_remove, context=context)
                     self.unlink(cr, uid, ids_to_remove, context=context)
         return True
     
