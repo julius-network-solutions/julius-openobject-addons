@@ -30,9 +30,9 @@
         "purchase",
     ],
     "description": """
-    Manage discount in Purchase Orders
+Manage discount in Purchase Orders
 ==================================================
-    You can define discount inside purchase lines and this discount can be transmitted to the related invoices
+You can define discount inside purchase lines and this discount can be transmitted to the related invoices
     """,
     "demo" : [],
     "data" : [
