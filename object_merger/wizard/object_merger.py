@@ -33,7 +33,7 @@ class object_merger(orm.TransientModel):
     _columns = {
         'name': fields.char('Name', size=16),
     }
-    
+
     def fields_view_get(self, cr, uid, view_id=None, view_type='form',
                 context=None, toolbar=False, submenu=False):
         if context is None:
@@ -86,7 +86,7 @@ class object_merger(orm.TransientModel):
             raise orm.except_orm(_('Configuration Error!'),
                  _('Please select one value to keep'))
         # For one2many fields on res.partner
-        cr.execute("SELECT name, model FROM ir_model_fields WHERE relation='" + active_model + "' and ttype not in ('many2many', 'one2many');")
+        cr.execute("SELECT name, model FROM ir_model_fields WHERE relation=%s and ttype not in ('many2many', 'one2many');", (active_model, ))
         for name, model_raw in cr.fetchall():
             if hasattr(self.pool.get(model_raw), '_auto'):
                 if not self.pool.get(model_raw)._auto:
@@ -106,7 +106,7 @@ class object_merger(orm.TransientModel):
                             model = model_raw.replace('.', '_')
                         requete = "UPDATE "+model+" SET "+name+"="+str(object_id)+" WHERE "+ ustr(name) +" IN " + str(tuple(object_ids)) + ";"
                         cr.execute(requete)
-        cr.execute("select name, model from ir_model_fields where relation='res.partner' and ttype in ('many2many');")
+        cr.execute("select name, model from ir_model_fields where relation=%s and ttype in ('many2many');", (active_model, ))
         for field, model in cr.fetchall():
             field_data = self.pool.get(model) and self.pool.get(model)._columns.get(field, False) \
                             and (isinstance(self.pool.get(model)._columns[field], fields.many2many) \
