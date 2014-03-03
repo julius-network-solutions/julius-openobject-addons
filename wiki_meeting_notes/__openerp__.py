@@ -22,7 +22,7 @@
 {
    "name" : "Wiki meeting report",
    "version" : "0.1",
-   "author" : "Julius",
+   "author" : "Julius Network Solutions",
    "website" : "Julius.fr",
    "category" : "Generic Modules/Others",
    "depends" : [
