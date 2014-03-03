@@ -24,6 +24,7 @@ from openerp.tools.translate import _
 
 class stock_picking(orm.Model):
     _inherit = "stock.picking"
+
     def _generate_financial_discount_invoice_line(self, cr, uid, picking, invoice, sale_order_id, context=None):
         invoice_obj = self.pool.get('account.invoice')
         picking_obj = self.pool.get('stock.picking')
@@ -55,15 +56,18 @@ class stock_picking(orm.Model):
                 context=context)
             value = res.get('value')
             if value:
-                value['invoice_id'] = invoice.id
-                value['product_id'] = product_id
-                value['price_unit'] = discount_value
-                value['quantity'] = -1
-                value['invoice_line_tax_id'] = value.get('tax_id') and [(6, 0, value.get('tax_id'))] or [(6, 0, [])]
-                value['financial_discount'] = True
+                tax_ids = value.get('tax_id') and \
+                    [(6, 0, value.get('tax_id'))] or [(6, 0, [])]
+                value.update({
+                    'invoice_id': invoice.id,
+                    'product_id': product_id,
+                    'price_unit': -discount_value,
+                    'quantity': 1,
+                    'invoice_line_tax_id': tax_ids,
+                    'financial_discount': True,
+                })
         return value
-    
-    
+
     def _generate_discount_invoice_line(self, cr, uid, picking, invoice, sale_order_id, context=None):
         invoice_obj = self.pool.get('account.invoice')
         picking_obj = self.pool.get('stock.picking')
@@ -95,12 +99,16 @@ class stock_picking(orm.Model):
                 context=context)
             value = res.get('value')
             if value:
-                value['invoice_id'] = invoice.id
-                value['product_id'] = product_id
-                value['price_unit'] = discount_value
-                value['quantity'] = -1
-                value['invoice_line_tax_id'] = value.get('tax_id') and [(6, 0, value.get('tax_id'))] or [(6, 0, [])]
-                value['global_discount'] = True
+                tax_ids = value.get('tax_id') and \
+                    [(6, 0, value.get('tax_id'))] or [(6, 0, [])]
+                value.update({
+                    'invoice_id': invoice.id,
+                    'product_id': product_id,
+                    'price_unit': -discount_value,
+                    'quantity': 1,
+                    'invoice_line_tax_id': tax_ids,
+                    'global_discount': True,
+                })
         return value
 
 class account_invoice_line(orm.Model):

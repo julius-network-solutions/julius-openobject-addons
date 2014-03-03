@@ -21,12 +21,13 @@
 
 {
     "name" : "Global Discount",
-    "version" : "0.1",
+    "version" : "0.2",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
     "category" : "Sales Management",
     "depends" : [
         "sale",
+        "stock",
     ],
     "description": """
     Module to manage a global discount in sale orders

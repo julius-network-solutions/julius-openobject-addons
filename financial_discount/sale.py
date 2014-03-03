@@ -112,21 +112,27 @@ class sale_order(orm.Model):
                     context=context)
                 value = res.get('value')
                 if value:
-                    value['financial_discount'] = True
-                    value['price_unit'] = discount_value
-                    value['order_id'] = sale_order.id
-                    value['product_id'] = product_id
-                    value['product_uom_qty'] = -1
-                    value['product_uos_qty'] = -1
-                    value['tax_id'] = value.get('tax_id') and [(6, 0, value.get('tax_id'))] or [(6, 0, [])]
+                    tax_ids = value.get('tax_id') and \
+                        [(6, 0, value.get('tax_id'))] or [(6, 0, [])]
+                    value.update({
+                        'financial_discount': True,
+                        'price_unit': -discount_value,
+                        'order_id': sale_order.id,
+                        'product_id': product_id,
+                        'product_uom_qty': 1,
+                        'product_uos_qty': 1,
+                        'tax_id': tax_ids, 
+                    })
                     line_obj.create(cr, uid, value, context=context)
-                    self.write(cr, uid, sale_order.id, {'financial_discount_percentage':0.00}, context=context)
+                    self.write(cr, uid, sale_order.id, {
+                        'financial_discount_percentage': 0.00,
+                        }, context=context)
         return True
 
 class sale_order_line(orm.Model):
     _inherit = 'sale.order.line'
     
     _columns = {
-            'financial_discount' : fields.boolean('Global Discount')
+        'financial_discount' : fields.boolean('Global Discount')
     }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
