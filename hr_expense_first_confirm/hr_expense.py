@@ -40,6 +40,12 @@ class hr_expense_expense(orm.Model):
         self.write(cr, uid, ids, {'confirmed': True}, context=context)
         return True
     
+    def unconfirm(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        self.write(cr, uid, ids, {'confirmed': False}, context=context)
+        return True
+    
     _columns = {
         'confirmed': fields.boolean('Confirmed'),
     }
