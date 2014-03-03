@@ -21,12 +21,13 @@
 
 {
     "name" : "Financial and Global Discount",
-    "version" : "0.1",
+    "version" : "0.2",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
     "category" : "Sales Management",
     "depends" : [
         "sale",
+        "stock",
         "global_discount",
         "financial_discount",
     ],
