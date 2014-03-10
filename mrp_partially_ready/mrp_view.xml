@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="mrp_production_form_view" model="ir.ui.view">
+            <field name="name">mrp.production.form</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <field name="state" position="attributes">
+                    <attribute name="statusbar_visible">draft,partially_ready,ready,in_production,done</attribute>
+                </field>
+                <label for="product_uos_qty" position="before">
+                    <field name="product_qty_ready" states='confirmed,partially_ready'/>
+                    <field name="production_id"/>
+                </label>
+                <button name="force_production" position="after">
+                    <button name="partial_to_production" string="Start production"
+                        states="partially_ready"
+                        type="object" class="oe_highlight"/>
+                </button>
+            </field>
+        </record>
+
+    </data>
+</openerp>
