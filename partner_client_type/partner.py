@@ -19,38 +19,22 @@
 #
 #################################################################################
 
-import time
-from datetime import datetime
-from dateutil import relativedelta
-
 from openerp.osv import fields, orm
 from openerp import tools
-from tools import DEFAULT_SERVER_DATE_FORMAT
-from tools.translate import _
-from tools.safe_eval import safe_eval as eval
-import openerp.addons.decimal_precision as dp
+from openerp.tools.translate import _
 
-
-class hr_expense_expense(orm.Model):
-    _inherit = 'hr.expense.expense'
-    
-    def first_confirm(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        self.write(cr, uid, ids, {'confirmed': True}, context=context)
-        return True
-    
-    def unconfirm(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        self.write(cr, uid, ids, {'confirmed': False}, context=context)
-        return True
+class res_partner_client_type(orm.Model):
+    _name = 'res.partner.client.type'
     
     _columns = {
-        'confirmed': fields.boolean('Confirmed'),
+        'name' : fields.char('name', size=128),
     }
 
 
-    _defaults = {
-        'confirmed': False,
+class res_partner(orm.Model):
+    _inherit = 'res.partner'
+    
+    _columns = {
+        'client_type': fields.many2one('res.partner.client.type', 'Client Type'),
     }
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

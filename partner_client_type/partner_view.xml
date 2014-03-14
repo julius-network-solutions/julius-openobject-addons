@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+       <record model="ir.ui.view" id="view_partner_form">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            	<field name="function" position="before">
+	            	<field name="client_type" attrs="{'invisible':[('customer','=', False)]}"/>
+				</field>			
+			</field>
+        </record>
+
+        <record model="ir.ui.view" id="res_partner_client_type_form_view">
+            <field name="name">res.partner.client.type.form</field>
+            <field name="model">res.partner.client.type</field>
+            <field name="arch" type="xml">
+                <form string="Partner Client Type" version="7.0">
+                    <group col="4">
+                        <field name="name"/>
+                    </group>
+                </form>
+			</field>
+        </record>
+        <record model="ir.ui.view" id="res_partner_client_type_tree_view">
+            <field name="name">res.partner.client.type.tree</field>
+            <field name="model">res.partner.client.type</field>
+            <field name="arch" type="xml">
+                <tree string="Partner Client Type">
+                    <field name="name"/>
+                </tree>
+			</field>
+        </record>
+        
+
+        <record id="action_partner_client_type" model="ir.actions.act_window">
+            <field name="name">Client Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.client.type</field>
+            <field name="view_type">form</field>
+            <field name="help">Manage the client type you want to have available in your system </field>
+        </record>
+        
+		<menuitem action="action_partner_client_type" id="menu_partner_client_type" parent="base.menu_config_address_book" sequence="4" groups="base.group_no_one"/>
+	</data>
+</openerp>
+
+        
+                            

@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <field name="email" position="after">
+                <field name="country_id" position="after">
                     <button name="open_map"
                        string="Map" type="object" icon="gtk-zoom-in"/>
                     <button name="open_journey"

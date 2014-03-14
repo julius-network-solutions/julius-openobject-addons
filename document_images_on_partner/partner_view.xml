@@ -21,9 +21,9 @@
                                             <a t-if="! read_only_mode" type="delete" style="position: absolute; right: 0; padding: 4px; diplay: inline-block">X</a>
                                             <div class="oe_module_vignette">
                                                 <a type="open">
-                                                <t t-if="record.image_data and record.image_data.raw_value !== false">
-                                                    <img t-att-src="'data:image/png;base64,'+record.image_data.raw_value" class="oe_avatar oe_kanban_avatar_smallbox"/>
-                                                </t>
+                                                    <t t-if="record.image_data and record.image_data.raw_value !== false">
+                                                        <img t-att-src="'data:image/png;base64,'+record.image_data.raw_value" class="oe_avatar oe_kanban_avatar_smallbox"/>
+                                                    </t>
                                                 </a>
                                             </div>
                                         </div>

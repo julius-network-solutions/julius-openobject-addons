@@ -1,0 +1,49 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* partner_client_type
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-05 08:33+0000\n"
+"PO-Revision-Date: 2014-03-05 09:42+0100\n"
+"Last-Translator: Yvan Patry <yvan@julius.fr>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: partner_client_type
+#: field:res.partner.client.type,name:0
+msgid "name"
+msgstr "nom"
+
+#. module: partner_client_type
+#: model:ir.actions.act_window,name:partner_client_type.action_partner_client_type
+#: model:ir.ui.menu,name:partner_client_type.menu_partner_client_type
+#: field:res.partner,client_type:0
+msgid "Client Type"
+msgstr "Type de Client"
+
+#. module: partner_client_type
+#: model:ir.actions.act_window,help:partner_client_type.action_partner_client_type
+msgid "Manage the client type you want to have available in your system "
+msgstr "Configurer les types de client que vous souhaitez avoir dans votre système"
+
+#. module: partner_client_type
+#: view:res.partner.client.type:0
+msgid "Partner Client Type"
+msgstr "Partenaire Type de Client"
+
+#. module: partner_client_type
+#: model:ir.model,name:partner_client_type.model_res_partner
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: partner_client_type
+#: model:ir.model,name:partner_client_type.model_res_partner_client_type
+msgid "res.partner.client.type"
+msgstr "res.partner.client.type"
+

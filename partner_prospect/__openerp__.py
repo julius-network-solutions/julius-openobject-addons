@@ -19,38 +19,24 @@
 #
 #################################################################################
 
-import time
-from datetime import datetime
-from dateutil import relativedelta
+{
+    "name" : "Partner Prospect Module",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Sales Management",
+    "depends" : [
+        "base",
+    ],
+    "description": """
+    Module to manage a prospect partner
+    """,
+    "demo" : [],
+    "data" : [
+        "partner_view.xml",
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
-from openerp.osv import fields, orm
-from openerp import tools
-from tools import DEFAULT_SERVER_DATE_FORMAT
-from tools.translate import _
-from tools.safe_eval import safe_eval as eval
-import openerp.addons.decimal_precision as dp
-
-
-class hr_expense_expense(orm.Model):
-    _inherit = 'hr.expense.expense'
-    
-    def first_confirm(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        self.write(cr, uid, ids, {'confirmed': True}, context=context)
-        return True
-    
-    def unconfirm(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        self.write(cr, uid, ids, {'confirmed': False}, context=context)
-        return True
-    
-    _columns = {
-        'confirmed': fields.boolean('Confirmed'),
-    }
-
-
-    _defaults = {
-        'confirmed': False,
-    }
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
