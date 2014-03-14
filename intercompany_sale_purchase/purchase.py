@@ -223,6 +223,7 @@ class purchase_order(orm.Model):
             'name': line.name,
             'tax_id': [(6, 0, [])],
             'product_id': False,
+            'type': 'make_to_order',
         })
 
         # For taxes, this is a little be tricky
