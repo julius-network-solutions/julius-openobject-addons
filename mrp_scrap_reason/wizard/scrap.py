@@ -22,7 +22,7 @@
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
-class stock_move_scrap(orm.Model):
+class stock_move_scrap(orm.TransientModel):
     _inherit = 'stock.move.scrap'
 
     def _scrap_reason_get(self, cr, uid, context=None):

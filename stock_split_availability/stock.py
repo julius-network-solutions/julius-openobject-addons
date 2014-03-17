@@ -150,11 +150,16 @@ class stock_move(orm.Model):
                                 ]
                 move_to_merge_ids = self.search(
                     cr, uid, domain_search, context=context)
-                move_origin_ids = self.search(
-                    cr, uid, [
+                origin_domain = [
                     ('move_dest_id', 'in', move_to_merge_ids),
                     ('state', '!=', 'done'),
-                    ], context=context)
+                    ]
+                if move.picking_id:
+                    origin_domain += [
+                        ('picking_id', '!=', move.picking_id.id),
+                    ]
+                move_origin_ids = self.search(
+                    cr, uid, origin_domain, context=context)
                 move_dest_ids = [x.move_dest_id.id
                     for x in self.browse(cr, uid,
                                          move_origin_ids, context=context)

@@ -44,7 +44,6 @@ class procurement_order(orm.Model):
         if context is None:
             context = {}
         quantity_to_make = 0
-        print move_qty, product_available_qty
         if (move_qty + product_available_qty) >= 0:
             # If we've got enough products we don't need
             # to procure new products
