@@ -24,7 +24,6 @@
 			<field name="key2">client_print_multi</field>
 			<field name="model">account.move.line</field>
 			<field name="value" eval="'ir.actions.report.xml,'+str(ref('account_export_report.account_export_aeroo_report_ods'))"/>
-			<field name="object">TRUE</field>
 		</record>
 		
 	</data>

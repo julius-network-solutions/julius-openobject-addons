@@ -43,7 +43,6 @@ Lines will only be merged if: &#10;
         
         <record model="ir.values" id="invoice_merge_value">
             <field name="model_id" ref="account.model_account_invoice"/>
-            <field name="object" eval="1" />
             <field name="name">Merge Invoices</field>
             <field name="key2">client_action_multi</field>
             <field name="value" eval="'ir.actions.act_window,' + str(ref('act_win_invoice_merge'))" />

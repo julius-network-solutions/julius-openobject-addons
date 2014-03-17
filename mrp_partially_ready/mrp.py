@@ -59,7 +59,7 @@ class mrp_production(orm.Model):
                     compo_list[component.product_id.id] += component.product_qty
                 for move in prod.move_lines:
                     context['states_in'] = ('done',)
-                    context['states_out'] = ('done', 'assigned')
+                    context['states_out'] = ('done', 'assigned', 'confirmed')
                     available_quantity = move_obj._get_specific_available_qty(cr, uid, move, context=context)
                     if available_quantity <= 0:
                         available = 0
