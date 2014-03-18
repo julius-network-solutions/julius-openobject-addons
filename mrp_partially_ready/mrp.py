@@ -37,7 +37,7 @@ class mrp_production(orm.Model):
                 new_selection = []
                 for (a,b) in self._columns['state'].selection:
                     if a == 'ready':
-                        new_selection.extend([('partially_ready', 'Partially ready')])
+                        new_selection.extend([('partially_ready', _('Partially ready'))])
                     new_selection.extend([(a,b)])
                 self._columns['state'].selection = new_selection
         super(mrp_production, self).__init__(pool, cr)

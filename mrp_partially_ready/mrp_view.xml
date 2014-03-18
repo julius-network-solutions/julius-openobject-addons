@@ -7,9 +7,12 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
             <field name="arch" type="xml">
-                <field name="state" position="attributes">
+                <!--<field name="state" position="attributes">
                     <attribute name="statusbar_visible">draft,partially_ready,ready,in_production,done</attribute>
-                </field>
+                </field>-->
+                <button name="action_cancel" string="Cancel Production" position="attributes">
+                    <attribute name="states">partially_ready,confirmed</attribute>
+                </button>
                 <label for="product_uos_qty" position="before">
                     <field name="product_qty_ready" states='confirmed,partially_ready'/>
                     <field name="production_id"/>

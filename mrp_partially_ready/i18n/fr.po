@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-25 08:27+0000\n"
-"PO-Revision-Date: 2014-02-25 09:29+0100\n"
+"POT-Creation-Date: 2014-03-17 16:18+0000\n"
+"PO-Revision-Date: 2014-03-17 17:19+0100\n"
 "Last-Translator: Mathieu Vatel <mathieu@julius.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,14 +31,17 @@ msgid "Manufacturing Order"
 msgstr "Ordre de fabrication"
 
 #. module: mrp_partially_ready
-#: view:mrp.production:0
-msgid "draft,partially_ready,ready,in_production,done"
-msgstr "draft,partially_ready,ready,in_production,done"
-
-#. module: mrp_partially_ready
 #: field:mrp.production,product_qty_ready:0
 msgid "Quantity ready"
 msgstr "Quantité disponible"
+
+#. module: mrp_partially_ready
+#: code:addons/mrp_partially_ready/mrp.py:40
+#, python-format
+#: view:mrp.production:0
+#: selection:mrp.production,state:0
+msgid "Partially ready"
+msgstr "Partiellement prêt"
 
 #. module: mrp_partially_ready
 #: field:mrp.production,production_id:0
