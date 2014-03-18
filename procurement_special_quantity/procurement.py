@@ -44,21 +44,30 @@ class procurement_order(orm.Model):
         if context is None:
             context = {}
         quantity_to_make = 0
-        if (move_qty + product_available_qty) >= 0:
-            # If we've got enough products we don't need
-            # to procure new products
-            if product_available_qty > 0:
-                # If the available quantity is positive
-                # this means that we don't need
-                # to procure any product
-                quantity_to_make = 0
-            else:
-                # If negative, we have to get
-                # the minimum quantity between
-                # the move quantity and available quantity
+        if to_buy:
+            if product_available_qty < 0:
                 quantity_to_make = abs(min(move_qty, product_available_qty))
+            else:
+                if product_available_qty >= move_qty:
+                    quantity_to_make = 0
+                else:
+                    quantity_to_make = move_qty - product_available_qty
         else:
-            quantity_to_make = move_qty
+            if (move_qty + product_available_qty) >= 0:
+                # If we've got enough products we don't need
+                # to procure new products
+                if product_available_qty > 0:
+                    # If the available quantity is positive
+                    # this means that we don't need
+                    # to procure any product
+                    quantity_to_make = 0
+                else:
+                    # If negative, we have to get
+                    # the minimum quantity between
+                    # the move quantity and available quantity
+                    quantity_to_make = abs(min(move_qty, product_available_qty))
+            else:
+                quantity_to_make = move_qty
         return quantity_to_make
 
     def button_check_quantity_to_make(self, cr, uid, ids, context=None):
@@ -352,5 +361,43 @@ class procurement_order(orm.Model):
                 except Exception:
                     pass
         return {}
-    
+
+    def action_confirm(self, cr, uid, ids, context=None):
+        """ Confirms procurement and writes exception message if any.
+        @return: True
+        """
+        normal_ids = []
+        special_ids = []
+        move_obj = self.pool.get('stock.move')
+        for procurement in self.browse(cr, uid, ids, context=context):
+            if procurement.location_id.special_location:
+                special_ids.append(procurement.id)
+            else:
+                normal_ids.append(procurement.id)
+        for procurement in self.browse(cr, uid, special_ids, context=context):
+            if procurement.product_id.type in ('product', 'consu'):
+                if not procurement.move_id:
+                    source = procurement.location_id.id
+                    if procurement.procure_method == 'make_to_order':
+                        source = procurement.product_id.property_stock_procurement.id
+                    id = move_obj.create(cr, uid, {
+                        'name': procurement.name,
+                        'location_id': source,
+                        'location_dest_id': procurement.location_id.id,
+                        'product_id': procurement.product_id.id,
+                        'product_qty': procurement.product_qty,
+                        'product_uom': procurement.product_uom.id,
+                        'date_expected': procurement.date_planned,
+                        'state': 'draft',
+                        'company_id': procurement.company_id.id,
+                        'auto_validate': True,
+                    })
+                    move_obj.action_confirm(cr, uid, [id], context=context)
+                    self.write(cr, uid, [procurement.id], {'move_id': id, 'close_move': 1})
+        if special_ids:
+            self.write(cr, uid, special_ids, {'state': 'confirmed', 'message': ''})
+        if normal_ids:
+            return super(procurement_order, self).action_confirm(self, cr, uid, normal_ids, context=context)
+        return True
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

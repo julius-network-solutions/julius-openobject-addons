@@ -168,7 +168,7 @@ class stock_move(orm.Model):
                     if move in move_to_merge_ids:
                         move_to_merge_ids.remove(move)
                 if len(move_to_merge_ids) > 1:
-                    move_to_keep_id = move_to_merge_ids[0]
+                    move_to_keep_id = min(move_to_merge_ids)
                     product_qty = 0
                     product_uos_qty = 0
                     for move in self.browse(
@@ -247,7 +247,7 @@ class stock_move(orm.Model):
         res = self.check_assign(cr, uid, todo, context=context)
         
         # Merge moves
-        for move_id in todo:
+        for move_id in tomerge:
             self._merge_move(cr, uid, move_id, context=context)
         return res
 

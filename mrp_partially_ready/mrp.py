@@ -44,8 +44,7 @@ class mrp_production(orm.Model):
 
     def _get_available_quantity_ready(self, cr, uid, ids,
                                       name, args, context=None):
-        if context is None:
-            context = {}
+        if context is None: context = {}
         res = {}
         move_obj = self.pool.get('stock.move')
         for prod in self.browse(cr, uid, ids, context=context):
@@ -78,14 +77,30 @@ class mrp_production(orm.Model):
                 res[prod.id] = available
         return res
 
-    def _update_procurement_quantity(self, cr, uid, production_id, quantity, context=None):
-        if context is None:
-            context = {}
+    def _create_move_to_do(self, cr, uid, move_id,
+                           quantity_to_do, context=None):
+        if context is None: context = {}
+        move_obj = self.pool.get('stock.move')
+        new_id = move_obj.\
+            copy(cr, uid, move_id, default={
+                'product_qty': quantity_to_do,
+                'product_uos_qty': quantity_to_do,
+                'move_dest_id': False,
+                }, context=context)
+        return new_id
+
+    def _write_move_to_do(self, cr, uid, move_id,
+                          quantity_ready, context=None):
+        if context is None: context = {}
+        move_obj = self.pool.get('stock.move')
+        move_obj.write(cr, uid, [production.move_prod_id.id], {
+            'product_qty': quantity_ready,
+            'product_uos_qty': quantity_ready,
+            }, context=context)
         return True
 
     def partial_to_production(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
+        if context is None: context = {}
         move_obj = self.pool.get('stock.move')
         picking_obj = self.pool.get('stock.picking')
         qty_change_obj = self.pool.get('change.production.qty')
@@ -108,16 +123,16 @@ class mrp_production(orm.Model):
                 quantity_ready = production.product_qty_ready
                 quantity_to_do = quantity_left_to_do - quantity_ready
                 if quantity_to_do > 0:
-                    new_move_id = move_obj.\
-                        copy(cr, uid, production.move_prod_id.id, default={
-                            'product_qty': quantity_to_do,
-                            'product_uos_qty': quantity_to_do,
-                            }, context=context)
-                    move_obj.action_confirm(cr, uid, [new_move_id], context=context)
-                    move_obj.write(cr, uid, [production.move_prod_id.id], {
-                        'product_qty': quantity_ready,
-                        'product_uos_qty': quantity_ready,
-                        }, context=context)
+                    if production.move_prod_id:
+                        new_move_id = self.\
+                            _create_move_to_do(cr, uid,
+                                               production.move_prod_id.id,
+                                               quantity_to_do, context)
+                        if new_move_id:
+                            move_obj.action_confirm(cr, uid, [new_move_id], context=context)
+                        self._write_move_to_do(cr, uid,
+                                               production.move_prod_id.id,
+                                               quantity_ready, context)
 
                     procurement_ids = procurement_obj.search(cr, uid, [
                         ('production_id', '=', production.id)
@@ -126,16 +141,25 @@ class mrp_production(orm.Model):
                     new_procurement_id = False
                     if procurement_ids:
                         procurement_id = procurement_ids[0]
-                        new_procurement_id = procurement_obj.\
-                            copy(cr, uid, procurement_id, default={
+                        default_vals = {
                                 'production_id': False,
-                                'move_id': new_move_id,
                                 'product_qty': quantity_to_do,
-                            }, context=context)
-                        wf_service.trg_validate(uid, 'procurement.order', new_procurement_id, 'button_confirm', cr)
-                        wf_service.trg_validate(uid, 'procurement.order', new_procurement_id, 'button_check', cr)
-                        new_procurement = procurement_obj.browse(cr, uid, new_procurement_id, context=context)
-                        new_prod_id = new_procurement.production_id and new_procurement.production_id.id or False
+                            }
+                        if new_move_id:
+                            default_vals.update({'move_id': new_move_id,})
+                        new_procurement_id = procurement_obj.\
+                            copy(cr, uid, procurement_id,
+                                 default=default_vals, context=context)
+                        wf_service.trg_validate(uid, 'procurement.order',
+                                                new_procurement_id,
+                                                'button_confirm', cr)
+                        wf_service.trg_validate(uid, 'procurement.order',
+                                                new_procurement_id,
+                                                'button_check', cr)
+                        new_procurement = procurement_obj.\
+                            browse(cr, uid, new_procurement_id, context=context)
+                        new_prod_id = new_procurement.production_id and \
+                            new_procurement.production_id.id or False
                     if not new_prod_id:
                         new_prod_id = self.copy(cr, uid,
                             production.id,
@@ -143,27 +167,46 @@ class mrp_production(orm.Model):
                             'product_qty': quantity_to_do,
                             },
                             context=context)
-                        self.write(cr, uid, new_prod_id, {
-                            'move_prod_id': new_move_id,
+                        vals = {
                             'sale_ref': production.sale_ref,
                             'sale_name': production.sale_name,
-                        }, context=context)
+                        }
+                        if new_move_id:
+                            vals.update({'move_prod_id': new_move_id,})
+                        self.write(cr, uid, new_prod_id, vals, context=context)
                         if new_procurement_id:
+                            vals = {'production_id': new_prod_id,}
+                            if new_move_id:
+                                vals.update({'move_id': new_move_id,})
                             procurement_obj.\
-                                write(cr, uid, new_procurement_id, {
-                                'production_id': new_prod_id,
-                                'move_id': new_move_id,
-                                }, context=context)
-                    wiz_id = qty_change_obj.create(cr, uid, {'product_qty': quantity_ready}, context=context)
-                    context['active_id'] = production.id
-                    qty_change_obj.change_prod_qty(cr, uid, [wiz_id], context=context)
-                    procurement_obj.write(cr, uid, procurement_id, {'product_qty': quantity_ready}, context=context)
+                                write(cr, uid, new_procurement_id,
+                                      vals, context=context)
+                    wiz_id = qty_change_obj.\
+                        create(cr, uid, {
+                               'product_qty': quantity_ready,
+                               }, context=context)
+                    context_change_qty = context
+                    context_change_qty.update({
+                        'active_id': production.id,
+                        'do_not_change_quantity': True,
+                        })
+                    qty_change_obj.\
+                        change_prod_qty(cr, uid, [wiz_id],
+                                        context=context_change_qty)
+                    procurement_obj.\
+                        write(cr, uid, procurement_id, {
+                              'product_qty': quantity_ready,
+                              }, context=context)
                     
-                    self.write(cr, uid, production.id, {'production_id': new_prod_id}, context=context)
+                    self.write(cr, uid, production.id, {
+                        'production_id': new_prod_id,
+                        }, context=context)
 #                    if production.move_prod_id:
 #                        new_move_id = move_obj.copy(cr, uid, production.move_prod_id.id, default={'product_qty': quantity_to_do}, context=context)
 #                        move_obj.write(cr, uid, [production.move_prod_id.id], {'product_qty': quantity_ready}, context=context)
-                    wf_service.trg_validate(uid, 'mrp.production', new_prod_id, 'button_confirm', cr)
+                    wf_service.trg_validate(uid, 'mrp.production',
+                                            new_prod_id,
+                                            'button_confirm', cr)
                     
                     if not production.move_created_ids:
                         produce_move_id = self._make_production_produce_line(cr, uid, production, context=context)
@@ -190,8 +233,7 @@ class mrp_production(orm.Model):
     }
 
     def write(self, cr, uid, ids, vals, context=None):
-        if context is None:
-            context = {}
+        if context is None: context = {}
         if not isinstance(ids, list):
             ids = [ids]
         if not vals.get('state'):
