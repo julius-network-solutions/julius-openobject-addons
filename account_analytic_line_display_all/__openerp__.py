@@ -20,23 +20,26 @@
 #################################################################################
 
 {
-    'name': 'Display all fields in Analytic lines',
-    'version': '1.0',
-    'category': 'Accounting & Finance',
-    'description': """
-        This module adds a Display all filter to show/hide fields for the analytic lines tree view
+    "name": "Display all fields in Analytic lines",
+    "summary": "Add filter to display all fields on analytic line list",
+    "version": "1.0",
+    "category": "Accounting & Finance",
+    "description": """
+Analytic lines tree view display
+================================
+This module adds a "Display all" filter to show/hide fields for the analytic lines tree view
     """,
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr',
-    'depends': [
-        'account',
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr",
+    "depends": [
+        "account",
     ],
-    'data': [
-        'account_analytic_line_view.xml',
+    "data": [
+        "account_analytic_line_view.xml",
     ],
-    'demo': [],
-    'installable': True,
-    'active': False,
+    "demo": [],
+    "installable": True,
+    "active": False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
