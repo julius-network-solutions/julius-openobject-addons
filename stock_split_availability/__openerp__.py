@@ -23,6 +23,7 @@
     "name" : "Stock split availability",
     "version" : "1.1",
     "author" : "Julius Network Solutions",
+    "category": "Warehouse Management",
     "description" : """
     This module will allow to split moves when there are some moves which are partially available.
     E.g.: You have to send 10 PCE, but right now you only got 8 PCE ready.

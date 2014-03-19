@@ -39,8 +39,8 @@ This module allows to get the start or the end date of the subscription
         'subscription_view.xml',
     ],
     'demo': [],
+    'active': False,
     'installable': True,
-    'auto_install': False,
     'images': [],
 }
 

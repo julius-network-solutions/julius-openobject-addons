@@ -20,35 +20,24 @@
 #################################################################################
 
 {
-    "name": "MRP production partially ready to produce",
+    "name": "MRP Partially ready and Split Availability",
     "version": "0.1",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "category": "Manufacturing",
     "depends": [
-        'mrp',
+        'mrp_partially_ready',
+        'stock_split_availability',
     ],
     "description": """
-You can now start the production order if you have the partially the components.
-================================================================================
-This module will add a new state into the production order "Partially ready to produce".
-Example:
---------
-* You've got 1 product "Main product".
-* This "Main product" is composed of 1 product "A" and 2 products "B".
-* You need to produce 10 pieces of "Main product".
-* By default the system will put the production order "Ready" when you have 10 products "A" and 20 products "B".
-    
-Now with this module:
----------------------
-the production order will be "Partially ready to produce" when you've got at least the quantity to produce 1 "Main product", ie 1 product "A" and 2 products "B"
+Link between 2 modules
+======================
+* MRP production partially ready to produce
+* Stock split availability
 """,
     "demo": [],
-    "data": [
-        'mrp_view.xml',
-    ],
-    'installable': True,
-    'active': False,
+    "data": [],
+    "auto_install": True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

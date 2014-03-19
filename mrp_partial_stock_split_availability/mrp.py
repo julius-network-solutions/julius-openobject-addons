@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,27 +19,21 @@
 #
 #################################################################################
 
-{
-    "name": "Financial and Global Discount",
-    "version": "0.2",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "depends": [
-        "sale",
-        "stock",
-        "global_discount",
-        "financial_discount",
-    ],
-    "description": """
-    Module to manage a financial and global discount at the same time in sale orders
-    """,
-    "demo": [],
-    "data": [
-        "sale_view.xml",
-    ],
-    "installable": True,
-    "auto_install": True,
-}
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
+
+class mrp_production(orm.Model):
+    _inherit = "mrp.production"
+
+    def _create_move_to_do(self, cr, uid, move_id,
+                           quantity_to_do, context=None):
+        if context is None: context = {}
+        new_id = False
+        return new_id
+
+    def _write_move_to_do(self, cr, uid, move_id,
+                          quantity_ready, context=None):
+        if context is None: context = {}
+        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

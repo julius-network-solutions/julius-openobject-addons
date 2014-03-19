@@ -34,8 +34,8 @@ which allows to add new features in the default values to copy.
     'depends': ['subscription'],
     'data': [],
     'demo': [],
+    'active': False,
     'installable': True,
-    'auto_install': False,
     'images': [],
 }
 

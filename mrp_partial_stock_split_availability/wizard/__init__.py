@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,26 +19,6 @@
 #
 #################################################################################
 
-{
-    "name": "Link between MRP Partial and Split Availability",
-    "version": "0.1",
-    "author": "Julius Network Solutions",
-    "description" : """
-Link between 2 modules
-======================
-* MRP production partially ready to produce
-* Stock split availability
-    """,
-    "website": "http://www.julius.fr",
-    "depends": [
-         "mrp_partially_ready",
-         'stock_split_availability',
-    ],
-    "data": [],
-    "demo": [],
-    'active': False,
-    'installable': True,
-    'auto_install': True,
-}
+import change_qty
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

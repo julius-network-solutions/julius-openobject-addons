@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -21,32 +21,6 @@
 
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
-
-class mrp_production(orm.Model):
-    _inherit = "mrp.production"
-
-    def _create_move_to_do(self, cr, uid, move_id,
-                           quantity_to_do, context=None):
-        if context is None: context = {}
-        new_id = False
-#        move_obj = self.pool.get('stock.move')
-#        new_id = move_obj.\
-#            copy(cr, uid, move_id, default={
-#                'product_qty': quantity_to_do,
-#                'product_uos_qty': quantity_to_do,
-#                'move_dest_id': False,
-#                }, context=context)
-        return new_id
-
-    def _write_move_to_do(self, cr, uid, move_id,
-                          quantity_ready, context=None):
-        if context is None: context = {}
-#        move_obj = self.pool.get('stock.move')
-#        move_obj.write(cr, uid, [production.move_prod_id.id], {
-#            'product_qty': quantity_ready,
-#            'product_uos_qty': quantity_ready,
-#            }, context=context)
-        return True
 
 class change_production_qty(orm.TransientModel):
     _inherit = 'change.production.qty'
@@ -80,4 +54,5 @@ class change_production_qty(orm.TransientModel):
                     print prod_id, move_id, product_qty
                     move_obj.write(cr, uid, move_id, {'product_qty': product_qty})
         return res
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
