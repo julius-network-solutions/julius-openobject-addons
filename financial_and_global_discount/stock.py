@@ -111,12 +111,5 @@ class stock_picking(orm.Model):
                 })
         return value
 
-class account_invoice_line(orm.Model):
-    _inherit = "account.invoice.line"
-    
-    _columns = {
-            'financial_discount' : fields.boolean('Financial Discount'),
-            'global_discount' : fields.boolean('Global Discount')
-    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
