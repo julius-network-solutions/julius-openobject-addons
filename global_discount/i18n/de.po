@@ -1,0 +1,73 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* global_discount
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-23 13:27+0000\n"
+"PO-Revision-Date: 2014-01-23 13:27+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: global_discount
+#: field:sale.order,amount_total_discounted:0
+msgid "Total With Discount"
+msgstr "Gesamtbetrag mit Rabatt"
+
+#. module: global_discount
+#: view:sale.order:0
+msgid "Generate Discount"
+msgstr "Erstelle Rabatt"
+
+#. module: global_discount
+#: model:product.template,name:global_discount.product_global_discount_product_template
+#: field:sale.order.line,global_discount:0
+msgid "Global Discount"
+msgstr "Projektrabatt"
+
+#. module: global_discount
+#: view:sale.order:0
+msgid "{'invisible':[('discount_is_present','=',False)]}"
+msgstr "{'invisible':[('discount_is_present','=',False)]}"
+
+#. module: global_discount
+#: field:sale.order,global_discount_percentage:0
+msgid "Discount Percentage"
+msgstr "Projektrabatt %"
+
+#. module: global_discount
+#: field:sale.order,discount_is_present:0
+msgid "Discount Present"
+msgstr "Rabatt enthalten"
+
+#. module: global_discount
+#: model:ir.model,name:global_discount.model_stock_picking
+msgid "Picking List"
+msgstr "Lieferschein"
+
+#. module: global_discount
+#: model:ir.model,name:global_discount.model_sale_order
+msgid "Sales Order"
+msgstr "Verkaufsauftrag"
+
+#. module: global_discount
+#: field:sale.order,amount_untaxed_discounted:0
+msgid "Untaxed Amount With Discount"
+msgstr "Summe Netto mit Rabatt"
+
+#. module: global_discount
+#: model:ir.model,name:global_discount.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Auftragsposition"
+
+#. module: global_discount
+#: field:sale.order,amount_tax_discounted:0
+msgid "Taxes With Discount"
+msgstr "Umsatzsteuer mit Rabatt"
+
