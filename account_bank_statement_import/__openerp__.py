@@ -20,10 +20,11 @@
 #################################################################################
 
 {
-    "name"      : "Bank statement import with specific filters",
-    "version"   : "1.0",
-    "author"    : "Julius Network Solutions",
-    "category"  : "Accounting & Finance",
+    "name": "Bank statement import",
+    "summary": "Bank statement import with specific filters",
+    "version": "1.0",
+    "author": "Julius Network Solutions",
+    "category": "Accounting & Finance",
     'images': ['images/bankconfiguration.jpeg', 'images/AddBankstatement.jpeg', 'images/Bankstatementform.jpeg'],
     "description": """
 Module provides functionality to import bank statements from another files than coda with parser.
@@ -34,19 +35,19 @@ Module provides functionality to import bank statements from another files than 
 
 *View and change your bank statements
     """,
-    "depends"   : [
+    "depends": [
         "account",
         "account_voucher",
     ],
-    "demo"  : [],
+    "demo": [],
     "data": [
         "security/ir.model.access.csv",
         "data/filters_data.xml",
         "config_view.xml",
         "wizard/statement_import.xml",
     ],
-    "active"    : False,
-    "installable" : True,
+    "active": False,
+    "installable": True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
