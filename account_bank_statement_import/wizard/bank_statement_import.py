@@ -232,6 +232,7 @@ class account_bank_statement_import(orm.TransientModel):
             'date': line.get('date') or False,
             'amount': line.get('amount') or 0,
             'account_id': line.get('account_id') or False,
+            'partner_id': line.get('partner_id') or False,
             'statement_id': bk_st_id,
             'voucher_id': voucher_id,
             'note': str_not1 + '\n' + line.get('extra_note') or '',
@@ -311,9 +312,9 @@ class account_bank_statement_import(orm.TransientModel):
         str_not1 = ''
         for key in lines.keys():
             line = lines[key]
-            if not line['partner_id']:
-                line['partner_id'] = journal.company_id and \
-                    journal.company_id.partner_id.id or False
+#            if not line['partner_id']:
+#                line['partner_id'] = journal.company_id and \
+#                    journal.company_id.partner_id.id or False
             voucher_id = False
             if line.get('toreconcile') or False: # Fix me
                 voucher_id, line = self.\
