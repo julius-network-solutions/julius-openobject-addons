@@ -37,12 +37,12 @@ Import your bank statement files.
 =================================
 
 With this module you will be able to:
-* Set in your accounts configuration and other information by default
-* Add bank statements
-* View and change your bank statements
+    * Set in your accounts configuration and other information by default
+    * Add bank statements
+    * View and change your bank statements
 
 You will be able to define:
-* new parsers to import the files given by your bank.
+    * new parsers to import the files given by your bank.
 """,
     "depends": [
         "account",
