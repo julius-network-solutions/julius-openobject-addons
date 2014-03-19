@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -22,10 +22,9 @@
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
-    
 class sale_order(orm.Model):
     _inherit = 'sale.order'
-    
+
     def _calc_amount_untaxed_all_discounted(self, cr, uid, ids,name, args, context=None):
         if context is None:
             context = {}
@@ -36,7 +35,7 @@ class sale_order(orm.Model):
             amount_untaxed_all_discounted = amount_untaxed * discount
             res[sale_order.id] = amount_untaxed_all_discounted
         return res
-    
+
     def _calc_amount_tax_all_discounted(self, cr, uid, ids,name, args, context=None):
         if context is None:
             context = {}
@@ -47,7 +46,7 @@ class sale_order(orm.Model):
             amount_tax_all_discounted = amount_tax * discount
             res[sale_order.id] = amount_tax_all_discounted
         return res
-    
+
     def _calc_amount_total_all_discounted(self, cr, uid, ids,name, args, context=None):
         if context is None:
             context = {}
@@ -56,7 +55,7 @@ class sale_order(orm.Model):
             amount_total_all_discounted = sale_order.amount_untaxed_all_discounted + sale_order.amount_tax_all_discounted
             res[sale_order.id] = amount_total_all_discounted
         return res
-    
+
     def _check_if_all_discount(self, cr, uid, ids,name, args, context=None):
         if context is None:
             context = {}
@@ -73,7 +72,7 @@ class sale_order(orm.Model):
             if discount == True and financial == True:
                 res[sale_order.id] = True
         return res
-    
+
     _columns = {
             'amount_untaxed_all_discounted' : fields.function(_calc_amount_untaxed_all_discounted,string='Untaxed Amount With All Discount', readonly=True),
             'amount_tax_all_discounted' : fields.function(_calc_amount_tax_all_discounted, string='Taxes With All Discount', readonly=True),

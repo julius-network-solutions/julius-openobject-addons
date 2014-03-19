@@ -34,7 +34,7 @@ Global discount on a sale order
 ===============================
 Module to manage a global discount in sale orders
 
-This module will add a field in the sale order, and will work as the delivery works
+This module will add a field in the sale order, and it will work as the module "delivery" works.
     """,
     "demo": [],
     "data": [

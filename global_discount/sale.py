@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -22,56 +22,59 @@
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
-    
 class sale_order(orm.Model):
     _inherit = 'sale.order'
-    
-    def _calc_amount_untaxed_discounted(self, cr, uid, ids,name, args, context=None):
+
+    def _calc_amount_untaxed_discounted(self, cr, uid, ids,
+                                        name, args, context=None):
         if context is None:
             context = {}
         res = {}
-        for sale_order in self.browse(cr, uid, ids, context=context):
-            amount_untaxed = sale_order.amount_untaxed
-            discount = (100 - sale_order.global_discount_percentage) / 100
+        for sale in self.browse(cr, uid, ids, context=context):
+            amount_untaxed = sale.amount_untaxed
+            discount = (100 - sale.global_discount_percentage) / 100
             amount_untaxed_discounted = amount_untaxed * discount
-            res[sale_order.id] = amount_untaxed_discounted
+            res[sale.id] = amount_untaxed_discounted
         return res
-    
-    def _calc_amount_tax_discounted(self, cr, uid, ids,name, args, context=None):
+
+    def _calc_amount_tax_discounted(self, cr, uid, ids,
+                                    name, args, context=None):
         if context is None:
             context = {}
         res = {}
-        for sale_order in self.browse(cr, uid, ids, context=context):
-            amount_tax = sale_order.amount_tax
-            discount = (100 - sale_order.global_discount_percentage) / 100
+        for sale in self.browse(cr, uid, ids, context=context):
+            amount_tax = sale.amount_tax
+            discount = (100 - sale.global_discount_percentage) / 100
             amount_tax_discounted = amount_tax * discount
-            res[sale_order.id] = amount_tax_discounted
+            res[sale.id] = amount_tax_discounted
         return res
-    
-    def _calc_amount_total_discounted(self, cr, uid, ids,name, args, context=None):
+
+    def _calc_amount_total_discounted(self, cr, uid, ids,
+                                      name, args, context=None):
         if context is None:
             context = {}
         res = {}
-        for sale_order in self.browse(cr, uid, ids, context=context):
-            amount_total_discounted = sale_order.amount_untaxed_discounted + sale_order.amount_tax_discounted
-            res[sale_order.id] = amount_total_discounted
+        for sale in self.browse(cr, uid, ids, context=context):
+            res[sale.id] = sale.amount_untaxed_discounted + \
+                sale.amount_tax_discounted
         return res
-    
-    def _check_if_discount(self, cr, uid, ids,name, args, context=None):
+
+    def _check_if_discount(self, cr, uid, ids,
+                           name, args, context=None):
         if context is None:
             context = {}
         res = {}
-        for sale_order in self.browse(cr, uid, ids, context=context):
-            res[sale_order.id] = False
-            if sale_order.global_discount_percentage:
-                res[sale_order.id] = True
+        for sale in self.browse(cr, uid, ids, context=context):
+            res[sale.id] = False
+            if sale.global_discount_percentage:
+                res[sale.id] = True
             else:
-                for line in sale_order.order_line:
+                for line in sale.order_line:
                     if line.global_discount == True:
-                        res[sale_order.id] = True
+                        res[sale.id] = True
                         break
         return res
-    
+
     _columns = {
         'global_discount_percentage': fields.float('Discount Percentage'),
         'amount_untaxed_discounted': fields.function(
@@ -87,22 +90,16 @@ class sale_order(orm.Model):
             string='Discount Present',
             readonly=True, type="boolean"),
     }
-    
-#     def action_button_confirm(self, cr, uid, ids, context=None):
-#         if context is None:
-#             context = {}
-#         self.generate_global_discount(cr, uid, ids, context=context)
-#         return super(sale_order, self).action_button_confirm(cr, uid, ids, context=context)
 
     def generate_global_discount(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         line_obj = self.pool.get('sale.order.line')
-        for sale_order in self.browse(cr, uid, ids, context=context):
-            if sale_order.global_discount_percentage != 0.00:
-                discount =  sale_order.global_discount_percentage / 100
+        for sale in self.browse(cr, uid, ids, context=context):
+            if sale.global_discount_percentage != 0.00:
+                discount = sale.global_discount_percentage / 100
                 res = 0
-                for line in sale_order.order_line:
+                for line in sale.order_line:
                     if line.global_discount == True:
                         line_obj.unlink(cr, uid, [line.id], context=context)
                     else:
@@ -112,14 +109,17 @@ class sale_order(orm.Model):
                         res += sub
                 discount_value = res * discount
                 data_obj = self.pool.get('ir.model.data')
-                model, product_id = data_obj.get_object_reference(cr, uid, 'global_discount', 'product_global_discount')
+                model, product_id = data_obj.\
+                    get_object_reference(cr, uid,
+                                         'global_discount',
+                                         'product_global_discount')
                 res = line_obj.product_id_change(cr, uid, [],
-                    pricelist=sale_order.pricelist_id.id,
+                    pricelist=sale.pricelist_id.id,
                     product=product_id, qty=1,
-                    partner_id=sale_order.partner_id.id,
-                    lang=sale_order.partner_id.lang, update_tax=True,
-                    date_order=sale_order.date_order,
-                    fiscal_position=sale_order.fiscal_position,
+                    partner_id=sale.partner_id.id,
+                    lang=sale.partner_id.lang, update_tax=True,
+                    date_order=sale.date_order,
+                    fiscal_position=sale.fiscal_position,
                     context=context)
                 value = res.get('value')
                 if value:
@@ -128,14 +128,14 @@ class sale_order(orm.Model):
                     value.update({
                         'global_discount': True,
                         'price_unit': -discount_value,
-                        'order_id': sale_order.id,
+                        'order_id': sale.id,
                         'product_id': product_id,
                         'product_uom_qty': 1,
                         'product_uos_qty': 1,
                         'tax_id': tax_ids, 
                     })
                     line_obj.create(cr, uid, value, context=context)
-                    self.write(cr, uid, sale_order.id, {
+                    self.write(cr, uid, sale.id, {
                         'global_discount_percentage': 0.00,
                         }, context=context)
         return True
@@ -144,6 +144,7 @@ class sale_order_line(orm.Model):
     _inherit = 'sale.order.line'
     
     _columns = {
-            'global_discount' : fields.boolean('Global Discount')
+        'global_discount': fields.boolean('Global Discount'),
     }
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

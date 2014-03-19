@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,7 +25,9 @@ from openerp.tools.translate import _
 class stock_picking(orm.Model):
     _inherit = "stock.picking"
 
-    def _generate_financial_discount_invoice_line(self, cr, uid, picking, invoice, sale_order_id, context=None):
+    def _generate_financial_discount_invoice_line(self, cr, uid, picking,
+                                                  invoice, sale_order_id,
+                                                  context=None):
         invoice_obj = self.pool.get('account.invoice')
         picking_obj = self.pool.get('stock.picking')
         invoice_line_obj = self.pool.get('account.invoice.line')
@@ -33,7 +35,8 @@ class stock_picking(orm.Model):
         data_obj = self.pool.get('ir.model.data')
         sale_order_obj = self.pool.get('sale.order')
         value = {}
-        sale_order = sale_order_obj.browse(cr, uid, sale_order_id, context=context)
+        sale_order = sale_order_obj.\
+            browse(cr, uid, sale_order_id, context=context)
         if sale_order.financial_discount_percentage != 0.00:
             discount = sale_order.financial_discount_percentage / 100
             res = 0
@@ -45,7 +48,10 @@ class stock_picking(orm.Model):
                     res += sub
             discount_value = res * discount
             data_obj = self.pool.get('ir.model.data')
-            model, product_id = data_obj.get_object_reference(cr, uid, 'financial_discount', 'product_financial_discount')
+            model, product_id = data_obj.\
+                get_object_reference(cr, uid,
+                                     'financial_discount',
+                                     'product_financial_discount')
             res = line_obj.product_id_change(cr, uid, [],
                 pricelist=sale_order.pricelist_id.id,
                 product=product_id, qty=1,
@@ -75,21 +81,28 @@ class stock_picking(orm.Model):
         picking_obj = self.pool.get('stock.picking')
         invoice_line_obj = self.pool.get('account.invoice.line')
         sale_order_obj = self.pool.get('sale.order')
-        res = super(stock_picking, self).action_invoice_create(cr, uid, ids, journal_id=False,
+        res = super(stock_picking, self).\
+            action_invoice_create(cr, uid, ids, journal_id=False,
             group=False, type='out_invoice', context=None)
-        for picking in picking_obj.browse(cr, uid, res.keys(), context=context):
-            invoice = invoice_obj.browse(cr, uid, res[picking.id], context=context)
-            sale_order_id = sale_order_obj.search(cr, uid, [('name','=', picking.origin)], context=context)[0]
-            invoice_line = self._generate_financial_discount_invoice_line(cr, uid, picking, invoice, sale_order_id, context=context)
+        for picking in picking_obj.\
+            browse(cr, uid, res.keys(), context=context):
+            invoice = invoice_obj.\
+                browse(cr, uid, res[picking.id], context=context)
+            sale_order_id = picking.sale_id and picking.sale_id.id or False
+            invoice_line = self.\
+                _generate_financial_discount_invoice_line(cr, uid,
+                                                          picking, invoice,
+                                                          sale_order_id,
+                                                          context=context)
             if invoice_line != {}:
                 invoice_line_obj.create(cr, uid, invoice_line)
-                invoice_obj.button_compute(cr, uid, [invoice.id], context=context)
+                invoice_obj.\
+                    button_compute(cr, uid, [invoice.id], context=context)
         return res
-
 
 class account_invoice_line(orm.Model):
     _inherit = "account.invoice.line"
-    
+
     _columns = {
             'financial_discount' : fields.boolean('Financial Discount'),
     }
