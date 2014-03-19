@@ -63,18 +63,29 @@ class sale_order(orm.Model):
         res = {}
         for sale_order in self.browse(cr, uid, ids, context=context):
             res[sale_order.id] = False
-            for line in sale_order.order_line:
-                if line.global_discount == True:
-                    res[sale_order.id] = True
-                    break
+            if sale_order.global_discount_percentage:
+                res[sale_order.id] = True
+            else:
+                for line in sale_order.order_line:
+                    if line.global_discount == True:
+                        res[sale_order.id] = True
+                        break
         return res
     
     _columns = {
-            'global_discount_percentage' : fields.float('Discount Percentage'),
-            'amount_untaxed_discounted' : fields.function(_calc_amount_untaxed_discounted,string='Untaxed Amount With Discount', readonly=True),
-            'amount_tax_discounted' : fields.function(_calc_amount_tax_discounted, string='Taxes With Discount', readonly=True),
-            'amount_total_discounted' : fields.function(_calc_amount_total_discounted, string='Total With Discount', readonly=True),
-            'discount_is_present' : fields.function(_check_if_discount, string='Discount Present', readonly=True, type="boolean"),
+        'global_discount_percentage': fields.float('Discount Percentage'),
+        'amount_untaxed_discounted': fields.function(
+            _calc_amount_untaxed_discounted,
+            string='Untaxed Amount With Discount', readonly=True),
+        'amount_tax_discounted': fields.function(
+            _calc_amount_tax_discounted,
+            string='Taxes With Discount', readonly=True),
+        'amount_total_discounted': fields.function(
+            _calc_amount_total_discounted,
+            string='Total With Discount', readonly=True),
+        'discount_is_present': fields.function(_check_if_discount,
+            string='Discount Present',
+            readonly=True, type="boolean"),
     }
     
 #     def action_button_confirm(self, cr, uid, ids, context=None):

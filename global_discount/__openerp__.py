@@ -20,25 +20,29 @@
 #################################################################################
 
 {
-    "name" : "Global Discount",
-    "version" : "0.2",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
+    "name": "Global Discount",
+    "version": "0.3",
+    "author": "Julius Network Solutions",
+    "website": "http://julius.fr",
+    "category": "Sales Management",
+    "depends": [
         "sale",
         "stock",
     ],
     "description": """
-    Module to manage a global discount in sale orders
+Global discount on a sale order
+===============================
+Module to manage a global discount in sale orders
+
+This module will add a field in the sale order, and will work as the delivery works
     """,
-    "demo" : [],
-    "data" : [
+    "demo": [],
+    "data": [
         "sale_view.xml",
         "data/product_data.xml",
     ],
-    'installable' : True,
-    'active' : False,
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
