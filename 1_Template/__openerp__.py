@@ -21,6 +21,7 @@
 
 {
     "name" : "Template Custom Module",
+    "summary": "Template custom module summary",
     "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",

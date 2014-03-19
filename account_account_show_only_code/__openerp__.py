@@ -20,21 +20,25 @@
 #################################################################################
 
 {
-    'name': 'Account Show Code Only',
-    'version': '1.0',
-    'category': 'Accounting & Finance',
-    'description': """
-        This module shows the account code only
+    "name": "Account Show Code Only",
+    "summary": "Display only the code of the account",
+    "version": "1.0",
+    "category": "Accounting & Finance",
+    "description": """
+Account display
+===============
+When display the account, this only return the account code, not the "account code" - "account name"
     """,
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr',
-    'depends': [
-        'account',
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr",
+    "depends": [
+        "account",
     ],
-    'demo': [],
-    'data': [],
-    'installable': True,
-    'active': False,
+    "demo": [],
+    "data": [],
+    "images": ["images/with_name.jpeg","images/without_name.jpeg",],
+    "installable": True,
+    "active": False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
