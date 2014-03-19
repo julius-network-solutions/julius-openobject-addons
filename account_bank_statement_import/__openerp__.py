@@ -22,22 +22,30 @@
 {
     "name": "Bank statement import",
     "summary": "Bank statement import with specific filters",
-    "version": "1.0",
+    "version": "1.2",
     "author": "Julius Network Solutions",
     "category": "Accounting & Finance",
-    'images': ['images/bankconfiguration.jpeg', 'images/AddBankstatement.jpeg', 'images/Bankstatementform.jpeg'],
+    'images': [
+        'images/1_accounting_config.jpeg',
+        'images/2_filter_config.jpeg',
+        'images/3_accounting_config.jpeg',
+        'images/4_import_menu.jpeg',
+        'images/5_import_pop_up.jpeg',
+    ],
     "description": """
-Module provides functionality to import bank statements from another files than coda with parser.
+Import your bank statement files.
+=================================
 
-*Set in your accounts configuration and other information by default
+With this module you will be able to:
+* Set in your accounts configuration and other information by default
+* Add bank statements
+* View and change your bank statements
 
-*Add bank statements
-
-*View and change your bank statements
-    """,
+You will be able to define:
+* new parsers to import the files given by your bank.
+""",
     "depends": [
         "account",
-        "account_voucher",
     ],
     "demo": [],
     "data": [

@@ -22,49 +22,89 @@
 import time
 import base64
 
-from osv import fields, osv, orm
-from tools.translate import _
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
 class account_bank_statement_import(orm.TransientModel):
-    _name = 'account.bank.statement.import'
+    _name = "account.bank.statement.import"
+    _description = "Bank statement import"
 
-    def _default_journal_id(self, cr, uid, context):
+    def _default_journal_id(self, cr, uid, context=None):
+        """ This method will return the default value
+        for the journal from the definition
+        of the filter or of the company."""
+        if context is None: context = {}
         company_obj = self.pool.get('res.company')
-        company_id = company_obj._company_default_get(cr, uid, context=context)
+        company_id = company_obj.\
+            _company_default_get(cr, uid, context=context)
+        res = False
         if company_id:
-            company = company_obj.browse(cr, uid, company_id)
-            if company and company.def_bank_journal_id:
+            company = company_obj.browse(cr, uid, company_id, context=context)
+            if company.def_filter_id and \
+                company.def_filter_id.def_bank_journal_id:
+                res = company.def_filter_id.def_bank_journal_id.id
+            if not res and company.def_bank_journal_id:
                 return company.def_bank_journal_id.id
-        return False
+        return res
     
-    def _default_def_payable(self, cr, uid, context):
+    def _default_def_payable(self, cr, uid, context=None):
+        """ This method will return the default value
+        for the payable account from the definition
+        of the filter or of the company."""
+        if context is None: context = {}
         company_obj = self.pool.get('res.company')
-        company_id = company_obj._company_default_get(cr, uid, context=context)
+        company_id = company_obj.\
+            _company_default_get(cr, uid, context=context)
+        res = False
         if company_id:
-            company = company_obj.browse(cr, uid, company_id)
-            if company and company.def_payable_id:
+            company = company_obj.browse(cr, uid, company_id, context=context)
+            if company.def_filter_id and \
+                company.def_filter_id.def_payable_id:
+                res = company.def_filter_id.def_payable_id.id
+            if not res and company.def_payable_id:
                 return company.def_payable_id.id
-        return False
+        return res
     
-    def _default_def_receivable(self, cr, uid, context):
+    def _default_def_receivable(self, cr, uid, context=None):
+        """ This method will return the default value 
+        for the receivable account from the definition
+        of the filter or of the company."""
+        if context is None: context = {}
         company_obj = self.pool.get('res.company')
-        company_id = company_obj._company_default_get(cr, uid, context=context)
+        company_id = company_obj.\
+            _company_default_get(cr, uid, context=context)
+        res = False
         if company_id:
-            company = company_obj.browse(cr, uid, company_id)
-            if company and company.def_receivable_id:
+            company = company_obj.browse(cr, uid, company_id, context=context)
+            if company.def_filter_id and \
+                company.def_filter_id.def_receivable_id:
+                res = company.def_filter_id.def_receivable_id.id
+            if not res and company.def_receivable_id:
                 return company.def_receivable_id.id
-        return False
+        return res
     
-    def _default_def_awaiting(self, cr, uid, context):
+    def _default_def_awaiting(self, cr, uid, context=None):
+        """ This method will return the default value 
+        for the awaiting account from the definition
+        of the filter or of the company."""
+        if context is None: context = {}
         company_obj = self.pool.get('res.company')
-        company_id = company_obj._company_default_get(cr, uid, context=context)
+        company_id = company_obj.\
+            _company_default_get(cr, uid, context=context)
+        res = False
         if company_id:
-            company = company_obj.browse(cr, uid, company_id)
-            if company and company.def_awaiting_id:
+            company = company_obj.browse(cr, uid, company_id, context=context)
+            if company.def_filter_id and \
+                company.def_filter_id.def_awaiting_id:
+                res = company.def_filter_id.def_awaiting_id.id
+            if not res and company.def_awaiting_id:
                 return company.def_awaiting_id.id
-        return False
+        return res
     
-    def _default_filter_id(self, cr, uid, context):
+    def _default_filter_id(self, cr, uid, context=None):
+        """ This method will return the default value 
+        for the filter from the definition of the company."""
+        if context is None: context = {}
         company_obj = self.pool.get('res.company')
         company_id = company_obj._company_default_get(cr, uid, context=context)
         if company_id:
@@ -73,20 +113,47 @@ class account_bank_statement_import(orm.TransientModel):
                 return company.def_filter_id.id
         return False
     
-    def _default_date_format(self, cr, uid, context):
+    def _default_date_format(self, cr, uid, context=None):
+        """ This method will return the default value 
+        for the date format from the definition
+        of the filter or of the company."""
+        if context is None: context = {}
         company_obj = self.pool.get('res.company')
-        company_id = company_obj._company_default_get(cr, uid, context=context)
+        company_id = company_obj.\
+            _company_default_get(cr, uid, context=context)
+        res = False
         if company_id:
-            company = company_obj.browse(cr, uid, company_id)
-            return company and company.def_date_format or '%d/%m/%Y'
-        return '%d/%m/%Y'
+            company = company_obj.browse(cr, uid, company_id, context=context)
+            if company.def_filter_id and \
+                company.def_filter_id.def_date_format:
+                res = company.def_filter_id.def_date_format
+            if not res and company.def_date_format:
+                res = company.def_date_format
+        return res or '%d/%m/%Y'
 
     _columns = {
-        'journal_id': fields.many2one('account.journal', 'Bank Journal', required=True),
-        'payable_id': fields.many2one('account.account', 'Payable Account', domain=[('type', '=', 'payable')], required=True, help= 'Set here the payable account that will be used, by default, if the partner is not found'),
-        'receivable_id': fields.many2one('account.account', 'Receivable Account', domain=[('type', '=', 'receivable')], required=True, help= 'Set here the receivable account that will be used, by default, if the partner is not found',),
-        'awaiting_id': fields.many2one('account.account', 'Account for Unrecognized Movement', domain=[('type', '=', 'liquidity')], required=True, help= 'Set here the default account that will be used, if the partner is found but does not have the bank account, or if he is domiciled'),
-        'filter_id': fields.many2one('account.bankimport.filters', 'Filter', required=True),
+        'journal_id': fields.many2one('account.journal',
+                                      'Bank Journal',
+                                      required=True),
+        'payable_id': fields.many2one('account.account',
+            'Payable Account', domain=[('type', '=', 'payable')],
+            required=True,
+            help="Set here the payable account that will be used "\
+            "by default, if the partner is not found"),
+        'receivable_id': fields.many2one('account.account',
+            'Receivable Account', domain=[('type', '=', 'receivable')],
+            required=True,
+            help="Set here the receivable account that will be used "\
+            "by default, if the partner is not found",),
+        'awaiting_id': fields.many2one('account.account',
+            'Account for Unrecognized Movement',
+            domain=[('type', '=', 'liquidity')],
+            required=True,
+            help="Set here the default account that will be used "\
+            "if the partner is found but does not have the bank account, "\
+            "or if he is domiciled",),
+        'filter_id': fields.many2one('account.bankimport.filters',
+                                     'Filter', required=True),
         'statement_update': fields.boolean('Update Statement'),
         'date_format': fields.char('Date Format', size=32, required=True),
         'file_data': fields.binary('File to import', required=True),
@@ -95,29 +162,64 @@ class account_bank_statement_import(orm.TransientModel):
     }
     
     _defaults = {
-        'journal_id': lambda x, y, z, c: x._default_journal_id(y, z, c),
-        'payable_id' : lambda x, y, z, c: x._default_def_payable(y, z, c),
-        'receivable_id': lambda x, y, z, c: x._default_def_receivable(y, z, c),
-        'awaiting_id': lambda x, y, z, c: x._default_def_awaiting(y, z, c),
-        'filter_id' : lambda x, y, z, c: x._default_filter_id(y, z, c),
+        'journal_id': lambda self, y, z, c: self._default_journal_id(y, z, c),
+        'payable_id': lambda self, y, z, c: self._default_def_payable(y, z, c),
+        'receivable_id': lambda self, y, z, c: self._default_def_receivable(y, z, c),
+        'awaiting_id': lambda self, y, z, c: self._default_def_awaiting(y, z, c),
+        'filter_id': lambda self, y, z, c: self._default_filter_id(y, z, c),
         'statement_update': False,
-        'date_format': lambda x, y, z, c: x._default_date_format(y, z, c),
-        'file_fname': lambda *a: '',
+        'date_format': lambda self, y, z, c: self._default_date_format(y, z, c),
+        'file_fname': '',
     }
     
     def get_file(self, cr, uid, ids, recordlist, filter_id, data, context):
         # based on the filter we parse the document
-        filter_name = self.pool.get('account.bankimport.filters').browse(cr, uid, filter_id).filter
+        filter_obj = self.pool.get('account.bankimport.filters')
+        filter_name = filter_obj.browse(cr, uid, filter_id).filter
         
         exec "from filters import " + filter_name + " as parser"
         # opening the file speficied as bank_file and read the data
         try:
-            bank_statements = parser.get_data(self, cr, uid, ids, recordlist, data) # parse the data through the filter
+            bank_statements = parser.\
+                get_data(self, cr, uid, ids, recordlist, data) # parse the data through the filter
         except IOError:
             raise
         return bank_statements
-    
-    def _get_line_vals(self, cr, uid, line, bk_st_id, voucher_id, str_not1, context=None):
+
+    def onchange_filter_id(self, cr, uid, ids, filter_id, context=None):
+        if context is None: context = {}
+        res = {'value': {}}
+        # update related fields
+        if filter_id:
+            filter_obj = self.pool.get('account.bankimport.filters')
+            filter = filter_obj.browse(cr, uid, filter_id, context=None)
+            value = {}
+            if filter.def_bank_journal_id:
+                value.update({
+                    'journal_id': filter.def_bank_journal_id.id,
+                })
+            if filter.def_payable_id:
+                value.update({
+                    'payable_id': filter.def_payable_id.id,
+                })
+            if filter.def_receivable_id:
+                value.update({
+                    'receivable_id': filter.def_receivable_id.id,
+                })
+            if filter.def_awaiting_id:
+                value.update({
+                    'awaiting_id': filter.def_awaiting_id.id,
+                })
+            if filter.def_date_format:
+                value.update({
+                    'date_format': filter.def_date_format,
+                })
+            res['value'] = value
+        return res
+
+    def _get_line_vals(self, cr, uid, line,
+                       bk_st_id, voucher_id,
+                       str_not1, context=None):
         return {
             'name': line.get('name') or '',
             'date': line.get('date') or False,
@@ -128,8 +230,9 @@ class account_bank_statement_import(orm.TransientModel):
             'note': str_not1 + '\n' + line.get('extra_note') or '',
             'ref': line.get('ref') or '',
         }
-        
-    def _voucher_create(self, cr, uid, statement, line, journal, context=None):
+
+    def _voucher_create(self, cr, uid, statement,
+                        line, journal, context=None):
         if context == None:
             context = {}
         voucher_obj = self.pool.get('account.voucher')
@@ -178,7 +281,7 @@ class account_bank_statement_import(orm.TransientModel):
                 else:
                     line['account_id'] = mv.partner_id.property_account_receivable.id
         return voucher_id, line
-    
+
     def _create_bank_statement_line(self, cr, uid, statement, journal, bk_st_id, context=None):
         if context is None:
             context = {}
@@ -318,7 +421,7 @@ class account_bank_statement_import(orm.TransientModel):
             'context': context,
             'type': 'ir.actions.act_window',
         }
-        
+
     def open_bank_statements(self, cr, uid, ids, context=None):
         if context == None:
             context = {}
@@ -330,5 +433,5 @@ class account_bank_statement_import(orm.TransientModel):
         if context and context.get('statement_ids'):
             action['domain'] = [('id', 'in', context.get('statement_ids'))]
         return action
-        
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

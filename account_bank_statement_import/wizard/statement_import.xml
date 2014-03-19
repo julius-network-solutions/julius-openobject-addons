@@ -8,6 +8,28 @@
 			<field name="arch" type="xml">
 				<form string="Import Bank statement file" version="7.0">
                     <group>
+                        <label for="id" string="Import Parameters"/>
+                        <div>
+                            <div>
+                                <label for="filter_id"/>
+                                <field name="filter_id" class="oe_inline" widget="selection"
+                                    on_change="onchange_filter_id(filter_id, context)"/>
+                            </div>
+                            <div>
+                                <label for="date_format"/>
+                                <field name="date_format" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="statement_update"/>
+                                <field name="statement_update" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="file_data"/>
+                                <field name="file_data" filename="file_fname" class="oe_inline"/>
+                            </div>
+                        </div>
+                    </group>
+                    <group>
 	                    <label for="id" string="Accounting Parameters"/>
 						<div>
                             <div>
@@ -28,27 +50,6 @@
                             </div>
 						</div>
 					</group>
-                    <group>
-	                    <label for="id" string="Import Parameters"/>
-						<div>
-							<div>
-	                            <label for="filter_id"/>
-								<field name="filter_id" class="oe_inline" widget="selection"/>
-							</div>
-							<div>
-	                            <label for="date_format"/>
-								<field name="date_format" class="oe_inline"/>
-							</div>
-							<div>
-	                            <label for="statement_update"/>
-								<field name="statement_update" class="oe_inline"/>
-							</div>
-							<div>
-	                            <label for="file_data"/>
-								<field name="file_data" filename="file_fname" class="oe_inline"/>
-							</div>
-						</div>
-					</group>
 					<footer>
 						<button name="file_parsing" string="Import" type="object" class="oe_highlight"/>
 						or
@@ -67,7 +68,7 @@
 			<field name="target">new</field>
 			<field name="view_id" ref="account_bank_statement_import_view"/>
 		</record>
-		<menuitem name="Import bank statement file" parent="account.menu_finance_bank_and_cash" id="menu_account_bank statement file_import" action="action_bank_statement_import" sequence="10"/>
+		<menuitem name="Import bank statement file" parent="account.menu_finance_bank_and_cash" id="menu_account_bank_statement_file_import" action="action_bank_statement_import" sequence="10"/>
 
 		<record id="account_bank_statement_file_report_view" model="ir.ui.view">
 			<field name="name">Imported bank statement file</field>

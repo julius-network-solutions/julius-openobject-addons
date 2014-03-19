@@ -1,43 +1,53 @@
 <?xml version="1.0" ?>
 <openerp>
-	<data>
+    <data>
 
-		<record id="view_bankimport_filters_tree" model="ir.ui.view">
-			<field name="name">account.bankimport.filters.tree</field>
-			<field name="model">account.bankimport.filters</field>
-			<field name="arch" type="xml">
-				<tree string="Bank Statement Filters" editable="top">
-					<field name="name"/>
-					<field name="filter"/>
-					<field name="active"/>
-				</tree>
-			</field>
-		</record>
+        <record id="view_bankimport_filters_tree" model="ir.ui.view">
+            <field name="name">account.bankimport.filters.tree</field>
+            <field name="model">account.bankimport.filters</field>
+            <field name="arch" type="xml">
+                <tree string="Bank Statement Filters" editable="top">
+                    <field name="name"/>
+                    <field name="filter"/>
+                    <field name="active"/>
+                    <field name="def_bank_journal_id"/>
+                    <field name="def_payable_id"/>
+                    <field name="def_receivable_id"/>
+                    <field name="def_awaiting_id"/>
+                    <field name="def_date_format"/>
+                </tree>
+            </field>
+        </record>
 
-		<record id="view_bankimport_filters_form" model="ir.ui.view">
-			<field name="name">account.bankimport.filters.form</field>
-			<field name="model">account.bankimport.filters</field>
-			<field name="arch" type="xml">
-				<form string="Bank Statement Filters">
-					<field name="name"/>
-					<field name="filter"/>
-					<field name="active"/>
-				</form>
-			</field>
-		</record>
+        <record id="view_bankimport_filters_form" model="ir.ui.view">
+            <field name="name">account.bankimport.filters.form</field>
+            <field name="model">account.bankimport.filters</field>
+            <field name="arch" type="xml">
+                <form string="Bank Statement Filters">
+                    <field name="name"/>
+                    <field name="filter"/>
+                    <field name="active"/>
+                    <field name="def_bank_journal_id"/>
+                    <field name="def_payable_id"/>
+                    <field name="def_receivable_id"/>
+                    <field name="def_awaiting_id"/>
+                    <field name="def_date_format"/>
+                </form>
+            </field>
+        </record>
 
-		<record id="view_bankimport_filters_filter" model="ir.ui.view">
-			<field name="name">account.bankimport.filters.form</field>
-			<field name="model">account.bankimport.filters</field>
-			<field name="arch" type="xml">
-				<search string="Bank Statement Filters">
-					<field name="name"/>
-					<field name="filter"/>
-					<filter name="active" string="Actives" domain="[('active', '=', True)]"/>
-					<filter name="not_active" string="Not Actives" domain="[('active', '=', False)]"/>
-				</search>
-			</field>
-		</record>
+        <record id="view_bankimport_filters_filter" model="ir.ui.view">
+            <field name="name">account.bankimport.filters.form</field>
+            <field name="model">account.bankimport.filters</field>
+            <field name="arch" type="xml">
+                <search string="Bank Statement Filters">
+                    <field name="name"/>
+                    <field name="filter"/>
+                    <filter name="active" string="Actives" domain="[('active', '=', True)]"/>
+                    <filter name="not_active" string="Not Actives" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
 
         <record id="action_bankimport_filters" model="ir.actions.act_window">
             <field name="name">Bank Statement Filters</field>
@@ -47,28 +57,28 @@
             <field name="view_id" ref="view_bankimport_filters_tree"/>
             <field name="search_view_id" ref="view_bankimport_filters_filter"/>
             <field name="domain">['|',('active', '=', True),('active', '=', False)]</field>
-			<field name="context">{'search_default_active':1, 'search_default_not_active':1}</field>
+            <field name="context">{'search_default_active':1, 'search_default_not_active':1}</field>
         </record>
 
-		<menuitem id="bankimport_filters" parent="account.menu_configuration_misc" action="action_bankimport_filters"/>
+        <menuitem id="bankimport_filters" parent="account.menu_configuration_misc" action="action_bankimport_filters"/>
 	
-		<record model="ir.ui.view" id="view_company_for_bankimport">
-			<field name="name">res.company.form</field>
-			<field name="model">res.company</field>
-			<field name="inherit_id" ref="base.view_company_form"/>
-			<field name="type">form</field>
-			<field name="arch" type="xml">
-				<field name="currency_id" position="after">
-					<separator string="Import Bank Statements" colspan="4"/>
-					<field name="def_bank_journal_id"/>
-					<field name="def_payable_id"/>
-					<field name="def_receivable_id"/>
-					<field name="def_awaiting_id"/>
-					<field name="def_filter_id"/>
-					<field name="def_date_format"/>
-				</field>
-			</field>
-		</record>
+        <record model="ir.ui.view" id="view_company_for_bankimport">
+            <field name="name">res.company.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="after">
+                    <separator string="Import Bank Statements" colspan="4"/>
+                    <field name="def_bank_journal_id"/>
+                    <field name="def_payable_id"/>
+                    <field name="def_receivable_id"/>
+                    <field name="def_awaiting_id"/>
+                    <field name="def_filter_id"/>
+                    <field name="def_date_format"/>
+                </field>
+            </field>
+        </record>
 
         <record id="view_account_config_settings" model="ir.ui.view">
             <field name="name">account settings</field>
@@ -79,6 +89,16 @@
 					<group name="bank_import" position="after">
                         <label for="id" string="Bank Statement import"/>
                         <div>
+                            <div>
+                                <label for="def_filter_id"/>
+                                <field name="def_filter_id"
+                                    class="oe_inline" widget="selection"
+                                    on_change="onchange_filter_id(def_filter_id, company_id, context)"/>
+                                <button name="open_filters_form" type="object"
+                                    string="Configure your company bank import filters"
+                                    icon="gtk-go-forward"
+                                    class="oe_inline oe_link"/>
+                            </div>
                             <div>
                                 <label for="def_bank_journal_id"/>
 								<field name="def_bank_journal_id" class="oe_inline"/>
@@ -98,13 +118,6 @@
                             <div>
                                 <label for="def_date_format"/>
 								<field name="def_date_format" class="oe_inline"/>
-                    		</div>
-                            <div>
-                                <label for="def_filter_id"/>
-								<field name="def_filter_id" class="oe_inline" widget="selection"/>
-                                <button name="open_filters_form" type="object"
-                                    string="Configure your company bank import filters" icon="gtk-go-forward"
-                                    class="oe_inline oe_link"/>
                     		</div>
                         </div>
                     </group>

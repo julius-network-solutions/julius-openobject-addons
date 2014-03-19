@@ -31,17 +31,35 @@ class account_bankimport_filters(orm.Model):
         'filter': fields.char('Filtername', size=64, required=True),
         'name': fields.char('Filename', size=128, required=True),
         'active': fields.boolean('Active'),
+        'def_bank_journal_id': fields.many2one('account.journal',
+                                                'Default Bank Journal'),
+        'def_payable_id': fields.many2one('account.account',
+                                           'Default Payable Account',
+                                           domain=[('type','=','payable')]),
+        'def_receivable_id': fields.many2one('account.account',
+            'Default Receivable Account', domain=[('type','=','receivable')]),
+        'def_awaiting_id': fields.many2one('account.account',
+            'Default Account for Unrecognized Movement',
+            domain=[('type','=','liquidity')]),
+        'def_date_format': fields.char('Default Date Format', size=32),
     }
     
 # Save data for each company
 class res_company(orm.Model):
     _inherit = 'res.company'
     _columns = {
-        'def_bank_journal_id' :  fields.many2one('account.journal', 'Default Bank Journal'),
-        'def_payable_id' :  fields.many2one('account.account', 'Default Payable Account', domain=[('type','=','payable')]),
-        'def_receivable_id' :  fields.many2one('account.account', 'Default Receivable Account', domain=[('type','=','receivable')]),
-        'def_awaiting_id' :  fields.many2one('account.account', 'Default Account for Unrecognized Movement', domain=[('type','=','liquidity')]),
-        'def_filter_id': fields.many2one('account.bankimport.filters', 'Default Filter'),
+        'def_bank_journal_id': fields.many2one('account.journal',
+                                                'Default Bank Journal'),
+        'def_payable_id': fields.many2one('account.account',
+                                           'Default Payable Account',
+                                           domain=[('type','=','payable')]),
+        'def_receivable_id': fields.many2one('account.account',
+            'Default Receivable Account', domain=[('type','=','receivable')]),
+        'def_awaiting_id':  fields.many2one('account.account',
+            'Default Account for Unrecognized Movement',
+            domain=[('type','=','liquidity')]),
+        'def_filter_id': fields.many2one('account.bankimport.filters',
+                                         'Default Filter'),
         'def_date_format': fields.char('Default Date Format', size=32),
     }
 
