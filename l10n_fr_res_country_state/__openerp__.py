@@ -20,19 +20,21 @@
 #################################################################################
 
 {
-    "name" : "France - States",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
+    "name": "France - States",
+    "version": "1.0",
+    "author": "Julius Network Solutions",
     "website": "http://www.julius.fr",
-    "category" : "Localisation",
+    "category": "Localisation",
     "description": """
-    This module adds states for France into res_country_state Object.
+States for the France
+=====================
+This module adds the states (departements) for France into res_country_state Object.
     """,
-    "depends" : [
+    "depends": [
         'base',
     ],
-    "demo" : [],
-    "data" : [
+    "demo": [],
+    "data": [
         "data/res.country.state.csv",
     ],
     "test": [],

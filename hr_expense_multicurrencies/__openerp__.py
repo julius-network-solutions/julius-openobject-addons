@@ -30,7 +30,9 @@
         "hr_expense"
     ],
     "description": """
-    HR Expense - Multi Currencies, allow you to use multiple currencies in one expense.
+HR Expense - Multi Currencies
+=============================
+Allows you to use multiple currencies in one expense.
     """,
     "demo" : [],
     "data" : [

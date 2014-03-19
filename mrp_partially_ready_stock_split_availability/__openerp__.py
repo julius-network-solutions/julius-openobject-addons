@@ -20,22 +20,23 @@
 #################################################################################
 
 {
-    "name" : "Link between MRP Partial and Split Availability",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
+    "name": "Link between MRP Partial and Split Availability",
+    "version": "0.1",
+    "author": "Julius Network Solutions",
     "description" : """
 Link between 2 modules
 ======================
 * MRP production partially ready to produce
 * Stock split availability
     """,
-    "website" : "http://www.julius.fr",
-    "depends" : [
+    "website": "http://www.julius.fr",
+    "depends": [
          "mrp_partially_ready",
          'stock_split_availability',
     ],
-    "data" : [],
-    "demo" : [],
+    "data": [],
+    "demo": [],
+    'active': False,
     'installable': True,
     'auto_install': True,
 }

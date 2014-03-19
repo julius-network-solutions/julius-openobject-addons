@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Yannick Vaucher
-#    Copyright 2012 Camptocamp SA
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,9 +19,27 @@
 #
 ##############################################################################
 
-import res_company
-import account
-import res_currency
-import wizard
 
+{
+    'name': 'Google Maps on Customers',
+    'version': '1.0',
+    'category': 'Customer Relationship Management',
+    'description': """
+The module adds Google Map field in partner address.
+====================================================
+
+Using this you can directly :
+* open Google Map from the URL widget.
+* get the journey display from the user's company address to the partner address. 
+""",
+    'author': 'OpenERP SA, Julius Network Solutions',
+    'website': 'http://www.openerp.com',
+    'images': ['images/google_map.jpeg'],
+    'depends': ['base'],
+    'demo': [],
+    'data': [
+       'google_map_view.xml',
+    ],
+    'installable': True,
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

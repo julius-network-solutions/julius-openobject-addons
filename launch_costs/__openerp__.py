@@ -20,12 +20,12 @@
 #################################################################################
 
 {
-    "name" : "Launch Costs",
-    "version" : "0.2",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
+    "name": "Launch Costs",
+    "version": "0.2",
+    "author": "Julius Network Solutions",
+    "website": "http://julius.fr",
+    "category": "Sales Management",
+    "depends": [
         "sale",
         "account",
         'sale_line_link_invoice_line',
@@ -33,14 +33,14 @@
     "description": """
     Module to manage a Launch Costs in sale orders
     """,
-    "demo" : [],
-    "data" : [
+    "demo": [],
+    "data": [
         "sale_view.xml",
         "invoice_view.xml",
         "data/product_data.xml",
     ],
-    'installable' : True,
-    'active' : False,
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -38,7 +38,8 @@
     "data" : [
         "sale_view.xml",
     ],
-    'installable' : True,
+    'installable': True,
+    'auto_install': True,
     'active' : False,
 }
 

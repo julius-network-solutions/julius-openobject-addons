@@ -20,19 +20,19 @@
 #################################################################################
 
 {
-    "name" : "Invoice Grouped From Sale Order",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://www.julius.fr/",
-    "category" : "Sale Management",
-    "depends" : [
+    "name": "Invoice Grouped From Sale Order",
+    "version": "0.1",
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr/",
+    "category": "Sale Management",
+    "depends": [
         "sale",
     ],
-    "description" : """ Invoice Grouped From Sale Order """,
-    "data" : [
+    "description": """ Invoice Grouped From Sale Order """,
+    "data": [
         "invoice_grouped_from_sale_order_view.xml"
     ],
-    "demo" : [],
+    "demo": [],
     "active": False,
     "installable": False,
 }

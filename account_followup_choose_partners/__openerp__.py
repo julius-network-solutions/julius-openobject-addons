@@ -36,7 +36,7 @@ This module will adds a step to send the letters and mails to the customers.
     ],
     'demo': ['account_followup_demo.xml'],
     'installable': True,
-    'auto_install': False,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

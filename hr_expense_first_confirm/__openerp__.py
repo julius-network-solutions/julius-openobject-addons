@@ -30,7 +30,9 @@
         "hr_expense"
     ],
     "description": """
-    HR Expense - First Confirm, add a first confirmation step before submitting to manager.
+HR Expense - First Confirm
+==========================
+Add a first confirmation step before submitting to manager.
     """,
     "demo" : [],
     "data" : [

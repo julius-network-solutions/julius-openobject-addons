@@ -24,7 +24,7 @@
     'version': '0.1',
     'category': 'Base',
     'description': """
-    Get a galery of images with the attached documents on a partner
+    Get a gallery of images with the attached documents on a partner
     """,
     'author': 'Julius Network Solutions',
     'website': 'http://www.julius.fr/',

@@ -20,23 +20,23 @@
 #################################################################################
 
 {
-    "name" : "Invoice on company",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Account Management",
-    "depends" : [
+    "name": "Invoice on company",
+    "version": "1.0",
+    "author": "Julius Network Solutions",
+    "website": "http://julius.fr",
+    "category": "Account Management",
+    "depends": [
         'account',
     ],
     "description": """
     Invoice are now only available for Partner Company
     """,
-    "demo" : [],
-    "data" : [
+    "demo": [],
+    "data": [
         'invoice_view.xml',
     ],
-    'installable' : True,
-    'active' : False,
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
