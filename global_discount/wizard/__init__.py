@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,31 +19,6 @@
 #
 ###############################################################################
 
-{
-    "name": "Global Discount",
-    "summary": "Global discount on sale orders",
-    "version": "0.4",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "depends": [
-        "sale",
-        "stock",
-    ],
-    "description": """
-Global discount on a sale order
-===============================
-Module to manage a global discount in sale orders
-
-This module will add a field in the sale order, and it will work as the module "delivery" works.
-    """,
-    "demo": [],
-    "data": [
-        "sale_view.xml",
-        "data/product_data.xml",
-    ],
-    'installable': True,
-    'active': False,
-}
+import sale_line_invoice
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
