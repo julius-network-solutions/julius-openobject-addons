@@ -21,6 +21,7 @@
 
 {
     "name" : "Financial Discount",
+    "summary": "Financial discount on sale orders",
     "version" : "0.2",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
@@ -30,7 +31,11 @@
         "stock",
     ],
     "description": """
-    Module to manage a financial discount in sale orders
+Financial discount on a sale order
+===============================
+Module to manage a financial discount in sale orders
+
+This module will add a field in the sale order, and it will work as the module "delivery" works.
     """,
     "demo" : [],
     "data" : [

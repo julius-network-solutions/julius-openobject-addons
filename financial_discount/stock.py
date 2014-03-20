@@ -104,7 +104,7 @@ class account_invoice_line(orm.Model):
     _inherit = "account.invoice.line"
 
     _columns = {
-            'financial_discount' : fields.boolean('Financial Discount'),
+        'financial_discount': fields.boolean('Financial Discount'),
     }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
