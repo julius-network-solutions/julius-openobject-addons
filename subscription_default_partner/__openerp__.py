@@ -37,7 +37,7 @@ This module allows to get the partner linked to the subscription as default valu
     'data': [],
     'demo': [],
     'active': False,
-    'installable': True,
+    'installable': False,
     'images': [],
 }
 

@@ -35,7 +35,7 @@ This module will adds a step to send the letters and mails to the customers.
         'wizard/account_followup_print_view.xml',
     ],
     'demo': ['account_followup_demo.xml'],
-    'installable': True,
+    'installable': False,
     'active': False,
 }
 

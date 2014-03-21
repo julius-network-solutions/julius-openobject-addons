@@ -38,7 +38,7 @@ This module adds a "Display all" filter to show/hide fields for the analytic lin
         "account_analytic_line_view.xml",
     ],
     "demo": [],
-    "installable": True,
+    "installable": False,
     "active": False,
 }
 

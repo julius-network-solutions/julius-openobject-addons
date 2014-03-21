@@ -42,7 +42,7 @@
         "product_view.xml",
         "procurement_view.xml",
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

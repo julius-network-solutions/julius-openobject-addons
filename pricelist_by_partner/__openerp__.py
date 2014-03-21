@@ -41,7 +41,7 @@
         'wizard/clean_pricelist_data_view.xml',
         'scheduler_data.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

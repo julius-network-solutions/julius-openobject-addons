@@ -38,7 +38,7 @@
         'product_view.xml',
         'partner_view.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

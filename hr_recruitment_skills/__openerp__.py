@@ -54,7 +54,7 @@ By default you will not found any of them when clicking on the button.
     "data" : [
         "hr_view.xml",
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

@@ -37,7 +37,7 @@
     "data" : [
          'purchase_view.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

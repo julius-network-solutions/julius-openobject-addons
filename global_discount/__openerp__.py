@@ -42,7 +42,7 @@ This module will add a field in the sale order, and it will work as the module "
         "sale_view.xml",
         "data/product_data.xml",
     ],
-    'installable': True,
+    'installable': False,
     'active': False,
 }
 

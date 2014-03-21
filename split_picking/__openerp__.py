@@ -36,7 +36,7 @@
         'wizard/split_picking_wizard_view.xml',
         'split_picking_view.xml',
     ],
-    'installable': True,
+    'installable': False,
     'active': False,
     'license': 'GPL-3',
 }

@@ -41,7 +41,7 @@ SMS Template module provides:
              "smstemplate_view.xml"
     ],
     "active": False,
-    "installable": True,
+    "installable": False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

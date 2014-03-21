@@ -36,7 +36,7 @@
         "wizard/change_product_name.xml",  
         "product_name.xml",
     ],
-    "installable": True,
+    "installable": False,
     "active": False,
 }
 

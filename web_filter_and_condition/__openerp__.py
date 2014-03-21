@@ -36,7 +36,7 @@
     "demo" : [],
     "data" : [],
     'js': ['static/src/js/*.js'],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

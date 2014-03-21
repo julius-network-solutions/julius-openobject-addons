@@ -37,7 +37,7 @@ This module give the possibility to choose a company for the survey
         "data/survey_security.xml",
         "survey_view.xml",
     ],
-    "installable": True,
+    "installable": False,
     "active": False,
     "category" : "Base extra Modules",
     "test": [],

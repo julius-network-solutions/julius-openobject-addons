@@ -35,7 +35,7 @@
            "wizard/confirmation_view.xml",
     ],
     "demo": [],
-    "installable": True,
+    "installable": False,
     "active": False,
     "category" : "Base extra Modules",
     "test": [],

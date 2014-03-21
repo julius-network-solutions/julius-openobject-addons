@@ -38,7 +38,7 @@ You can define discount inside purchase lines and this discount can be transmitt
     "data" : [
         "purchase_view.xml",
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

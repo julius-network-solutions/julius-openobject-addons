@@ -37,7 +37,7 @@ When display the account, this only return the account code, not the "account co
     "demo": [],
     "data": [],
     "images": ["images/with_name.jpeg","images/without_name.jpeg",],
-    "installable": True,
+    "installable": False,
     "active": False,
 }
 

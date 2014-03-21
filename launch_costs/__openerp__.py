@@ -39,7 +39,7 @@
         "invoice_view.xml",
         "data/product_data.xml",
     ],
-    'installable': True,
+    'installable': False,
     'active': False,
 }
 

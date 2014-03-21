@@ -40,7 +40,7 @@
         "procurement.xml",
         "wizard/schedulers_all_view.xml",
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

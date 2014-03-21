@@ -34,7 +34,7 @@
     """,
     "demo" : [],
     "data" : [],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

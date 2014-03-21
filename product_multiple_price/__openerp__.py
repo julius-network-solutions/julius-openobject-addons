@@ -35,7 +35,7 @@
         'data/decimal_data.xml',
         'product_view.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

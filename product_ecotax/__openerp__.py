@@ -37,7 +37,7 @@
         'product_view.xml',
         'res_country_view.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

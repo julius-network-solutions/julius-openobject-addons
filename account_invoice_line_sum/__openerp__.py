@@ -40,7 +40,7 @@ This module add a sum of invoice line in customer and supplier invoice
         "account_view.xml",
     ],
     'test': [],
-    'installable': True,
+    'installable': False,
     'active': False,
 }
 

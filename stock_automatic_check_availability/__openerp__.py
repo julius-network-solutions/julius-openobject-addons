@@ -36,7 +36,7 @@
         "scheduler_data.xml",
     ],
     "demo" : [],
-    'installable': True,
+    'installable': False,
     'active': False,
 }
 

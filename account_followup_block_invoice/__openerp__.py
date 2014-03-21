@@ -39,7 +39,7 @@
         'account_followup.xml',
         'account_invoice_workflow.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

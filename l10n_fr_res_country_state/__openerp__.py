@@ -39,7 +39,7 @@ This module adds the states (departements) for France into res_country_state Obj
     ],
     "test": [],
     "active": False,
-    "installable": True,
+    "installable": False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

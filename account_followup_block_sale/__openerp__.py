@@ -38,7 +38,7 @@
         'security/group.xml',
         'account_followup.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

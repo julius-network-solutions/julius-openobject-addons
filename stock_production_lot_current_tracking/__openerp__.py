@@ -38,7 +38,7 @@ This module will compute the current tracking of a stock production lot:
     ],
     'data': [],
     'demo': [],
-    'installable': True,
+    'installable': False,
     'active': False,
 }
 

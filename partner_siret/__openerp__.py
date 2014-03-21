@@ -38,7 +38,7 @@
         "partner_view.xml",
         "lead_view.xml",
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

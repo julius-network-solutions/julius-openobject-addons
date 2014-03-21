@@ -47,7 +47,7 @@ the production order will be "Partially ready to produce" when you've got at lea
     "data": [
         'mrp_view.xml',
     ],
-    'installable': True,
+    'installable': False,
     'active': False,
 }
 

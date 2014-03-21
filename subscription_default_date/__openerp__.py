@@ -40,7 +40,7 @@ This module allows to get the start or the end date of the subscription
     ],
     'demo': [],
     'active': False,
-    'installable': True,
+    'installable': False,
     'images': [],
 }
 

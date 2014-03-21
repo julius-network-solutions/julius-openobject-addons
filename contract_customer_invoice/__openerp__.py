@@ -46,7 +46,7 @@
         'wizard/create_invoice_view.xml',
         'customer_contract_view.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

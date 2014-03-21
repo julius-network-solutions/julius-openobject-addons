@@ -41,7 +41,7 @@
        "product_view.xml",
        "sequence_view.xml",
     ],
-    "installable": True,
+    "installable": False,
     "active": False,
     "category" : "Stock Management",
 }

@@ -39,7 +39,7 @@
         "stock_view.xml",
         "account_view.xml",
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

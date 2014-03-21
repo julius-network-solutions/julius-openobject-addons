@@ -38,7 +38,7 @@
     "data" : [
           "partner.xml",
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

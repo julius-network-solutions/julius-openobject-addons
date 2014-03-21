@@ -35,7 +35,7 @@ which allows to add new features in the default values to copy.
     'data': [],
     'demo': [],
     'active': False,
-    'installable': True,
+    'installable': False,
     'images': [],
 }
 

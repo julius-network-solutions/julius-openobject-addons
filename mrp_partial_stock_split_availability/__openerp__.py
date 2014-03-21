@@ -37,6 +37,7 @@ Link between 2 modules
 """,
     "demo": [],
     "data": [],
+    "installable": False,
     "auto_install": True,
 }
 

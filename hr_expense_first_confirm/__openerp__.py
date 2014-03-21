@@ -38,7 +38,7 @@ Add a first confirmation step before submitting to manager.
     "data" : [
         'hr_expense_view.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

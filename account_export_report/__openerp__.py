@@ -55,7 +55,7 @@ The ability to export the accounting lines records with all the relevant analyti
         "report/account_export_aeroo_view.xml",
         "wizard/account_export_report.xml",
     ],
-    "installable": True,
+    "installable": False,
     "active": False,
 }
 

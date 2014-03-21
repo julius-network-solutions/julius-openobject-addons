@@ -44,7 +44,7 @@ Suitable for all objects, you only have to define the objects for which you want
         "res_config_view.xml",
     ],
     "demo_xml": [],
-    "installable": True,
+    "installable": False,
     "active": False,
     "category" : "Base extra Modules",
     "test": [],

@@ -38,7 +38,7 @@ Allows you to use multiple currencies in one expense.
     "data" : [
         'hr_expense_view.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

@@ -46,7 +46,7 @@ Then, "More > Document Extraction"
     "data" : [
         'document_view.xml'
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

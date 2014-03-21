@@ -39,7 +39,7 @@ Add a fields which enable the display of a tax
         'taxes_view.xml',
     ],
     'test': [],
-    'installable': True,
+    'installable': False,
     'active': False,
 }
 

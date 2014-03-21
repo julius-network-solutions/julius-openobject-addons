@@ -40,7 +40,7 @@
         "asset_data.xml",
         "asset_view.xml",
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 

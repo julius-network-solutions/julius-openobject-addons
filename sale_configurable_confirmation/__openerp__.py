@@ -36,7 +36,7 @@
         'security/ir.model.access.csv',
         'config_view.xml',
     ],
-    'installable' : True,
+    'installable' : False,
     'active' : False,
 }
 
