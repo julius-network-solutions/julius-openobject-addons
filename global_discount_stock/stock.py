@@ -60,11 +60,4 @@ class stock_picking(orm.Model):
                         button_compute(cr, uid, [invoice_id], context=context)
         return res
 
-class account_invoice_line(orm.Model):
-    _inherit = "account.invoice.line"
-
-    _columns = {
-        'global_discount': fields.boolean('Global Discount'),
-    }
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

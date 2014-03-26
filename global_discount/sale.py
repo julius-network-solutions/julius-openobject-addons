@@ -27,6 +27,10 @@ class sale_order(orm.Model):
 
     def _calc_amount_untaxed_discounted(self, cr, uid, ids,
                                         name, args, context=None):
+        """
+        Function computing the untaxed total
+        with discount of sale orders.
+        """
         if context is None:
             context = {}
         res = {}
@@ -39,6 +43,10 @@ class sale_order(orm.Model):
 
     def _calc_amount_tax_discounted(self, cr, uid, ids,
                                     name, args, context=None):
+        """
+        Function computing the taxes total
+        with discount of sale orders.
+        """
         if context is None:
             context = {}
         res = {}
@@ -51,6 +59,10 @@ class sale_order(orm.Model):
 
     def _calc_amount_total_discounted(self, cr, uid, ids,
                                       name, args, context=None):
+        """
+        Function computing the total
+        with discount of sale orders.
+        """
         if context is None:
             context = {}
         res = {}
@@ -61,6 +73,10 @@ class sale_order(orm.Model):
 
     def _check_if_discount(self, cr, uid, ids,
                            name, args, context=None):
+        """
+        Function checking if there is
+        a discount in the sale order.
+        """
         if context is None:
             context = {}
         res = {}

@@ -28,21 +28,21 @@
     "category": "Sales Management",
     "depends": [
         "sale",
-        "stock",
     ],
     "description": """
 Global discount on a sale order
 ===============================
-Module to manage a global discount in sale orders
+Module to manage a global discount in sale orders.
 
-This module will add a field in the sale order, and it will work as the module "delivery" works.
+This module will add a field in the sale order.
+You will get the global discount in the invoice when you will invoice this order.
     """,
     "demo": [],
     "data": [
         "sale_view.xml",
         "data/product_data.xml",
     ],
-    'installable': False,
+    'installable': True,
     'active': False,
 }
 
