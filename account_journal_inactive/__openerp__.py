@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,26 +17,29 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
-    'name': 'Account Journal Inactive',
-    'version': '1.0',
-    'category': 'Accounting & Finance',
-    'description': """
-        This modules allows to inactivate Accounting journals.
+    "name": "Account journal archived",
+    "summary": "Deactivate accounting journals",
+    "version": "1.1",
+    "category": "Accounting & Finance",
+    "description": """
+Deactivate accounting journals
+==============================
+This modules allows to deactivate / archive accounting journals.
     """,
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr',
-    'depends': [
-        'account',
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr",
+    "depends": [
+        "account",
     ],
-    'data': [
-        'account_journal_view.xml',
+    "data": [
+        "account_journal_view.xml",
     ],
-    'demo': [],
-    'installable': False,
-    'active': False,
+    "demo": [],
+    "installable": True,
+    "active": False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

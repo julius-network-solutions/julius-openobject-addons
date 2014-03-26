@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <field name="user_id" position="after">
                     <filter name="open_true" string="Active" domain="[('active', '=', True)]"/>
-                    <filter name="open_false" string="Archive" domain="[('active', '=', False)]"/>
+                    <filter name="open_false" string="Archived" domain="[('active', '=', False)]"/>
                 </field>
             </field>
         </record>
