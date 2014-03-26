@@ -19,7 +19,7 @@
 #
 #################################################################################
 
-from osv import fields, orm
+from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
 class product_name_change(orm.TransientModel):

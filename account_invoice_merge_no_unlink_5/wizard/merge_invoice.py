@@ -19,18 +19,17 @@
 #
 #################################################################################
 
-from osv import fields, osv
-from tools.translate import _
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-class account_invoice_merge(osv.osv_memory):
-    
+class account_invoice_merge(orm.TransientModel):
     _name = 'account.invoice.merge'
-    
+
     _columns = {
         'grouped' : fields.boolean('Sum quantity of lines'),
         'journal_id' : fields.many2one('account.journal', 'Journal'),
     }
-    
+
     def _openForm(self, cr, uid, domain, context=None):
         """
             Invoice is merge then Open the merge Invoice in tree view.
@@ -48,7 +47,7 @@ class account_invoice_merge(osv.osv_memory):
         result = act_obj.read(cr, uid, id, context=context)
         result['domain'] = domain
         return result
-    
+
     def mergeInvoices(self, cr, uid, ids, context=None):
         """
             Call the merge_invoice method of account.invoice object and pass the related parameter.
@@ -60,8 +59,5 @@ class account_invoice_merge(osv.osv_memory):
         invoice_ids = context.get('active_ids') or []
         new_invoice = inv_obj.merge_invoice(cr, uid, invoice_ids, current.grouped, current.journal_id and current.journal_id.id or False, context=context)
         return self._openForm(cr, uid, "[('id','=', "+ str(new_invoice)  +")]",context)
-    
-account_invoice_merge()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
@@ -17,23 +17,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
-
-import time
-from datetime import datetime
-from dateutil import relativedelta
+###############################################################################
 
 from openerp.osv import fields, orm
-from openerp import tools
-from tools import DEFAULT_SERVER_DATE_FORMAT
-from tools.translate import _
-from tools.safe_eval import safe_eval as eval
+from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
-
 
 class hr_expense_expense(orm.Model):
     _inherit = 'hr.expense.expense'
-    
+
     def _amount(self, cr, uid, ids, field_name, arg, context=None):
         res= {}
         for expense in self.browse(cr, uid, ids, context=context):
@@ -44,39 +36,49 @@ class hr_expense_expense(orm.Model):
         return res
 
     _columns = {
-        'amount': fields.function(_amount, string='Total Amount', digits_compute=dp.get_precision('Account')),
+        'amount': fields.function(_amount, string='Total Amount',
+            digits_compute=dp.get_precision('Account')),
     }
-    
+
 class hr_expense_line(orm.Model):
     _inherit = 'hr.expense.line'
-    
+
     def _amount(self, cr, uid, ids, field_name, arg, context=None):
         if context is None:
             context = {}
-        res = super(hr_expense_line, self)._amount(cr, uid, ids, field_name, arg, context=context)
-        for id in ids:
-            if self.browse(cr, uid, id, context=context).currency_rate and self.browse(cr, uid, id, context=context).currency_rate != 0:
-                res[id] = res[id] / self.browse(cr, uid, id, context=context).currency_rate
+        res = super(hr_expense_line, self).\
+            _amount(cr, uid, ids, field_name, arg, context=context)
+        
+        for record in self.browse(cr, uid, ids, context=context):
+            if record.currency_rate and record.currency_rate != 0:
+                res[record.id] /= currency_rate
         return res
-    
+
     def _get_currency_rate(self, cr, uid, ids, field_name, arg, context=None):
-        '''Returns a dictionary with key=the ID of a record and value = the level of this  
-            record in the tree structure.'''
+        """Returns a dictionary with key=the ID of a record
+        and value = the level of this  
+        record in the tree structure."""
         res = {}
         expense_obj = self.pool.get('hr.expense.expense')
         currency_obj = self.pool.get('res.currency')
         for expense_line in self.browse(cr, uid, ids, context=context):
             currency_rate = 0
-            if expense_line.currency_id:
-                if expense_line.currency_id == expense_line.expense_id.currency_id:
+            line_currency = expense_line.currency_id or False
+            expense_currency = expense_line.expense_id.currency_id or False
+            if line_currency:
+                if line_currency.id == expense_currency.id:
                     currency_rate = 1
                 else:
-                    currency_rate = expense_line.currency_id.rate_silent / expense_line.expense_id.currency_id.rate_silent
+                    currency_rate = line_currency.rate_silent / expense_currency.rate_silent
             res[expense_line.id] = currency_rate
         return res
-    
+
     _columns = {
-        'currency_id': fields.many2one('res.currency','Currency'),
-        'currency_rate': fields.function(_get_currency_rate, string='Current Rate', digits=(12,6), store=True),
-        'total_amount': fields.function(_amount, string='Total', digits_compute=dp.get_precision('Account')),
+        'currency_id': fields.many2one('res.currency', 'Currency'),
+        'currency_rate': fields.function(_get_currency_rate,
+            string='Current Rate', digits=(12,6), store=True),
+        'total_amount': fields.function(_amount, string='Total',
+            digits_compute=dp.get_precision('Account')),
     }
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

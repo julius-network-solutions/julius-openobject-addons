@@ -20,7 +20,7 @@
 #################################################################################
 
 from openerp.osv import fields, orm
-from tools.translate import _
+from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
 from datetime import datetime, timedelta
 
@@ -61,7 +61,6 @@ class create_invoice(orm.Model):
         account_invoice_obj = self.pool.get('account.invoice')
         values = account_invoice_obj.onchange_partner_id(cr, uid, ids, type, partner_id)
         account_id = values['value']['account_id']
-        print partner_id
         new_id = account_invoice_obj.create(cr,uid,{
                 'type': type,
                 'contract_id':active_id,

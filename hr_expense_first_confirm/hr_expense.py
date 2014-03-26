@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
@@ -17,19 +17,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
-
-import time
-from datetime import datetime
-from dateutil import relativedelta
+###############################################################################
 
 from openerp.osv import fields, orm
-from openerp import tools
-from tools import DEFAULT_SERVER_DATE_FORMAT
-from tools.translate import _
-from tools.safe_eval import safe_eval as eval
-import openerp.addons.decimal_precision as dp
-
+from openerp.tools.translate import _
 
 class hr_expense_expense(orm.Model):
     _inherit = 'hr.expense.expense'
@@ -54,3 +45,5 @@ class hr_expense_expense(orm.Model):
     _defaults = {
         'confirmed': False,
     }
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

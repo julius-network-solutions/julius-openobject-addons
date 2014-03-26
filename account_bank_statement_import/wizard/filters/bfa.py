@@ -19,10 +19,8 @@
 #
 ##############################################################################
 
-from osv import fields, osv
 import time
 from datetime import datetime
-
 
 def get_data(self, cr, uid, ids, recordlist, data):
     

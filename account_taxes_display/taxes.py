@@ -19,8 +19,8 @@
 #
 #################################################################################
 
-from osv import fields, orm
-from tools.translate import _
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
 class account_tax(orm.Model):
     _inherit = 'account.tax'
@@ -30,7 +30,7 @@ class account_tax(orm.Model):
     _defaults = {
         'hide': lambda *a: False,
     }
-    
+
     def _unit_compute(self, cr, uid, taxes, price_unit, product=None, partner=None, quantity=0):
         res = super(account_tax, self)._unit_compute(cr, uid,  taxes, price_unit, product=product, partner=partner, quantity=quantity)
         for data in res: 
@@ -38,7 +38,7 @@ class account_tax(orm.Model):
             hide = self.browse(cr,uid, tax_id).hide
             data.update({'hide': hide})
         return res
-    
+
     def _unit_compute_inv(self, cr, uid, taxes, price_unit, product=None, partner=None):
         res = super(account_tax, self)._unit_compute_inv(cr, uid,  taxes, price_unit, product=product, partner=partner)
         for data in res: 
@@ -47,13 +47,12 @@ class account_tax(orm.Model):
             data.update({'hide': hide})
         return res
 
-
 class account_invoice_tax(orm.Model):
     _inherit = 'account.invoice.tax'
     _columns = {
         'hide': fields.boolean('Hide'),
     }
-    
+
     def compute(self, cr, uid, invoice_id, context=None):
         res = super(account_invoice_tax, self).compute(cr, uid, invoice_id, context=context)        
         tax_obj = self.pool.get('account.tax')
@@ -73,6 +72,5 @@ class account_invoice_tax(orm.Model):
                 key = (val['tax_code_id'], val['base_code_id'], val['account_id'])
                 res[key].update({'hide': tax['hide']})
         return res
-
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -19,7 +19,7 @@
 #
 #################################################################################
 
-from osv import fields, orm
+from openerp.osv import fields, orm
 from openerp.tools.translate import _
 from openerp import SUPERUSER_ID
 

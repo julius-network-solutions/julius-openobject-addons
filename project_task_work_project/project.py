@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
@@ -17,23 +17,18 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from osv import fields, osv
-from tools.translate import _
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-class project_work(osv.osv):
+class project_work(orm.Model):
     _inherit = "project.task.work"
     _columns = {
-        'project_id': fields.related('task_id', 'project_id', string='Project', type='many2one', relation='project.project', readonly=True),
+        'project_id': fields.related('task_id', 'project_id',
+                                     string='Project', type='many2one',
+                                     relation='project.project',
+                                     readonly=True),
     }
-    
-#    def write(self, cr, uid, ids, vals, context=None):
-#        if not 'user_id' in vals:
-#            vals.update({'user_id': uid})  
-    
-        
-project_work()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

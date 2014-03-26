@@ -19,8 +19,6 @@
 #
 #################################################################################
 
-
-from osv import fields, osv
 import time
 import conversion
 

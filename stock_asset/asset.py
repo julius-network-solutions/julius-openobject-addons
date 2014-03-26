@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
@@ -17,10 +17,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from osv import orm, fields
-from tools.translate import _
+from openerp.osv import orm, fields
+from openerp.tools.translate import _
 
 class product_product(orm.Model):
     _inherit = 'product.product'
@@ -31,11 +31,11 @@ class product_product(orm.Model):
 
 class stock_move(orm.Model):
     _inherit = 'stock.move'
-    
+
     _columns = {
         'generate_asset': fields.boolean('Generate Asset'),
     }
-    
+
     def write(self, cr, uid, ids, vals, context=None):
         user_obj = self.pool.get('res.users')
         model_data = self.pool.get('ir.model.data')
@@ -69,7 +69,10 @@ class stock_move(orm.Model):
                 if category_ids:
                     category_id = category_ids[0]
                 else:
-                    category_id = model_data.get_object_reference(cr, uid, 'stock_asset', 'account_asset_category_misc_operational')[1]
+                    model, category_id = model_data.\
+                        get_object_reference(cr, uid,
+                                             'stock_asset',
+                                             'account_asset_category_misc_operational')
                 # Process #
                 create_vals = {
                     'name': move.product_id.name,
@@ -89,7 +92,7 @@ class stock_move(orm.Model):
                     qty -= 1
                     asset_obj.create(cr, uid, create_vals, context=context)
         return result
-    
+
 class account_asset_asset(orm.Model):
     _inherit = 'account.asset.asset'
 
@@ -99,7 +102,7 @@ class account_asset_asset(orm.Model):
         'prodlot_id': fields.many2one('stock.production.lot', 'Production Lot'),
         'product_id': fields.many2one('product.product', 'Product'),
     }
-    
+
     _sql_constraints = [
         ('prodlot_unique', 'unique (prodlot_id,company_id)', 'This prodlot is already link to an asset !'),
     ]

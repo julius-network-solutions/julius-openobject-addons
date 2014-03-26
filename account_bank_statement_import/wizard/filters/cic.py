@@ -19,12 +19,10 @@
 #
 #################################################################################
 
-from osv import fields, osv
 import time
-import pooler
+from openerp import pooler
 import conversion
-import string
-from tools import DEFAULT_SERVER_DATE_FORMAT
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 
 def get_data(self, cr, uid, ids, recordlist, data):
     

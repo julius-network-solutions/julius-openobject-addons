@@ -19,8 +19,8 @@
 #
 #################################################################################
 
-from osv import osv, fields
-from tools.translate import _
+from openerp.osv import osv, fields
+from openerp.tools.translate import _
 
 class product_product(osv.osv):
     _inherit = 'product.product'

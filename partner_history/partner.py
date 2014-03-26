@@ -19,8 +19,8 @@
 #
 #################################################################################
 
-from osv import fields, orm
-from tools.translate import _
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 from openerp.tools import ustr
 
 class mail_message(orm.Model):

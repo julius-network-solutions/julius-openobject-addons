@@ -32,13 +32,9 @@
 #
 # This filter imports .coda-files (CODA-layout).
 #
-
-
-from osv import fields, osv
 import time
-import pooler
+from openerp import pooler
 import conversion
-
 
 def get_data(self, cr, uid, ids, recordlist):
     

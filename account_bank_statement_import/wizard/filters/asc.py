@@ -33,11 +33,9 @@
 # This filter imports .asc-files (BRI-layout).
 #
 
-from osv import fields, osv
 import time
-import pooler
+from openerp import pooler
 import conversion
-import string
 
 def get_data(self, cr, uid, ids,  bankData, bank_statement):
 	   

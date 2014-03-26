@@ -19,13 +19,12 @@
 #
 #################################################################################
 
-from osv import fields, orm
-import time
+from openerp.osv import fields, orm
 
 class document_page(orm.Model):
     _inherit = 'document.page'
     _columns = {
         'meeting_report':fields.text('meeting'),
     }
-    
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

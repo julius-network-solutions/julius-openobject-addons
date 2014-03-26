@@ -19,7 +19,7 @@
 #
 #################################################################################
 
-from osv import fields, osv, orm
+from openerp.osv import fields, orm
 
 class account_export_report(orm.Model):
     _name = "account.export.report"

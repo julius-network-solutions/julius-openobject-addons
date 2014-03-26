@@ -19,8 +19,8 @@
 #
 #################################################################################
 
-from osv import fields, orm
-from tools.translate import _
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
 class res_partner(orm.Model):
     _inherit = 'res.partner'

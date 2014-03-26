@@ -20,7 +20,7 @@
 #################################################################################
 
 from openerp.osv import fields, orm, osv
-from tools.translate import _
+from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
 from datetime import datetime, timedelta
 

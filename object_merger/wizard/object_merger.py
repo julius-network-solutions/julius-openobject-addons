@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
@@ -17,7 +17,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
@@ -38,16 +38,17 @@ class object_merger(orm.TransientModel):
                 context=None, toolbar=False, submenu=False):
         if context is None:
             context = {}
-        res = super(object_merger, self).fields_view_get(cr, uid, view_id, view_type,
-                                    context=context, toolbar=toolbar, submenu=False)
+        res = super(object_merger, self).\
+            fields_view_get(cr, uid, view_id, view_type,
+                            context=context, toolbar=toolbar, submenu=False)
         object_ids = context.get('active_ids',[])
         active_model = context.get('active_model')
         field_name = 'x_' + (active_model and active_model.replace('.','_') or '') + '_id'
         if object_ids:
             view_part = """<label for='"""+field_name+"""'/>
-                        <div>
-                            <field name='""" + field_name +"""' required="1" domain="[(\'id\', \'in\', """ + str(object_ids) + """)]"/>
-                        </div>"""
+                    <div>
+                        <field name='""" + field_name +"""' required="1" domain="[(\'id\', \'in\', """ + str(object_ids) + """)]"/>
+                    </div>"""
 #                            <field name='""" + field_name +"""' domain="[(\'id\', \'in\', '""" + str(object_ids) + """')]"/>'
             res['arch'] = res['arch'].decode('utf8').replace(
                     """<separator string="to_replace"/>""", view_part)
@@ -78,14 +79,13 @@ class object_merger(orm.TransientModel):
         model_pool = self.pool.get(active_model)
         object_ids = context.get('active_ids',[])
         field_to_read = context.get('field_to_read')
-        fields = field_to_read and [field_to_read] or []
-        object = self.read(cr, uid, ids[0], fields, context=context)
-        if object and fields and object[field_to_read]:
+        field_list = field_to_read and [field_to_read] or []
+        object = self.read(cr, uid, ids[0], field_list, context=context)
+        if object and field_list and object[field_to_read]:
             object_id = object[field_to_read][0]
         else:
             raise orm.except_orm(_('Configuration Error!'),
                  _('Please select one value to keep'))
-        # For one2many fields on res.partner
         cr.execute("SELECT name, model FROM ir_model_fields WHERE relation=%s and ttype not in ('many2many', 'one2many');", (active_model, ))
         for name, model_raw in cr.fetchall():
             if hasattr(self.pool.get(model_raw), '_auto'):
@@ -95,7 +95,6 @@ class object_merger(orm.TransientModel):
                 continue
             else:
                 if hasattr(self.pool.get(model_raw), '_columns'):
-                    from osv import fields
                     if self.pool.get(model_raw)._columns.get(name, False) and \
                             (isinstance(self.pool.get(model_raw)._columns[name], fields.many2one) \
                             or isinstance(self.pool.get(model_raw)._columns[name], fields.function) \

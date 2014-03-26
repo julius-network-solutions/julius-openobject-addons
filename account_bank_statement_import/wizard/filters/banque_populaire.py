@@ -21,8 +21,6 @@
 #
 # This filter imports .coda-files (CODA-layout).
 #
-
-from osv import fields, osv
 import time
 import conversion
 
