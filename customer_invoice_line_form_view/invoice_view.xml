@@ -7,6 +7,7 @@
             <field name="name">account.invoice.form.inherit</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="priority">20</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='invoice_line']/tree" position="attributes">
                     <attribute name="editable" eval="False" />
