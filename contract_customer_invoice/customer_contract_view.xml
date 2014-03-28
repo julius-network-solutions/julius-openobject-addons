@@ -52,28 +52,6 @@
                 </page>
             </field>
         </record>
-        <!--<record id="view_account_analytic_account_form_inherit_2" model="ir.ui.view">
-            <field name="name">account.analytic.account.form.inherit</field>
-            <field name="model">account.analytic.account</field>
-            <field name="inherit_id" ref="hr_timesheet_invoice.account_analytic_account_form_form"/>
-            <field name="arch" type="xml">
-                <field name="state" position="attributes">
-                	<attribute name="invisible">1</attribute>
-				</field>
-                <button name="set_cancel" position="attributes">
-                	<attribute name="invisible">1</attribute>
-				</button>
-                <button name="set_open" position="attributes">
-                	<attribute name="invisible">1</attribute>
-				</button>                
-				<button name="set_pending" position="attributes">
-                	<attribute name="invisible">1</attribute>
-				</button>                
-				<button name="set_close" position="attributes">
-                	<attribute name="invisible">1</attribute>
-				</button>            
-			</field>
-        </record>-->
 
 	    <!-- Invoice -->
         <record id="view_account_invoice_form_inherit" model="ir.ui.view">
