@@ -22,39 +22,33 @@
 #
 ##############################################################################
 
-from osv import osv
-from osv import fields
-from tools.translate import _
-import netsvc
+from openerp.osv import orm, fields
+from openerp.tools.translate import _
+from openerp import netsvc
 
-
-class account_invoice(osv.osv):
+class account_invoice(orm.Model):
     _inherit = "account.invoice"
 
-#    _columns = {
-#        'type': fields.selection([
-#            ('out_invoice','Customer Invoice'),
-#            ('in_invoice','Supplier Invoice'),
-#            ('out_refund','Customer Refund'),
-#            ('in_refund','Supplier Refund'),
-#            ],'Type', readonly=True, select=True),
-#        'state': fields.selection([
-#            ('draft','Draft'),
-#            ('proforma','Pro-forma'),
-#            ('proforma2','Pro-forma'),
-#            ('open','Open'),
-#            ('paid','Done'),
-#            ('cancel','Cancelled')
-#        ],'State', select=True, readonly=True),
-#    }
     _columns = {
-        'merged_invoice_id': fields.many2one('account.invoice', 'Merged Invoice', readonly=True ),
+        'merged_invoice_id': fields.many2one('account.invoice',
+                                            'Merged Invoice',
+                                            readonly=True),
     }
 
     def __init__(self, pool, cr):
-        self._columns['state'].selection.extend([('merged', 'Merged')])
+        if self._columns.get('state'):
+            add_item = True
+            for (a,b) in self._columns['state'].selection:
+                if a == 'merged':
+                    add_item = False
+            if add_item:
+                new_selection = []
+                for (a,b) in self._columns['state'].selection:
+                    if a == 'merged':
+                        new_selection.extend([('merged', _('Merged'))])
+                    new_selection.extend([(a,b)])
+                self._columns['state'].selection = new_selection
         super(account_invoice, self).__init__(pool, cr)
-
 
     def merge_invoice(self, cr, uid, ids, merge_lines=False, journal_id=False, context=None):
         """ Merge draft invoices. Work only with same partner
@@ -71,7 +65,8 @@ class account_invoice(osv.osv):
         sql = "SELECT DISTINCT type, state, partner_id FROM account_invoice WHERE id IN (%s)" % ','.join(map(str, ids))
         cr.execute(sql)
         if len(cr.fetchall()) != 1:
-            raise osv.except_osv(_('Invalid action !'), _('Can not merge invoice(s) on different partners or states !'))
+            raise orm.except_orm(_('Invalid action !'),
+                                 _('Can not merge invoice(s) on different partners or states !'))
         merged_inv_id = 0
         inv_line_obj = self.pool.get('account.invoice.line')
         default = {}
@@ -79,7 +74,7 @@ class account_invoice(osv.osv):
             default = {'journal_id': journal_id}
         for inv in self.browse(cr, uid, ids, context):
             if inv.state != 'draft':
-                raise osv.except_osv(_('Invalid action !'), _('Can not merge invoice(s) that are already opened or paid !'))
+                raise orm.except_orm(_('Invalid action !'), _('Can not merge invoice(s) that are already opened or paid !'))
             if merged_inv_id == 0:
                 merged_inv_id = self.copy(cr, uid, inv.id, default=default, context=context)
                 wf_service = netsvc.LocalService("workflow")
@@ -109,19 +104,21 @@ class account_invoice(osv.osv):
         return merged_inv_id
 
     def unlink(self, cr, uid, ids, context=None):
-        invoices = self.read(cr, uid, ids, ['state'])
+        if context is None:
+            context = {}
+        invoices = self.read(cr, uid, ids, ['state'], context=context)
         unlink_ids = []
         for t in invoices:
             if t['state'] in ('draft', 'cancel', 'merged'):
                 unlink_ids.append(t['id'])
             else:
-                raise osv.except_osv(_('Invalid action !'), _('Cannot delete invoice(s) that are already opened or paid !'))
-        osv.osv.unlink(self, cr, uid, unlink_ids, context=context)
-        return True
+                raise orm.except_orm(_('Invalid action !'),
+                                     _('Cannot delete invoice(s) that are already opened or paid !'))
+        res = super(account_invoice, self).\
+            unlink(self, cr, uid, unlink_ids, context=context)
+        return res
 
-account_invoice()
-
-class account_invoice_line(osv.osv):
+class account_invoice_line(orm.Model):
     _inherit = "account.invoice.line"
 
     def _can_merge_quantity(self, cr, uid, id1, id2, context=None):
@@ -142,11 +139,15 @@ class account_invoice_line(osv.osv):
                 and invl1.invoice_line_tax_id == invl2.invoice_line_tax_id:
             qty = invl1.quantity + invl2.quantity
         return qty
-    
+
     _columns = {
-        'invoice_line_sale_id': fields.many2many('sale.order.line', 'sale_order_line_invoice_rel', 'invoice_id', 'order_line_id', 'Sale Order lines'),
+        'invoice_line_sale_id': fields.many2many(
+            'sale.order.line',
+            'sale_order_line_invoice_rel',
+            'invoice_id', 'order_line_id',
+            'Sale Order lines'),
     }
-    
+
     def copy(self, cr, uid, ids, default=None, context=None):
         if default == None:
             default = {}
@@ -155,8 +156,7 @@ class account_invoice_line(osv.osv):
         line_ids = self.read(cr, uid, ids, ['invoice_line_sale_id'])['invoice_line_sale_id']
 
         default.update({'invoice_line_sale_id': [(6,0, line_ids)]})
-        return super(account_invoice_line, self).copy(cr, uid, ids, default=default, context=context)
-
-account_invoice_line()
+        return super(account_invoice_line, self).\
+            copy(cr, uid, ids, default=default, context=context)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
