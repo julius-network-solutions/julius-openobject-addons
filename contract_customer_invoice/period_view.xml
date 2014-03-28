@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- Tree View Editable for Periods in contract -->
+        <record model="ir.ui.view" id="view_period_tree"> 
+            <field name="name">period.contract.tree</field>
+            <field name="model">period.contract</field>
+            <field name="arch" type="xml">
+                <tree string="period" editable="top">
+                    <field name="name"/>
+                    <field name="from_dt" required="1"/>
+                    <field name="to_dt" required="1"/>
+                    <field name="guaranteed"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>

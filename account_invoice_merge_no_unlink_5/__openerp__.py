@@ -27,28 +27,27 @@
 ##############################################################################
 
 {
-    "name" : "Account invoice merge no unlink",
-    "version" : "0.2",
-    "author" : "Syleam , Julius Network Solutions",
-    "website" : "http://www.syleam.fr/ , http://www.julius.fr/",
-    "category" : "Generic Modules/Accounting",
+    "name": "Account invoice merge no unlink",
+    "version": "0.2",
+    "author": "Syleam , Julius Network Solutions",
+    "website": "http://www.syleam.fr/ , http://www.julius.fr/",
+    "category": "Generic Modules/Accounting",
     "description": """
 
 Wizard to merge draft invoices.
 
 """,
-    "depends" : [
+    "depends": [
         "base",
         "account",
+        "sale",
     ],
-    "init_xml" : [
-                ],
-    "update_xml" : [
+    "data": [
         "workflow/workflow.xml",
         "wizard/invoice_merge_view.xml",
         "account_invoice_view.xml",
     ],
-    "demo_xml" : ["data/account_demo.xml"],
+    "demo": ["data/account_demo.xml"],
     "active": False,
     "installable": True,
 }

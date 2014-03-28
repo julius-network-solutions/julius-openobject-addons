@@ -19,33 +19,4 @@
 #
 ###############################################################################
 
-{
-    "name": "Contract and product linked for invoice",
-    "version": "1.0",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Account",
-    "depends": [
-        "account",
-        "analytic",
-        "product",
-    ],
-    "description": """
-        Add new fields relation in analytic account (contract)
-        Create several display rules in order to ensure the 
-        exclusivity of a contract linked product in invoicing.
-    """,
-    "demo": [],
-    "data": [
-        "security/contract_security.xml",
-        "security/ir.model.access.csv",
-        "wizard/create_invoice_view.xml",
-        "period_view.xml",
-        "analytic_view.xml",
-        "invoice_view.xml",
-    ],
-    "installable": True,
-    "active": False,
-}
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

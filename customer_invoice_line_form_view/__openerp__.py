@@ -20,28 +20,25 @@
 ###############################################################################
 
 {
-    "name": "Contract and product linked for invoice",
+    "name": "Customer Invoice lines in form view",
+    "summary": "Create your customer invoice lines in form view",
     "version": "1.0",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "category": "Account",
     "depends": [
         "account",
-        "analytic",
-        "product",
     ],
     "description": """
-        Add new fields relation in analytic account (contract)
-        Create several display rules in order to ensure the 
-        exclusivity of a contract linked product in invoicing.
+Customer Invoice lines in form view
+===================================
+When you will install this module, this will change
+the default customer invoice line input.
+To create a new line, this will open a form view instead of
+creating lines in tree view. 
     """,
     "demo": [],
     "data": [
-        "security/contract_security.xml",
-        "security/ir.model.access.csv",
-        "wizard/create_invoice_view.xml",
-        "period_view.xml",
-        "analytic_view.xml",
         "invoice_view.xml",
     ],
     "installable": True,

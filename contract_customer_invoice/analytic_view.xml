@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- Form View contract -->
+        <record id="view_account_analytic_account_form_inherit" model="ir.ui.view">
+            <field name="name">account.analytic.account.form.inherit</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="active"/>
+                </field>
+                <field name="code" position="attributes">
+                	<attribute name="readonly">0</attribute>
+                </field>
+                <field name="date_start" position="attributes">
+                    <attribute name="invisible">1</attribute>   
+				</field>
+                <field name="date" position="attributes">
+                    <attribute name="invisible">1</attribute>   
+                </field>
+                <field name="date" position="after">
+                    <field name="client_num"/>
+                    <field name="sap_number"/>
+                    <field name="payment_term_id"/>
+                </field>
+                <page string="Contract Information" position="after">
+            		<page string="Periods">
+            			<field name="period_ids" nolabel="1"/>
+            		</page>
+            		<page string="Invoices">
+            			<field name="invoice_ids" nolabel="1"/>
+            		</page>
+            		<page string="Products">
+            			<field name="product_ids" nolabel="1"/>
+            		</page>
+                </page>
+            </field>
+        </record>
+
+    </data>
+</openerp>
