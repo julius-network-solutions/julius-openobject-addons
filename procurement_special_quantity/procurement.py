@@ -75,6 +75,7 @@ class procurement_order(orm.Model):
             context = {}
         special_ids = []
         move_obj = self.pool.get('stock.move')
+        company_obj = self.pool.get('res.company')
         wf_service = netsvc.LocalService("workflow")
         res = []
         for procurement in self.browse(cr, uid, ids, context=context):
@@ -186,13 +187,19 @@ class procurement_order(orm.Model):
                                 }
                                 if context.get('date_procurement_compute') \
                                     and procurement.procurement_date:
-                                    from_dt = datetime.strptime(context.get('date_procurement_compute'), DEFAULT_SERVER_DATE_FORMAT)
-                                    to_dt = datetime.strptime(procurement.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
+                                    from_dt = datetime.strptime(context.get('date_procurement_compute'),
+                                                                DEFAULT_SERVER_DATE_FORMAT)
+                                    to_dt = datetime.strptime(procurement.date_planned,
+                                                              DEFAULT_SERVER_DATETIME_FORMAT)
                                     date_percentage = (procurement.product_id and \
                                         (procurement.product_id.date_percentage or \
                                         procurement.product_id.company_id and \
-                                        procurement.product_id.company_id.date_percentage) \
-                                        or company.date_percentage or (2/3 * 100)) / 100
+                                        procurement.product_id.company_id.date_percentage)) or False
+                                    if not date_percentage:
+                                        company = company_obj.\
+                                            _company_default_get(cr, uid, context=context) \
+                                            or False
+                                        date_percentage = company.date_percentage or (2/3 * 100) / 100
                                     procurement_date = self._get_newdate_value(cr, uid, from_dt, to_dt, date_percentage, context=context)
                                     procurement_date = procurement_date.strftime(DEFAULT_SERVER_DATE_FORMAT)
                                     default = {
