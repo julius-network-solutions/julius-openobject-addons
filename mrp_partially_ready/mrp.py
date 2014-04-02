@@ -93,7 +93,7 @@ class mrp_production(orm.Model):
                           quantity_ready, context=None):
         if context is None: context = {}
         move_obj = self.pool.get('stock.move')
-        move_obj.write(cr, uid, [production.move_prod_id.id], {
+        move_obj.write(cr, uid, [move_id], {
             'product_qty': quantity_ready,
             'product_uos_qty': quantity_ready,
             }, context=context)
