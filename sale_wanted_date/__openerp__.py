@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,28 +17,31 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
-    "name" : "Sale Module Wanted Date",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
-        'sale',
-        'sale_stock',
+    "name": "Sale Module Wanted Date",
+    "summary": "Add a Wanted Date into sale order lines",
+    "version": "0.1",
+    "author": "Julius Network Solutions",
+    "website": "http://julius.fr",
+    "category": "Sales Management",
+    "depends": [
+        "sale",
+        "sale_stock",
     ],
     "description": """
-    Sale Module.
-    Adds to the sale order line a wanted date
+Inherit Sale Module.
+====================
+
+Adds to the sale order line a wanted date
     """,
-    "demo" : [],
-    "data" : [
+    "demo": [],
+    "data": [
         "sale_view.xml",
     ],
-    'installable' : True,
-    'active' : False,
+    "installable": True,
+    "active": False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
