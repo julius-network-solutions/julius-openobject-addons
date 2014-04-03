@@ -128,6 +128,7 @@ class procurement_order(orm.Model):
             stock_move_obj = self.pool.get('stock.move')
             for procurement in procurement_obj.browse(cr, uid, special_ids, context=context):
                 if procurement.product_qty:
+                    state = procurement.move_id.state
                     res_id = procurement.move_id.id
                     # We get here the procurement date
                     newdate_str = self._get_date_from_procurement(cr, uid, procurement, context=context)
@@ -156,10 +157,10 @@ class procurement_order(orm.Model):
                     bom_result = production_obj.action_compute(cr, uid,
                         [produce_id], properties = [x.id for x in procurement.property_ids])
                     wf_service.trg_validate(uid, 'mrp.production', produce_id, 'button_confirm', cr)
-                    if res_id:
+                    if res_id and not state == 'done':
                         stock_move_obj.write(cr, uid,
                                              [res_id], {
-                                             'location_id': procurement.location_id.id
+                                             'location_id': procurement.location_id.id,
                                              }, context=context)
                     self.production_order_create_note(cr, uid, special_ids, context=context)
                     
