@@ -22,7 +22,7 @@
 {
     "name" : "Financial Discount",
     "summary": "Financial discount on sale orders",
-    "version" : "0.2",
+    "version" : "0.3",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
     "category" : "Sales Management",
