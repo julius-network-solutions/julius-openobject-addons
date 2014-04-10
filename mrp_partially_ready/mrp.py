@@ -122,6 +122,7 @@ class mrp_production(orm.Model):
                 quantity_left_to_do = quantity_total - quantity_done
                 quantity_ready = production.product_qty_ready
                 quantity_to_do = quantity_left_to_do - quantity_ready
+                new_move_id = False
                 if quantity_to_do > 0:
                     if production.move_prod_id:
                         new_move_id = self.\
