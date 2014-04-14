@@ -48,6 +48,18 @@ class hr_expense_expense(orm.Model):
     
     _columns = {
         'confirmed': fields.boolean('Confirmed'),
+        'state': fields.selection([
+            ('draft', 'New'),
+            ('cancelled', 'Refused'),
+            ('confirm', 'Waiting Approval'),
+            ('accepted', 'Approved'),
+            ('done', 'Validated'),
+            ('paid', 'Paid'),
+            ],
+            'Status', readonly=True, track_visibility='onchange',
+            help='When the expense request is created the status is \'Draft\'.\n It is confirmed by the user and request is sent to admin, the status is \'Waiting Confirmation\'.\
+            \nIf the admin accepts it, the status is \'Accepted\'.\n If the accounting entries are made for the expense request, the status is \'Waiting Payment\'.'),
+
     }
 
 
