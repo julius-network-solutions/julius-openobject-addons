@@ -81,7 +81,7 @@
             <field name="inherit_id" ref="hr.view_job_filter"/>
             <field name="arch" type="xml">
                 <field name="department_id" position="after">
-                    <separator string="Skills"/>
+                    <separator name="skills"/>
                 </field>
             </field>
         </record>
@@ -91,9 +91,12 @@
             <field name="model">hr.applicant</field>
             <field name="inherit_id" ref="hr_recruitment.view_crm_case_jobs_filter"/>
             <field name="arch" type="xml">
-                <field name="categ_ids" position="replace">
-                    <field name="categ_ids" widget="many2many_tags" domain="[('parent_id','!=',False)]"/>
-                    <separator string="Skills"/>
+                <field name="categ_ids" position="attributes">
+                    <attribute name="widget">many2many_tags</attribute>
+                    <attribute name="domain">[('parent_id','!=',False)]</attribute>
+                </field>
+                <field name="categ_ids" position="after">
+                    <separator name="skills"/>
                 </field>
             </field>
         </record>
