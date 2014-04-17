@@ -31,8 +31,8 @@ class account_invoice(orm.Model):
 
     _columns = {
         'merged_invoice_id': fields.many2one('account.invoice',
-											'Merged Invoice',
-											readonly=True),
+                                            'Merged Invoice',
+                                            readonly=True),
     }
 
     def __init__(self, pool, cr):
@@ -65,7 +65,8 @@ class account_invoice(orm.Model):
         sql = "SELECT DISTINCT type, state, partner_id FROM account_invoice WHERE id IN (%s)" % ','.join(map(str, ids))
         cr.execute(sql)
         if len(cr.fetchall()) != 1:
-            raise osv.except_osv(_('Invalid action !'), _('Can not merge invoice(s) on different partners or states !'))
+            raise orm.except_orm(_('Invalid action !'),
+                                 _('Can not merge invoice(s) on different partners or states !'))
         merged_inv_id = 0
         inv_line_obj = self.pool.get('account.invoice.line')
         default = {}
@@ -73,7 +74,7 @@ class account_invoice(orm.Model):
             default = {'journal_id': journal_id}
         for inv in self.browse(cr, uid, ids, context):
             if inv.state != 'draft':
-                raise osv.except_osv(_('Invalid action !'), _('Can not merge invoice(s) that are already opened or paid !'))
+                raise orm.except_orm(_('Invalid action !'), _('Can not merge invoice(s) that are already opened or paid !'))
             if merged_inv_id == 0:
                 merged_inv_id = self.copy(cr, uid, inv.id, default=default, context=context)
                 wf_service = netsvc.LocalService("workflow")
@@ -103,8 +104,8 @@ class account_invoice(orm.Model):
         return merged_inv_id
 
     def unlink(self, cr, uid, ids, context=None):
-    	if context is None:
-    		context = {}
+        if context is None:
+            context = {}
         invoices = self.read(cr, uid, ids, ['state'], context=context)
         unlink_ids = []
         for t in invoices:
@@ -112,9 +113,9 @@ class account_invoice(orm.Model):
                 unlink_ids.append(t['id'])
             else:
                 raise orm.except_orm(_('Invalid action !'),
-									 _('Cannot delete invoice(s) that are already opened or paid !'))
+                                     _('Cannot delete invoice(s) that are already opened or paid !'))
         res = super(account_invoice, self).\
-        	unlink(self, cr, uid, unlink_ids, context=context)
+            unlink(self, cr, uid, unlink_ids, context=context)
         return res
 
 class account_invoice_line(orm.Model):
@@ -141,10 +142,10 @@ class account_invoice_line(orm.Model):
 
     _columns = {
         'invoice_line_sale_id': fields.many2many(
-			'sale.order.line',
-			'sale_order_line_invoice_rel',
-			'invoice_id', 'order_line_id',
-			'Sale Order lines'),
+            'sale.order.line',
+            'sale_order_line_invoice_rel',
+            'invoice_id', 'order_line_id',
+            'Sale Order lines'),
     }
 
     def copy(self, cr, uid, ids, default=None, context=None):
@@ -156,6 +157,6 @@ class account_invoice_line(orm.Model):
 
         default.update({'invoice_line_sale_id': [(6,0, line_ids)]})
         return super(account_invoice_line, self).\
-        	copy(cr, uid, ids, default=default, context=context)
+            copy(cr, uid, ids, default=default, context=context)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
