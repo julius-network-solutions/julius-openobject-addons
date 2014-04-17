@@ -119,9 +119,7 @@ class procurement_order(orm.Model):
                          ('product_id', '=', procurement.product_id.id),
                          ('state', 'in', ('draft','confirmed')),
                          ('order_id.state', 'in', ('draft','sent','confirmed','approved','except_picking','except_invoice')),
-#                         ('state', 'in', ('draft',)),
-#                         ('order_id.state', 'in', ('draft','sent','except_picking','except_invoice')),
-                         ('move_dest_id.state', '!=', 'cancel'),
+                         ('move_dest_id.state', 'not in', ('cancel', 'done')),
                          ('move_dest_id.location_dest_id', '=', procurement.location_id.id),
                          ('date_planned', '<=', procurement.date_planned),
                          ], context=context)
