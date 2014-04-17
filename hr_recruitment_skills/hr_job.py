@@ -144,7 +144,6 @@ class hr_applicant(orm.Model):
         res = super(hr_applicant, self).fields_view_get(cr, uid,
             view_id=view_id, view_type=view_type, context=context,
             toolbar=toolbar, submenu=submenu)
-        print res['arch']
         if view_type == 'search' and context.get('skill_ids', False):
             xml = '<separator/>\n'
             skills_obj = self.pool.get('hr.employee.category')
@@ -160,7 +159,6 @@ class hr_applicant(orm.Model):
                 xml += new_xml
             if xml != '<separator/>\n':
                 xml += '<separator/>'
-            print xml
             res['arch'] = unicode(res['arch'],
                 'utf8').replace('<separator name="skills"/>', xml)
         return res

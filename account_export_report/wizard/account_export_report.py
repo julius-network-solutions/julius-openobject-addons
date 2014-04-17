@@ -65,7 +65,6 @@ class account_export_report(orm.Model):
                         len_code -= 1
                         code = code[0:len_code] 
                     account_ids.extend(account_obj.search(cr, uid, [('code', 'ilike', code)], context=context))
-                    print account_ids
                 else:
                     account_ids.append(account_data.id)
                 domain = [('account_id','in',account_ids)]

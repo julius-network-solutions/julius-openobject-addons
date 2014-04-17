@@ -168,7 +168,6 @@ class sale_order(orm.Model):
         # Get default values
         invoice_method = ir_values.get_default(
             cr, uid, 'purchase.order', 'invoice_method') or 'order'
-        print partner_id
         partner_address_id = partner_obj.\
             address_get(cr, SUPERUSER_ID, [partner_id], ['default'])['default']
 

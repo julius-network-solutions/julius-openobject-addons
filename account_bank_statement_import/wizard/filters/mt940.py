@@ -122,7 +122,6 @@ def parse_sequence(bank_statement,bank, cr, uid,):
 						st_line['account_id'] = bank.partner_id.property_account_payable.id
 						st_line['type'] ='customer'
 			# ..Let see if we can make that just one line of imput
-			print st_line
 			if not check_ids:
 				bank_statement_output.append(st_line.copy())
 							
@@ -167,7 +166,6 @@ def get_data(self, cr, uid, ids, bankData, bank_statement):
 	bank_statement_output=[]
 	bank_statement_list = fill_simple_list(bankData) #just keeping it simple
 	bank_statement_output=parse_sequence(bank_statement_list,bank_statement,cr, uid,)
-	print bank_statement_output
 	return bank_statement_output
 
 

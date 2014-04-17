@@ -51,7 +51,6 @@ class change_production_qty(orm.TransientModel):
             for prod_id in data.keys():
                 move_id, product_qty = data[prod_id]
                 if move_id:
-                    print prod_id, move_id, product_qty
                     move_obj.write(cr, uid, move_id, {'product_qty': product_qty})
         return res
 

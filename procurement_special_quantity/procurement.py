@@ -146,7 +146,6 @@ class procurement_order(orm.Model):
 ##                        # We remove the bought quantity
 ##                        # to the quantity to get
 ##                        quantity_to_make -= bought_quantity
-##                        print bought_quantity
 ##                        quantity_to_make = min(move_qty, quantity_to_make)
 ##                        if quantity_to_make < 0:
 ##                            quantity_to_make = 0

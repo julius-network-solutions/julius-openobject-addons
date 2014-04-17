@@ -42,13 +42,10 @@ def get_data(self, cr, uid, ids, recordlist, data):
         if line_cursor < initial_lines:
             line_cursor += 1
             continue
-        print line
         line_splited = line.split(',')
-        print line_splited
         st_line = {}
         line_name = pointor
         st_line['extra_note'] = ''
-        print line_splited[1]
         st_line['date'] = time.strftime('%Y-%m-%d',time.strptime(line_splited[1], date_format))
         st_line['name'] = line_splited[2]
         amount = 0

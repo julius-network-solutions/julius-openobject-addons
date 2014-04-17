@@ -37,7 +37,6 @@ class hr_job(orm.Model):
         maps = GoogleMaps()
         duration = maps.duration(origin, destination, mode='transit', departure_time=departure_time)
         distance = maps.distance(origin, destination, mode='transit', departure_time=departure_time)
-        print duration, distance
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
