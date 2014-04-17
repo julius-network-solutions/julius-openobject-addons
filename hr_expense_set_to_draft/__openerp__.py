@@ -19,6 +19,25 @@
 #
 ###############################################################################
 
-from . import create_invoice
+{
+    'name': 'Expense Cancel',
+    'version': '1.0',
+    'category': 'Human Resources',
+    'sequence': 29,
+    'summary': 'Expenses Validation, Invoicing',
+    'description': """
+Manage expenses by Employees
+============================
 
+This modules allow managers to cancel an validated expense, and put it back to draft
+    """,
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr',
+    'depends': ['hr_expense'],
+    'data': [
+        'hr_expense_view.xml',
+    ],
+    'test': [],
+    'installable': True,
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

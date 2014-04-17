@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,16 +17,18 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from openerp.osv import fields, orm, osv
+from openerp.osv import fields, orm
 from openerp.tools.translate import _
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
+from openerp.tools import (DEFAULT_SERVER_DATE_FORMAT,
+                           DEFAULT_SERVER_DATETIME_FORMAT)
 from datetime import datetime, timedelta
 
 class one2many_mod(fields.one2many):
     
-    def get(self, cr, obj, ids, name, user=None, offset=0, context=None, values=None):
+    def get(self, cr, obj, ids, name, user=None,
+            offset=0, context=None, values=None):
         if context is None:
             context = {}
         if self._context:
@@ -36,10 +38,13 @@ class one2many_mod(fields.one2many):
                 'default_active': False,
                 'active_test': False,
             })
-        return super(one2many_mod, self).get(cr, obj, ids, name, user=user, offset=offset, context=context, values=values)
+        return super(one2many_mod, self).\
+            get(cr, obj, ids, name, user=user,
+                offset=offset, context=context, values=values)
 
 class period_contract(orm.Model):
     _name = 'period.contract'
+    _description = "Contract Period"
     _columns = {
         'name': fields.char('Name', size=64),
         'from_dt': fields.date('From date'),
@@ -53,15 +58,20 @@ class account_analytic_account(orm.Model):
     _columns = {
         'active': fields.boolean('Active'),
         'client_num': fields.char('Client Number', size=64),
-        'period_ids': fields.one2many('period.contract','contract_id','Periods'),
-        'invoice_ids': fields.one2many('account.invoice','contract_id','Invoices', readonly=True),
-        'product_ids': one2many_mod('product.product','contract_id','Products'),
+        'period_ids': fields.one2many('period.contract', 'contract_id',
+                                      'Periods'),
+        'invoice_ids': fields.one2many('account.invoice', 'contract_id',
+                                       'Invoices', readonly=True),
+        'product_ids': one2many_mod('product.product', 'contract_id',
+                                    'Products'),
         'sap_number': fields.char('SAP Number', size=64),
-        'payment_term_id': fields.many2one('account.payment.term', 'Payment Term'),
+        'payment_term_id': fields.many2one('account.payment.term',
+                                           'Payment Term'),
     }
     
     _defaults = {
-        'code': lambda self, cr, uid, context: self.pool.get('ir.sequence').next_by_code(cr, uid, 'account.analytic.contract'),
+        'code': lambda self, cr, uid, context: self.pool.get('ir.sequence').\
+            next_by_code(cr, uid, 'account.analytic.contract'),
         'active': True,
     }
     
@@ -70,8 +80,10 @@ class account_analytic_account(orm.Model):
             context = {}
         if vals.get('type') == 'contract':
             if not vals.get('period_ids'):
-                raise osv.except_osv(_('Error'), _("Please specify at least one period !"))
-        res = super(account_analytic_account, self).create(cr, uid, vals, context=context)
+                raise orm.except_orm(_('Error'),
+                                     _("Please specify at least one period !"))
+        res = super(account_analytic_account, self).\
+            create(cr, uid, vals, context=context)
         return res
     
     def write(self, cr, uid, ids, vals, context=None):
@@ -83,24 +95,31 @@ class account_analytic_account(orm.Model):
                 is_contract = True
             if is_contract:
                 period = contract.period_ids
-                if vals.get('period_ids') and vals.get('period_ids')[0] and vals.get('period_ids')[0][2]:
-                    period = vals.get('period_ids')[0][2]
+                period_vals = vals.get('period_ids') and \
+                    vals['period_ids'][0] \
+                    and vals['period_ids'][0][2] or False
+                if period_vals:
+                    period = period_vals
                 if not period:
-                    raise osv.except_osv(_('Error'), _("Please specify at least one period !"))
-        res = super(account_analytic_account, self).write(cr, uid, ids, vals, context=context)
-        return res
+                    raise orm.except_orm(_('Error'),
+                                         _("Please specify at "
+                                           "least one period !"))
+        return super(account_analytic_account, self).\
+            write(cr, uid, ids, vals, context=context)
 
 class account_invoice(orm.Model):
     _inherit = 'account.invoice'
     _columns = {
-        'contract_id': fields.many2one('account.analytic.account','Contract'),
+        'contract_id': fields.many2one('account.analytic.account', 'Contract'),
     }
     
-    def onchange_contract_id(self, cr, uid, ids, contract_id=False, context=None):
+    def onchange_contract_id(self, cr, uid, ids,
+                             contract_id=False, context=None):
         vals = {}
         contract_obj = self.pool.get('account.analytic.account')
         if contract_id:
-            contract = contract_obj.browse(cr, uid, contract_id, context=context)
+            contract = contract_obj.\
+                browse(cr, uid, contract_id, context=context)
             vals = {
                 'partner_id': contract.partner_id.id or False,
                 'payment_term': contract.payment_term_id.id or False,
@@ -116,20 +135,24 @@ class account_invoice_line(orm.Model):
     _inherit = 'account.invoice.line'
 
     def default_get(self, cr, uid, fields, context=None):
-        res = super(account_invoice_line, self).default_get(cr, uid, fields, context=context)
+        res = super(account_invoice_line, self).\
+            default_get(cr, uid, fields, context=context)
         account_invoice_obj = self.pool.get('account.invoice')
         if context is None:
             context={}
         active_id = context.get('active_id')
         if active_id:
-            contract_id = account_invoice_obj.browse(cr,uid,active_id,context=context).contract_id.id
+            invoice = account_invoice_obj.\
+                browse(cr, uid, active_id, context=context)
+            contract_id = invoice.contract_id and \
+                invoice.contract_id.id or False
             res.update({'account_analytic_id': contract_id})
         return res
     
 class product_product(orm.Model):
     _inherit = 'product.product'
     _columns = {
-        'contract_id': fields.many2one('account.analytic.account','Contract'),
+        'contract_id': fields.many2one('account.analytic.account', 'Contract'),
     }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

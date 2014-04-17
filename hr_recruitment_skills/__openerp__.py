@@ -32,23 +32,28 @@
     "description": """
 Skills in recruitment
 =====================
+
 This module adds skills to the employees, applicants
 
 This also add buttons to filter the applicants and jobs by their skills.
 You can check/uncheck the skills in the search view.
 
 E.g.:
-* You need to recruit one person for one job which needs to have skills in PHP, Java and Python.
-* You've got 4 applicants for this job :
-** 1st got PHP, XML, HTML, CSS
-** 2nd got PHP, Java and C++
-** 3rd got Java, Python, CSS, HTML
-** 4th got Python and PHP
+-----
+
+    * You need to recruit one person for one job which needs to have skills in PHP, Java and Python.
+    * You've got 4 applicants for this job :
+        * 1st got PHP, XML, HTML, CSS
+        * 2nd got PHP, Java and C++
+        * 3rd got Java, Python, CSS, HTML
+        * 4th got Python and PHP
 
 By default you will not found any of them when clicking on the button.
-* If you uncheck Python for instance, you will find the 2nd one.
-* If you uncheck PHP for instance, you will find the 3rd one.
-* If you uncheck Java for instance, you will find the 4th one.
+----------------------------------------------------------------------
+
+    * If you uncheck Python for instance, you will find the 2nd one.
+    * If you uncheck PHP for instance, you will find the 3rd one.
+    * If you uncheck Java for instance, you will find the 4th one.
     """,
     "demo" : [],
     "data" : [

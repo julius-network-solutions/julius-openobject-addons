@@ -115,7 +115,7 @@ class account_invoice(orm.Model):
                 raise orm.except_orm(_('Invalid action !'),
                                      _('Cannot delete invoice(s) that are already opened or paid !'))
         res = super(account_invoice, self).\
-            unlink(self, cr, uid, unlink_ids, context=context)
+            unlink(cr, uid, unlink_ids, context=context)
         return res
 
 class account_invoice_line(orm.Model):

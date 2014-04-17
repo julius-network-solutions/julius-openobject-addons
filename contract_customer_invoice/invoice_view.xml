@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+	    <!-- Invoice -->
+        <record id="view_account_invoice_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+				<field name="fiscal_position" position="after">
+            		<field name="contract_id"
+                        domain="[('type','=','contract')]"
+                        on_change="onchange_contract_id(contract_id)"/>
+                </field>
+                <field name="invoice_line" position="attributes">
+                    <attribute name="context">{'type': type, 'active_id': active_id}</attribute>
+                </field>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="domain">[('contract_id', '=', account_analytic_id)]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_invoice_filter_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <field name="period_id" position="after">
+                    <field name="contract_id"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

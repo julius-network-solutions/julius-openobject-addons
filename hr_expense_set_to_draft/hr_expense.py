@@ -19,6 +19,20 @@
 #
 ###############################################################################
 
-from . import create_invoice
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
+from openerp import netsvc
+
+class hr_expense_expense(orm.Model):
+    _inherit = "hr.expense.expense"
+
+    def expense_done_draft(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        wf_service = netsvc.LocalService("workflow")
+        for exp_id in ids:
+            wf_service.trg_delete(uid, 'hr.expense.expense', exp_id, cr)
+            wf_service.trg_create(uid, 'hr.expense.expense', exp_id, cr)
+        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

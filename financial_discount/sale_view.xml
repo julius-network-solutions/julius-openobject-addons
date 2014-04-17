@@ -39,7 +39,7 @@
                     </group>
             	</xpath>
                 <xpath expr="//group[@name='sale_total']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('discount_is_present', '=', True)]}</attribute>
+                    <attribute name="attrs">{'invisible':[('financial_discount_is_present', '=', True)]}</attribute>
                 </xpath>
 			</field>
         </record>

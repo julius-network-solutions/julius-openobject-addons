@@ -56,20 +56,22 @@ class account_invoice(orm.Model):
                             pricelist=sale_order.pricelist_id.id,
                             product=product_id, qty=1,
                             partner_id=sale_order.partner_id.id,
-                            lang=sale_order.partner_id.lang, update_tax=True,
+                            lang=sale_order.partner_id.lang, update_tax=False,
                             date_order=sale_order.date_order,
                             context=context)
                         value = res.get('value')
                         if value:
+                            tax_id = sale_line.tax_id and \
+                                [(6, 0, [x.id for x in sale_line.tax_id] or [])]
                             value.update({
                                 'invoice_id': invoice.id,
                                 'product_id': product_id,
                                 'price_unit': sale_line.emergency_costs,
                                 'quantity': 1,
-                                'invoice_line_tax_id': value.get('tax_id') \
-                                     and [(6, 0, value.get('tax_id') or [])],
+                                'invoice_line_tax_id': tax_id,
                             })
-                        new_inv_line_id = invoice_line_obj.create(cr, uid, value, context=context)
+                        new_inv_line_id = invoice_line_obj.\
+                            create(cr, uid, value, context=context)
                         sale_line_obj.write(cr, uid,
                             [sale_line.id],
                             {'emergency_costs_line_id' : new_inv_line_id},

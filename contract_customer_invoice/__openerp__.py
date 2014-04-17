@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,37 +17,35 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
-    "name" : "Contract and product linked for invoice",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Account",
-    "depends" : [
+    "name": "Contract and product linked for invoice",
+    "version": "1.0",
+    "author": "Julius Network Solutions",
+    "website": "http://julius.fr",
+    "category": "Account",
+    "depends": [
         "account",
         "analytic",
         "product",
-        "sale",
-        "purchase",
-        "account_asset",
     ],
     "description": """
         Add new fields relation in analytic account (contract)
         Create several display rules in order to ensure the 
         exclusivity of a contract linked product in invoicing.
     """,
-    "init_xml" : [],
-    "demo_xml" : [],
-    "update_xml" : [
-        'security/contract_security.xml',
-        'security/ir.model.access.csv',
-        'wizard/create_invoice_view.xml',
-        'customer_contract_view.xml',
+    "demo": [],
+    "data": [
+        "security/contract_security.xml",
+        "security/ir.model.access.csv",
+        "wizard/create_invoice_view.xml",
+        "period_view.xml",
+        "analytic_view.xml",
+        "invoice_view.xml",
     ],
-    'installable' : False,
-    'active' : False,
+    "installable": True,
+    "active": False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

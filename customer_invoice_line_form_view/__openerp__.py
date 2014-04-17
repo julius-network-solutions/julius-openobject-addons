@@ -19,6 +19,30 @@
 #
 ###############################################################################
 
-from . import create_invoice
+{
+    "name": "Customer Invoice lines in form view",
+    "summary": "Create your customer invoice lines in form view",
+    "version": "1.0",
+    "author": "Julius Network Solutions",
+    "website": "http://julius.fr",
+    "category": "Account",
+    "depends": [
+        "account",
+    ],
+    "description": """
+Customer Invoice lines in form view
+===================================
+When you will install this module, this will change
+the default customer invoice line input.
+To create a new line, this will open a form view instead of
+creating lines in tree view. 
+    """,
+    "demo": [],
+    "data": [
+        "invoice_view.xml",
+    ],
+    "installable": True,
+    "active": False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
