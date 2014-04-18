@@ -33,6 +33,7 @@
     "description": """
 Global discount on a sale order
 ===============================
+
 Module to manage a global discount in sale orders.
 
 This module will add a field in the sale order.
