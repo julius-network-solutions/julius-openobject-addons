@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
     "version": "0.1",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "category": "Sales Management",
     "depends": [
         "stock",
@@ -35,7 +36,8 @@ Global discount on a sale order
 ===============================
 Module to manage a global discount in sale orders
 
-This module will be installed automatically when stock and global_discount have been installed.
+This module will be installed automatically when stock and global_discount
+have been installed.
 This will work as the module "delivery" works.
     """,
     "demo": [],
