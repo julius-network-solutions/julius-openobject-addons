@@ -25,6 +25,7 @@
     "version": "0.4",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "category": "Sales Management",
     "depends": [
         "sale",
@@ -39,7 +40,8 @@ You will get the global discount in the invoice when you will invoice this order
     """,
     "demo": [],
     "data": [
-        "sale_view.xml",
+        "views/sale_view.xml",
+        "views/report_quotation_discounted.xml",
         "data/product_data.xml",
     ],
     'installable': True,

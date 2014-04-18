@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_sale_layouted" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//div[@class='row']/div[@class='col-xs-4 pull-right']" position="replace">
+                <div class="row">
+                    <div class="col-xs-4 pull-right">
+                        <table class="table table-condensed">
+                            <tr class="border-black">
+                                <td><strong>Total Without Taxes</strong></td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_untaxed"
+                                        t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Taxes</td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_tax"
+                                        t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+                                </td>
+                            </tr>
+                            <tr class="border-black">
+                                <td><strong>Total</strong></td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_total"
+                                        t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+                                </td>
+                            </tr>
+                            <tr t-if="o.global_discount_percentage">
+                                <td>Discount</td>
+                                <td class="text-right">
+                                    <span>-</span>
+                                    <span t-field="o.global_discount_percentage"/>
+                                    <span>%</span>
+                                </td>
+                            </tr>
+                            <tr t-if="o.global_discount_percentage" class="border-black">
+                                <td><strong>Total with discount</strong></td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_total_discounted"
+                                        t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </xpath>
+       </template>
+    </data>
+</openerp>
