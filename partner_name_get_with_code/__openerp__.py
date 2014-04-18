@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,24 +17,29 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
-    'name': 'Partner get name with code',
-    'version': '1.0',
-    'category': 'Sales Management',
-    'description': """
-        This module shows the ref of the partner when going through partner name get
+    "name": "Partner get name with code",
+    "summary": "Display ref in partner's name",
+    "version": "1.0",
+    "category": "Sales Management",
+    "description": """
+Partner ref displayed
+=====================
+
+This module shows the partner's before original name when displayed it
     """,
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr',
-    'depends': [
-        'base',
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
+    "depends": [
+        "base",
     ],
-    'demo': [],
-    'data': [],
-    'installable': False,
-    'active': False,
+    "demo": [],
+    "data": [],
+    "installable": True,
+    "active": False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
