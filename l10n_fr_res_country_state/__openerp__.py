@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2011-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
     "name": "France - States",
@@ -28,7 +28,9 @@
     "description": """
 States for the France
 =====================
-This module adds the states (departements) for France into res_country_state Object.
+
+This module adds the states (departements) for France
+into res_country_state Object.
     """,
     "depends": [
         'base',
@@ -39,7 +41,7 @@ This module adds the states (departements) for France into res_country_state Obj
     ],
     "test": [],
     "active": False,
-    "installable": False,
+    "installable": True,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
