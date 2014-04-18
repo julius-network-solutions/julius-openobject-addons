@@ -41,7 +41,7 @@ creating lines in tree view.
     "data": [
         "invoice_view.xml",
     ],
-    "installable": True,
+    "installable": False,
     "active": False,
 }
 

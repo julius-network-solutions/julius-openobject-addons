@@ -29,14 +29,15 @@
 Manage expenses by Employees
 ============================
 
-This modules fix the tax computation when generating the expenses accounting data
+This modules fix the tax computation when generating
+the expenses accounting data
     """,
     'author': 'Julius Network Solutions',
     'website': 'http://www.julius.fr',
     'depends': ['hr_expense'],
     'data': [],
     'test': [],
-    'installable': True,
+    'installable': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
