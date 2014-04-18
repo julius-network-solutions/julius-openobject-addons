@@ -3,7 +3,6 @@
     <data>
 
         <!-- Task Work View -->
-        
         <record id="view_task_work_form_inherit" model="ir.ui.view">
             <field name="name">project.task.work.form.inherit</field>
             <field name="model">project.task.work</field>
@@ -33,29 +32,32 @@
             <field name="model">project.task.work</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <calendar color="user_id" date_delay="hours" date_start="date" string="Task Work" mode="week">
+                <calendar string="Task Work" mode="week"
+                    color="user_id" date_delay="hours" date_start="date">
                     <field name="name"/>
                     <field name="task_id"/>
                 </calendar>
             </field>
         </record>
-        
+
         <record id="view_task_work_filter" model="ir.ui.view">
             <field name="name">project.task.work.filter</field>
             <field name="model">project.task.work</field>
             <field name="arch" type="xml">
                 <search string="Search Task Work">
-                    <filter icon="terp-personal" string="My Task Works" name="mytaskworks" domain="[('user_id', '=', uid)]" help="All my task works"/>
+                    <filter string="My Task Works" name="mytaskworks"
+                        domain="[('user_id', '=', uid)]"
+                        help="All my task works"/>
                     <separator orientation="vertical"/>
                     <field name="name"/>
                     <field name="task_id"/>
                     <field name="date"/>
                     <field name="user_id"/>
                     <newline/>
-                    <group expand="0" string="Group By..." colspan="11" col="11" groups="base.group_extended">
-                        <filter string="Employee" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
+                    <group expand="0" string="Group By..." groups="base.group_extended">
+                        <filter string="Employee" domain="[]" context="{'group_by':'user_id'}"/>
                     	<separator orientation="vertical"/>
-                        <filter string="Task" icon="terp-folder-blue" domain="[]" context="{'group_by':'task_id'}"/>
+                        <filter string="Task" domain="[]" context="{'group_by':'task_id'}"/>
                     </group>
                </search>
             </field>
@@ -66,11 +68,12 @@
             <field name="res_model">project.task.work</field>
             <field name="view_type">form</field>
             <field name="view_mode">calendar,tree,form</field>
-            <field eval="False" name="view_id"/>
+            <field name="view_id" eval="False"/>
             <field name="search_view_id" ref="view_task_work_filter"/>
-            <field name="context">{"search_default_user_id":uid}</field>
+            <field name="context">{"search_default_user_id": uid}</field>
         </record>
-        <menuitem action="action_view_task_work" id="menu_action_view_task_work" parent="project.menu_project_management"/>
-    
+        <menuitem action="action_view_task_work" id="menu_action_view_task_work"
+            parent="project.menu_project_management" sequence="10"/>
+
     </data>
 </openerp>
