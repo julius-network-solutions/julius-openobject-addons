@@ -31,6 +31,7 @@ Deactivate accounting journals
 This modules allows to deactivate / archive accounting journals.
     """,
     "author": "Julius Network Solutions",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "website": "http://www.julius.fr",
     "depends": [
         "account",

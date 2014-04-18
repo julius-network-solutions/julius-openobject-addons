@@ -24,6 +24,7 @@
     "version": "1.0",
     "author": "Julius Network Solutions",
     "website": "http://www.julius.fr",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "category": "Localisation",
     "description": """
 States for the France
