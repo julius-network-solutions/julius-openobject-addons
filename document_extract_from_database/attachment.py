@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -26,18 +26,18 @@ class document_multiple_action(orm.TransientModel):
     _name = "document.multiple.action"
     _description = "Multiple action on document"
 
-    def write_again(self, cr, uid, ids, context=None):
+    def extract_documents(self, cr, uid, ids, context=None):
         if context is None: context = {}
         document_obj = self.pool.get('ir.attachment')
         document_ids = context.get('active_ids')
         if document_ids:
-            document_obj.write_again(cr, uid, document_ids, context=context)
+            document_obj.extract_documents(cr, uid, document_ids, context=context)
         return True
 
 class document_file(orm.Model):
     _inherit = 'ir.attachment'
 
-    def _write_again(self, cr, uid, id, context=None):
+    def _extract_documents(self, cr, uid, id, context=None):
         current_data = self.browse(cr, uid, id, context=context)
         location = self.pool.get('ir.config_parameter').\
             get_param(cr, uid, 'ir_attachment.location')
@@ -49,11 +49,11 @@ class document_file(orm.Model):
             self.write(cr, uid, id, vals, context=context)
         return True
 
-    def write_again(self, cr, uid, ids, context=None):
+    def extract_documents(self, cr, uid, ids, context=None):
         if context==None:
             context = {}
         for document_id in ids:
-            self._write_again(cr, uid, document_id, context=context)
+            self._extract_documents(cr, uid, document_id, context=context)
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
