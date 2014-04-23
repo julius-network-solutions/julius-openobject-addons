@@ -21,7 +21,7 @@
 
 {
     'name': 'Recurring Documents default Base',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Tools',
     'description': """
 Create recurring documents.
@@ -32,7 +32,9 @@ which allows to add new features in the default values to copy.
     """,
     'author': 'Julius Network Solutions',
     'depends': ['subscription'],
-    'data': [],
+    'data': [
+        'subscription_view.xml',
+    ],
     'demo': [],
     'active': False,
     'installable': True,
