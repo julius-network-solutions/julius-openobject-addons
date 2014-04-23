@@ -47,7 +47,6 @@ def get_data(self, cr, uid, ids, recordlist, data):
     bank_statement["bank_statement_line"] = {}
     
     date_format = str(self.pool.get('account.bank.statement.import').browse(cr, uid, ids[0]).date_format)
-    
     for line in recordlist:
         if line_cursor < initial_lines:
             line_cursor += 1
@@ -81,13 +80,13 @@ def get_data(self, cr, uid, ids, recordlist, data):
         amount = "".join(amount)
         
         '''Definition of a positive or negative value'''
-        if amount.startswith('-'):
+        amount = float(amount or 0.0)
+        if line_splited[4]:
+            amount = -amount
+        if amount < 0:
             st_line['account_id'] = data['payable_id'][0]
         else:
             st_line['account_id'] = data['receivable_id'][0]
-        amount = float(amount or 0.0)
-        if line_splited[5]:
-            amount = -amount
         st_line['amount'] = amount
         st_line['partner_id'] = False
         
