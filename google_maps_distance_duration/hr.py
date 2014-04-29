@@ -29,7 +29,7 @@ class hr_job(orm.Model):
 
     def get_duration(self, cr, uid, ids, context=None):
         origin = 'Paris'
-        destination = 'Paris'
+        destination = 'Le Vesinet'
         departure_time = context.get('departure_time')
         if not departure_time:
             n = datetime.datetime.now()
