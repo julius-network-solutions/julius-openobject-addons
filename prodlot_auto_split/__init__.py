@@ -19,24 +19,6 @@
 #
 #################################################################################
 
-from .google_maps import GoogleMaps
-from openerp.osv import orm, fields
-import datetime
-import time
-
-class hr_job(orm.Model):
-    _inherit = 'hr.job'
-
-    def get_duration(self, cr, uid, ids, context=None):
-        origin = 'Paris'
-        destination = 'Le Vesinet'
-        departure_time = context.get('departure_time')
-        if not departure_time:
-            n = datetime.datetime.now()
-            departure_time = int(time.mktime(n.timetuple()))
-        maps = GoogleMaps()
-        duration = maps.duration(origin, destination, mode='transit', departure_time=departure_time)
-        distance = maps.distance(origin, destination, mode='transit', departure_time=departure_time)
-        return True
+import stock
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
