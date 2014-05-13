@@ -31,7 +31,7 @@ class stock_move(orm.Model):
             if move_data.prodlot_id.id and move_data.product_qty != 1:
                 raise orm.except_orm(_('Error'), _('Serial move must have a qty equal to 1'))
                 return False
-            if move_data.prodlot_id.id and move_data.location_id.usage == 'internal' and move_data.sate not in ('done','cancel'):
+            if move_data.prodlot_id.id and move_data.location_id.usage == 'internal' and move_data.state not in ('done','cancel'):
                 qty = move_data.product_qty
                 qty_on_hand = move_data.prodlot_id.stock_available
                 res = qty_on_hand - qty
