@@ -37,7 +37,8 @@ class mrp_production(orm.Model):
                 new_selection = []
                 for (a,b) in self._columns['state'].selection:
                     if a == 'ready':
-                        new_selection.extend([('partially_ready', _('Partially ready'))])
+                        new_selection.extend([('partially_ready',
+                                               _('Partially ready'))])
                     new_selection.extend([(a,b)])
                 self._columns['state'].selection = new_selection
         super(mrp_production, self).__init__(pool, cr)
@@ -54,19 +55,23 @@ class mrp_production(orm.Model):
                 available = 0
                 start = True
                 for component in prod.bom_id.bom_lines:
-                    compo_list.setdefault(component.product_id.id, 0)
-                    compo_list[component.product_id.id] += component.product_qty
+                    product_id = component.product_id.id
+                    compo_list.setdefault(product_id, 0)
+                    compo_list[product_id] += component.product_qty
                 for move in prod.move_lines:
                     context['states_in'] = ('done',)
                     context['states_out'] = ('done', 'assigned', 'confirmed')
-                    available_quantity = move_obj._get_specific_available_qty(cr, uid, move, context=context)
+                    available_quantity = move_obj.\
+                        _get_specific_available_qty(cr, uid, move,
+                                                    context=context)
                     if available_quantity <= 0:
                         available = 0
                         break
                     component_qty = compo_list.get(move.product_id.id)
                     if component_qty == 0:
                         component_qty = 1
-                    quantity = (available_quantity - (available_quantity % component_qty)) / component_qty
+                    quantity = (available_quantity - \
+                        (available_quantity % component_qty)) / component_qty
                     if not start:
                         available = min(quantity, available)
                     else:
@@ -120,15 +125,20 @@ class mrp_production(orm.Model):
         for production in self.browse(cr, uid, ids, context=context):
             if production.state not in ('partially_ready', 'ready'):
                 continue
-            if production.state == 'ready' and not context.get('quantity_define_manually'):
+            if production.state == 'ready' and \
+                not context.get('quantity_define_manually'):
                 continue
-            if production.state == 'partially_ready' and not production.product_qty_ready:
-                self.write(cr, uid, production.id, {'state': 'confirmed'}, context=context)
-            elif production.product_qty_ready or context.get('quantity_define_manually'):
+            if production.state == 'partially_ready' and \
+                not production.product_qty_ready:
+                self.write(cr, uid, production.id,
+                           {'state': 'confirmed'}, context=context)
+            elif production.product_qty_ready or \
+                context.get('quantity_define_manually'):
                 quantity_done = 0
                 for produced_product in production.move_created_ids2:
                     if (produced_product.scrapped) or \
-                        (produced_product.product_id.id != production.product_id.id):
+                        (produced_product.product_id.id \
+                        != production.product_id.id):
                         continue
                     quantity_done += produced_product.product_qty
                 quantity_total = production.product_qty
@@ -144,7 +154,8 @@ class mrp_production(orm.Model):
                                                production.move_prod_id.id,
                                                quantity_to_do, context)
                         if new_move_id:
-                            move_obj.action_confirm(cr, uid, [new_move_id], context=context)
+                            move_obj.action_confirm(cr, uid, [new_move_id],
+                                                    context=context)
                         self._write_move_to_do(cr, uid,
                                                production.move_prod_id.id,
                                                quantity_ready, context)
