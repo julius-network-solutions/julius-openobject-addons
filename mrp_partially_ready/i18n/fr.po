@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-17 16:18+0000\n"
-"PO-Revision-Date: 2014-03-17 17:19+0100\n"
+"POT-Creation-Date: 2014-05-13 13:54+0000\n"
+"PO-Revision-Date: 2014-05-13 15:59+0100\n"
 "Last-Translator: Mathieu Vatel <mathieu@julius.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,37 @@ msgid "If you've got at least the component to produce one element,you will have
 msgstr "Si vous avez au minimum les composents nécessaires pour produire un élément,vous aurez une quantité ici."
 
 #. module: mrp_partially_ready
+#: field:mrp.production.start.partially,production_id:0
+msgid "Production Order"
+msgstr "Ordre de fabrication"
+
+#. module: mrp_partially_ready
+#: view:mrp.production.start.partially:0
+msgid "or"
+msgstr "ou"
+
+#. module: mrp_partially_ready
+#: code:addons/mrp_partially_ready/wizard/start_partially.py:76
+#: code:addons/mrp_partially_ready/wizard/start_partially.py:80
+#, python-format
+msgid "ERROR !"
+msgstr "Erreur !"
+
+#. module: mrp_partially_ready
 #: view:mrp.production:0
 msgid "Start production"
-msgstr "Démarrer la production"
+msgstr "Démarrer la fabrication"
+
+#. module: mrp_partially_ready
+#: model:ir.model,name:mrp_partially_ready.model_mrp_production_start_partially
+msgid "Start partially production"
+msgstr "Démarrer partiellement la fabrication"
+
+#. module: mrp_partially_ready
+#: code:addons/mrp_partially_ready/wizard/start_partially.py:81
+#, python-format
+msgid "You can't start the production order with a quantity greater than %s."
+msgstr "Vous ne pouvez pas démarrer la production avec une quantité suppérieure à %s."
 
 #. module: mrp_partially_ready
 #: model:ir.model,name:mrp_partially_ready.model_mrp_production
@@ -31,20 +59,51 @@ msgid "Manufacturing Order"
 msgstr "Ordre de fabrication"
 
 #. module: mrp_partially_ready
+#: model:ir.actions.act_window,name:mrp_partially_ready.action_mrp_production_start_partially
+#: view:mrp.production.start.partially:0
+msgid "Start Partially"
+msgstr "Démarrer partiellement"
+
+#. module: mrp_partially_ready
+#: code:addons/mrp_partially_ready/wizard/start_partially.py:77
+#, python-format
+msgid "You can't start the production order with a negative or zero quantity."
+msgstr "Vous ne pouvez pas démarrer la fabrication avec une quantité négative ou nulle."
+
+#. module: mrp_partially_ready
+#: code:addons/mrp_partially_ready/mrp.py:40
+#, python-format
+msgid "Partially ready"
+msgstr "Partiellement prêt"
+
+#. module: mrp_partially_ready
 #: field:mrp.production,product_qty_ready:0
 msgid "Quantity ready"
 msgstr "Quantité disponible"
 
 #. module: mrp_partially_ready
-#: code:addons/mrp_partially_ready/mrp.py:40
-#, python-format
 #: view:mrp.production:0
-#: selection:mrp.production,state:0
-msgid "Partially ready"
-msgstr "Partiellement prêt"
+#: view:mrp.production.start.partially:0
+msgid "Start partially"
+msgstr "Démarrer partiellement"
+
+#. module: mrp_partially_ready
+#: view:mrp.production.start.partially:0
+msgid "Cancel"
+msgstr "Annuler"
 
 #. module: mrp_partially_ready
 #: field:mrp.production,production_id:0
 msgid "Production order to do"
 msgstr "Production restante"
+
+#. module: mrp_partially_ready
+#: view:mrp.production:0
+msgid "Cancel Production"
+msgstr "Annuler la production"
+
+#. module: mrp_partially_ready
+#: field:mrp.production.start.partially,product_qty:0
+msgid "Quantity"
+msgstr "Quantité"
 
