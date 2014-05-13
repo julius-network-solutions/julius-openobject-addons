@@ -19,7 +19,6 @@
 #
 ###############################################################################
 
-from . import wizard
-from . import mrp
+from . import start_partially
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

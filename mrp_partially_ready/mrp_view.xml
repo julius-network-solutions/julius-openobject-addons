@@ -15,6 +15,9 @@
                     <field name="production_id"/>
                 </label>
                 <button name="force_production" position="after">
+                    <button name="%(action_mrp_production_start_partially)d" string="Start partially"
+                        states="ready"
+                        type="action" class="oe_highlight"/>
                     <button name="partial_to_production" string="Start production"
                         states="partially_ready"
                         type="object" class="oe_highlight"/>
