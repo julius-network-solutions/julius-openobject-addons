@@ -83,11 +83,14 @@ class mrp_production_start_partially(orm.TransientModel):
                                    "than %s.") % production.product_qty)
         elif quantity == production.product_qty:
             wf_service = netsvc.LocalService("workflow")
-            wf_service.trg_validate(uid, 'mrp.production', production.id, 'button_produce', cr)
+            wf_service.trg_validate(uid, 'mrp.production',
+                                    production.id, 'button_produce', cr)
             return res
         else:
             context['quantity_define_manually'] = quantity
-            production_obj.partial_to_production(cr, uid, [production.id], context=context)
+            production_obj.partial_to_production(cr, uid,
+                                                 [production.id],
+                                                 context=context)
         return res
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
