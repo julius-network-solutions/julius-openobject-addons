@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="mrp_production_start_partially_form_view" model="ir.ui.view">
+            <field name="name">mrp.production.start.partially.form</field>
+            <field name="model">mrp.production.start.partially</field>
+            <field name="arch" type="xml">
+                <form string="Start Partially" version="7.0">
+                    <group>
+                        <field name="production_id"/>
+                        <field name="product_qty"/>
+                    </group>
+                    <footer>
+                        <button name="start_partially" string="Start partially"
+                            type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_mrp_production_start_partially" model="ir.actions.act_window">
+            <field name="name">Start Partially</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.production.start.partially</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

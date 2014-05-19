@@ -31,7 +31,6 @@ def get_data(self, cr, uid, ids, recordlist, data):
     line_statement_obj = self.pool.get('account.bank.statement.line')
     journal_obj = self.pool.get('account.journal')
     journal_code = journal_obj.browse(cr, uid, data['journal_id']).code
-    print data
     if not data:
         data = {}
     

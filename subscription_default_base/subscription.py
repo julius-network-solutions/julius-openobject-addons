@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,13 +17,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 import time
 
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
+from openerp.tools import (DEFAULT_SERVER_DATETIME_FORMAT,
+                           DEFAULT_SERVER_DATE_FORMAT)
 
 class subscription_document_fields(orm.Model):
     _inherit = "subscription.document.fields"
@@ -33,7 +34,8 @@ class subscription_document_fields(orm.Model):
         return [('false','False'), ('date','Current Date')]
     
     _columns = {
-        'value': fields.selection(_get_value_selection, 'Default Value', size=40,
+        'value': fields.selection(_get_value_selection, 'Default Value',
+                                  size=40,
                                   help="Default value is considered for " \
                                   "field when new document is generated."),
     }
@@ -41,6 +43,11 @@ class subscription_document_fields(orm.Model):
 class subscription_subscription(orm.Model):
     _inherit = "subscription.subscription"
     _description = "Subscription"
+
+    _columns = {
+        'document_id': fields.many2one("subscription.document",
+                                       "Document type"),
+    }
 
     def _get_specific_defaut_values(self, cr, uid, id, f, context=None):
         if context is None:
@@ -63,27 +70,33 @@ class subscription_subscription(orm.Model):
     def model_copy(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
-        for row in self.read(cr, uid, ids, context=context):
-            if not row.get('cron_id',False):
+        cron_obj = self.pool.get('ir.cron')
+        history_obj = self.pool.get('subscription.subscription.history')
+        for row in self.browse(cr, uid, ids, context=context):
+            if not row.cron_id:
                 continue
-            cron_ids = [row['cron_id'][0]]
-            remaining = self.pool.get('ir.cron').read(
-                cr, uid, cron_ids, ['numbercall'])[0]['numbercall']
+            cron_ids = [row.cron_id.id]
+            remaining = cron_obj.read(cr, uid, cron_ids,
+                                      ['numbercall'])[0]['numbercall']
             try:
-                (model_name, id) = row['doc_source'].split(',')
-                id = int(id)
+                doc_source = row.doc_source
+                model_name = doc_source._name
+                id = row.doc_source.id
                 model = self.pool.get(model_name)
             except:
                 raise orm.except_orm(_('Wrong Source Document!'),
-                                     _('Please provide another source document.' \
-                                       '\nThis one does not exist!'))
+                                     _('Please provide another source' \
+                                       'document.\nThis one does not exist!'))
 
             default = {'state':'draft'}
-            
-            doc = self._get_sub_document(cr, uid, row, model_name, context=context)
+            if row.document_id and row.document_id.model.model == model_name:
+                doc = row.document_id
+            else:
+                doc = self._get_sub_document(cr, uid, row,
+                                             model_name, context=context)
             for f in doc.field_ids:
                 default[f.field.name] = self._get_specific_defaut_values(
-                    cr, uid, row['id'], f, context=context)
+                    cr, uid, row.id, f, context=context)
 
             state = 'running'
 
@@ -92,13 +105,12 @@ class subscription_subscription(orm.Model):
             if remaining == 1:
                 state = 'done'
             id = self.pool.get(model_name).copy(cr, uid, id, default, context)
-            history_obj = self.pool.get('subscription.subscription.history')
             history_obj.create(cr, uid, {
-                'subscription_id': row['id'],
+                'subscription_id': row.id,
                 'date': time.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
                 'document_id': model_name+','+str(id)
                 }, context=context)
-            self.write(cr, uid, [row['id']], {'state': state}, context=context)
+            self.write(cr, uid, [row.id], {'state': state}, context=context)
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

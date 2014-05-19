@@ -35,7 +35,6 @@ class mail_message(orm.Model):
                 partner_ids = values.get('notified_partner_ids')
                 if partner_ids:
                     partner_ids = partner_ids[0][2]
-                    print partner_ids
                     partner_ids.append(partner_id)
                 else:
                     partner_ids = [partner_id]
@@ -47,10 +46,8 @@ class mail_message(orm.Model):
 #        message = self.browse(cr,uid,new_id,context=context)
 #        model = message.model
 #        res_id = message.res_id 
-#        print res_id
 #        obj_model = self.pool.get(model)
 #        obj = obj_model.browse(cr,uid,res_id,context=context)
 #        user_id = obj.user_id.partner_id.id
-#        print user_id
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

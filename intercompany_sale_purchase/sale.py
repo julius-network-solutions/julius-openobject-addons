@@ -168,7 +168,6 @@ class sale_order(orm.Model):
         # Get default values
         invoice_method = ir_values.get_default(
             cr, uid, 'purchase.order', 'invoice_method') or 'order'
-        print partner_id
         partner_address_id = partner_obj.\
             address_get(cr, SUPERUSER_ID, [partner_id], ['default'])['default']
 
@@ -283,15 +282,15 @@ class sale_order(orm.Model):
 
             # Get the company linked, the supplier and company warehouse 
             company_id, partner_id, warehouse_id = self.\
-                _check_edi_partner(cr, uid, order, context=context)
+                _check_edi_partner(cr, SUPERUSER_ID, order, context=context)
 
             # Get the good purchase list price
             pricelist_id = self.\
-                _get_purchase_pricelist(cr, uid, order,
+                _get_purchase_pricelist(cr, SUPERUSER_ID, order,
                                         partner_id, context=context)
 
             # Get the default values to create the linked purchase order
-            vals = self._get_vals_for_edi_purchase(cr, uid, order,
+            vals = self._get_vals_for_edi_purchase(cr, SUPERUSER_ID, order,
                                                    company_id, partner_id,
                                                    warehouse_id,
                                                    pricelist_id,
@@ -316,7 +315,7 @@ class sale_order(orm.Model):
             for line in order.order_line:
                 # Get the default values one by one.
                 vals = self._get_vals_for_edi_purchase_line(
-                    cr, uid, line, purchase_id, partner_id,
+                    cr, SUPERUSER_ID, line, purchase_id, partner_id,
                     pricelist_id, company_id, context=context)
                 # Create the line
                 purchase_line_obj.create(cr, SUPERUSER_ID,

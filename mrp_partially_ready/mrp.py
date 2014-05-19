@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
@@ -37,7 +37,8 @@ class mrp_production(orm.Model):
                 new_selection = []
                 for (a,b) in self._columns['state'].selection:
                     if a == 'ready':
-                        new_selection.extend([('partially_ready', _('Partially ready'))])
+                        new_selection.extend([('partially_ready',
+                                               _('Partially ready'))])
                     new_selection.extend([(a,b)])
                 self._columns['state'].selection = new_selection
         super(mrp_production, self).__init__(pool, cr)
@@ -54,19 +55,23 @@ class mrp_production(orm.Model):
                 available = 0
                 start = True
                 for component in prod.bom_id.bom_lines:
-                    compo_list.setdefault(component.product_id.id, 0)
-                    compo_list[component.product_id.id] += component.product_qty
+                    product_id = component.product_id.id
+                    compo_list.setdefault(product_id, 0)
+                    compo_list[product_id] += component.product_qty
                 for move in prod.move_lines:
                     context['states_in'] = ('done',)
                     context['states_out'] = ('done', 'assigned', 'confirmed')
-                    available_quantity = move_obj._get_specific_available_qty(cr, uid, move, context=context)
+                    available_quantity = move_obj.\
+                        _get_specific_available_qty(cr, uid, move,
+                                                    context=context)
                     if available_quantity <= 0:
                         available = 0
                         break
                     component_qty = compo_list.get(move.product_id.id)
                     if component_qty == 0:
                         component_qty = 1
-                    quantity = (available_quantity - (available_quantity % component_qty)) / component_qty
+                    quantity = (available_quantity - \
+                        (available_quantity % component_qty)) / component_qty
                     if not start:
                         available = min(quantity, available)
                     else:
@@ -99,6 +104,17 @@ class mrp_production(orm.Model):
             }, context=context)
         return True
 
+    def _get_quantities(self, cr, uid, production,
+                        quantity_left_to_do, context=None):
+        if context is None: context = {}
+        quantity_ready = 0
+        if not context.get('quantity_define_manually'):
+            quantity_ready = production.product_qty_ready
+        else:
+            quantity_ready = context.get('quantity_define_manually') or 0
+        quantity_to_do = quantity_left_to_do - quantity_ready
+        return quantity_ready, quantity_to_do
+
     def partial_to_production(self, cr, uid, ids, context=None):
         if context is None: context = {}
         move_obj = self.pool.get('stock.move')
@@ -107,21 +123,29 @@ class mrp_production(orm.Model):
         procurement_obj = self.pool.get('procurement.order')
         wf_service = netsvc.LocalService("workflow")
         for production in self.browse(cr, uid, ids, context=context):
-            if production.state != 'partially_ready':
+            if production.state not in ('partially_ready', 'ready'):
                 continue
-            if not production.product_qty_ready:
-                self.write(cr, uid, production.id, {'state': 'confirmed'}, context=context)
-            elif production.product_qty_ready:
+            if production.state == 'ready' and \
+                not context.get('quantity_define_manually'):
+                continue
+            if production.state == 'partially_ready' and \
+                not production.product_qty_ready:
+                self.write(cr, uid, production.id,
+                           {'state': 'confirmed'}, context=context)
+            elif production.product_qty_ready or \
+                context.get('quantity_define_manually'):
                 quantity_done = 0
                 for produced_product in production.move_created_ids2:
                     if (produced_product.scrapped) or \
-                        (produced_product.product_id.id != production.product_id.id):
+                        (produced_product.product_id.id \
+                        != production.product_id.id):
                         continue
                     quantity_done += produced_product.product_qty
                 quantity_total = production.product_qty
                 quantity_left_to_do = quantity_total - quantity_done
-                quantity_ready = production.product_qty_ready
-                quantity_to_do = quantity_left_to_do - quantity_ready
+                quantity_ready, quantity_to_do = self.\
+                    _get_quantities(cr, uid, production,
+                                    quantity_left_to_do, context=context)
                 new_move_id = False
                 if quantity_to_do > 0:
                     if production.move_prod_id:
@@ -130,7 +154,8 @@ class mrp_production(orm.Model):
                                                production.move_prod_id.id,
                                                quantity_to_do, context)
                         if new_move_id:
-                            move_obj.action_confirm(cr, uid, [new_move_id], context=context)
+                            move_obj.action_confirm(cr, uid, [new_move_id],
+                                                    context=context)
                         self._write_move_to_do(cr, uid,
                                                production.move_prod_id.id,
                                                quantity_ready, context)
@@ -140,6 +165,7 @@ class mrp_production(orm.Model):
                         ], limit=1, context=context)
                     new_prod_id = False
                     new_procurement_id = False
+                    procurement_id = False
                     if procurement_ids:
                         procurement_id = procurement_ids[0]
                         default_vals = {
@@ -194,10 +220,11 @@ class mrp_production(orm.Model):
                     qty_change_obj.\
                         change_prod_qty(cr, uid, [wiz_id],
                                         context=context_change_qty)
-                    procurement_obj.\
-                        write(cr, uid, procurement_id, {
-                              'product_qty': quantity_ready,
-                              }, context=context)
+                    if procurement_id:
+                        procurement_obj.\
+                            write(cr, uid, procurement_id, {
+                                  'product_qty': quantity_ready,
+                                  }, context=context)
                     
                     self.write(cr, uid, production.id, {
                         'production_id': new_prod_id,

@@ -72,7 +72,6 @@ def get_data(self, cr, uid, ids, recordlist, data):
             continue
 
         line_splited = line.split(';') 
-        print line_splited
         st_line = {}
         line_name = i
         st_line['extra_note'] = ''

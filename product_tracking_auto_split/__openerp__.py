@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,24 +19,24 @@
 #
 #################################################################################
 
-from .google_maps import GoogleMaps
-from openerp.osv import orm, fields
-import datetime
-import time
-
-class hr_job(orm.Model):
-    _inherit = 'hr.job'
-
-    def get_duration(self, cr, uid, ids, context=None):
-        origin = 'Paris'
-        destination = 'Le Vesinet'
-        departure_time = context.get('departure_time')
-        if not departure_time:
-            n = datetime.datetime.now()
-            departure_time = int(time.mktime(n.timetuple()))
-        maps = GoogleMaps()
-        duration = maps.duration(origin, destination, mode='transit', departure_time=departure_time)
-        distance = maps.distance(origin, destination, mode='transit', departure_time=departure_time)
-        return True
+{
+    "name" : "Product Tracking Auto Split",
+    "summary": "Product Tracking Auto Split",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Stock Management",
+    "depends" : [
+        "stock",
+    ],
+    "description": """
+    Module to automatically split Product Tracking without creation of prodlot during incoming shipment process, 
+    """,
+    "demo" : [],
+    "data" : [
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

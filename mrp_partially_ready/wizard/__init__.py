@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,28 +17,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-{
-    'name': 'Recurring Documents default Base',
-    'version': '1.1',
-    'category': 'Tools',
-    'description': """
-Create recurring documents.
-===========================
-
-This module is an inheritance on the subscription module
-which allows to add new features in the default values to copy.
-    """,
-    'author': 'Julius Network Solutions',
-    'depends': ['subscription'],
-    'data': [
-        'subscription_view.xml',
-    ],
-    'demo': [],
-    'active': False,
-    'installable': False,
-    'images': [],
-}
+from . import start_partially
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

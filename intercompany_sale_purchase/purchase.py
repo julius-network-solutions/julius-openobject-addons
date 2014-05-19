@@ -287,15 +287,15 @@ class purchase_order(orm.Model):
 
             # Get the company linked, the supplier and company warehouse 
             company_id, partner_id, shop_id = self.\
-                _check_edi_partner(cr, uid, order, context=context)
+                _check_edi_partner(cr, SUPERUSER_ID, order, context=context)
 
             # Get the good purchase list price
             pricelist_id = self.\
-                _get_sale_pricelist(cr, uid, order,
+                _get_sale_pricelist(cr, SUPERUSER_ID, order,
                                     partner_id, context=context)
 
             # Get the default values to create the linked purchase order
-            vals = self._get_vals_for_edi_sale(cr, uid, order,
+            vals = self._get_vals_for_edi_sale(cr, SUPERUSER_ID, order,
                                                company_id, partner_id,
                                                shop_id, pricelist_id,
                                                context=context)
@@ -319,7 +319,7 @@ class purchase_order(orm.Model):
             for line in order.order_line:
                 # Get the default values one by one.
                 vals = self._get_vals_for_edi_sale_line(
-                    cr, uid, line, sale_id, partner_id,
+                    cr, SUPERUSER_ID, line, sale_id, partner_id,
                     pricelist_id, company_id, context=context)
                 # Create the line
                 sale_line_obj.create(cr, SUPERUSER_ID,
