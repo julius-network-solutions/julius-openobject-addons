@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+	    <record id="group_preference_viewer" model="res.groups">
+	        <field name="name">Preference info Viewer</field>
+	        <field name="category_id" ref="base.module_category_usability"/>
+	    </record>
+	
+	</data>
+</openerp>

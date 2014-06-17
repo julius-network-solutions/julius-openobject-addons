@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_users_form_simple_modif_hide">
+            <field name="name">view.users.form.crm.modif.hide</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form_simple_modif" />
+            <field name="arch" type="xml">
+				<xpath expr="/form/group[@name='preferences']" position="attributes">
+					<attribute name="groups">hide_preference_info.group_preference_viewer</attribute>
+                </xpath>
+				<field name="signature" position="attributes">
+					<attribute name="groups">hide_preference_info.group_preference_viewer</attribute>
+				</field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
