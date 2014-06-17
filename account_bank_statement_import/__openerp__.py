@@ -24,6 +24,7 @@
     "summary": "Bank statement import with specific filters",
     "version": "1.2",
     "author": "Julius Network Solutions",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>, Yvan Patry <yvan@julius.fr>, Pierre Monod <pierre@julius.fr>",
     "category": "Accounting & Finance",
     'images': [
         'images/1_accounting_config.jpeg',
