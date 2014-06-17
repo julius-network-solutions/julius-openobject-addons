@@ -235,7 +235,7 @@ class account_bank_statement_import(orm.TransientModel):
             'partner_id': line.get('partner_id') or False,
             'statement_id': bk_st_id,
             'voucher_id': voucher_id,
-            'note': str_not1 + '\n' + line.get('extra_note') or '',
+            'note': (str_not1 and (str_not1 + '\n') or '') + line.get('extra_note', ''),
             'ref': line.get('ref') or '',
         }
 

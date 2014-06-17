@@ -55,7 +55,7 @@ You will be able to define:
         "wizard/statement_import.xml",
     ],
     "active": False,
-    "installable": False,
+    "installable": True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

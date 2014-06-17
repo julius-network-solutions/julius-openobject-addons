@@ -25,6 +25,13 @@
 			<field name="filter">bnp_pro</field>
 			<field name="active" eval="False"/>
 		</record>
+    
+        <record model="account.bankimport.filters" id="filters_bnp_entreprises">
+            <field name="name">BNP Entreprises</field>
+            <field name="filter">bnp_entreprises</field>
+            <field name="active" eval="False"/>
+            <field name="def_date_format">%d/%m/%Y</field>
+        </record>
 	
 		<record model="account.bankimport.filters" id="filters_bnp">
 			<field name="name">BNP</field>
@@ -49,6 +56,13 @@
 			<field name="filter">cic</field>
 			<field name="active" eval="False"/>
 		</record>
+    
+        <record model="account.bankimport.filters" id="filters_crca">
+            <field name="name">CRCA</field>
+            <field name="filter">crca</field>
+            <field name="active" eval="False"/>
+            <field name="def_date_format">%d/%m/%Y</field>
+        </record>
 	
 		<record model="account.bankimport.filters" id="filters_coda">
 			<field name="name">CODA</field>
@@ -91,6 +105,12 @@
 			<field name="filter">argentina</field>
 			<field name="active" eval="False"/>
 		</record>
+
+       <record model="account.bankimport.filters" id="filters_sg">
+           <field name="name">SG</field>
+           <field name="filter">sg</field>
+           <field name="active" eval="False"/>
+       </record>
 
     </data>
 </openerp>
