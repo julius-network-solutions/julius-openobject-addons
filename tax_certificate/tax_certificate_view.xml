@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--
+        =======
+        Tax certificate
+        =======
+        -->
+        <record id="view_tax_certificate_tree" model="ir.ui.view">
+            <field name="name">tax.certificate.tree</field>
+            <field name="model">tax.certificate</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Tax certificate">
+                	<field name="name" />
+                    <field name="number"/>
+					<field name="partner_id"/>
+					<field name="amount_untaxed"/>
+					<field name="amount_total"/>
+					<field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_tax_certificate_form" model="ir.ui.view">
+            <field name="name">tax.certificate.form</field>
+            <field name="model">tax.certificate</field>
+            <field name="type">form</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Tax certificate">
+                    <group>
+                    	<field name="name"/>
+                        <field name="number"/>
+                    	<field name="partner_id"/>
+                    	<field name="partner_address_id" domain="[('parent_id', '=', partner_id)]"/>
+    					<field name="salesman_id"/>
+    					<field name="fiscalyear_id"/>
+    					<field name="date"/>
+                    </group>
+					<notebook colspan="4">
+                        <page string="Analytic lines">
+                       		<button name="compute_lines" string="Compute lines" icon='gtk-ok' type="object" states="draft" colspan="4"/>
+							<field name="line_ids" nolabel="1" string="Tax certificate lines"/>
+                        </page>
+						<page string="Invoices">
+							<separator string="Invoice linked" colspan="4"/>
+	                		<field name="invoice_ids" nolabel="1" colspan="4"/>
+                        </page>
+						<page string="Invoices Lines">
+							<separator string="Invoice lines linked" colspan="4"/>
+	                		<field name="invoice_line_ids" nolabel="1" colspan="4"/>
+                        </page>
+						<page string="Other infos">
+	                		<field name="type"/>
+	                		<field name="currency_id"/>
+	                		<field name="company_id"/>
+                        </page>
+						<page string="Notes">
+	                		<field name="notes" nolabel="1" colspan="4"/>
+                        </page>
+					</notebook>
+					<group colspan="4" col="4">
+						<group colspan="4" col="10">
+							<field name="amount_untaxed"/>
+							<field name="amount_tax"/>
+							<field name="amount_total"/>
+							<field name="payment_done"/>
+							<button name="update_amount" string="Update" icon='gtk-ok' type="object" states="draft" colspan="2"/>
+						</group>
+						<group colspan="4" col="8">
+							<field name="state"/>
+							<button name="validate_certificate" string="Validate" icon='gtk-ok' type="object" states="draft" colspan="6"/>
+						</group>
+					</group>
+                </form>
+            </field>
+        </record>
+        <record id="view_tax_certificate_search" model="ir.ui.view">
+            <field name="name">tax.certificate.search</field>
+            <field name="model">tax.certificate</field>
+            <field name="type">search</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <search string="Tax certificate">
+                	<field name="name"/>
+                    <field name="number"/>
+                    <field name="partner_id"/>
+                    <field name="fiscalyear_id"/>
+					<field name="state"/>
+                </search>
+            </field>
+        </record>
+
+        
+        <!--
+        =======
+        Actions
+        =======
+        -->
+        <record id="action_tax_certificate_list" model="ir.actions.act_window">
+            <field name="name">Tax certificate</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tax.certificate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_tax_certificate_tree"/>
+            <field name="search_view_id" ref="view_tax_certificate_search"/>
+        </record>
+
+		<menuitem id="menu_tax_certificate_main" name="Tax Certificate" parent="account.menu_finance" sequence="10"/>
+        <menuitem action="action_tax_certificate_list" id="menu_action_tax_certificate_list" parent="menu_tax_certificate_main" sequence="1"/>
+        
+		<record id="view_tax_certificate_line_tree" model="ir.ui.view">
+			<field name="name">tax.certificate.line.tree</field>
+			<field name="model">tax.certificate.line</field>
+			<field name="type">tree</field>
+			<field eval="8" name="priority"/>
+			<field name="arch" type="xml">
+				<tree string="Tax certificate line">
+					<field name="analytic_id" />
+					<field name="period_id" />
+					<field name="product_id"/>
+				</tree>
+			</field>
+		</record>
+    
+    </data>
+</openerp>

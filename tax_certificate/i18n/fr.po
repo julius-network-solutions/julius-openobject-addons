@@ -1,0 +1,340 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* tax_certificate
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-10 10:48+0000\n"
+"PO-Revision-Date: 2012-10-10 10:48+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tax_certificate
+#: model:ir.model,name:tax_certificate.model_create_tax_certificate
+msgid "create.tax.certificate"
+msgstr "Créer une attestation fiscale"
+
+#. module: tax_certificate
+#: view:create.tax.certificate:0
+#: field:create.tax.certificate,partner_ids:0
+msgid "Partners"
+msgstr "Partenaires"
+
+#. module: tax_certificate
+#: field:tax.certificate.line,certificate_id:0
+msgid "Certificate"
+msgstr "Attestation fiscale"
+
+#. module: tax_certificate
+#: selection:create.tax.certificate,filter:0
+msgid "By date and by period"
+msgstr "Par date et par période"
+
+#. module: tax_certificate
+#: selection:tax.certificate,type:0
+msgid "Supplier Certificate"
+msgstr "Attestation Fournisseur"
+
+#. module: tax_certificate
+#: model:ir.ui.menu,name:tax_certificate.menu_tax_certificate_main
+msgid "Tax Certificate"
+msgstr "Attestation Fiscale"
+
+#. module: tax_certificate
+#: view:create.tax.certificate:0
+msgid "Create tax certificate"
+msgstr "Créer les attestations fiscales"
+
+#. module: tax_certificate
+#: field:create.tax.certificate,date_end:0
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: tax_certificate
+#: field:create.tax.certificate,filter:0
+msgid "Date/period chosen"
+msgstr "Date / période choisie"
+
+#. module: tax_certificate
+#: field:tax.certificate,type:0
+msgid "Type"
+msgstr "Type"
+
+#. module: tax_certificate
+#: field:tax.certificate,amount_total:0
+msgid "Amount total"
+msgstr "Montant total"
+
+#. module: tax_certificate
+#: field:tax.certificate,fiscalyear_id:0
+msgid "Fiscalyear"
+msgstr "Année fiscale"
+
+#. module: tax_certificate
+#: field:tax.certificate.line,product_id:0
+msgid "Product"
+msgstr "Produit"
+
+#. module: tax_certificate
+#: field:create.tax.certificate,date_begin:0
+msgid "Begin Date"
+msgstr "Date de début"
+
+#. module: tax_certificate
+#: view:create.tax.certificate:0
+msgid "Families"
+msgstr "Clients"
+
+#. module: tax_certificate
+#: field:tax.certificate,name:0
+msgid "Description"
+msgstr "Description"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+#: field:tax.certificate,line_ids:0
+msgid "Tax certificate lines"
+msgstr "Lignes d'attestations fiscales"
+
+#. module: tax_certificate
+#: field:tax.certificate,currency_id:0
+msgid "Currency"
+msgstr "Devise"
+
+#. module: tax_certificate
+#: field:res.partner,company_id:0
+#: field:tax.certificate,company_id:0
+msgid "Company"
+msgstr "Société"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+#: field:tax.certificate,invoice_ids:0
+msgid "Invoices"
+msgstr "Factures"
+
+#. module: tax_certificate
+#: help:tax.certificate,date:0
+msgid "Keep empty to use the current date"
+msgstr "Gardez vide, utiliser la date actuelle"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+msgid "Compute lines"
+msgstr "Calculer les lignes"
+
+#. module: tax_certificate
+#: field:tax.certificate,number:0
+msgid "Certificate Number"
+msgstr "Numéro de l'attestation"
+
+#. module: tax_certificate
+#: model:ir.actions.act_window,name:tax_certificate.act_view_view_create_tax_certificate
+msgid "Create certificate"
+msgstr "Créer les attestations"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+msgid "Validate"
+msgstr "Valider"
+
+#. module: tax_certificate
+#: model:ir.model,name:tax_certificate.model_tax_certificate_line
+msgid "Tax Certificate lines"
+msgstr "Lignes d'attestations fiscales"
+
+#. module: tax_certificate
+#: field:tax.certificate,invoice_line_ids:0
+msgid "Invoice lines"
+msgstr "Lignes de facture"
+
+#. module: tax_certificate
+#: model:ir.module.module,description:tax_certificate.module_meta_information
+msgid "\n"
+"    This module adds a tax certificate management.\n"
+"    "
+msgstr "\n"
+"    Ce module ajoute un système de gestion d'attestations fiscales.\n"
+"    "
+
+#. module: tax_certificate
+#: field:create.tax.certificate,period_ids:0
+msgid "Periods"
+msgstr "Périodes"
+
+#. module: tax_certificate
+#: field:tax.certificate.line,analytic_id:0
+msgid "Account analytic line"
+msgstr "Lignes analytiques"
+
+#. module: tax_certificate
+#: help:tax.certificate,number:0
+msgid "Unique number of the certificate, computed automatically when the certificate is validated."
+msgstr "Numéro unique de l'attestation, calculé automatiquement lorsqu'elle est validée."
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+msgid "Invoices Lines"
+msgstr "Lignes de factures"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+#: field:tax.certificate,notes:0
+msgid "Notes"
+msgstr "Notes"
+
+#. module: tax_certificate
+#: selection:create.tax.certificate,filter:0
+msgid "By period"
+msgstr "Par période"
+
+#. module: tax_certificate
+#: model:ir.actions.act_window,name:tax_certificate.action_tax_certificate_list
+#: model:ir.model,name:tax_certificate.model_tax_certificate
+#: model:ir.module.module,shortdesc:tax_certificate.module_meta_information
+#: model:ir.ui.menu,name:tax_certificate.menu_action_tax_certificate_list
+#: view:tax.certificate:0
+msgid "Tax certificate"
+msgstr "Attestation fiscale"
+
+#. module: tax_certificate
+#: field:create.tax.certificate,fiscalyear_id:0
+msgid "Fiscal Year"
+msgstr "Année fiscale"
+
+#. module: tax_certificate
+#: field:tax.certificate,payment_done:0
+msgid "Payment Cesu Done"
+msgstr "Paiement CESU"
+
+#. module: tax_certificate
+#: view:tax.certificate.line:0
+msgid "Tax certificate line"
+msgstr "Lignes d'attestation fiscale"
+
+#. module: tax_certificate
+#: selection:create.tax.certificate,filter:0
+msgid "No Filters"
+msgstr "Pas de filtres"
+
+#. module: tax_certificate
+#: field:tax.certificate,partner_id:0
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: tax_certificate
+#: selection:tax.certificate,state:0
+msgid "Cancelled"
+msgstr "Annulée"
+
+#. module: tax_certificate
+#: view:create.tax.certificate:0
+msgid "Filters on periods"
+msgstr "Filtres sur les périodes"
+
+#. module: tax_certificate
+#: field:tax.certificate,partner_address_id:0
+msgid "Partner address"
+msgstr "Adresse du partenaire"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+msgid "Other infos"
+msgstr "Autres infos"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+msgid "Invoice lines linked"
+msgstr "Lignes de factures liées"
+
+#. module: tax_certificate
+#: selection:tax.certificate,type:0
+msgid "Customer Certificate"
+msgstr "Attestation client"
+
+#. module: tax_certificate
+#: field:tax.certificate,state:0
+msgid "State"
+msgstr "Statut"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+msgid "Analytic lines"
+msgstr "Lignes analytiques"
+
+#. module: tax_certificate
+#: view:create.tax.certificate:0
+msgid "Select a period"
+msgstr "Sélectionnez une période"
+
+#. module: tax_certificate
+#: selection:create.tax.certificate,filter:0
+msgid "By dates"
+msgstr "Par dates"
+
+#. module: tax_certificate
+#: field:tax.certificate,salesman_id:0
+msgid "Salesman"
+msgstr "Vendeur"
+
+#. module: tax_certificate
+#: field:tax.certificate,date:0
+msgid "Date Certificate"
+msgstr "Date de l'attestation"
+
+#. module: tax_certificate
+#: view:create.tax.certificate:0
+msgid "Filters on dates"
+msgstr "Filtres sur les dates"
+
+#. module: tax_certificate
+#: field:tax.certificate.line,period_id:0
+msgid "Period"
+msgstr "Période"
+
+#. module: tax_certificate
+#: field:tax.certificate,amount_tax:0
+msgid "Amount tax"
+msgstr "Montant des taxes"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+msgid "Invoice linked"
+msgstr "Facture liée"
+
+#. module: tax_certificate
+#: field:tax.certificate,amount_untaxed:0
+msgid "Amount untaxed"
+msgstr "Montant non taxé"
+
+#. module: tax_certificate
+#: view:create.tax.certificate:0
+msgid "Filters"
+msgstr "Filtres"
+
+#. module: tax_certificate
+#: view:create.tax.certificate:0
+msgid "Cancel"
+msgstr "Annulé"
+
+#. module: tax_certificate
+#: selection:tax.certificate,state:0
+msgid "Draft"
+msgstr "Brouillon"
+
+#. module: tax_certificate
+#: selection:tax.certificate,state:0
+msgid "Open"
+msgstr "Ouvert"
+
+#. module: tax_certificate
+#: view:tax.certificate:0
+msgid "Update"
+msgstr "Recalculer les paiements"
+

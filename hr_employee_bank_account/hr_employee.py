@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,8 +19,24 @@
 #
 ###############################################################################
 
-from . import bank_statement
-from . import wizard
-from . import res_config
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+
+class hr_employee(osv.osv):
+    _inherit = 'hr.employee'
+    
+    _columns = {
+        'bank_ids': fields.one2many('res.partner.bank', 'employee_id', 'Banks'),
+    }
+    
+hr_employee()
+
+class res_partner_bank(osv.osv):
+    _inherit = "res.partner.bank"
+    _columns = {
+        'employee_id' : fields.many2one('hr.employee','Employee'),
+        'partner_id': fields.many2one('res.partner', 'Partner', required=False, ondelete='cascade', select=True),
+    }
+res_partner_bank()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

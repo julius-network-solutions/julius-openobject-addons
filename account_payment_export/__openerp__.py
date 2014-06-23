@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,8 +19,28 @@
 #
 ###############################################################################
 
-from . import bank_statement
-from . import wizard
-from . import res_config
+
+{
+    "name": "Payment Order Export",
+    "version": "1.0",
+    "author": "Tiny",
+    "category": "Generic Modules/Accounting",
+    "depends": [
+        "base_vat",
+        "base_iban",
+        "account_payment"
+    ],
+    "demo":[],
+    "data" : [
+        "security/ir.model.access.csv",
+        "payment_export_view.xml",
+        "payment_export_data.xml"
+    ],
+    "active":False,
+    "description": """
+     This module allows to export payment orders.
+     """,
+    "installable":True,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

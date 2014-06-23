@@ -1,0 +1,55 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* hr_employee_bank_account
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-14 10:03+0000\n"
+"PO-Revision-Date: 2012-11-14 10:03+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_employee_bank_account
+#: constraint:res.partner.bank:0
+msgid "\n"
+"Please define BIC/Swift code on bank for bank type IBAN Account to make valid payments"
+msgstr "\n"
+"Veuillez définir le code BIC/Swift de la banque pour les types de compte IBAN afin de générer des réglements valides."
+
+#. module: hr_employee_bank_account
+#: view:hr.employee:0
+#: model:ir.model,name:hr_employee_bank_account.model_res_partner_bank
+msgid "Bank Accounts"
+msgstr "Comptes bancaires"
+
+#. module: hr_employee_bank_account
+#: model:ir.model,name:hr_employee_bank_account.model_hr_employee
+msgid "Employee"
+msgstr "Employé"
+
+#. module: hr_employee_bank_account
+#: field:res.partner.bank,employee_id:0
+msgid "Employee"
+msgstr "Employé"
+
+#. module: hr_employee_bank_account
+#: field:hr.employee,bank_ids:0
+msgid "Banks"
+msgstr "Banques"
+
+#. module: hr_employee_bank_account
+#: constraint:res.partner.bank:0
+msgid "The RIB and/or IBAN is not valid"
+msgstr "Le numéro du RIB et/ou IBAN n'est pas correct."
+
+#. module: hr_employee_bank_account
+#: constraint:hr.employee:0
+msgid "Error ! You cannot create recursive Hierarchy of Employees."
+msgstr "Erreur ! Vous ne pouvez pas créer de hiérarchie d'employés récursives."
+

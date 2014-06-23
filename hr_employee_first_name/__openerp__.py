@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,8 +19,23 @@
 #
 ###############################################################################
 
-from . import bank_statement
-from . import wizard
-from . import res_config
+{
+    "name" : "Add Employee first name",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://www.julius.fr/",
+    "category" : "Human Resources",
+    "description": """
+    This module adds a button in the employee form to be able to generate directly a user from the employee   """,
+    "depends" : [
+        "hr",
+    ],
+    "demo" : [],
+    "data" : [
+        'hr_view.xml',
+    ],
+    'installable' : True,
+    'active' : False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

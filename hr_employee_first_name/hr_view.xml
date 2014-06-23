@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+		<record id="view_employee_form_create_user" model="ir.ui.view">
+			<field name="name">hr.employee.form.create.user</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form"/>
+			<field name="arch" type="xml">
+				<field name="name" position="before">
+					<field name="first_name"/>
+				</field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
