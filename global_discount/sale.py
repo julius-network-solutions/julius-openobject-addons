@@ -21,105 +21,77 @@
 
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
+from openerp import models, api, fields
+import openerp.addons.decimal_precision as dp
 
-class sale_order(orm.Model):
+class sale_order(models.Model):
     _inherit = 'sale.order'
 
-    def _calc_amount_untaxed_discounted(self, cr, uid, ids,
-                                        name, args, context=None):
-        """
-        Function computing the untaxed total
-        with discount of sale orders.
-        """
-        if context is None:
-            context = {}
-        res = {}
-        for sale in self.browse(cr, uid, ids, context=context):
-            amount_untaxed = sale.amount_untaxed
-            discount = (100 - sale.global_discount_percentage) / 100
-            amount_untaxed_discounted = amount_untaxed * discount
-            res[sale.id] = amount_untaxed_discounted
-        return res
+    global_discount_percentage = fields.\
+        Float('Discount Percentage',
+              readonly=True, states={
+                                     'draft':[('readonly',False)],
+                                     'sent':[('readonly',False)],
+                                     })
+    amount_untaxed_discounted = fields.\
+        Float('Untaxed Amount With Discount',
+              digits_compute=dp.get_precision('Account'),
+              compute='_amount_discounted',
+              store=True)
+    amount_tax_discounted = fields.\
+        Float('Taxes With Discount',
+              digits_compute=dp.get_precision('Account'),
+              compute='_amount_discounted',
+              store=True)
+    amount_total_discounted = fields.\
+        Float('Total With Discount',
+              digits_compute=dp.get_precision('Account'),
+              compute='_amount_discounted',
+              store=True)
+    discount_is_present = fields.\
+        Boolean('Discount Present',
+                compute='_check_if_discount')
 
-    def _calc_amount_tax_discounted(self, cr, uid, ids,
-                                    name, args, context=None):
+    @api.one
+    @api.depends('amount_untaxed','amount_tax','global_discount_percentage',
+                 'order_line','order_line.product_uom_qty',
+                 'order_line.price_unit','order_line.tax_id')
+    def _amount_discounted(self):
         """
         Function computing the taxes total
         with discount of sale orders.
         """
-        if context is None:
-            context = {}
-        res = {}
-        for sale in self.browse(cr, uid, ids, context=context):
-            amount_tax = sale.amount_tax
-            discount = (100 - sale.global_discount_percentage) / 100
-            amount_tax_discounted = amount_tax * discount
-            res[sale.id] = amount_tax_discounted
-        return res
+        discount = (100 - self.global_discount_percentage) / 100
+        self.amount_untaxed_discounted = self.amount_untaxed * discount
+        self.amount_tax_discounted = self.amount_tax * discount
+        self.amount_total_discounted = self.amount_untaxed_discounted + \
+            self.amount_tax_discounted
 
-    def _calc_amount_total_discounted(self, cr, uid, ids,
-                                      name, args, context=None):
-        """
-        Function computing the total
-        with discount of sale orders.
-        """
-        if context is None:
-            context = {}
-        res = {}
-        for sale in self.browse(cr, uid, ids, context=context):
-            res[sale.id] = sale.amount_untaxed_discounted + \
-                sale.amount_tax_discounted
-        return res
-
-    def _check_if_discount(self, cr, uid, ids,
-                           name, args, context=None):
+    @api.one
+    @api.depends('order_line','global_discount_percentage')
+    def _check_if_discount(self):
         """
         Function checking if there is
         a discount in the sale order.
         """
-        if context is None:
-            context = {}
-        res = {}
-        for sale in self.browse(cr, uid, ids, context=context):
-            res[sale.id] = False
-            if sale.global_discount_percentage:
-                res[sale.id] = True
-            else:
-                for line in sale.order_line:
-                    if line.global_discount == True:
-                        res[sale.id] = True
-                        break
-        return res
+        self.discount_is_present = False
+        if self.global_discount_percentage:
+            self.discount_is_present = True
+        else:
+            for line in self.order_line:
+                if line.global_discount == True:
+                    self.discount_is_present = True
+                    break
 
-    _columns = {
-        'global_discount_percentage': fields.float('Discount Percentage',
-            readonly=True,
-            states={
-                'draft':[('readonly',False)],
-                'sent':[('readonly',False)],
-                }),
-        'amount_untaxed_discounted': fields.function(
-            _calc_amount_untaxed_discounted,
-            string='Untaxed Amount With Discount'),
-        'amount_tax_discounted': fields.function(
-            _calc_amount_tax_discounted,
-            string='Taxes With Discount'),
-        'amount_total_discounted': fields.function(
-            _calc_amount_total_discounted,
-            string='Total With Discount'),
-        'discount_is_present': fields.function(_check_if_discount,
-            string='Discount Present', type="boolean"),
-    }
-
-    def _get_lines_by_taxes(self, cr, uid, order_id, context=None):
+    @api.one
+    def _get_lines_by_taxes(self, lines=None):
         """ This method will return a dictionary of taxes as keys
         with the related lines.
         """
-        if context is None:
-            context = {}
+        if lines is None:
+            lines = self.order_line
         res = {}
-        order = self.browse(cr, uid, order_id, context=context)
-        for line in order.order_line:
+        for line in lines:
             taxes = [x.id for x in line.tax_id]
             if taxes:
                 taxes.sort()
@@ -128,13 +100,13 @@ class sale_order(orm.Model):
             res[taxes_str].append(line)
         return res
 
-    def _create_global_discount_lines_by_taxes(self, cr, uid, discount,
-                                               line_by_taxes, product_id,
-                                               context=None):
-        if context is None:
-            context = {}
-        res = []
-        line_obj = self.pool.get('sale.order.line')
+    @api.one
+    def _create_global_lines_discount_by_taxes(self, line_by_taxes):
+        discount = self.global_discount_percentage / 100
+        product = self.env.ref('global_discount.product_global_discount')
+        line_obj = self.env['sale.order.line']
+        if isinstance(line_by_taxes, list):
+            line_by_taxes = line_by_taxes and line_by_taxes[0] or {}
         for tax_str in line_by_taxes.keys():
             line_sum = 0
             discount_value = 0
@@ -147,15 +119,14 @@ class sale_order(orm.Model):
                 line_sum += sub
                 discount_value = line_sum * discount
             if line:
-                order = line.order_id
-                res_value = line_obj.product_id_change(cr, uid, [],
-                    pricelist=order.pricelist_id.id,
-                    product=product_id, qty=1,
-                    partner_id=order.partner_id.id,
-                    lang=order.partner_id.lang, update_tax=False,
-                    date_order=order.date_order,
-                    fiscal_position=order.fiscal_position,
-                    context=context)
+                res_value = line_obj.\
+                    product_id_change(pricelist=self.pricelist_id.id,
+                                      product=product.id, qty=1,
+                                      partner_id=self.partner_id.id,
+                                      lang=self.partner_id.lang,
+                                      update_tax=False,
+                                      date_order=self.date_order,
+                                      fiscal_position=self.fiscal_position)
                 value = res_value.get('value')
                 if value:
                     tax_ids = eval(tax_str)
@@ -163,48 +134,30 @@ class sale_order(orm.Model):
                     value.update({
                         'global_discount': True,
                         'price_unit': -discount_value,
-                        'order_id': order.id,
-                        'product_id': product_id,
-                        'product_uom_qty': 1,
+                        'order_id': self.id,
+                        'product_id': product.id,
                         'product_uos_qty': 1,
                         'tax_id': tax_ids, 
                     })
-                    res.append(line_obj.\
-                        create(cr, uid, value, context=context))
-        return res
+                    new_line = line_obj.create(value)
+                    new_line.product_uom_qty = 1
 
-    def generate_global_discount(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        line_obj = self.pool.get('sale.order.line')
-        data_obj = self.pool.get('ir.model.data')
-        for sale in self.browse(cr, uid, ids, context=context):
-            if sale.state in ('draft','sent') and \
-                sale.global_discount_percentage != 0.00:
-                model, product_id = data_obj.\
-                    get_object_reference(cr, uid,
-                                         'global_discount',
-                                         'product_global_discount')
-                discount = sale.global_discount_percentage / 100
-                global_line_ids = line_obj.\
-                    search(cr, uid, [
-                        ('order_id', '=', sale.id),
-                        ('global_discount', '=', True),
-                        ('state', '=', 'draft'),
-                        ], context=context)
-                line_obj.unlink(cr, uid, global_line_ids, context=context)
-                global_line_ids = []
-                line_by_taxes = self.\
-                    _get_lines_by_taxes(cr, uid, sale.id, context=context)
-                discount_line_ids = self.\
-                    _create_global_discount_lines_by_taxes(cr, uid, discount,
-                                                           line_by_taxes,
-                                                           product_id,
-                                                           context=context)
-                self.write(cr, uid, sale.id, {
-                    'global_discount_percentage': 0.00,
-                    }, context=context)
-        return True
+    @api.one
+    def generate_global_discount(self):
+        if self.state in ('draft','sent') and \
+            self.global_discount_percentage != 0.00:
+            domain = [
+                ('order_id', '=', self.id),
+                ('global_discount', '=', True),
+                ('state', '=', 'draft'),
+                ]
+            line_obj = self.env['sale.order.line']
+            lines = line_obj.search(domain)
+            if lines:
+                lines.unlink()
+            line_by_taxes = self._get_lines_by_taxes()
+            self._create_global_lines_discount_by_taxes(line_by_taxes)
+            self.global_discount_percentage = 0
 
     def _make_invoice(self, cr, uid, order, lines, context=None):
         if context is None:
@@ -213,29 +166,15 @@ class sale_order(orm.Model):
             _make_invoice(cr, uid, order, lines, context=None)
         if order.global_discount_percentage:
             invoice_obj = self.pool.get('account.invoice')
-            data_obj = self.pool.get('ir.model.data')
-            model, product_id = data_obj.\
-                get_object_reference(cr, uid,
-                                     'global_discount',
-                                     'product_global_discount')
-            discount = order.global_discount_percentage / 100
-            line_by_taxes = invoice_obj.\
-                    _get_lines_by_taxes(cr, uid, inv_id,
-                                        context=context)
-            invoice_ids = invoice_obj.\
-                _create_global_discount_lines_by_taxes(cr, uid,
-                                                       discount,
-                                                       line_by_taxes,
-                                                       product_id,
-                                                       context=context)
-            invoice_obj.button_compute(cr, uid, [inv_id])
+            invoice_obj.\
+                generate_global_discount(cr, uid, [inv_id],
+                                         order.global_discount_percentage,
+                                         context=context)
         return inv_id
 
-class sale_order_line(orm.Model):
+class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
     
-    _columns = {
-        'global_discount': fields.boolean('Global Discount', readonly=True),
-    }
+    global_discount = fields.Boolean('Global Discount', readonly=True)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

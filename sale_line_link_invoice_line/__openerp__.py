@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,25 +17,32 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
-    "name" : "Link sale line in invoice lines",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sale Management",
-    "depends" : [
+    "name": "Link sales in invoices",
+    "summary": "Link back the sales into the invoices",
+    "version": "0.2",
+    "author": "Julius Network Solutions",
+    "website": "http://julius.fr",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
+    "category": "Sales Management",
+    "depends": [
         'account',
         'sale',
     ],
     "description": """
-    This Module adds the reversal link of sale lines to invoice lines.
-    """,
-    "demo" : [],
-    "data" : [],
-    'installable' : False,
-    'active' : False,
+Description:
+============
+
+This module will add two fields into the invoice lines:
+- The link back of sale order lines in account invoice lines
+-The link back of sale orders in account invoices
+""",
+    "demo": [],
+    "data": [],
+    'installable': False,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

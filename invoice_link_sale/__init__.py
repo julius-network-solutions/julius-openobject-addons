@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,32 +19,6 @@
 #
 ###############################################################################
 
-{
-    "name": "Global Discount with stock",
-    "summary": "Global discount on sale orders when stock has been installed",
-    "version": "0.1",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
-    "category": "Sales Management",
-    "depends": [
-        "stock",
-        "global_discount",
-        "invoice_link_sale"
-    ],
-    "description": """
-Global discount on a sale order
-===============================
-Module to manage a global discount in sale orders
-
-This module will be installed automatically when stock and global_discount
-have been installed.
-This will work as the module "delivery" works.
-    """,
-    "demo": [],
-    "data": [],
-    'installable': True,
-    'auto_install': True,
-}
+from . import invoice
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

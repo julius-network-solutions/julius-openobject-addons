@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,28 +19,22 @@
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
+from openerp import models, fields
 from openerp.tools.translate import _
-from openerp import models, api, fields
 
-class stock_picking(models.Model):
-    _inherit = "stock.picking"
+class account_invoice(models.Model):
+    _inherit = "account.invoice"
 
-    @api.multi
-    def action_invoice_create(self, journal_id=False,
-                              group=False, type='out_invoice'):
-        res = super(stock_picking, self).\
-            action_invoice_create(journal_id=journal_id,
-                                  group=group, type=type)
-        invoice_obj = self.env['account.invoice']
-        for invoice in invoice_obj.browse(res):
-            if len(self.ids) == 1:
-                discount = self.sale_id and \
-                    self.sale_id.global_discount_percentage or 0.0
-                if discount:
-                    invoice.generate_global_discount(discount)
-            else:
-                invoice.generate_global_discount(many=True)
-        return res
+    sale_ids = fields.Many2many('sale.order', 'sale_order_invoice_rel',
+                                'invoice_id', 'order_id', 'Sales',
+                                readonly=True, copy=False)
+
+class account_invoice_line(models.Model):
+    _inherit = "account.invoice.line"
+
+    sale_line_ids = fields.Many2many('sale.order.line',
+                                     'sale_order_line_invoice_rel',
+                                     'invoice_id', 'order_line_id',
+                                     'Sale Lines', readonly=True, copy=False)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

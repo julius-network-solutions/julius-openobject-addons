@@ -49,6 +49,7 @@ class sale_order_line_make_invoice(orm.TransientModel):
             invoice_ids = [invoice_ids]
         invoice_lines = {}
         sale_line_obj = self.pool.get('sale.order.line')
+        invoice_line_obj = self.pool.get('account.invoice.line')
         for line in sale_line_obj.\
             browse(cr, uid, context.get('active_ids', []), context=context):
             if line.order_id.global_discount_percentage:
@@ -72,13 +73,13 @@ class sale_order_line_make_invoice(orm.TransientModel):
             for invoice_id in invoice_lines.keys():
                 for discount in invoice_lines[invoice_id].keys():
                     line_ids = invoice_lines[invoice_id][discount]
+                    lines = invoice_line_obj.browse(cr, uid, line_ids, context=context)
                     line_by_taxes = invoice_obj.\
-                        _get_lines_by_taxes(cr, uid, invoice_id, line_ids, context=context)
+                        _get_lines_by_taxes(cr, uid, invoice_id, lines, context=context)
                     invoice_ids = invoice_obj.\
-                        _create_global_discount_lines_by_taxes(cr, uid,
-                                                               discount / 100,
-                                                               line_by_taxes,
-                                                               product_id,
+                        _create_global_lines_discount_by_taxes(cr, uid, invoice_id,
+                                                               line_by_taxes and line_by_taxes[0] or {},
+                                                               discount,
                                                                context=context)
                     invoice_obj.\
                         button_compute(cr, uid, [invoice_id], context=context)

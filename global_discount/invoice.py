@@ -19,24 +19,21 @@
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
 from openerp.tools.translate import _
+from openerp import models, api, fields
 
-class account_invoice(orm.Model):
+class account_invoice(models.Model):
     _inherit = 'account.invoice'
 
-    def _get_lines_by_taxes(self, cr, uid, invoice_id,
-                            line_ids=False, context=None):
+    @api.one
+    def _get_lines_by_taxes(self, lines=None):
         """ This method will return a dictionary of taxes as keys
         with the related lines.
         """
-        if context is None:
-            context = {}
+        if lines is None:
+            lines = self.invoice_lines
         res = {}
-        invoice = self.browse(cr, uid, invoice_id, context=context)
-        for line in invoice.invoice_line:
-            if line_ids and line.id not in line_ids:
-                continue
+        for line in lines:
             taxes = [x.id for x in line.invoice_line_tax_id]
             if taxes:
                 taxes.sort()
@@ -45,17 +42,18 @@ class account_invoice(orm.Model):
             res[taxes_str].append(line)
         return res
 
-    def _create_global_discount_lines_by_taxes(self, cr, uid, discount,
-                                               line_by_taxes, product_id,
-                                               context=None):
-        if context is None:
-            context = {}
-        res = []
-        line_obj = self.pool.get('account.invoice.line')
+    @api.one
+    def _create_global_lines_discount_by_taxes(self, line_by_taxes,
+                                               discount_percentage=None):
+        discount = (discount_percentage or 0) / 100
+        product = self.env.ref('global_discount.product_global_discount')
+        line_obj = self.env['account.invoice.line']
+        if isinstance(line_by_taxes, list):
+            line_by_taxes = line_by_taxes and line_by_taxes[0] or {}
         for tax_str in line_by_taxes.keys():
             line_sum = 0
             line = False
-            invoice = False
+            discount_value = 0
             for line in line_by_taxes[tax_str]:
                 qty = line.quantity
                 pu = line.price_unit
@@ -63,7 +61,7 @@ class account_invoice(orm.Model):
                 line_sum += sub
                 discount_value = line_sum * discount
             if line and discount_value > 0:
-                invoice = line.invoice_id
+                invoice = self
                 partner_id = invoice.partner_id and \
                     invoice.partner_id.id or False
                 fposition_id = invoice.fiscal_position and \
@@ -73,11 +71,12 @@ class account_invoice(orm.Model):
                 company_id = invoice.company_id and \
                     invoice.company_id.id or False
                 res_value = line_obj.\
-                    product_id_change(cr, uid, [line.id],
-                    product_id, False, qty=1, partner_id=partner_id,
-                    fposition_id=fposition_id, price_unit=discount_value,
-                    currency_id=currency_id, context=context,
-                    company_id=company_id)
+                    product_id_change(product.id, False, qty=1,
+                                      partner_id=partner_id,
+                                      fposition_id=fposition_id,
+                                      price_unit=discount_value,
+                                      currency_id=currency_id,
+                                      company_id=company_id)
                 value = res_value.get('value')
                 if value:
                     tax_ids = eval(tax_str)
@@ -85,20 +84,26 @@ class account_invoice(orm.Model):
                     value.update({
                         'global_discount': True,
                         'invoice_id': invoice.id,
-                        'product_id': product_id,
+                        'product_id': product.id,
                         'price_unit': -discount_value,
                         'quantity': 1,
                         'invoice_line_tax_id': tax_ids,
                     })
-                    res.append(line_obj.\
-                        create(cr, uid, value, context=context))
-        return res
+                    new_line = line_obj.create(value)
+                    new_line.quantity = 1
 
-class account_invoice_line(orm.Model):
+    @api.one
+    def generate_global_discount(self, discount_percentage=None, many=False):
+        line_obj = self.env['account.invoice.line']
+        lines = line_obj.search([('invoice_id', '=', self.id)])
+        line_by_taxes = self._get_lines_by_taxes(lines)
+        self._create_global_lines_discount_by_taxes(line_by_taxes,
+                                                    discount_percentage)
+        self.button_compute(self.id)
+
+class account_invoice_line(models.Model):
     _inherit = "account.invoice.line"
 
-    _columns = {
-        'global_discount': fields.boolean('Global Discount'),
-    }
+    global_discount = fields.Boolean('Global Discount', readonly=True)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
