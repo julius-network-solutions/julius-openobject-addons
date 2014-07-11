@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,14 +17,16 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from openerp.osv import fields, orm
+from openerp.osv import fields
 from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
 from openerp.addons.sale.sale import sale_order
+from openerp import models, api
+from openerp import fields as fields2
 
-class sale_order(orm.Model):
+class sale_order(models.Model):
     _inherit = 'sale.order'
 
     def _get_order(self, cr, uid, ids, context=None):
@@ -87,7 +89,7 @@ class sale_order(orm.Model):
             val += c.get('amount', 0.0)
         return val
 
-class sale_order_line(orm.Model):
+class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
     def _amount_line(self, cr, uid, ids, field_name, arg, context=None):
@@ -115,24 +117,30 @@ class sale_order_line(orm.Model):
     _columns = {
         'price_subtotal': fields.function(_amount_line,
             string='Subtotal', digits_compute=dp.get_precision('Account')),
-        'launch_costs' : fields.float('Launch Costs'),
-        'launch_costs_line_id': fields.many2one('account.invoice.line', 'Launch Costs invoice line'),
     }
 
-    def copy(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        if context is None:
-            context = {}
-        default['launch_costs_line_id'] = False
-        return super(sale_order_line, self).copy(cr, uid, id, default, context=context)
+    launch_costs = fields2.Float('Launch Costs')
+    launch_costs_line_id = fields2.Many2one('account.invoice.line',
+                                            'Launch invoice line')
 
-    def copy_data(self, cr, uid, id, default=None, context=None):
-        if default is None:
-            default = {}
-        if context is None:
-            context = {}
+    @api.one
+    def copy(self, default=None):
+        default = dict(default or {})
         default['launch_costs_line_id'] = False
-        return super(sale_order_line, self).copy_data(cr, uid, id, default, context=context)
+        return super(sale_order_line, self).copy(default)
+
+    @api.one
+    def copy_data(self, default=None):
+        default = dict(default or {})
+        default['launch_costs_line_id'] = False
+        return super(sale_order_line, self).copy_data(default)
+
+    @api.multi
+    def _launch_line_to_create(self):
+        res = False
+        if self.launch_costs != 0 \
+            and not self.launch_costs_line_id:
+            res = True
+        return res
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

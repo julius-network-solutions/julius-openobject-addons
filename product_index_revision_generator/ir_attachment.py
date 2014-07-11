@@ -19,38 +19,18 @@
 #
 ###############################################################################
 
-{
-    "name": "Emergency Costs",
-    "summary": "Manage emergency costs in sale orders",
-    "version": "0.3",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
-    "depends": [
-        "base_added_costs",
-    ],
-    "description": """
-Emergency Costs in sale orders
-==============================
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
 
-How this is working ?
----------------------
+class ir_attachment(orm.Model):
+    _inherit = "ir.attachment"
 
-You will find a new field in the sale order line : Emergency Costs.
+    _columns = {
+        'is_plan': fields.boolean('Is Plan ?'),
+    }
 
-Once the you've created an invoice for this order, you will be able to generate
-a line of emergency costs if needed by clicking on the
-"Generate Emergency Costs" in the invoice. 
-""",
-    "demo": [],
-    "data": [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
-    ],
-    'installable': True,
-    'active': False,
-}
+    _defaults = {
+        'is_plan': False,
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

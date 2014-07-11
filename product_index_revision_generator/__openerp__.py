@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,36 +20,34 @@
 ###############################################################################
 
 {
-    "name": "Emergency Costs",
-    "summary": "Manage emergency costs in sale orders",
-    "version": "0.3",
+    "name": "Product index revision",
+    "summary": "Generator of product index revison",
+    "version": "0.1",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
-    "category": "Sales Management",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
+    "category": "Purchases Management",
     "depends": [
-        "base_added_costs",
+        "product",
+        "mrp",
     ],
     "description": """
-Emergency Costs in sale orders
-==============================
+This module will give you the opportunity to:
+=============================================
 
-How this is working ?
----------------------
+    * Duplicate simple products to manage index revisions, these revisions will have a start and end date
+    * If a product got a BoM, the system will also duplicate the BoM (you will be able to manage if any change appears directly in the pop up)
 
-You will find a new field in the sale order line : Emergency Costs.
-
-Once the you've created an invoice for this order, you will be able to generate
-a line of emergency costs if needed by clicking on the
-"Generate Emergency Costs" in the invoice. 
+This will also add:
+-------------------
+    * In sale view, you will only find revisions which are running in the current order date.
 """,
     "demo": [],
     "data": [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
+        "wizard/add_plan_view.xml",
+        "wizard/generator_view.xml",
+        "product_view.xml",
     ],
-    'installable': True,
+    'installable': False,
     'active': False,
 }
 

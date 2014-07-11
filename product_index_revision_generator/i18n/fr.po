@@ -1,0 +1,237 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* product_index_revision_generator
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-07-03 11:10+0000\n"
+"PO-Revision-Date: 2014-07-03 13:14+0100\n"
+"Last-Translator: Mathieu Vatel <mathieu@julius.fr>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: product_index_revision_generator
+#: help:product.revision.generator,date_start:0
+msgid "Validity of this revision."
+msgstr "Validité de cet indice."
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator.line,generator_id:0
+msgid "Generator"
+msgstr "Générateur"
+
+#. module: product_index_revision_generator
+#: field:ir.attachment,is_plan:0
+msgid "Is Plan ?"
+msgstr "Est un Plan ?"
+
+#. module: product_index_revision_generator
+#: model:ir.model,name:product_index_revision_generator.model_product_add_plan
+msgid "Product add plan"
+msgstr "Ajout de plan produit"
+
+#. module: product_index_revision_generator
+#: view:product.revision.generator:0
+msgid "Generate index"
+msgstr "Générer indice"
+
+#. module: product_index_revision_generator
+#: model:ir.actions.act_window,name:product_index_revision_generator.action_product_add_plan_form_view
+#: view:product.add.plan:0
+#: view:product.product:0
+msgid "Add a plan"
+msgstr "Ajouter un plan"
+
+#. module: product_index_revision_generator
+#: help:product.revision.generator,date_stop:0
+msgid "Validity of this revision. Keep empty if it's always valid."
+msgstr "Validité de cet indice. Laisser vide si toujours valide."
+
+#. module: product_index_revision_generator
+#: help:product.revision.generator.line,product_uos:0
+msgid "Product UOS (Unit of Sale) is the unit of measurement for the invoicing and promotion of stock."
+msgstr "UdV de produit (Unité de Vente) est l'unité de mesure pour la facturation et calcul de stock."
+
+#. module: product_index_revision_generator
+#: model:ir.model,name:product_index_revision_generator.model_product_revision_generator_line
+msgid "Product revision generator lines"
+msgstr "Lignes de générateur d'indice"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator,name:0
+msgid "New revision index"
+msgstr "Nouvel indice"
+
+#. module: product_index_revision_generator
+#: field:product.add.plan,plan_document:0
+msgid "Plan document"
+msgstr "Plan attaché"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator,origin_bom_id:0
+msgid "Origin BoM"
+msgstr "Nomenclature d'origine"
+
+#. module: product_index_revision_generator
+#: model:ir.model,name:product_index_revision_generator.model_product_product
+#: field:product.revision.generator,product_id:0
+#: field:product.revision.generator.line,product_id:0
+msgid "Product"
+msgstr "Article"
+
+#. module: product_index_revision_generator
+#: view:product.add.plan:0
+#: view:product.revision.generator:0
+msgid "or"
+msgstr "ou"
+
+#. module: product_index_revision_generator
+#: view:product.product:0
+#: field:product.product,revision_index:0
+msgid "Revision Index"
+msgstr "Indice"
+
+#. module: product_index_revision_generator
+#: view:product.add.plan:0
+msgid "Add plan"
+msgstr "Ajouter un plan"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator.line,product_uom:0
+msgid "Product Unit of Measure"
+msgstr "Unité de mesure produit"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator.line,product_uos:0
+msgid "Product UOS"
+msgstr "UdV produit"
+
+#. module: product_index_revision_generator
+#: help:product.revision.generator.line,product_uom:0
+msgid "Unit of Measure (Unit of Measure) is the unit of measurement for the inventory control"
+msgstr "Unité de mesure, est l'unité de mesure pour le contrôle d'inventaire."
+
+#. module: product_index_revision_generator
+#: model:ir.model,name:product_index_revision_generator.model_ir_attachment
+msgid "ir.attachment"
+msgstr "ir.attachment"
+
+#. module: product_index_revision_generator
+#: field:product.product,plan_document:0
+#: field:product.product,plan_document_id:0
+msgid "Plan"
+msgstr "Plan"
+
+#. module: product_index_revision_generator
+#: view:product.product:0
+#: view:product.revision.generator:0
+msgid "Notes for this revision index..."
+msgstr "Notes pour cet indice..."
+
+#. module: product_index_revision_generator
+#: view:product.product:0
+msgid "Create a new revision"
+msgstr "Créer un nouvel indice"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator.line,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator,line_ids:0
+msgid "Lines"
+msgstr "Lignes"
+
+#. module: product_index_revision_generator
+#: field:product.product,revision_note:0
+#: field:product.revision.generator,revision_note:0
+msgid "Revision note"
+msgstr "Note d'indice"
+
+#. module: product_index_revision_generator
+#: field:product.product,plan_revision:0
+msgid "Plan Revision"
+msgstr "Plan d'indice"
+
+#. module: product_index_revision_generator
+#: field:product.add.plan,name:0
+msgid "Plan document name"
+msgstr "Nom plan attaché"
+
+#. module: product_index_revision_generator
+#: model:ir.model,name:product_index_revision_generator.model_product_revision_generator
+msgid "Product revision generator"
+msgstr "Générateur d'indice produit"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator.line,code:0
+msgid "Reference"
+msgstr "Référence"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator.line,sequence:0
+msgid "Sequence"
+msgstr "Séquence"
+
+#. module: product_index_revision_generator
+#: field:product.product,date_stop:0
+#: field:product.revision.generator,date_stop:0
+msgid "Valid Until"
+msgstr "Valide jusqu'au"
+
+#. module: product_index_revision_generator
+#: field:product.product,date_start:0
+#: field:product.revision.generator,date_start:0
+msgid "Valid From"
+msgstr "Valide du"
+
+#. module: product_index_revision_generator
+#: model:ir.actions.act_window,name:product_index_revision_generator.action_product_revision_generator
+#: view:product.revision.generator:0
+msgid "Product index generator"
+msgstr "Générateur d'indice produit"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator.line,product_qty:0
+msgid "Product Quantity"
+msgstr "Quantité"
+
+#. module: product_index_revision_generator
+#: help:product.revision.generator.line,sequence:0
+msgid "Gives the sequence order when displaying a list of bills of material."
+msgstr "Ordonne les nomenclatures lors de leur affichage en liste."
+
+#. module: product_index_revision_generator
+#: code:addons/product_index_revision_generator/wizard/generator.py:173
+#, python-format
+msgid "Warning"
+msgstr "Attention"
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator.line,product_uos_qty:0
+msgid "Product UOS Qty"
+msgstr "UdV Qté"
+
+#. module: product_index_revision_generator
+#: view:product.add.plan:0
+#: view:product.revision.generator:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: product_index_revision_generator
+#: code:addons/product_index_revision_generator/wizard/generator.py:174
+#, python-format
+msgid "The Product Unit of Measure you chose has a different category than in the product form."
+msgstr "L'UdM du produit que vous avez choisi a une catégorie différente que celle du produit."
+
+#. module: product_index_revision_generator
+#: field:product.revision.generator.line,company_id:0
+msgid "Company"
+msgstr "Société"
+

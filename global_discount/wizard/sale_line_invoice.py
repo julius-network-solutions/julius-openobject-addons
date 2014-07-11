@@ -19,10 +19,10 @@
 #
 ###############################################################################
 
-from openerp.osv import orm, fields
+from openerp import models, api, fields
 from openerp.tools.translate import _
 
-class sale_order_line_make_invoice(orm.TransientModel):
+class sale_order_line_make_invoice(models.TransientModel):
     _inherit = "sale.order.line.make.invoice"
     
     def make_invoices(self, cr, uid, ids, context=None):

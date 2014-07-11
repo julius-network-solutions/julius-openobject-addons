@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,35 +20,27 @@
 ###############################################################################
 
 {
-    "name": "Emergency Costs",
-    "summary": "Manage emergency costs in sale orders",
-    "version": "0.3",
+    "name": "Base added costs",
+    "summary": "Manage added costs in sale orders",
+    "version": "0.2",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "category": "Sales Management",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "depends": [
-        "base_added_costs",
+        "sale",
+        "account",
+        "invoice_link_sale",
     ],
     "description": """
-Emergency Costs in sale orders
-==============================
+Added Costs in sale orders
+==========================
 
-How this is working ?
----------------------
-
-You will find a new field in the sale order line : Emergency Costs.
-
-Once the you've created an invoice for this order, you will be able to generate
-a line of emergency costs if needed by clicking on the
-"Generate Emergency Costs" in the invoice. 
+This is only a base module to manage added costs on sale orders: e.g.
+Emergency Costs and Landed Costs.
 """,
     "demo": [],
-    "data": [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
-    ],
+    "data": [],
     'installable': True,
     'active': False,
 }

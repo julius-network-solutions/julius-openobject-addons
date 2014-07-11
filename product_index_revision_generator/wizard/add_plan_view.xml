@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="product_add_plan_form_view" model="ir.ui.view">
+            <field name="name">product.add.plan.form</field>
+            <field name="model">product.add.plan</field>
+            <field name="arch" type="xml">
+                <form string="Add a plan" version="7.0">
+                    <group>
+                        <field name="plan_document" filename="name"/>
+                        <field name="name"/>
+                    </group>
+                    <footer>
+                        <button string="Add plan" name="add_plan_document"
+                            type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link"
+                            special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_add_plan_form_view" model="ir.actions.act_window">
+            <field name="name">Add a plan</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.add.plan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

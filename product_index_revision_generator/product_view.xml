@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="product_normal_form_view" model="ir.ui.view">
+            <field name="name">product.normal.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <div name="buttons" position="inside">
+                    <button name="create_revision_index" string="Create a new revision" type="object"/>
+                </div>
+                <field name="description" position="before">
+                    <group string="Revision Index">
+                        <group name="date_for_revision">
+                            <field name="revision_index"/>
+                            <field name="date_start"/>
+                            <field name="date_stop"/>
+                        </group>
+                        <group name="plan_for_revision">
+                            <button name="%(action_product_add_plan_form_view)d" string="Add a plan"
+                                attrs="{'invisible': [('plan_document_id', '!=', False)]}"
+                                type="action" colspan="2"/>
+                            <field name="plan_revision"
+                                attrs="{'invisible': [('plan_document_id', '=', False)]}"/>
+                            <field name="plan_document_id" invisible="1"/>
+                            <field name="plan_document" filename="plan_revision"
+                                attrs="{'invisible': [('plan_document_id', '=', False)]}"/>
+                        </group>
+                        <field name="revision_note" nolabel="1" colspan="4"
+                            placeholder="Notes for this revision index..."/>
+                    </group>
+                </field>
+            </field>
+        </record>
+
+        <record id="product_product_tree_view" model="ir.ui.view">
+            <field name="name">product.normal.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="revision_index"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

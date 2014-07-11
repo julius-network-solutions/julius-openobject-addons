@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,38 +19,8 @@
 #
 ###############################################################################
 
-{
-    "name": "Launch Costs",
-    "summary": "Manage launch costs in sale orders",
-    "version": "0.4",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
-    "depends": [
-        "base_added_costs",
-    ],
-    "description": """
-Launch Costs in sale orders
-==============================
-
-How this is working ?
----------------------
-
-You will find a new field in the sale order line : Launch Costs.
-
-Once the you've created an invoice for this order, you will be able to generate
-a line of launch costs if needed by clicking on the
-"Generate Launch Costs" in the invoice. 
-""",
-    "demo": [],
-    "data": [
-        "sale_view.xml",
-        "invoice_view.xml",
-        "data/product_data.xml",
-    ],
-    'installable': True,
-    'active': False,
-}
+from . import wizard
+from . import ir_attachment
+from . import product
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

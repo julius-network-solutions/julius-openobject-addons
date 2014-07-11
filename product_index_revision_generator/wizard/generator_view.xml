@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="product_revision_generator_form_view" model="ir.ui.view">
+            <field name="name">product.revision.generator.form</field>
+            <field name="model">product.revision.generator</field>
+            <field name="arch" type="xml">
+                <form string="Product index generator" version="7.0">
+                    <group>
+                        <field name="product_id" readonly="1"/>
+                        <field name="origin_bom_id" invisible="1"/>
+                        <field name="name"/>
+                        <field name="date_start"/>
+                        <field name="date_stop"/>
+                    </group>
+                    <group attrs="{'invisible': [('origin_bom_id', '=', False)]}">
+                        <field name="line_ids" nolabel="1" widget="one2many_list">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="product_id"
+                                    context="{'default_supply_method':'produce'}"
+                                    on_change="onchange_product_id(product_id, name)"/>
+                                <field name="product_qty"/>
+                                <field name="product_uom"
+                                    on_change="onchange_uom(product_id, product_uom)"
+                                    groups="product.group_uom"/>
+                                <field name="name" invisible="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <field name="revision_note" nolabel="1" colspan="4"
+                        placeholder="Notes for this revision index..."/>
+                    <footer>
+                        <button string="Generate index" name="generate_index"
+                            type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link"
+                            special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_revision_generator" model="ir.actions.act_window">
+            <field name="name">Product index generator</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.revision.generator</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
