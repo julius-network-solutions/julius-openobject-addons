@@ -22,7 +22,7 @@
 {
     "name": "Emergency Costs",
     "summary": "Manage emergency costs in sale orders",
-    "version": "0.3",
+    "version": "0.4",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "category": "Sales Management",
