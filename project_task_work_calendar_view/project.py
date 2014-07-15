@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,16 +17,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from openerp.osv import fields, osv, orm
+from openerp import fields, models
 from openerp.tools.translate import _
 
-class project_work(orm.Model):
+class project_work(models.Model):
     _inherit = "project.task.work"
     
-    _columns = {
-        'notes': fields.text('Notes', help="Notes"),
-    }
+    notes = fields.Text('Notes', help="Notes")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
