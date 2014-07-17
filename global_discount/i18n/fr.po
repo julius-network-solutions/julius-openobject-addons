@@ -4,21 +4,22 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 8.0alpha1\n"
+"Project-Id-Version: OpenERP Server 9.0alpha1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-26 13:24+0000\n"
-"PO-Revision-Date: 2014-03-26 14:26+0100\n"
-"Last-Translator: Mathieu Vatel <mathieu@julius.fr>\n"
+"POT-Creation-Date: 2014-07-17 12:51+0000\n"
+"PO-Revision-Date: 2014-07-17 12:51+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
 #. module: global_discount
-#: view:sale.order:0
-msgid "(update)"
-msgstr "(mise à jour)"
+#: view:False:0
+#: field:sale.order,global_discount_display:0
+msgid "Discount"
+msgstr "Remise"
 
 #. module: global_discount
 #: field:sale.order,global_discount_percentage:0
@@ -26,9 +27,10 @@ msgid "Discount Percentage"
 msgstr "Pourcentage de Remise Globale"
 
 #. module: global_discount
-#: field:sale.order,discount_is_present:0
-msgid "Discount Present"
-msgstr "Remise Présente"
+#: code:addons/global_discount/sale.py:192
+#, python-format
+msgid "Discount value should be between 0 and 100"
+msgstr "La remise globale doit être comprise entre 0 et 100"
 
 #. module: global_discount
 #: view:sale.order:0
@@ -36,6 +38,7 @@ msgid "Generate Discount"
 msgstr "Générer Remise"
 
 #. module: global_discount
+#: field:account.invoice.line,global_discount:0
 #: model:product.template,name:global_discount.product_global_discount_product_template
 #: field:sale.order.line,global_discount:0
 msgid "Global Discount"
@@ -50,6 +53,11 @@ msgstr "Si vous ne cliquez pas sur 'Générer Remise', le montant exact de remis
 #: model:ir.model,name:global_discount.model_account_invoice
 msgid "Invoice"
 msgstr "Facture"
+
+#. module: global_discount
+#: model:ir.model,name:global_discount.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Lignes de facture"
 
 #. module: global_discount
 #: model:ir.model,name:global_discount.model_sale_order_line_make_invoice
@@ -67,9 +75,25 @@ msgid "Sales Order Line"
 msgstr "Ligne de commandes de vente"
 
 #. module: global_discount
+#: view:False:0
+msgid "Taxes"
+msgstr "Taxes"
+
+#. module: global_discount
 #: field:sale.order,amount_tax_discounted:0
 msgid "Taxes With Discount"
 msgstr "Taxes avec Remise Globale"
+
+#. module: global_discount
+#: view:False:0
+#: field:sale.order,amount_total_display:0
+msgid "Total"
+msgstr "Total"
+
+#. module: global_discount
+#: view:sale.order:0
+msgid "Total Tax Included"
+msgstr "Total taxes incluses"
 
 #. module: global_discount
 #: field:sale.order,amount_total_discounted:0
@@ -77,12 +101,17 @@ msgid "Total With Discount"
 msgstr "Total avec Remise Globale"
 
 #. module: global_discount
+#: view:False:0
+msgid "Total Without Taxes"
+msgstr "Total Hors Taxes"
+
+#. module: global_discount
+#: view:False:0
+msgid "Total with discount"
+msgstr "Total avec remise"
+
+#. module: global_discount
 #: field:sale.order,amount_untaxed_discounted:0
 msgid "Untaxed Amount With Discount"
 msgstr "Montant Hors Taxes avec Remise Globale"
-
-#. module: global_discount
-#: view:sale.order:0
-msgid "{'invisible':[('discount_is_present', '=', True)]}"
-msgstr "{'invisible':[('discount_is_present', '=', True)]}"
 

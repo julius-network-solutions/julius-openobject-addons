@@ -22,7 +22,7 @@
 {
     "name": "Global Discount",
     "summary": "Global discount on sale orders",
-    "version": "0.6",
+    "version": "0.7",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",

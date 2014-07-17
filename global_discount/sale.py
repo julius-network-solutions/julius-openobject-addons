@@ -19,9 +19,10 @@
 #
 ###############################################################################
 
-from openerp.tools.translate import _
-from openerp import models, api, fields
+# from openerp.tools.translate import _
+from openerp import models, api, fields, _
 import openerp.addons.decimal_precision as dp
+from openerp.exceptions import Warning
 
 class sale_order(models.Model):
     _inherit = 'sale.order'
@@ -32,6 +33,9 @@ class sale_order(models.Model):
                                      'draft':[('readonly',False)],
                                      'sent':[('readonly',False)],
                                      })
+    global_discount_display = fields.\
+        Char('Discount', size=32,
+             compute='_discount_display')
     amount_untaxed_discounted = fields.\
         Float('Untaxed Amount With Discount',
               digits_compute=dp.get_precision('Account'),
@@ -50,6 +54,11 @@ class sale_order(models.Model):
     discount_is_present = fields.\
         Boolean('Discount Present',
                 compute='_check_if_discount')
+    amount_total_display = fields.\
+        Float('Total',
+              digits_compute=dp.get_precision('Account'),
+              compute='_amount_discounted',
+              store=True)
 
     @api.one
     @api.depends('amount_untaxed','amount_tax','global_discount_percentage',
@@ -65,7 +74,14 @@ class sale_order(models.Model):
         self.amount_tax_discounted = self.amount_tax * discount
         self.amount_total_discounted = self.amount_untaxed_discounted + \
             self.amount_tax_discounted
+        self.amount_total_display = self.global_discount_percentage and \
+            self.amount_total_discounted or self.amount_total
 
+    @api.one
+    @api.depends('global_discount_percentage')
+    def _discount_display(self):
+        self.global_discount_display = '- %.2f %%' %self.global_discount_percentage
+        
     @api.one
     @api.depends('order_line','global_discount_percentage')
     def _check_if_discount(self):
@@ -170,6 +186,14 @@ class sale_order(models.Model):
                                          order.global_discount_percentage,
                                          context=context)
         return inv_id
+
+    @api.one
+    @api.constrains('global_discount_percentage')
+    def _check_global_discount_percentage(self):
+        if self.global_discount_percentage and \
+            (self.global_discount_percentage < 0 or \
+            self.global_discount_percentage > 100):
+            raise Warning(_('Discount value should be between 0 and 100'))
 
 class sale_order_line(models.Model):
     _inherit = 'sale.order.line'

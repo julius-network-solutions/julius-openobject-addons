@@ -9,29 +9,27 @@
             <field name="priority">25</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+                <field name="amount_total" position="after">
+                    <div class="oe_inline" attrs="{'invisible':[('global_discount_percentage', '=', 0)]}">
+                        <label for="global_discount_display"/>
+                    </div>
+                    <field name="global_discount_display" nolabel="1"
+                        attrs="{'invisible':[('global_discount_percentage', '=', 0)]}"/>
+                    <div class="oe_subtotal_footer_separator oe_inline" attrs="{'invisible':[('global_discount_percentage', '=', 0)]}">
+                        <label for="amount_total_discounted"/>
+                    </div>
+                    <field name="amount_total_discounted" nolabel="1"
+                        class="oe_subtotal_footer_separator" widget='monetary'
+                        options="{'currency_field': 'currency_id'}"
+                        attrs="{'invisible':[('global_discount_percentage', '=', 0)]}"/>
+                </field>
                 <xpath expr="//group[@name='sale_total']" position="after">
-                    <group class="oe_subtotal_footer oe_right" colspan="2"
-                        name="sale_total_discount"
-                        attrs="{'invisible':[('discount_is_present', '=', False)]}">
-                        <field name="amount_untaxed_discounted" widget="monetary"
-                            options="{'currency_field': 'currency_id'}"/>
-                        <field name="amount_tax_discounted" widget="monetary"
-                            options="{'currency_field': 'currency_id'}"/>
-                        <div class="oe_subtotal_footer_separator oe_inline">
-                            <label for="amount_total_discounted"/>
-                            <button name="button_dummy" states="draft,sent"
-                                string="(update)" type="object" class="oe_edit_only oe_link"/>
-                        </div>
-                        <field name="amount_total_discounted" nolabel="1"
-                            class="oe_subtotal_footer_separator" widget="monetary"
-                            options="{'currency_field': 'currency_id'}"/>
-                    </group>
                     <group style="width: 65%%">
                         <label for="global_discount_percentage"/>
                         <div>
-                            <field name="global_discount_percentage" class="oe_inline"/>
+                            <field name="global_discount_percentage" class="oe_inline" attrs="{'invisible':[('state','not in',('draft','sent'))]}"/>
                             <button name="generate_global_discount" string="Generate Discount"  
-                            	attrs="{'invisible':[('global_discount_percentage','=','0')]}"
+                            	attrs="{'invisible':['|', ('global_discount_percentage','=','0'), ('state','not in',('draft','sent'))]}"
                                 class="oe_edit_only" type="object"/>
                             <field name="discount_is_present" invisible="True"/>
                             <label string="If you don't 'Generate Discount', the exact discount will be computed when invoicing based on delivery order(s)."
@@ -40,9 +38,34 @@
                         </div>
                     </group>
                 </xpath>
-                <xpath expr="//group[@name='sale_total']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('discount_is_present', '=', True)]}</attribute>
-                </xpath>
+            </field>
+        </record>
+
+        <record id="view_order_tree_discount" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="amount_total" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="amount_total" position="after">
+                    <field name="amount_total_display" sum="Total Tax Included"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_quotation_tree_discount" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <field name="amount_total" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="amount_total" position="after">
+                    <field name="amount_total_display" sum="Total Tax Included"/>
+                </field>
             </field>
         </record>
 
