@@ -30,7 +30,7 @@
     "depends": [
         "stock",
         "global_discount",
-        "invoice_link_sale"
+        "invoice_link_sale",
     ],
     "description": """
 Global discount on a sale order

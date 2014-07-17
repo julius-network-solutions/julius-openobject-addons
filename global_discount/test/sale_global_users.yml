@@ -1,0 +1,31 @@
+-
+   Create a user as 'Global discount Sales User'
+-
+  !record {model: res.users, id: res_sale_global_salesuser, view: False}:
+    company_id: base.main_company
+    name: Sales Global user
+    login: sg
+    password: sg
+    email: sg_salesuser@yourcompany.com
+-
+  I added groups for Global discount Sales User.
+-
+  !record {model: res.users, id: res_sale_global_salesuser}:
+    groups_id:
+      - base.group_sale_salesman
+-
+   Create a user as 'Global discount Salesmanager'
+-
+  !record {model: res.users, id: res_sale_global_salesmanager, view: False}:
+    company_id: base.main_company
+    name: Sales manager
+    login: sgm
+    password: sgm
+    email: sg_salemanager@yourcompany.com
+-
+  I added groups for Global discount Salesmanager.
+-
+  !record {model: res.users, id: res_sale_global_salesmanager}:
+    groups_id:
+      - base.group_sale_manager
+      - account.group_account_invoice

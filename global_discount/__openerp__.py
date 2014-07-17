@@ -22,13 +22,14 @@
 {
     "name": "Global Discount",
     "summary": "Global discount on sale orders",
-    "version": "0.5",
+    "version": "0.6",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "category": "Sales Management",
     "depends": [
         "sale",
+        "invoice_link_sale",
     ],
     "description": """
 Global discount on a sale order
@@ -44,6 +45,10 @@ You will get the global discount in the invoice when you will invoice this order
         "views/sale_view.xml",
         "views/report_quotation_discounted.xml",
         "data/product_data.xml",
+    ],
+    "test": [
+        "test/sale_global_users.yml",
+        "test/check_order_discounted.yml",
     ],
     'installable': True,
     'active': False,

@@ -95,7 +95,7 @@ class account_invoice(models.Model):
     @api.one
     def generate_global_discount(self, discount_percentage=None, many=False):
         line_obj = self.env['account.invoice.line']
-        lines = line_obj.search([('invoice_id', '=', self.id)])
+        lines = line_obj.search([('invoice_id', '=', self.id), ('sale_line_ids', '!=', False)])
         line_by_taxes = self._get_lines_by_taxes(lines)
         self._create_global_lines_discount_by_taxes(line_by_taxes,
                                                     discount_percentage)

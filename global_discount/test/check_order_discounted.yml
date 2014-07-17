@@ -1,0 +1,104 @@
+-
+  Test the data with salesman,
+-
+  !context
+    uid: 'res_sale_global_salesuser'
+-
+  In order to test process of the Sale Order, I create sale order
+-
+  !record {model: sale.order, id: sale_order_test_global_discount}:
+    partner_id: base.res_partner_2
+    note: Invoice after delivery
+    user_id: res_sale_global_salesuser
+    payment_term: account.account_payment_term
+    global_discount_percentage: 10.0
+    order_policy: manual
+    order_line: 
+      - product_id: product.product_product_7
+        product_uom_qty: 8
+        price_unit: 79.0
+        product_uom: product.product_uom_unit
+-
+  First I check the total amount of the Quotation before Approved.
+-
+  !assert {model: sale.order, id: sale_order_test_global_discount, string: The amount of the Quotation is not correctly computed}:
+    - sum([l.price_subtotal for l in order_line]) - (sum([l.price_subtotal for l in order_line]) * global_discount_percentage / 100) == amount_untaxed_discounted
+-
+  Test the data with sales manager,
+-
+  !context
+    uid: 'res_sale_global_salesmanager'
+-
+  Now I confirm the Quotation with "Manual" policy.
+-
+  !workflow {model: sale.order, action: order_confirm, ref: sale_order_test_global_discount}
+-
+  I check that Invoice should not created.
+-
+  !python {model: sale.order}: |
+    sale_order = self.browse(cr, uid, ref("sale_order_test_global_discount"))
+    assert len(sale_order.invoice_ids) == False, "Invoice should not created."
+-
+  I create advance invoice where type is 'Fixed Price'.
+-
+  !python {model: sale.advance.payment.inv}: |
+    ctx = context.copy()
+    ctx.update({"active_model": 'sale.order', "active_ids": [ref("sale_order_test_global_discount")], "active_id":ref("sale_order_test_global_discount")})
+    pay_id = self.create(cr, uid, {'advance_payment_method': 'fixed', 'amount': 100})
+    self.create_invoices(cr, uid, [pay_id], context=ctx)
+-
+  I check Invoice which made advance.
+-
+  !python {model: sale.order}: |
+    order = self.browse(cr, uid, ref('sale_order_test_global_discount'))
+    assert order.invoice_ids, "Invoice should be created after make advance invoice."
+-
+  I create advance invoice where type is 'Invoice all the Sale Order'.
+-
+  !python {model: sale.advance.payment.inv}: |
+    ctx = context.copy()
+    ctx.update({"active_model": 'sale.order', "active_ids": [ref("sale_order_test_global_discount")], "active_id":ref("sale_order_test_global_discount")})
+    pay_id = self.create(cr, uid, {'advance_payment_method': 'all'})
+    self.create_invoices(cr, uid, [pay_id], context=ctx)
+-
+  I check Invoice which made advance where type is 'Invoice all the Sale Order'.
+-
+  !python {model: sale.order}: |
+    order = self.browse(cr, uid, ref('sale_order_test_global_discount'))
+    assert order.invoice_ids, "Invoice should be created after make advance invoice where type is 'Invoice all the Sale Order'."
+-
+  I check Invoices totals.
+-
+  !python {model: sale.order}: |
+    order = self.browse(cr, uid, ref('sale_order_test_global_discount'))
+    assert sum([invoice.amount_total for invoice in order.invoice_ids]) == order.amount_total_discounted, "Invoice total is not the same as the total quoted"
+-
+  I open the Invoice.
+-
+  !python {model: sale.order}: |
+    so = self.browse(cr, uid, ref("sale_order_test_global_discount"))
+    account_invoice_obj = self.pool.get('account.invoice')
+    for invoice in so.invoice_ids:
+      invoice.signal_workflow('invoice_open')
+-
+  I pay the invoice.
+-
+  !python {model: account.invoice}: |
+    sale_order = self.pool.get('sale.order')
+    order = sale_order.browse(cr, uid, ref("sale_order_test_global_discount"))
+    journal_ids = self.pool.get('account.journal').search(cr, uid, [('type', '=', 'cash'), ('company_id', '=', order.company_id.id)], limit=1)
+    for invoice in order.invoice_ids:
+        invoice.pay_and_reconcile(
+            invoice.amount_total, ref('account.cash'), ref('account.period_8'),
+            journal_ids[0], ref('account.cash'),
+            ref('account.period_8'), journal_ids[0],
+            name='test')
+-
+  I check Invoice after do manual.
+-
+  !python {model: sale.order}: |
+    sale_order = self.browse(cr, uid, ref("sale_order_test_global_discount"))
+    assert sale_order.invoice_ids, "Invoice should be created."
+    assert sale_order.invoice_exists, "Order is not invoiced."
+    assert sale_order.invoiced, "Order is not paid."
+    assert sale_order.state == 'done', 'Order should be Done.'

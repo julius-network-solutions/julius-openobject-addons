@@ -55,7 +55,6 @@ class account_invoice(models.Model):
                 line_by_taxes = self._get_lines_by_taxes(invoice_lines)
                 order = order_obj.browse(order_id)
                 discount = order.global_discount_percentage or 0
-                print order.name, discount, line_by_taxes
                 if discount:
                     self._create_global_lines_discount_by_taxes(line_by_taxes,
                                                                 discount)
