@@ -19,6 +19,23 @@
 #
 ###############################################################################
 
-from . import hr_employee
+from openerp import models, fields, _
+
+class product_category(models.Model):
+    _inherit = 'product.category'
+
+    sale_taxes_ids = fields.Many2many('account.tax',
+                                      'product_cat_tax_cust_rel',
+                                      'cat_id', 'tax_id', string='Sales Taxes',
+                                      domain=[('parent_id', '=', False),
+                                              ('type_tax_use', 'in', ['sale',
+                                                                      'all'])])
+    purchase_taxes_ids = fields.Many2many('account.tax',
+                                          'product_cat_tax_supp_rel',
+                                          'cat_id', 'tax_id',
+                                          string='Purchase Taxes',
+                                          domain=[('parent_id', '=', False),
+                                                  ('type_tax_use', 'in',
+                                                   ['purchase','all'])])
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,6 +19,28 @@
 #
 ###############################################################################
 
-from . import hr_employee
+{
+    "name": "HR Employee header",
+    "version": "0.1",
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr/",
+    "category": "Human Resources",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
+    "depends": [
+        'hr',
+    ],
+    "description": """
+Employee form:
+==============
+
+Add the header in the employee form
+""",
+    "demo": [],
+    "data": [
+        'employee_view.xml',
+    ],
+    'installable': True,
+    'active': False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

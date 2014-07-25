@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,20 +17,26 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
-    "name" : "Create User from Employee",
-    "version" : "0.1",
+    "name" : "HR Employee Create User",
+    "summary": "Create a user for the employee",
+    "version": "0.2",
     "author" : "Julius Network Solutions",
     "website" : "http://www.julius.fr/",
     "category" : "Human Resources",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "description": """
-    This module adds a button in the employee form to be able to generate directly a user from the employee   """,
+Automatic user for employees
+============================
+
+This module adds a button inside the employee form to create a user for each
+employee to be able to invoice the analytic lines with the good associated user.
+""",
     "depends" : [
-        "base",
         "hr",
-        "hr_employee_first_name",
+        "hr_employee_header"
     ],
     "demo" : [],
     "data" : [

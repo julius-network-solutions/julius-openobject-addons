@@ -2,14 +2,30 @@
 <openerp>
     <data>
 
-		<record id="view_employee_form_create_user" model="ir.ui.view">
+		<record id="view_employee_form_first_name" model="ir.ui.view">
 			<field name="name">hr.employee.form.create.user</field>
 			<field name="model">hr.employee</field>
 			<field name="inherit_id" ref="hr.view_employee_form"/>
 			<field name="arch" type="xml">
-				<field name="name" position="before">
-					<field name="first_name"/>
+				<field name="name" position="after">
+                    <field name="last_name" placeholder="Last name" class="oe_edit_only"/>
+					<field name="first_name" placeholder="First name" class="oe_edit_only"/>
 				</field>
+                <field name="name" position="attributes">
+                    <attribute name="class">oe_view_only</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="resource_resource_form" model="ir.ui.view">
+            <field name="name">resource.resource.form</field>
+            <field name="model">resource.resource</field>
+            <field name="inherit_id" ref="resource.resource_resource_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="last_name" placeholder="Last name" class="oe_edit_only"/>
+                    <field name="first_name" placeholder="First name" class="oe_edit_only"/>
+                </field>
             </field>
         </record>
 

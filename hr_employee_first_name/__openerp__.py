@@ -20,22 +20,27 @@
 ###############################################################################
 
 {
-    "name" : "Add Employee first name",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://www.julius.fr/",
-    "category" : "Human Resources",
+    "name": "Employee first name",
+    "summary": "Add the employee first name",
+    "version": "0.2",
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr/",
+    "category": "Human Resources",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "description": """
-    This module adds a button in the employee form to be able to generate directly a user from the employee   """,
-    "depends" : [
+Add first name to the employee
+==============================
+
+""",
+    "depends": [
         "hr",
     ],
-    "demo" : [],
-    "data" : [
+    "demo": [],
+    "data": [
         'hr_view.xml',
     ],
-    'installable' : True,
-    'active' : False,
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

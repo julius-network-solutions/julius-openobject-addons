@@ -19,14 +19,27 @@
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+from openerp import fields, models, api, _
 
-class hr_employee(orm.Model):
-    _inherit = 'hr.employee'
+class resource_resource(models.Model):
+    _inherit = 'resource.resource'
     
-    _columns = {
-        'first_name': fields.char('First Name', size=128),
-    }
+    last_name = fields.Char('Last Name', size=128, required=True)
+    first_name = fields.Char('First Name', size=128)
+    name = fields.Char('Name', store=True,
+                       compute='_get_resource_name')
+    
+    def _auto_init(self, cr, context=None):
+        res = super(resource_resource, self)._auto_init(cr, context=context)
+        cr.execute('UPDATE resource_resource SET last_name = name '
+                   'WHERE name IS NOT NULL AND last_name IS NULL;')
+        return res
+
+    @api.one
+    @api.depends('last_name', 'first_name')
+    def _get_resource_name(self):
+        name = self.last_name and self.last_name.upper() or ''
+        name += self.first_name and ' ' +  self.first_name.title() or ''
+        self.name = name
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+		<record id="view_hr_employee_product_form" model="ir.ui.view">
+			<field name="name">hr.employee.product</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr_employee_header.view_hr_employee_header_form"/>
+			<field name="arch" type="xml">
+                <xpath expr="/form/header" position='inside'>
+                    <button name="create_employee_product"
+                        string="Create employee product" type="object"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('product_id', '!=', False)]}"/>
+                </xpath>
+			</field>
+		</record>
+
+    </data>
+</openerp>

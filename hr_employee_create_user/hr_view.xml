@@ -2,14 +2,17 @@
 <openerp>
     <data>
 
-		<record id="view_employee_form_create_user" model="ir.ui.view">
-			<field name="name">hr.employee.form.create.user</field>
-			<field name="model">hr.employee</field>
-			<field name="inherit_id" ref="hr.view_employee_form"/>
-			<field name="arch" type="xml">
-				<field name="user_id" position="after">
-					<button name="create_user" type="object" string="Create User" icon="gtk-execute" colspan="2"/>
-				</field>
+        <record id="view_hr_employee_user_form" model="ir.ui.view">
+            <field name="name">hr.employee.user</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_employee_header.view_hr_employee_header_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/header" position='inside'>
+                    <button name="create_user"
+                        string="Create User" type="object"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('user_id', '!=', False)]}"/>
+                </xpath>
             </field>
         </record>
 

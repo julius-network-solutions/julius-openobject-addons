@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,16 +17,16 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from openerp.osv import fields, osv
-from openerp.tools.translate import _
+from openerp import models, api, _
 
-class hr_employee(osv.osv):
+class hr_employee(models.Model):
     _inherit = 'hr.employee'
-    
-    def _get_default_user_vals(self, cr, uid, employee, context=None):
-        default_name = employee.name
+
+    @api.one
+    def _get_default_user_vals(self):
+        default_name = self.name
         name = default_name
         i = 1
         start = True
@@ -35,27 +35,26 @@ class hr_employee(osv.osv):
                 start = False
             else:
                 name = default_name + str(i)
-            if not self.search(cr, uid, [('login', '=', name)], context=context):
+            if not self.search([('login', '=', name)]):
                 break
             i += 1
-        vals = {
-            'name': employee.name.upper() + (employee.first_name and ' ' + employee.first_name.title() or ''),
+        return {
+            'name': self.name,
             'login': name,
             'password': name,
         }
-        return vals
-    
-    def create_user(self, cr, uid, ids, context=None):
-        if context == None:
-            context = {}
-        for employee in self.browse(cr, uid, ids, context=context):
-            employee_name = employee.name.upper() + (employee.first_name and ' ' + employee.first_name.title() or '')
-            if not employee.user_id or employee.user_id.name != employee_name:
-                user_vals = self._get_default_user_vals(cr, uid, employee, context=context)
-                user_id = self.pool.get('res.users').create(cr, uid, user_vals, context=context)
-                self.write(cr, uid, employee.id, {'user_id': user_id}, context=context)
-        return True
-    
-hr_employee()
+
+    @api.multi
+    def create_user(self):
+        user_obj = self.env['res.users']
+        for employee in self:
+            if not employee.user_id:
+                user_vals = employee._get_default_user_vals()
+                if isinstance(user_vals, list):
+                    user_vals = user_vals and user_vals[0] or {}
+                if user_vals:
+                    user = user_obj.create(user_vals)
+                    employee.user_id = user
+                
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
