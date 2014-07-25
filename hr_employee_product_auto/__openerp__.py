@@ -22,7 +22,7 @@
 {
     "name": "HR Employee product automatic",
     "summary": "Create a product for the employee",
-    "version": "0.1",
+    "version": "0.2",
     "author": "Julius Network Solutions",
     "website": "http://www.julius.fr/",
     "category": "Human Resources",
