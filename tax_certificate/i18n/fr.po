@@ -7,12 +7,12 @@ msgstr ""
 "Project-Id-Version: OpenERP Server 6.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-10 10:48+0000\n"
-"PO-Revision-Date: 2012-10-10 10:48+0000\n"
-"Last-Translator: <>\n"
+"PO-Revision-Date: 2014-07-28 17:08+0100\n"
+"Last-Translator: Mathieu Vatel <mathieu@julius.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
 
 #. module: tax_certificate
@@ -156,10 +156,12 @@ msgstr "Lignes de facture"
 
 #. module: tax_certificate
 #: model:ir.module.module,description:tax_certificate.module_meta_information
-msgid "\n"
+msgid ""
+"\n"
 "    This module adds a tax certificate management.\n"
 "    "
-msgstr "\n"
+msgstr ""
+"\n"
 "    Ce module ajoute un système de gestion d'attestations fiscales.\n"
 "    "
 
@@ -306,12 +308,12 @@ msgstr "Montant des taxes"
 #. module: tax_certificate
 #: view:tax.certificate:0
 msgid "Invoice linked"
-msgstr "Facture liée"
+msgstr "Facture liées"
 
 #. module: tax_certificate
 #: field:tax.certificate,amount_untaxed:0
 msgid "Amount untaxed"
-msgstr "Montant non taxé"
+msgstr "Montant hors taxes"
 
 #. module: tax_certificate
 #: view:create.tax.certificate:0
@@ -321,7 +323,7 @@ msgstr "Filtres"
 #. module: tax_certificate
 #: view:create.tax.certificate:0
 msgid "Cancel"
-msgstr "Annulé"
+msgstr "Annuler"
 
 #. module: tax_certificate
 #: selection:tax.certificate,state:0

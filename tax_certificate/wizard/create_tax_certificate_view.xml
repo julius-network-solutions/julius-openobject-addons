@@ -8,19 +8,8 @@
             <field name="arch" type="xml">
                 <form string="Create tax certificate">
                 	<separator string="Select a period" colspan="4"/>
-                	<group colspan="4" col="6">
-	                	<group colspan="2" col="2">
-		                    <button special="cancel" string="Cancel" name="action_cancel" type="object" icon='gtk-cancel'/>
-		                    <button name="create_certificate" string="Create tax certificate" icon='gtk-ok' type="object"/>
-	                	</group>
-	                	<group colspan="2" col="2">
-	                	</group>
-	                	<group colspan="2" col="2">
-	                	</group>
-	                    <newline/>
-	                	<group colspan="3" col="2">
-	                		<field name="fiscalyear_id" on_change="on_change_fiscal_filter(fiscalyear_id, filter)"/>
-	                	</group>
+                	<group>
+                		<field name="fiscalyear_id" options="{'no_create': True}"/>
                 	</group>
 	                <newline/>
 	                <notebook>
@@ -28,39 +17,47 @@
 		                	<group colspan="4" col="4">
 			                	<separator string="Filters" colspan="4"/>
 			                	<group colspan="2" col="2">
-			                		<field name="filter" on_change="on_change_fiscal_filter(fiscalyear_id, filter)"/>
+			                		<field name="filter"/>
 			                	</group>
 				                <group colspan="2" col="2">
 				                </group>
 			                </group>
 		                    <newline/>
-		                	<group attrs="{'invisible':['|',('filter', '&lt;&gt;', 'date'),('filter', '&lt;&gt;', 'both')]}">
+		                	<group attrs="{'invisible':[('filter', 'not in', ['date','both'])]}">
 			                	<separator string="Filters on dates" colspan="4"/>
 			                	<field name="date_begin" attrs="{'required':[('filter', 'in', ['date','both'])]}"/>
 			                	<field name="date_end" attrs="{'required':[('filter', 'in', ['date','both'])]}"/>
 		                	</group>
 		                    <newline/>
-		                	<group attrs="{'invisible':['|',('filter', '&lt;&gt;', 'period'),('filter', '&lt;&gt;', 'both')]}">
+		                	<group attrs="{'invisible':[('filter', 'not in', ['period', 'both'])]}">
 			                	<separator string="Filters on periods" colspan="4"/>
-			                	<field name="period_ids" nolabel="1" domain="[('fiscalyear_id', '=', fiscalyear_id)]"/>
+			                	<field name="period_ids" nolabel="1" options="{'no_create': True}"
+                                    domain="[('fiscalyear_id', '=', fiscalyear_id)]"/>
 		                	</group>
 		                </page>
 		                <page string="Partners">
-			                <separator string="Families" colspan="4"/>
+			                <separator string="Partners" colspan="4"/>
 		                	<field name="partner_ids" nolabel="1"/>
 		                </page>
 	                </notebook>
+                    <footer>
+                        <button name="create_certificate" string="Create tax certificate"
+                            type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
                 </form>
             </field>
         </record>
         
         <act_window
-        			id="act_view_view_create_tax_certificate" 
-        			name="Create certificate" 
-        			res_model="create.tax.certificate" 
-        			src_model="res.partner"
-        			target="new"
-        			view_mode="form"/>
+    		id="act_view_view_create_tax_certificate" 
+    		name="Create certificate" 
+    		res_model="create.tax.certificate" 
+    		src_model="res.partner"
+    		target="new"
+            multi="1"
+    		view_mode="form"/>
 
     </data>
 </openerp>

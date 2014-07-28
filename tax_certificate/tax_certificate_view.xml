@@ -9,16 +9,14 @@
         <record id="view_tax_certificate_tree" model="ir.ui.view">
             <field name="name">tax.certificate.tree</field>
             <field name="model">tax.certificate</field>
-            <field name="type">tree</field>
-            <field eval="8" name="priority"/>
             <field name="arch" type="xml">
                 <tree string="Tax certificate">
-                	<field name="name" />
+                    <field name="name" />
                     <field name="number"/>
-					<field name="partner_id"/>
-					<field name="amount_untaxed"/>
-					<field name="amount_total"/>
-					<field name="state"/>
+                    <field name="partner_id"/>
+                    <field name="amount_untaxed"/>
+                    <field name="amount_total"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -26,74 +24,87 @@
         <record id="view_tax_certificate_form" model="ir.ui.view">
             <field name="name">tax.certificate.form</field>
             <field name="model">tax.certificate</field>
-            <field name="type">form</field>
-            <field eval="8" name="priority"/>
             <field name="arch" type="xml">
                 <form string="Tax certificate">
-                    <group>
-                    	<field name="name"/>
-                        <field name="number"/>
-                    	<field name="partner_id"/>
-                    	<field name="partner_address_id" domain="[('parent_id', '=', partner_id)]"/>
-    					<field name="salesman_id"/>
-    					<field name="fiscalyear_id"/>
-    					<field name="date"/>
-                    </group>
-					<notebook colspan="4">
-                        <page string="Analytic lines">
-                       		<button name="compute_lines" string="Compute lines" icon='gtk-ok' type="object" states="draft" colspan="4"/>
-							<field name="line_ids" nolabel="1" string="Tax certificate lines"/>
-                        </page>
-						<page string="Invoices">
-							<separator string="Invoice linked" colspan="4"/>
-	                		<field name="invoice_ids" nolabel="1" colspan="4"/>
-                        </page>
-						<page string="Invoices Lines">
-							<separator string="Invoice lines linked" colspan="4"/>
-	                		<field name="invoice_line_ids" nolabel="1" colspan="4"/>
-                        </page>
-						<page string="Other infos">
-	                		<field name="type"/>
-	                		<field name="currency_id"/>
-	                		<field name="company_id"/>
-                        </page>
-						<page string="Notes">
-	                		<field name="notes" nolabel="1" colspan="4"/>
-                        </page>
-					</notebook>
-					<group colspan="4" col="4">
-						<group colspan="4" col="10">
-							<field name="amount_untaxed"/>
-							<field name="amount_tax"/>
-							<field name="amount_total"/>
-							<field name="payment_done"/>
-							<button name="update_amount" string="Update" icon='gtk-ok' type="object" states="draft" colspan="2"/>
-						</group>
-						<group colspan="4" col="8">
-							<field name="state"/>
-							<button name="validate_certificate" string="Validate" icon='gtk-ok' type="object" states="draft" colspan="6"/>
-						</group>
-					</group>
+                    <header>
+                        <button name="compute_lines" string="Compute lines" type="object" states="draft"/>
+                        <button name="update_amount" string="Update" type="object" states="draft"/>
+                        <button name="validate_certificate" states="draft" string="Validate" type="object" class="oe_highlight"/>
+                        <button name="cancel_certificate" states="draft,open" string="Cancel" type="object"/>
+                        <button name="draft_certificate" states="cancel" string="Set to draft" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open" statusbar_colors='{"cancel":"red"}'/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <label string="Draft certificate" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                                <label string="Cancelled certificate" attrs="{'invisible': [('state', '!=', 'cancel')]}"/>
+                                <label string="Certficate" attrs="{'invisible': [('state', '!=', 'open')]}"/>
+                                <field name="number" class="oe_inline"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="partner_address_id" domain="['|', ('parent_id', '=', partner_id), ('id', '=', partner_id)]"/>
+                            <field name="salesman_id"/>
+                            <field name="fiscalyear_id" options="{'no_create': True}"/>
+                            <field name="date"/>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Analytic lines">
+                                <field name="line_ids" nolabel="1" string="Tax certificate lines"/>
+                            </page>
+                            <page string="Invoices">
+                                <separator string="Invoice linked" colspan="4"/>
+                                <field name="invoice_ids" nolabel="1" colspan="4" options="{'no_create': True}"
+                                    domain="['|', ('partner_id', '=', partner_id), ('partner_id.parent_id', '=', partner_id)]"/>
+                            </page>
+                            <page string="Invoices Lines">
+                                <separator string="Invoice lines linked" colspan="4"/>
+                                <field name="invoice_line_ids" options="{'no_create': True}" nolabel="1" colspan="4"
+                                    domain="['|', ('partner_id', '=', partner_id), ('partner_id.parent_id', '=', partner_id)]"/>
+                            </page>
+                            <page string="Other infos">
+                                <group>
+                                    <field name="type"/>
+                                    <field name="currency_id"/>
+                                    <field name="company_id"/>
+                                </group>
+                            </page>
+                        </notebook>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_total" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="payment_done" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                        <div class="oe_clear">
+                            <label for="notes"/>
+                        </div>
+                        <field name="notes" class="oe_inline" placeholder="Additional notes..."/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
         <record id="view_tax_certificate_search" model="ir.ui.view">
             <field name="name">tax.certificate.search</field>
             <field name="model">tax.certificate</field>
-            <field name="type">search</field>
-            <field eval="8" name="priority"/>
             <field name="arch" type="xml">
                 <search string="Tax certificate">
-                	<field name="name"/>
+                    <field name="name"/>
                     <field name="number"/>
                     <field name="partner_id"/>
                     <field name="fiscalyear_id"/>
-					<field name="state"/>
+                    <field name="state"/>
                 </search>
             </field>
         </record>
 
-        
         <!--
         =======
         Actions
@@ -109,22 +120,22 @@
             <field name="search_view_id" ref="view_tax_certificate_search"/>
         </record>
 
-		<menuitem id="menu_tax_certificate_main" name="Tax Certificate" parent="account.menu_finance" sequence="10"/>
-        <menuitem action="action_tax_certificate_list" id="menu_action_tax_certificate_list" parent="menu_tax_certificate_main" sequence="1"/>
-        
-		<record id="view_tax_certificate_line_tree" model="ir.ui.view">
-			<field name="name">tax.certificate.line.tree</field>
-			<field name="model">tax.certificate.line</field>
-			<field name="type">tree</field>
-			<field eval="8" name="priority"/>
-			<field name="arch" type="xml">
-				<tree string="Tax certificate line">
-					<field name="analytic_id" />
-					<field name="period_id" />
-					<field name="product_id"/>
-				</tree>
-			</field>
-		</record>
+        <menuitem id="menu_tax_certificate_main" name="Tax Certificate"
+            parent="account.menu_finance" sequence="10"/>
+        <menuitem action="action_tax_certificate_list"
+            id="menu_action_tax_certificate_list" parent="menu_tax_certificate_main" sequence="1"/>
+
+        <record id="view_tax_certificate_line_tree" model="ir.ui.view">
+            <field name="name">tax.certificate.line.tree</field>
+            <field name="model">tax.certificate.line</field>
+            <field name="arch" type="xml">
+                <tree string="Tax certificate line">
+                    <field name="analytic_id" />
+                    <field name="period_id" />
+                    <field name="product_id"/>
+                </tree>
+            </field>
+        </record>
     
     </data>
 </openerp>
