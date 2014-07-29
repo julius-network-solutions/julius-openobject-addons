@@ -36,7 +36,6 @@ except :
 
 class partner_sms_send(orm.Model):
     _name = "partner.sms.send"
-    _description = "Partner SMS"
 
     def _default_get_mobile(self, cr, uid, fields, context=None):
         if context is None:
