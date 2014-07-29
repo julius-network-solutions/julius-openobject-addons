@@ -157,7 +157,7 @@ class account_bank_statement_import(orm.TransientModel):
         'statement_update': fields.boolean('Update Statement'),
         'date_format': fields.char('Date Format', size=32, required=True),
         'file_data': fields.binary('File to import', required=True),
-        'file_fname': fields.char('Filename', size=128, required=True),
+#         'file_fname': fields.char('Filename', size=128, required=True),
         'note': fields.text('Log'),
     }
     
@@ -174,7 +174,7 @@ class account_bank_statement_import(orm.TransientModel):
             self._default_filter_id(cr, uid, context),
         'date_format': lambda self, cr, uid, context:
             self._default_date_format(cr, uid, context),
-        'file_fname': '',
+#         'file_fname': '',
         'statement_update': False,
     }
     
@@ -225,8 +225,7 @@ class account_bank_statement_import(orm.TransientModel):
         return res
 
     def _get_line_vals(self, cr, uid, line,
-                       bk_st_id, voucher_id,
-                       str_not1, context=None):
+                       bk_st_id, str_not1, context=None):
         return {
             'name': line.get('name') or '',
             'date': line.get('date') or False,
@@ -234,8 +233,8 @@ class account_bank_statement_import(orm.TransientModel):
             'account_id': line.get('account_id') or False,
             'partner_id': line.get('partner_id') or False,
             'statement_id': bk_st_id,
-            'voucher_id': voucher_id,
-            'note': (str_not1 and (str_not1 + '\n') or '') + line.get('extra_note', ''),
+            'note': (str_not1 and (str_not1 + '\n') or '') + \
+                line.get('extra_note', ''),
             'ref': line.get('ref') or '',
         }
 
@@ -315,12 +314,12 @@ class account_bank_statement_import(orm.TransientModel):
 #            if not line['partner_id']:
 #                line['partner_id'] = journal.company_id and \
 #                    journal.company_id.partner_id.id or False
-            voucher_id = False
-            if line.get('toreconcile') or False: # Fix me
-                voucher_id, line = self.\
-                    _voucher_create(cr, uid, statement=statement,
-                                    line=line, journal=journal,
-                                    context=context)
+#             voucher_id = False
+#             if line.get('toreconcile') or False: # Fix me
+#                 voucher_id, line = self.\
+#                     _voucher_create(cr, uid, statement=statement,
+#                                     line=line, journal=journal,
+#                                     context=context)
 
             if line.has_key('contry_name') and line.has_key('cntry_number'):
                 str_not1 += "Partner name:%s \n Partner Account Number:%s \n"\
@@ -332,7 +331,7 @@ class account_bank_statement_import(orm.TransientModel):
                                      line["entry_date"][0])
             line_vals = self.\
                 _get_line_vals(cr, uid, line, bk_st_id,
-                               voucher_id, str_not1, context=context)
+                               str_not1, context=context)
             line_id = line_obj.create(cr, uid, line_vals, context=context)
         return str_not1
 

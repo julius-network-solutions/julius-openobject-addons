@@ -25,7 +25,7 @@
                             </div>
                             <div>
                                 <label for="file_data"/>
-                                <field name="file_data" filename="file_fname" class="oe_inline"/>
+                                <field name="file_data" class="oe_inline"/>
                             </div>
                         </div>
                     </group>
