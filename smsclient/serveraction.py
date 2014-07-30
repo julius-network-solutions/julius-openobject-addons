@@ -44,7 +44,7 @@ class actions_server(orm.Model):
         'sms_template_id': fields.many2one('email.template', 'SMS Template',
             help='Select the SMS Template configuration to use with this action'),
     }
-
+    ## Function ##
     def run(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -125,7 +125,7 @@ class actions_server(orm.Model):
             else:
                 act_ids.append(action.id)
         if act_ids:
-            return super(ServerAction, self).run(cr, uid, act_ids, context=context)
+            return super(actions_server, self).run(cr, uid, act_ids, context=context)
         return False
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
