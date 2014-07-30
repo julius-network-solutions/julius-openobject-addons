@@ -75,10 +75,10 @@ def get_data(self, cr, uid, ids, recordlist):
                 st_line_amt = list2float(line[32:47])
 
                 if line[61]=='1':
-                    st_line['toreconcile'] = True
+#                     st_line['toreconcile'] = True
                     st_line['name']=line[65:77]
                 else:
-                    st_line['toreconcile'] = False
+#                     st_line['toreconcile'] = False
                     st_line['name']=line[62:115]
 
                 st_line['free_comm'] = st_line['name']

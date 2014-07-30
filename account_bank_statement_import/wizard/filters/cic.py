@@ -29,8 +29,6 @@ def get_data(self, cr, uid, ids, recordlist, data):
     account_period_obj = self.pool.get('account.period')
     bank_statement_obj = self.pool.get('account.bank.statement')
     line_statement_obj = self.pool.get('account.bank.statement.line')
-    journal_obj = self.pool.get('account.journal')
-    journal_code = journal_obj.browse(cr, uid, data['journal_id']).code
     if not data:
         data = {}
     
@@ -53,8 +51,8 @@ def get_data(self, cr, uid, ids, recordlist, data):
             continue
         if len(line) <= 1:  # the end of the file has an empty line
             continue
-        line_list = line.split(';')
-        if line_list[1].replace('"','') == 'Date de valeur' :
+        line_list = line.split(',')
+        if line_list[1].replace('"','') == 'Date de valeur':
             continue
            
         st_line_name = line_name

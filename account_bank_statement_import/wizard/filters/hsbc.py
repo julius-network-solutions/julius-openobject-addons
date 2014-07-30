@@ -26,27 +26,20 @@ def get_data(self, cr, uid, ids, recordlist, data):
     
     account_period_obj = self.pool.get('account.period')
     bank_statement_obj = self.pool.get('account.bank.statement')
-    journal_obj = self.pool.get('account.journal')
-    journal_code = journal_obj.browse(cr, uid, data['journal_id']).code
-    
     
     bank_statements = []
     i = 0        
-#    bal_end = 0
     first_line = True
     month_statement = {}
-#    month_statement_period = {}
     date_format = str(self.pool.get('account.bank.statement.import').browse(cr, uid, ids[0]).date_format)
     
     # first loop on each line to determine the number of month in the statement
     for line_1 in recordlist:
         line_splited_1 = line_1.split(';') 
         if first_line:
-#            bal_end = float(line_splited_1[2] or 0.0)
             first_line = False
             continue
                
-#        st_line_1 = {}
         code = line_splited_1[0]
         if str(code) in ('4','5','04','05'):
             date_value = line_splited_1[11]
@@ -59,7 +52,6 @@ def get_data(self, cr, uid, ids, recordlist, data):
                 month_statement[line_period].append(line_1)
             else:
                 month_statement[line_period] = [line_1]
-    #            month_statement_period[line_period] = line_period
     # loop on each month
     for key in month_statement.keys():
                
