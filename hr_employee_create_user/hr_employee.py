@@ -24,9 +24,9 @@ from openerp import models, api, _
 class hr_employee(models.Model):
     _inherit = 'hr.employee'
 
-    @api.one
-    def _get_default_user_vals(self):
-        default_name = self.name
+    @api.model
+    def _get_default_user_vals(self, employee):
+        default_name = employee.name
         name = default_name
         i = 1
         start = True
@@ -39,7 +39,7 @@ class hr_employee(models.Model):
                 break
             i += 1
         return {
-            'name': self.name,
+            'name': employee.name,
             'login': name,
             'password': name,
         }
@@ -49,9 +49,7 @@ class hr_employee(models.Model):
         user_obj = self.env['res.users']
         for employee in self:
             if not employee.user_id:
-                user_vals = employee._get_default_user_vals()
-                if isinstance(user_vals, list):
-                    user_vals = user_vals and user_vals[0] or {}
+                user_vals = employee._get_default_user_vals(self)
                 if user_vals:
                     user = user_obj.create(user_vals)
                     employee.user_id = user
