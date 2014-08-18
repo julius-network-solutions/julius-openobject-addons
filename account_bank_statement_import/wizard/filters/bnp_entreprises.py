@@ -28,8 +28,6 @@ def get_data(self, cr, uid, ids, recordlist, data):
     
     account_period_obj = self.pool.get('account.period')
     bank_statement_obj = self.pool.get('account.bank.statement')
-    journal_obj = self.pool.get('account.journal')
-    journal_code = journal_obj.browse(cr, uid, data['journal_id']).code
     
     bank_statements = []
     i = 0        
