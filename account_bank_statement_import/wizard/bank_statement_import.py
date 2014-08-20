@@ -24,6 +24,7 @@ import base64
 
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
+from ..string_operation import to_unicode
 
 class account_bank_statement_import(orm.TransientModel):
     _name = "account.bank.statement.import"
@@ -437,14 +438,14 @@ class account_bank_statement_import(orm.TransientModel):
             except orm.except_orm, e:
                 cr.rollback()
                 nb_err += 1
-                err_log += '\n' + _('Application Error:') + ' ' + str(e)
+                err_log += '\n' + _('Application Error:') + ' ' + to_unicode(e)
                 raise # REMOVEME
 
             except Exception, e:
                 cr.rollback()
                 nb_err += 1
-                err_log += '\n' + _('System Error:') + ' ' + str(e)
-                raise # REMOVEME
+                err_log += '\n' + _('System Error:') + ' ' + to_unicode(e)
+#                 raise # REMOVEME
             except:
                 cr.rollback()
                 nb_err+=1
