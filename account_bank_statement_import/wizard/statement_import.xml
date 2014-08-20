@@ -12,8 +12,7 @@
                         <div>
                             <div>
                                 <label for="filter_id"/>
-                                <field name="filter_id" class="oe_inline" widget="selection"
-                                    on_change="onchange_filter_id(filter_id, context)"/>
+                                <field name="filter_id" class="oe_inline" widget="selection"/>
                             </div>
                             <div>
                                 <label for="date_format"/>
@@ -37,16 +36,23 @@
                                 <field name="journal_id" class="oe_inline"/>
                             </div>
                             <div>
+                                <label for="fill_accounts"/>
+                                <field name="fill_accounts" class="oe_inline"/>
+                            </div>
+                            <div attrs="{'invisible': [('fill_accounts', '=', False)]}">
                                 <label for="payable_id"/>
-                                <field name="payable_id" class="oe_inline"/>
+                                <field name="payable_id" class="oe_inline"
+                                    attrs="{'required': [('fill_accounts', '=', True)]}"/>
                             </div>
-                            <div>
+                            <div attrs="{'invisible': [('fill_accounts', '=', False)]}">
                                 <label for="receivable_id"/>
-                                <field name="receivable_id" class="oe_inline"/>
+                                <field name="receivable_id" class="oe_inline"
+                                    attrs="{'required': [('fill_accounts', '=', True)]}"/>
                             </div>
-                            <div>
+                            <div attrs="{'invisible': [('fill_accounts', '=', False)]}">
                                 <label for="awaiting_id"/>
-                                <field name="awaiting_id" class="oe_inline"/>
+                                <field name="awaiting_id" class="oe_inline"
+                                    attrs="{'required': [('fill_accounts', '=', True)]}"/>
                             </div>
 						</div>
 					</group>
