@@ -438,13 +438,13 @@ class account_bank_statement_import(orm.TransientModel):
             except orm.except_orm, e:
                 cr.rollback()
                 nb_err += 1
-                err_log += '\n' + _('Application Error:') + ' ' + to_unicode(e)
+                err_log += '\n' + _('Application Error:') + ' ' + to_unicode(str(e))
                 raise # REMOVEME
 
             except Exception, e:
                 cr.rollback()
                 nb_err += 1
-                err_log += '\n' + _('System Error:') + ' ' + to_unicode(e)
+                err_log += '\n' + _('System Error:') + ' ' + to_unicode(str(e))
 #                 raise # REMOVEME
             except:
                 cr.rollback()
