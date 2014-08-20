@@ -66,7 +66,6 @@
             <field name="name">res.company.form</field>
             <field name="model">res.company</field>
             <field name="inherit_id" ref="base.view_company_form"/>
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <field name="currency_id" position="after">
                     <separator string="Import Bank Statements" colspan="4"/>
@@ -92,8 +91,8 @@
                             <div>
                                 <label for="def_filter_id"/>
                                 <field name="def_filter_id"
-                                    class="oe_inline" widget="selection"
-                                    on_change="onchange_filter_id(def_filter_id, company_id, context)"/>
+                                    class="oe_inline" widget="selection"/>
+                                    <!--on_change="onchange_filter_id(def_filter_id, company_id, context)"/>-->
                                 <button name="open_filters_form" type="object"
                                     string="Configure your company bank import filters"
                                     icon="gtk-go-forward"
