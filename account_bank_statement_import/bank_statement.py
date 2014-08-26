@@ -19,7 +19,38 @@
 #
 ###############################################################################
 from openerp import fields, models, _
-     
+
+COLUMNS = [
+           (1, 'A'),
+           (2, 'B'),
+           (3, 'C'),
+           (4, 'D'),
+           (5, 'E'),
+           (6, 'F'),
+           (7, 'G'),
+           (8, 'H'),
+           (9, 'I'),
+           (10, 'J'),
+           (11, 'K'),
+           (12, 'L'),
+           (13, 'M'),
+           (14, 'N'),
+           (15, 'O'),
+           (16, 'P'),
+           (17, 'Q'),
+           (18, 'R'),
+           (19, 'S'),
+           (20, 'T'),
+           (21, 'U'),
+           (22, 'V'),
+           (23, 'W'),
+           (24, 'X'),
+           (25, 'Y'),
+           (26, 'Z'),
+           ]
+
+SEPARATOR = {'comma': ',', 'semicolon': ';', 'tab': '\t', 'space': ' ', 'pipe': '|'}
+
 class account_bankimport_filters(models.Model):
     _name = "account.bankimport.filters"
     _description = "Define the filters, which is related to the file"
@@ -39,6 +70,24 @@ class account_bankimport_filters(models.Model):
                                       'Default Account for Unrecognized Movement',
                                       domain=[('type','=','liquidity')])
     def_date_format = fields.Char('Default Date Format', size=32)
+    separator = fields.Selection([
+                                  ('comma', 'Comma'),
+                                  ('semicolon', 'Semicolon'),
+                                  ('tab', 'Tab'),
+                                  ('space', 'Space'),
+                                  ('pipe', 'Pipe'),
+                                  ('other', 'Other'),
+                                  ], 'Separator')
+    separator_other = fields.Char('Separator')
+    ignored_lines = fields.Integer('Number of lines to ignore')
+    amount_separated = fields.Boolean('Credit and Debit separated')
+    column_name = fields.Selection(COLUMNS, 'Name column')
+    column_date = fields.Selection(COLUMNS, 'Date column')
+    column_date_val = fields.Selection(COLUMNS, 'Date of value column')
+    column_debit = fields.Selection(COLUMNS, 'Debit column')
+    column_credit = fields.Selection(COLUMNS, 'Credit column')
+    column_ref = fields.Selection(COLUMNS, 'Ref column')
+    column_note = fields.Selection(COLUMNS, 'Note column')
 
 class res_company(models.Model):
     _inherit = 'res.company'

@@ -70,7 +70,7 @@ class account_config_settings(models.TransientModel):
         self.def_date_format = filter.def_date_format
 
     @api.onchange('company_id')
-    def onchange_company_id(self):
+    def onchange_filter_company_id(self):
         filter = self.company_id.def_filter_id
         self.def_bank_journal_id = filter.def_bank_journal_id.id
         self.def_payable_id = filter.def_payable_id.id

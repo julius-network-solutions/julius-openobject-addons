@@ -37,7 +37,7 @@ import time
 from openerp import pooler
 import conversion
 
-def get_data(self, cr, uid, ids,  bankData, bank_statement):
+def get_data(self, bankData, bank_statement):
 	   
       pool = pooler.get_pool(cr.dbname)
       
@@ -47,6 +47,7 @@ def get_data(self, cr, uid, ids,  bankData, bank_statement):
       line_name = 0
       st_line_name = line_name
       code4 = 0
+      date_format = "%d%m%y"
       
       # parse every line in the file and get the right data
       for line in bankData:
@@ -64,8 +65,10 @@ def get_data(self, cr, uid, ids,  bankData, bank_statement):
                   st_line = {}
                   st_line['statement_id']=0
                   st_line['name'] = line[48:72]
-                  st_line['date'] = conversion.str2date(line[87:93]) # boekingsdatum
-                  st_line_amt = conversion.list2float(line[73:86])
+                  date = conversion.str2date(line[87:93], date_format)
+                  st_line['date'] = date # boekingsdatum
+                  st_line_amt = conversion.list2float(line[73:86], date_format)
+                  val_date = conversion.str2date(line[93:99], date_format)
                   
                   if line[86] == "D": 
                      st_line_amt = - st_line_amt
@@ -73,8 +76,8 @@ def get_data(self, cr, uid, ids,  bankData, bank_statement):
                   else:
                      st_line['account_id'] = bank_statement['def_rec_acc']
                     
-                  st_line['entry_date']=time.strftime('%Y-%m-%d',time.strptime(conversion.str2date(line[87:93]),"%d/%m/%y")),
-                  st_line['val_date']=time.strftime('%Y-%m-%d',time.strptime(conversion.str2date(line[93:99]),"%d/%m/%y")),
+                  st_line['entry_date'] = date
+                  st_line['val_date'] = val_date
                               
                   st_line['partner_id']=0
                   st_line['amount'] = st_line_amt
@@ -88,7 +91,7 @@ def get_data(self, cr, uid, ids,  bankData, bank_statement):
                   	 	  
                   cntry_number=st_line_partner_acc
                   contry_name=line[48:72]
-                  bank_ids = pool.get('res.partner.bank').search(cr,uid,[('acc_number','=',st_line_partner_acc)])
+                  bank_ids = pool.get('res.partner.bank').search(cr,uid,[('acc_number', '=', st_line_partner_acc)])
                   
                   if bank_ids:
                      bank = pool.get('res.partner.bank').browse(cr,uid,bank_ids[0],context={})

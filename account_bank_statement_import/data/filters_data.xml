@@ -41,8 +41,16 @@
     
         <record model="account.bankimport.filters" id="filters_bh_bnp">
             <field name="name">BH BNP</field>
-            <field name="filter">bh_bnp</field>
-            <field name="active" eval="False"/>
+            <field name="filter">default</field>
+            <field name="active" eval="True"/>
+            <field name="separator">tab</field>
+            <field name="column_name" eval="3"/>
+            <field name="column_date" eval="1"/>
+            <field name="column_date_val" eval="2"/>
+            <field name="amount_separated" eval="True"/>
+            <field name="column_debit" eval="4"/>
+            <field name="column_credit" eval="5"/>
+            <field name="ignored_lines">5</field>
             <field name="def_date_format">%d/%m/%Y</field>
         </record>
     
@@ -76,6 +84,21 @@
 			<field name="filter">coda</field>
 			<field name="active" eval="False"/>
 		</record>
+    
+        <record model="account.bankimport.filters" id="filters_default">
+            <field name="name">DEFAULT</field>
+            <field name="filter">default</field>
+            <field name="active" eval="True"/>
+            <field name="separator">tab</field>
+            <field name="column_name" eval="1"/>
+            <field name="column_date" eval="2"/>
+            <field name="column_date_val" eval="3"/>
+            <field name="amount_separated" eval="True"/>
+            <field name="column_debit" eval="4"/>
+            <field name="column_credit" eval="5"/>
+            <field name="ignored_lines">0</field>
+            <field name="def_date_format">%d/%m/%Y</field>
+        </record>
 	
 		<record model="account.bankimport.filters" id="filters_emirates_nbd">
 			<field name="name">Emirates NBD</field>

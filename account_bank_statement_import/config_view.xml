@@ -24,14 +24,61 @@
             <field name="model">account.bankimport.filters</field>
             <field name="arch" type="xml">
                 <form string="Bank Statement Filters">
-                    <field name="name"/>
-                    <field name="filter"/>
-                    <field name="active"/>
-                    <field name="def_bank_journal_id"/>
-                    <field name="def_payable_id"/>
-                    <field name="def_receivable_id"/>
-                    <field name="def_awaiting_id"/>
-                    <field name="def_date_format"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="filter"/>
+                        <field name="active"/>
+                        <field name="def_bank_journal_id"/>
+                        <field name="def_payable_id"/>
+                        <field name="def_receivable_id"/>
+                        <field name="def_awaiting_id"/>
+                        <field name="def_date_format"/>
+                    </group>
+                    <div>
+                        <div>
+                            <label for="separator"/>
+                            <field name="separator" class="oe_inline"/>
+                            <field name="separator_other" class="oe_inline" attrs="{'invisible': [('separator', '!=', 'other')]}"/>
+                        </div>
+                    </div>
+                    <group>
+                        <div>
+                            <label for="ignored_lines"/>
+                            <field name="ignored_lines" class="oe_inline"/>
+                        </div>
+                        <div>
+                            <label for="column_name"/>
+                            <field name="column_name" class="oe_inline"/>
+                        </div>
+                        <div>
+                            <label for="column_date"/>
+                            <field name="column_date" class="oe_inline"/>
+                        </div>
+                        <div>
+                            <label for="column_date_val"/>
+                            <field name="column_date_val" class="oe_inline"/>
+                        </div>
+                        <div>
+                            <label for="amount_separated"/>
+                            <field name="amount_separated" class="oe_inline"/>
+                        </div>
+                        <div>
+                            <label for="column_debit"/>
+                            <field name="column_debit" class="oe_inline"/>
+                        </div>
+                        <div>
+                            <label for="column_credit"/>
+                            <field name="column_credit" class="oe_inline"/>
+                        </div>
+                        <div>
+                            <label for="column_ref"/>
+                            <field name="column_ref" class="oe_inline"/>
+                        </div>
+                        <div>
+                            <label for="column_note"/>
+                            <field name="column_note" class="oe_inline"/>
+                        </div>
+                    </group>
                 </form>
             </field>
         </record>

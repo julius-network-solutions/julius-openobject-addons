@@ -19,6 +19,12 @@
 #
 ###############################################################################
 
+import time
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT as DF
+
+def str2date(date_str, date_format="%d%m%y"):
+      return time.strftime(DF, time.strptime(date_str, date_format))
+
 def to_unicode(s):
    try:
        return s.decode('utf-8')
@@ -30,5 +36,16 @@ def to_unicode(s):
                return s.encode('ascii')
            except UnicodeError:
                return s
+
+def str2float(float_str, separator=None):
+     try:
+         if separator:
+             float_str = float_str.replace(separator, '.')
+         return float(float_str)
+     except:
+         return 0.0
+
+def get_key_from_date(date_str, date_format):
+    return time.strftime('%Y-%m', time.strptime(date_str, date_format))
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

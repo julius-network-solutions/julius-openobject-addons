@@ -23,6 +23,10 @@
                                 <field name="statement_update" class="oe_inline"/>
                             </div>
                             <div>
+                                <label for="many_statements"/>
+                                <field name="many_statements" class="oe_inline"/>
+                            </div>
+                            <div>
                                 <label for="file_data"/>
                                 <field name="file_data" class="oe_inline"/>
                             </div>
@@ -56,6 +60,60 @@
                             </div>
 						</div>
 					</group>
+                    <group>
+                        <label for="id" string="Import Parameters details"/>
+                        <div>
+                            <div>
+                                <label for="edit_parameters"/>
+                                <field name="edit_parameters" class="oe_inline"/>
+                            </div>
+                        </div>
+                        <newline/>
+                        <div attrs="{'invisible': [('edit_parameters', '=', False)]}">
+                            <label for="separator"/>
+                            <field name="separator" class="oe_inline"/>
+                            <field name="separator_other" class="oe_inline" attrs="{'invisible': [('separator', '!=', 'other')]}"/>
+                        </div>
+                        <newline/>
+                        <group attrs="{'invisible': [('edit_parameters', '=', False)]}">
+                            <div>
+                                <label for="ignored_lines"/>
+                                <field name="ignored_lines" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_name"/>
+                                <field name="column_name" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_date"/>
+                                <field name="column_date" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_date_val"/>
+                                <field name="column_date_val" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="amount_separated"/>
+                                <field name="amount_separated" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_debit"/>
+                                <field name="column_debit" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_credit"/>
+                                <field name="column_credit" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_ref"/>
+                                <field name="column_ref" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_note"/>
+                                <field name="column_note" class="oe_inline"/>
+                            </div>
+                        </group>
+                    </group>
 					<footer>
 						<button name="file_parsing" string="Import" type="object" class="oe_highlight"/>
 						or

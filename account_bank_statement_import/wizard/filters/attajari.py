@@ -22,29 +22,22 @@
 import time
 from datetime import datetime
 
-def get_data(self, cr, uid, ids, recordlist, data):
-    
-    account_period_obj = self.pool.get('account.period')
+def get_data(self, recordlist, data):
+    account_period_obj = self.env['account.period']
+    line_obj = self.env['account.bank.statement.line']
     bank_statements = []
     pointor = 0
-    line_cursor = 0
-    initial_lines = 11
     total_amount = 0
     bank_statement = {}
     bank_statement_lines = {}
     bank_statement["bank_statement_line"] = {}
-    
-    date_format = str(self.pool.get('account.bank.statement.import').browse(cr, uid, ids[0]).date_format)
-    
-    for line in recordlist:
-        if line_cursor < initial_lines:
-            line_cursor += 1
-            continue
+    date_format = data.get('date_format')
+    for line in recordlist[11:]:
         line_splited = line.split(',')
         st_line = {}
         line_name = pointor
         st_line['extra_note'] = ''
-        st_line['date'] = time.strftime('%Y-%m-%d',time.strptime(line_splited[1], date_format))
+        st_line['date'] = conversion.str2date(line_splited[1], date_format)
         st_line['name'] = line_splited[2]
         amount = 0
         if line_splited[3]:
@@ -60,34 +53,38 @@ def get_data(self, cr, uid, ids, recordlist, data):
             amount = amount.replace(',','.')
         '''Definition of a positive or negative value'''
         if amount.startswith('-'):
-            st_line['account_id'] = data['payable_id'][0]
+            st_line['account_id'] = data['payable_id'] and \
+                data['payable_id'][0] or False
         else:
-            st_line['account_id'] = data['receivable_id'][0]
-            
+            st_line['account_id'] = data['receivable_id'] and \
+                data['receivable_id'][0] or False
         amount = float(amount or 0.0)
         st_line['amount'] = amount
         st_line['partner_id'] = False
-        
         # check of uniqueness of a field in the data base
         date = st_line['date']
-        check_ids = self.pool.get('account.bank.statement.line').search(cr,uid,[('ref','=',line_splited[1]),('name','=',line_splited[3]),('date','=',date),('amount','=',amount)])
+        check_ids = line_obj.search([
+                                     ('ref', '=', line_splited[1]),
+                                     ('name', '=', line_splited[3]),
+                                     ('date', '=', date),
+                                     ('amount', '=', amount),
+                                     ])
         if check_ids:
             continue        
         if not check_ids:   
-            bank_statement_lines[line_name]=st_line
-            line_name += 1                    
+            bank_statement_lines[line_name] = st_line
         bank_statement["bank_statement_line"] = bank_statement_lines
         pointor += 1
         total_amount += amount
-
     # Saving data at month level
     bank_statement['total_amount'] = total_amount
-    bank_statement['journal_id'] = data['journal_id'][0]    
-    period_id = account_period_obj.search(cr, uid, [('date_start', '<=', date), ('date_stop', '>=',date)])
+    period_id = account_period_obj.search([
+                                           ('date_start', '<=', date),
+                                           ('date_stop', '>=',date)
+                                           ])
     bank_statement['date'] = date
     bank_statement['period_id'] = period_id and period_id[0] or False
     bank_statements.append(bank_statement)
-
     return bank_statements
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

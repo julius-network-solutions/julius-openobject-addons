@@ -20,92 +20,85 @@
 ##############################################################################
 
 import time
-from datetime import datetime
+from ...string_operation import to_unicode
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 
-def _to_unicode(s):
-   try:
-       return s.decode('utf-8')
-   except UnicodeError:
-       try:
-           return s.decode('latin')
-       except UnicodeError:
-           try:
-               return s.encode('ascii')
-           except UnicodeError:
-               return s
-
-def get_data(self, cr, uid, ids, recordlist, data):
+def get_data(self, recordlist):
     
-    account_period_obj = self.pool.get('account.period')
+    account_period_obj = self.env['account.period']
+    line_obj = self.env['account.bank.statement.line']
+
     bank_statements = []
     pointor = 0
-    line_cursor = 0
-    initial_lines = 12
     total_amount = 0
     bank_statement = {}
     bank_statement_lines = {}
     bank_statement["bank_statement_line"] = {}
     
-    date_format = str(self.pool.get('account.bank.statement.import').browse(cr, uid, ids[0]).date_format)
-    for line in recordlist:
-        if line_cursor < initial_lines:
-            line_cursor += 1
-            continue
-        line = line.replace('"','')
-        line_splited = line.split(';')
-        if line_splited[0]== '':
-            break
-        st_line = {}
-        line_name = pointor
-        st_line['extra_note'] = ''
-        date_1 = time.strptime(line_splited[0], date_format)
-        st_line['date'] = time.strftime('%Y-%m-%d',date_1)
-        st_line['name'] = line_splited[1]
-        st_line['ref'] = line_splited[2]
-        amount = 0
-        if line_splited[4]:
-            amount = _to_unicode(line_splited[4])
-        if line_splited[5]:
-            amount = _to_unicode(line_splited[5])
-        # Format conversion
-        if '.' in amount:
-            amount = amount.replace('.','')
-#         if '\xc2\xa0' in amount:
-#             amount = amount.replace('\xc2\xa0','')
-#         if ' ' in amount:
-#             amount = amount.replace(' ','')
-        if ',' in amount:
-            amount = amount.replace(',','.')
-        amount = amount.split()
-        amount = "".join(amount)
-        
-        '''Definition of a positive or negative value'''
-        amount = float(amount or 0.0)
-        if line_splited[4]:
-            amount = -amount
-        if amount < 0:
-            st_line['account_id'] = data['payable_id'][0]
-        else:
-            st_line['account_id'] = data['receivable_id'][0]
-        st_line['amount'] = amount
-        st_line['partner_id'] = False
-        
-        # check of uniqueness of a field in the data base
-        date = st_line['date']
-        check_ids = self.pool.get('account.bank.statement.line').search(cr,uid,[('ref','=',line_splited[1]),('name','=',line_splited[3]),('date','=',date),('amount','=',amount)])
-        if check_ids:
-            continue        
-        if not check_ids:   
-            bank_statement_lines[line_name]=st_line
-            line_name += 1                    
-        bank_statement["bank_statement_line"] = bank_statement_lines
-        pointor += 1
-        total_amount += amount
+    date_format = self.date_format
+    if len(recordlist) > 12:
+        for line in recordlist[12:]:
+            line = line.replace('"','')
+            line_splited = line.split(';')
+            if line_splited[0]== '':
+                break
+            st_line = {}
+            line_name = pointor
+            st_line['extra_note'] = ''
+            date_1 = time.strptime(line_splited[0], date_format)
+            st_line['date'] = time.strftime(DF, date_1)
+            st_line['name'] = line_splited[1]
+            st_line['ref'] = line_splited[2]
+            amount = 0
+            if line_splited[4]:
+                amount = to_unicode(line_splited[4])
+            if line_splited[5]:
+                amount = to_unicode(line_splited[5])
+            # Format conversion
+            if '.' in amount:
+                amount = amount.replace('.','')
+    #         if '\xc2\xa0' in amount:
+    #             amount = amount.replace('\xc2\xa0','')
+    #         if ' ' in amount:
+    #             amount = amount.replace(' ','')
+            if ',' in amount:
+                amount = amount.replace(',','.')
+            amount = amount.split()
+            amount = "".join(amount)
+            
+            '''Definition of a positive or negative value'''
+            amount = float(amount or 0.0)
+            if line_splited[4]:
+                amount = - amount
+            if amount < 0:
+                st_line['account_id'] = self.payable_id.id
+            else:
+                st_line['account_id'] = self.receivable_id.id
+            st_line['amount'] = amount
+            st_line['partner_id'] = False
+            
+            # check of uniqueness of a field in the data base
+            date = st_line['date']
+            check_ids = line_obj.search([
+                                         ('ref', '=', line_splited[1]),
+                                         ('name', '=', line_splited[3]),
+                                         ('date', '=', date),
+                                         ('amount','=',amount)
+                                         ])
+            if check_ids:
+                continue        
+            if not check_ids:   
+                bank_statement_lines[line_name] = st_line
+            bank_statement["bank_statement_line"] = bank_statement_lines
+            pointor += 1
+            total_amount += amount
 
     # Saving data at month level
     bank_statement['total_amount'] = total_amount
-    bank_statement['journal_id'] = data['journal_id'][0]    
-    period_id = account_period_obj.search(cr, uid, [('date_start', '<=', date), ('date_stop', '>=',date)])
+    period_id = account_period_obj.search([
+                                           ('date_start', '<=', date),
+                                           ('date_stop', '>=', date)
+                                           ])
     bank_statement['date'] = date
     bank_statement['period_id'] = period_id and period_id[0] or False
     bank_statements.append(bank_statement)

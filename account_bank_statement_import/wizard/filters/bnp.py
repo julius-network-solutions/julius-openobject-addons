@@ -59,8 +59,6 @@ def get_data(self, cr, uid, ids, bankData, bank_statement):
             st_line['statement_id']=0
             line_list=line.split('	')
             #st_line['date'] =            
-            #st_line['entry_date']=time.strftime('%Y-%m-%d',time.strptime(conversion.str2date(line_list[0]),"%y/%m/%d"))
-            #st_line['val_date']=time.strftime('%Y-%m-%d',time.strptime(conversion.str2date(line_list[1]),"%y/%m/%d"))
             st_line['date'] = time.strftime('%d/%m/%y',time.strptime(line_list[0],"%Y/%m/%d"))
             st_line['entry_date']= time.strftime('%Y-%m-%d',time.strptime(line_list[0],"%Y/%m/%d"))
             st_line['val_date']= time.strftime('%Y-%m-%d',time.strptime(line_list[1],"%Y/%m/%d"))
