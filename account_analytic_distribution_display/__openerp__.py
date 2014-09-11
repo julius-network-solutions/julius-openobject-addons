@@ -32,7 +32,7 @@ This module adds a menu for distribution.
     "author": "Julius Network Solutions",
     "website": "http://www.julius.fr",
     "depends": [
-        "account_abalytic_plans",
+        "account_analytic_plans",
     ],
     "data": [
         "account_analytic_distribution_view.xml",
