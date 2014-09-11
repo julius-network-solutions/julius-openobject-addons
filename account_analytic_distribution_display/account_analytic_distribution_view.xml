@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+     <menuitem
+         parent="account_analytic_plans.menu_account_analytic_multi_plan_action" 
+         id="menu_account_analytic_plan_instance_action"
+         action="account_analytic_plans.account_analytic_plan_instance_action"/>
+    </data>
+</openerp>
