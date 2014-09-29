@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+		<record id="view_group_move_lines_form" model="ir.ui.view">
+			<field name="name">account.group.move.line.form</field>
+			<field name="model">account.group.move.line</field>
+			<field name="type">form</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<form string="Line merger">
+					<group colspan="4" col="2">
+						<button string="Cancel" special="cancel" icon="gtk-cancel"/>
+						<button string="Merge" type="object" name="group_lines" icon="gtk-execute"/>
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="act_group_move_lines_view">
+			<field name="name">Line merger</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.group.move.line</field>
+			<field name="src_model">account.move</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="usage">menu</field>
+			<field name="target">new</field>
+		</record>
+
+        <record id="values_act_group_move_lines_view" model="ir.values">
+            <field name="name">Line merger</field>
+            <field name="key2">client_action_multi</field>
+            <field name="model">account.move</field>
+            <field name="object">True</field>
+            <field name="value" eval="'ir.actions.act_window,'+str(act_group_move_lines_view)"/>
+        </record>
+
+    </data>
+</openerp>
