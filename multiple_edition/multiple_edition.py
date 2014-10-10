@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,14 +17,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 from lxml import etree
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+from openerp import models, fields, api, _
+from openerp.exceptions import Warning
 
-class field_relation(orm.TransientModel):
-    _name = 'field.relation'  
+class field_relation(models.TransientModel):
+    _name = 'field.relation'
+    _description = 'Field relation'
     
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
         result = super(field_relation, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar,submenu)
@@ -42,7 +43,7 @@ class field_relation(orm.TransientModel):
             field_type = multi_edition.field_type
             readonly = field_data.readonly
             if readonly == True:
-                raise orm.except_orm(_('Warning'), _('This field is not editable'))
+                raise Warning(_('This field is not editable'))
             if field_type == "selection":
                 selection = self.pool.get(model.model)._columns[field_data.name].selection     
                 fields.update({'field_relation': {'type': field_data.ttype, 'string': field_data.name, 'selection': selection},}) 
@@ -97,16 +98,15 @@ class field_relation(orm.TransientModel):
                 model_obj = self.pool.get(model.model)
                 for update_id in update_ids:
                     model_obj.write(cr, uid, update_id, {field.name : value}, context)
-        return {'type': 'ir.actions.act_window_close'}
+        return True
         
-    _columns = {
-        'char_value': fields.char('Value', size=256),
-        'int_value': fields.integer('Value'),
-    }
+    char_value = fields.Char('Value', size=256)
+    int_value = fields.Integer('Value')
 
-class multiple_edition(orm.TransientModel):
-    
-    _name = 'multiple.edition'    
+
+class multiple_edition(models.TransientModel):
+    _name = 'multiple.edition'
+    _description = 'Multiple edition'
     
     def _get_default_multiple_edition_model(self, cr, uid, context=None):
         model_obj = self.pool.get('ir.model')
@@ -118,33 +118,32 @@ class multiple_edition(orm.TransientModel):
             result = model_ids[0]
         return result
     
-    _columns = {
-        'model_id': fields.many2one('ir.model', 'Resource', readonly=True, required=True),
-        'field_type': fields.selection([('char', 'Char'),
-                                        ('boolean', 'Boolean'),
-                                        ('integer', 'Integer'),
-                                        ('text', 'Text'),
-                                        ('many2one', 'Many2One'),
-                                        ('one2many', 'One2Many'),
-                                        ('many2many', 'Many2Many'),
-                                        ('float','Float'),
-                                        ('selection','Selection')
-                                        ], 'Type of Field', required=True),
-        'field_id': fields.many2one('ir.model.fields', 'Field', required=True, domain="[('model_id', '=', model_id),('ttype', '=', field_type)]"),
-        'char_value': fields.char('Value', size=256),
-        'bool_value': fields.boolean('Value'),
-        'int_value': fields.integer('Value'),
-        'text_value': fields.text('Value'),
-        'float_value': fields.float('Value'),
-        
-    }
+    model_id = fields.Many2one('ir.model', 'Resource',
+                               readonly=True, required=True)
+    field_type = fields.Selection([
+                                   ('char', 'Char'),
+                                   ('boolean', 'Boolean'),
+                                   ('integer', 'Integer'),
+                                   ('text', 'Text'),
+                                   ('many2one', 'Many2One'),
+                                   ('one2many', 'One2Many'),
+                                   ('many2many', 'Many2Many'),
+                                   ('float','Float'),
+                                   ('selection','Selection')
+                                   ], 'Type of Field', required=True)
+    field_id = fields.Many2one('ir.model.fields', 'Field',
+                               required=True,
+                               domain="[('model_id', '=', model_id), ('ttype', '=', field_type)]")
+    char_value = fields.Char('Value', size=256)
+    bool_value = fields.Boolean('Value')
+    int_value = fields.Integer('Value')
+    text_value = fields.Text('Value')
+    float_value = fields.Float('Value')
     
     _defaults = {
         'model_id': _get_default_multiple_edition_model,
     }
-    
-    
-    
+
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
         result = super(multiple_edition, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar,submenu)
         xml = ''
@@ -182,6 +181,6 @@ class multiple_edition(orm.TransientModel):
                 model_obj = self.pool.get(this.model_id.model)
                 for update_id in update_ids:
                     model_obj.write(cr, uid, update_id, {this.field_id.name: value}, context)
-        return {'type': 'ir.actions.act_window_close'}
+        return True
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

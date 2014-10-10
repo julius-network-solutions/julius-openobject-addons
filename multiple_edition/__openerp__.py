@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,19 +17,19 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
     "name": 'Multiple Edition',
     "version": '1.0',
     "description": """ 
-This module give the possibility to edit several record of a table.
+Multiple edition.
+=================
 
-Just check the list of product that requires modification, then choose multiple edition on "more" menu.
-
-CHoose the field type and the value.
-
-Suitable for all objects, you only have to define the objects for which you want to add this option in the configuration part of OpenERP.  
+    * This module give the possibility to edit several record of a table.
+    * Just check the list of product that requires modification, then choose multiple edition on "more" menu.
+    * Choose the field type and the value.
+    * Suitable for all objects, you only have to define the objects for which you want to add this option in the configuration part of OpenERP.  
 """,
     "author": 'Julius Network Solutions',
     'images': ['images/wizard.jpeg', 'images/product.jpeg', 'images/multi.jpeg'],
@@ -38,13 +38,12 @@ Suitable for all objects, you only have to define the objects for which you want
         'base',
         'product',
     ],
-    "init_xml": [],
-    "update_xml": [
+    "data": [
         "multiple_edition_view.xml",
         "res_config_view.xml",
     ],
-    "demo_xml": [],
-    "installable": False,
+    "demo": [],
+    "installable": True,
     "active": False,
     "category" : "Base extra Modules",
     "test": [],

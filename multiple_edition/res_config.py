@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,37 +17,33 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from openerp.osv import fields, osv, orm
-from openerp.tools.translate import _
-import copy
+# import copy
+from openerp import models, fields, _
 
-class ir_model(orm.Model):
+class ir_model(models.Model):
     _inherit = 'ir.model'
-    
-    _columns = {
-        'multiple_edition_model': fields.boolean('Multiple Edtion linked',
-            help='If checked, by default the multiple edition configuration will get this module in the list'),
-    }
-    
-    _defaults = {
-        'multiple_edition_model': False,
-    }
 
-class multiple_edition_settings(orm.TransientModel):
+    multiple_edition_model = fields.Boolean('Multiple Edtion linked',
+                                            help='If checked, by default the ' \
+                                            'multiple edition configuration '\
+                                            'will get this module in the list',
+                                            default=False)
+
+class multiple_edition_settings(models.TransientModel):
     _name = 'multiple.edition.settings'
     _inherit = 'res.config.settings'
-    
+
     def _get_default_multiple_edition_models(self, cr, uid, context=None):
         return self.pool.get('ir.model').search(cr, uid, [('multiple_edition_model', '=', True)], context=context)
-    
-    _columns = {
-        'models_ids': fields.many2many('ir.model',
-            'multiple_edition_settings_model_rel',
-            'multiple_edition_id', 'model_id', 'Models', domain=[('osv_memory', '=', False)]),
-    }
-    
+
+    models_ids = fields.Many2many('ir.model',
+                                  'multiple_edition_settings_model_rel',
+                                  'multiple_edition_id', 'model_id',
+                                  'Models',
+                                  domain=[('is_transient', '=', False)])
+
     _defaults = {
         'models_ids': _get_default_multiple_edition_models,
     }
@@ -111,7 +107,8 @@ class multiple_edition_settings(orm.TransientModel):
     
     def create(self, cr, uid, vals, context=None):
         """ create method """
-        vals2 = copy.deepcopy(vals)
+#         vals2 = copy.deepcopy(vals)
+        vals2 = vals.copy()
         result = super(multiple_edition_settings, self).create(cr, uid, vals2, context=context)
         ## Fields Process ##
         self.update_field(cr, uid, vals, context=context)
