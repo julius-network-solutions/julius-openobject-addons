@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,12 +17,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from openerp.osv import osv, fields, orm
-from openerp.tools.translate import _
+from openerp import models, _
 
-class account_tax(orm.Model):
+class account_tax(models.Model):
     _inherit = 'account.tax'
     
     def _generate_tax(self, cr, uid, tax_templates, tax_code_template_ref, company_id, context=None):
@@ -85,7 +84,6 @@ class account_tax(orm.Model):
         res.update({'tax_template_to_tax': tax_template_to_tax, 'account_dict': todo_dict})
         return res
 
-   
     def regenerate_taxes(self, cr, uid, ids, context=None):
         if context is None:
             context = {}

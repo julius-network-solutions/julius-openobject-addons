@@ -20,21 +20,25 @@
 #################################################################################
 
 {
-   "name" : "Wiki meeting report",
-   "version" : "0.1",
-   "author" : "Julius Network Solutions",
-   "website" : "Julius.fr",
-   "category" : "Generic Modules/Others",
-   "depends" : [
-                "document_page",
-                ],
-   "description" : """ Wiki meeting report """,
-   "init_xml" : [
-                 "wiki_meeting_report.xml",
-                 ],
-   "demo_xml" : [],
-   "update_xml" : [],
+   "name": "Wiki meeting report",
+   "version": "0.1",
+   "author": "Julius Network Solutions",
+   "website": "Julius.fr",
+   "category": "Generic Modules/Others",
+   "depends": [
+               "website_blog",
+               ],
+   "description" : """
+Wiki meeting report
+===================
+
+The original module was developed to fit the wiki module
+""",
+   "data": [
+            "wiki_meeting_report.xml",
+            ],
+   "demo": [],
    "active": False,
-   "installable": False,
+   "installable": True,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

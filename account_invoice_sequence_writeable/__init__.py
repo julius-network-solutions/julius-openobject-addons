@@ -28,7 +28,7 @@
 #
 ##############################################################################
 
-import invoice
-import account
+from . import invoice
+from . import account
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

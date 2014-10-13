@@ -2,18 +2,20 @@
 <openerp>
     <data>
 
-		<record model="ir.ui.view" id="view_wiki_meeting_report_form">
-  			<field name="name">page.meeting.report.form</field>
-  			<field name="model">document.page</field>
-  			<field name="inherit_id" ref="document_page.view_wiki_form"/>
-  			<field name="type">form</field>
-  			<field name="arch" type="xml">
-                <div class="oe_document_page" position="after">
-                    <separator colspan="4" string="Meeting report Content"/>
-                    <field name="meeting_report" nolabel="1" colspan="4" select="1" widget="html"/>                
-                </div>
-  			</field>
-		</record>
+        <record model="ir.ui.view" id="view_wiki_meeting_report_form">
+            <field name="name">blog.post.form</field>
+            <field name="model">blog.post</field>
+            <field name="inherit_id" ref="website_blog.view_blog_post_form"/>
+            <field name="arch" type="xml">
+                <group string="Technical" position="after">
+                    <group name='content_data' string="Content">
+                        <field name="content" nolabel="1" colspan="4" select="1" widget="html"/>
+                        <separator colspan="4" string="Meeting"/>
+                        <field name="meeting_report" nolabel="1" colspan="4" select="1" widget="html"/>
+                    </group>           
+                </group>
+            </field>
+        </record>
 
     </data>
 </openerp>

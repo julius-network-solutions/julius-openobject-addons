@@ -40,13 +40,12 @@ This module separates invoice and account move numbers. The difference with acco
     "depends" : [
         'account',
 	],
-    "init_xml" : [],
-    "update_xml" : [
+    "demo" : [],
+    "data" : [
         'account_view.xml',
     ],
-    "demo_xml" : [],
     "active": False,
-    "installable": False,
+    "installable": True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

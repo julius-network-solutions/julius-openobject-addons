@@ -38,6 +38,7 @@ and put it back to draft
         'hr_expense_view.xml',
     ],
     'test': [],
-    'installable': False,
+    'installable': True,
+    'active': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -29,14 +29,14 @@
         'sale',
     ],
     "description": """
-    This Module at the possibilities to set a canceled sale order to draft.
+This Module at the possibilities to set a canceled sale order to draft.
     """,
     "demo" : [],
     "data" : [
         "sale_view.xml",
     ],
-    'installable' : False,
-    'active' : False,
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

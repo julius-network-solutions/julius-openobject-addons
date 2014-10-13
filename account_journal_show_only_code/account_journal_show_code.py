@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,32 +17,19 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from openerp.osv import osv, fields, orm
-from openerp.tools.translate import _
+from openerp import models, api
 
-class account_journal(orm.Model):
-    
+class account_journal(models.Model):
     _inherit = 'account.journal'
-   
-    def name_get(self, cr, user, ids, context=None):
-        if not ids:
-            return []
-        if isinstance(ids, (int, long)):
-            ids = [ids]
-        result = self.browse(cr, user, ids, context=context)
+
+    @api.multi
+    def name_get(self):
         res = []
-        for rs in result:
-#             currency = False
-#             if rs.currency:
-#                 currency = rs.currency
-#             else:
-#                 currency = rs.company_id.currency_id
+        for rs in self:
             name = "%s" % (rs.code)
-#             if currency:
-#                 name += " (%s)" % (currency.name,)
-            res += [(rs.id, name)]
+            res.append((rs.id, name))
         return res
 
     

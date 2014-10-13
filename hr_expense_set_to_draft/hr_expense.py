@@ -19,11 +19,9 @@
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
-from openerp import netsvc
+from openerp import models, netsvc
 
-class hr_expense_expense(orm.Model):
+class hr_expense_expense(models.Model):
     _inherit = "hr.expense.expense"
 
     def expense_done_draft(self, cr, uid, ids, context=None):
