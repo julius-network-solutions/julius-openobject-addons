@@ -21,23 +21,26 @@
 
 {
     'name': 'Expense Management (fix taxes)',
-    'version': '1.0',
+    'version': '1.1',
     'category': 'Human Resources',
-    'sequence': 29,
     'summary': 'Expenses Validation, Invoicing',
+    'contributors': 'Mathieu Vatel <mathieu@julius.fr>',
     'description': """
 Manage expenses by Employees
 ============================
 
 This modules fix the tax computation when generating
 the expenses accounting data
-    """,
+""",
     'author': 'Julius Network Solutions',
     'website': 'http://www.julius.fr',
-    'depends': ['hr_expense'],
+    'depends': [
+                'hr_expense'
+                ],
     'data': [],
     'test': [],
-    'installable': False,
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
