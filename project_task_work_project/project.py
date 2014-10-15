@@ -19,16 +19,13 @@
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+from openerp import models, fields
 
-class project_work(orm.Model):
+class project_work(models.Model):
     _inherit = "project.task.work"
-    _columns = {
-        'project_id': fields.related('task_id', 'project_id',
-                                     string='Project', type='many2one',
-                                     relation='project.project',
-                                     readonly=True),
-    }
+    
+    project_id = fields.Many2one('project.project', 'Project',
+                                 related='task_id.project_id',
+                                 readonly=True)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

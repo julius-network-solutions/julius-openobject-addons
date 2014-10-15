@@ -21,12 +21,12 @@
 
 {
     "name" : "Task work calendar view",
-    "name" : "Calendar view for project work input",
+    "summary" : "Calendar view for project work input",
     "version": "1.0",
     "author": "Julius Network Solutions",
     "website": "http://www.julius.fr",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
-    "category": "Project Management",
+    'category': 'Project Management',
     "depends": ["project"],
     "description": """
 Project task work views with a menu

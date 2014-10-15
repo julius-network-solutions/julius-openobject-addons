@@ -9,8 +9,12 @@
             <field name="inherit_id" ref="project.view_task_work_form"/>
             <field name="arch" type="xml">
                 <field name="user_id" position="after">
+                    <newline/>
                     <field name="task_id"/>
-                    <field name="notes"/>
+                    <newline/>
+                    <group string="Notes" colspan="4">
+                        <field name="notes" colspan="4" nolabel="1"/>
+                    </group>
                 </field>
             </field>
         </record>
@@ -20,9 +24,8 @@
             <field name="model">project.task.work</field>
             <field name="inherit_id" ref="project.view_task_work_tree"/>
             <field name="arch" type="xml">
-                <field name="user_id" position="after">
+                <field name="name" position="before">
                     <field name="task_id"/>
-                    <field name="notes"/>
                 </field>
             </field>
         </record>
@@ -54,9 +57,8 @@
                     <field name="date"/>
                     <field name="user_id"/>
                     <newline/>
-                    <group expand="0" string="Group By..." groups="base.group_extended">
+                    <group string="Group By..." colspan="11" col="11">
                         <filter string="Employee" domain="[]" context="{'group_by':'user_id'}"/>
-                    	<separator orientation="vertical"/>
                         <filter string="Task" domain="[]" context="{'group_by':'task_id'}"/>
                     </group>
                </search>
@@ -69,9 +71,10 @@
             <field name="view_type">form</field>
             <field name="view_mode">calendar,tree,form</field>
             <field name="view_id" eval="False"/>
-            <field name="search_view_id" ref="view_task_work_filter"/>
-            <field name="context">{"search_default_user_id": uid}</field>
+            <field name="search_view_id" ref="project_task_work_calendar_view.view_task_work_filter"/>
+            <field name="context">{}</field>
         </record>
+
         <menuitem action="action_view_task_work" id="menu_action_view_task_work"
             parent="project.menu_project_management" sequence="10"/>
 
