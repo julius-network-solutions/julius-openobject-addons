@@ -27,6 +27,8 @@ from openerp import fields, models, api, exceptions, _
 
 from ..bank_statement import COLUMNS
 
+SEPARATOR = {'comma': ',', 'semicolon': ';', 'tab': '\t', 'space': ' ', 'pipe': '|'}
+
 class account_bank_statement_import(models.TransientModel):
     _name = "account.bank.statement.import"
     _description = "Bank statement import"
@@ -164,9 +166,7 @@ class account_bank_statement_import(models.TransientModel):
         exec "from .filters import " + filter_name + " as parser"
         # opening the file speficied as bank_file and read the data
         try:
-            # parse the data through the filter
-            bank_statements = parser.\
-                get_data(self, recordlist)
+            bank_statements = parser.get_data(self, recordlist)
         except IOError:
             raise
         return bank_statements
@@ -217,9 +217,12 @@ class account_bank_statement_import(models.TransientModel):
                             ], limit=1)
                         if bank_sts:
                             statement_total_amount = statement.get('total_amount') or 0
-                            balance_start = bank_sts.balance_start                    
-                            balance_end_real = bank_sts.balance_end_real + \
-                                statement_total_amount
+                            balance_start = bank_sts.balance_start    
+                            if statement.get('balance_end_real'):
+                                balance_end_real = statement.get('balance_end_real') or 0
+                            else:
+                                balance_end_real = bank_sts.balance_end_real + \
+                                    statement_total_amount
                             bank_sts.balance_end_real = balance_end_real
                             bkst_list += bank_sts
                             str_not1 = self.\
@@ -432,7 +435,7 @@ class account_bank_statement_import(models.TransientModel):
         if separator == 'other':
             separator = self.separator_other
         else:
-            separator = SEPARATOR.get('separator', False)
+            separator = SEPARATOR.get(separator, False)
         return separator or ','
 
     @api.model

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -14,105 +14,55 @@
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU Affero General Public License
+#    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+###############################################################################
 
 import time
-from datetime import datetime
+from ...string_operation import str2float
 
-def _to_unicode(s):
-   try:
-       return s.decode('utf-8')
-   except UnicodeError:
-       try:
-           return s.decode('latin')
-       except UnicodeError:
-           try:
-               return s.encode('ascii')
-           except UnicodeError:
-               return s
-
-def get_data(self, cr, uid, ids, recordlist, data):
+def get_data(self, recordlist):
+    separator = self.get_separator()
+    name = self.get_column_number(self.column_name, 2)
+    date = self.get_column_number(self.column_date, 0)
+    date_val = self.get_column_number(self.column_date_val, 0)
+    debit = self.get_column_number(self.column_debit, 3)
+    credit = self.get_column_number(self.column_credit, 4)
+    ignored_lines = self.ignored_lines or 5
+    separated_amount = self.amount_separated
+    date_format = self.date_format
+    receivable_id = self.receivable_id.id
+    payable_id = self.payable_id.id
+    statement_update = self.statement_update
+    many_statements = self.many_statements
+    default_key = time.strftime('%Y-%m')
+    statement_date = False
     
-    account_period_obj = self.pool.get('account.period')
-    bank_statements = []
-    pointor = 0
-    line_cursor = 0
-    initial_lines = 7
-    total_amount = 0
-    bank_statement = {}
-    bank_statement_lines = {}
-    bank_statement["bank_statement_line"] = {}
-    
-    date_format = str(self.pool.get('account.bank.statement.import').browse(cr, uid, ids[0]).date_format)
-    for line in recordlist:
-        if line_cursor < initial_lines:
-            line_cursor += 1
-            continue
-        line = line.replace('"','')
-        line_splited = line.split(';')
-        if line_splited[1]== '':
-            break
-        if "REF: " in line_splited[1]:
-            ref = line_splited[1].split(' ')
-            st_line['ref'] = ref[1]
-            
-        # Si une date est présente
-        if line_splited[0]!='':
-        
-            # On vide st_line
-            st_line = {}
-            line_name = pointor
-            st_line['extra_note'] = ''
-            
-            date_1 = time.strptime(line_splited[0], date_format)
-            st_line['date'] = time.strftime('%Y-%m-%d',date_1)
-            st_line['name'] = line_splited[6]
-
-            amount = 0
-            if line_splited[2]:
-                amount = _to_unicode(line_splited[2])
-            if line_splited[3]:
-                amount = _to_unicode(line_splited[3])
-
-            if ' ' in amount:
-                amount = amount.replace(' ','')
-            if ',' in amount:
-                amount = amount.replace(',','.')
-            amount = "".join(amount)
-            
-            '''Definition of a positive or negative value'''
-            amount = float(amount or 0.0)
-            if amount < 0:
-                st_line['account_id'] = data['payable_id'][0]
-            else:
-                 st_line['account_id'] = data['receivable_id'][0]
-            st_line['amount'] = amount
-            st_line['partner_id'] = False           
-                
-            # check of uniqueness of a field in the data base
-            date = st_line['date']
-            check_ids = self.pool.get('account.bank.statement.line').search(cr,uid,[('name','=',line_splited[6]),('date','=',date),('amount','=',amount)])
-
-            if check_ids:
-                continue        
-            if not check_ids:   
-                bank_statement_lines[line_name]=st_line
-                line_name += 1                    
-            bank_statement["bank_statement_line"] = bank_statement_lines
-            pointor += 1
-            total_amount += amount
-
-    # Saving data at month level
-    bank_statement['total_amount'] = total_amount
-    bank_statement['journal_id'] = data['journal_id'][0]    
-    period_id = account_period_obj.search(cr, uid, [('date_start', '<=', date), ('date_stop', '>=',date)])
-    bank_statement['date'] = date
-    bank_statement['period_id'] = period_id and period_id[0] or False
-    bank_statements.append(bank_statement)
-
-    return bank_statements
+    ## Adapt parser for delete undefined line ##
+    for line in recordlist[ignored_lines:]:
+        line_splited = line.split(separator)
+        if not line_splited[0]:
+            recordlist.remove(line)
+    result = self.format_statement_from_data(recordlist, separator,
+                                           date_format=date_format,
+                                           many_statements=many_statements,
+                                           ignored_lines=ignored_lines,
+                                           name=name, date=date,
+                                           date_val=date_val,
+                                           debit=debit, credit=credit,
+                                           separated_amount=separated_amount,
+                                           receivable_id=receivable_id,
+                                           payable_id=payable_id, ref=False,
+                                           extra_note=False,
+                                           statement_date=False,
+                                           default_key=default_key)
+    for statement in result:
+        if not many_statements:
+            balance_end_real = recordlist[4].split(separator)[1]
+            balance_end_real = balance_end_real.replace(' ','')
+            balance_end_real = str2float(balance_end_real or balance_end_real, ',') or 0.0
+            statement.update({'balance_end_real':balance_end_real})
+    return result
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

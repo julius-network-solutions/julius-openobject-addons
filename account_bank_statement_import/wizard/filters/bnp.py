@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,98 +17,46 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 import time
-from openerp import pooler
-import conversion
+from openerp.exceptions import Warning
 
-def get_data(self, cr, uid, ids, bankData, bank_statement):
-	   
-    pool = pooler.get_pool(cr.dbname)
+def get_data(self, recordlist):
+    separator = self.get_separator()
+    name = self.get_column_number(self.column_name, 2)
+    date = self.get_column_number(self.column_date, 0)
+    date_val = self.get_column_number(self.column_date_val, 0)
+    debit = self.get_column_number(self.column_debit, 3)
+    credit = self.get_column_number(self.column_credit, 4)
+    ignored_lines = self.ignored_lines or 5
+    separated_amount = self.amount_separated
+    date_format = self.date_format
+    receivable_id = self.receivable_id.id
+    payable_id = self.payable_id.id
+    many_statements = self.many_statements
+    default_key = time.strftime('%Y-%m')
+    statement_date = False
+    
+    ## Get Ending Balance ##
+    result = self.format_statement_from_data(recordlist, separator,
+                                           date_format=date_format,
+                                           many_statements=many_statements,
+                                           ignored_lines=ignored_lines,
+                                           name=name, date=date,
+                                           date_val=date_val,
+                                           debit=debit, credit=credit,
+                                           separated_amount=separated_amount,
+                                           receivable_id=receivable_id,
+                                           payable_id=payable_id, ref=False,
+                                           extra_note=False,
+                                           statement_date=False,
+                                           default_key=default_key)
+    for statement in result:
+        if not many_statements:
+            statement.update({'balance_end_real':recordlist[0].split(separator)[2]})
+        else:
+            raise Warning(('Bad configuration should not use this mode !'))
+    return result
 
-
-    bal_end = bank_statement['bal_end']
-    bank_statement_lines={}
-    bank_statements=[]
-    line_name = 0
-    st_line_name = line_name
-    code4 = 0
-    bankaccount = ''
-    bankaccount = bankData[0][14:35]
-    # parse every line in the file and get the right data
-    if bankaccount.lower() in bank_statement["acc_number"]:
-        for line in bankData:
-            if len(line) <= 1:  # the end of the file has an empty line
-                continue
-            if line[0] != '2' :
-                continue
-            #else:
-                #if line.count("\r") :
-                #    pos=line.index("\r")
-                #else :
-               #     pos=0
-
-                #if pos :
-                    #i=pos-1
-                    #am2 = am1 = 0
-                    #char = line[i]
-
-            st_line_name = line_name
-            st_line = {}
-            st_line['statement_id']=0
-            line_list=line.split('	')
-            #st_line['date'] =            
-            st_line['date'] = time.strftime('%d/%m/%y',time.strptime(line_list[0],"%Y/%m/%d"))
-            st_line['entry_date']= time.strftime('%Y-%m-%d',time.strptime(line_list[0],"%Y/%m/%d"))
-            st_line['val_date']= time.strftime('%Y-%m-%d',time.strptime(line_list[1],"%Y/%m/%d"))
-            st_line['partner_id']=0
-            st_line['type'] = 'general'
-            st_line['name'] = line_list[2]
-            st_line['free_comm']= ''
-            st_line['ref']=''
-     
-            if line_list[4] == ' \r' :
-                st_line_amt = - conversion.str2float(line_list[3])
-                st_line['account_id'] = bank_statement['def_pay_acc']
-            else:
-            	st_line_amt = conversion.str2float(line_list[4])
-                st_line['account_id'] = bank_statement['def_rec_acc']
-            
-            st_line['amount'] = st_line_amt
-            st_line_partner_acc = bankaccount.lower()
-            st_line['partner_acc_number'] = ''
-            #bank_ids = pool.get('res.partner.bank').search(cr,uid,[('acc_number','=',st_line_partner_acc)])
-            
-            check_ids = pool.get('account.bank.statement.line').search(cr,uid,[('amount','=',st_line_amt), ('date','=',st_line['entry_date']), ('name','=',line_list[2])])
-        
-            if not check_ids:   
-                bank_statement_lines[line_name]=st_line
-                line_name += 1
-         #  bank_statements.append(st_line)    
-   
-
-     # end if
-# end for
-      
-      
-      
-      # delete latest row from the list because its an empty row
-    if len(bank_statement_lines) >= 1:
-        #del bank_statement_lines[ line_name ]  # delete latest row from the list
-        for test in bank_statement_lines:
-            bank_statements.append(bank_statement_lines[test])
-         
-      # count the end balance
-#      for value in bank_statement_lines:
-#         line=bank_statement_lines[value]
-#         bal_end += line['amount']
-
-#      bank_statement["balance_end_real"]= bal_end
-#      bank_statement["bank_statement_line"]=bank_statement_lines
-     
-    return bank_statements
-                
-            
-    #end for         
-#select distinct b.partner_id, p.ref from res_partner_bank b, res_partner p where b.bank='51' and b.partner_id = p.id
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
