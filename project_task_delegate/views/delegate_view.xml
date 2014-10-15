@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Project Task Deletgate -->
+        <!-- FORM View -->
+        <record id="view_project_task_delegate_julius" model="ir.ui.view">
+            <field name="name">Project Task Delegate</field>
+            <field name="model">project.task.delegate</field>
+            <field name="inherit_id" ref="project.view_project_task_delegate"/>
+            <field name="arch" type="xml">
+                <field name="state" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="prefix" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="planned_hours_me" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
