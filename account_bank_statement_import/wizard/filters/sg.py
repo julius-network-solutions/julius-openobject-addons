@@ -45,18 +45,18 @@ def get_data(self, recordlist):
         if not line_splited[0]:
             recordlist.remove(line)
     result = self.format_statement_from_data(recordlist, separator,
-                                           date_format=date_format,
-                                           many_statements=many_statements,
-                                           ignored_lines=ignored_lines,
-                                           name=name, date=date,
-                                           date_val=date_val,
-                                           debit=debit, credit=credit,
-                                           separated_amount=separated_amount,
-                                           receivable_id=receivable_id,
-                                           payable_id=payable_id, ref=False,
-                                           extra_note=False,
-                                           statement_date=False,
-                                           default_key=default_key)
+                                             date_format=date_format,
+                                             many_statements=many_statements,
+                                             ignored_lines=ignored_lines,
+                                             name=name, date=date,
+                                             date_val=date_val,
+                                             debit=debit, credit=credit,
+                                             separated_amount=separated_amount,
+                                             receivable_id=receivable_id,
+                                             payable_id=payable_id, ref=False,
+                                             extra_note=False,
+                                             statement_date=False,
+                                             default_key=default_key)
     for statement in result:
         if not many_statements:
             balance_end_real = recordlist[4].split(separator)[1]
