@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>     
+        <record id="account_invoice_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.view.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="move_id" position="after">
+                    <group groups="intercompany_invoice.group_intercompany_invoice">
+						<field name="supplier_invoice_id"/>
+					</group>
+				</field>
+			</field>
+        </record>
+        
+        <record id="account_invoice_supplier_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.view.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="move_id" position="after">
+                    <group groups="intercompany_invoice.group_intercompany_invoice">
+						<field name="customer_invoice_id"/>
+					</group>
+				</field>
+			</field>
+        </record>
+	</data>
+</openerp>
+
