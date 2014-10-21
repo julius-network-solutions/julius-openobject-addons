@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
@@ -17,7 +17,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+###############################################################################
 
 {
     "name": "Inter Company Invoice",
@@ -26,18 +26,19 @@
         "account",
     ],
     "author": "Julius Network Solutions",
-    "contributor" : "Yvan Patry",
+    "contributor" : "Yvan Patry <yvan@julius.fr>",
     'images': [],
     "description": """
 Inter Company Invoice module
 ====================================
+
 This inter company invoice module provides:
 --------------------------------------------
+
     * Automatic creation of a supplier invoice when invoicing a customer linked to a system company.
-    
-    """,
+""",
     "website": "http://julius.fr",
-    "category": "Tools",
+    "category": "Accounting & Finance",
     "demo": [],
     "data": [
         "security/intercompany_security.xml",

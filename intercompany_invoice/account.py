@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -17,14 +17,18 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+###############################################################################
+
 from openerp import models, api, fields, _
+from openerp.exceptions import Warning
 
 class account_invoice(models.Model):
     _inherit = "account.invoice"
     
-    customer_invoice_id = fields.Many2one('account.invoice', 'Customer Invoice', readonly=True)
-    supplier_invoice_id = fields.Many2one('account.invoice', 'Supplier Invoice', readonly=True)
+    customer_invoice_id = fields.Many2one('account.invoice',
+                                          'Customer Invoice', readonly=True)
+    supplier_invoice_id = fields.Many2one('account.invoice',
+                                          'Supplier Invoice', readonly=True)
     
     @api.one
     def copy(self, default=None):
@@ -39,7 +43,8 @@ class account_invoice(models.Model):
         if default is None:
             default = {}
         default['supplier_invoice_id'] = False
-        return super(account_invoice, self).copy_data(cr, uid, id, default=default, context=context)
+        return super(account_invoice, self).\
+            copy_data(cr, uid, id, default=default, context=context)
 
     @api.multi
     def write(self, vals):
@@ -53,7 +58,7 @@ class account_invoice(models.Model):
                 self.customer_to_supplier()
         return res
 
-
+    @api.multi
     def _check_edi_partner(self):
         res_company_obj = self.env['res.company']
         res_partner_obj = self.env['res.partner']
@@ -70,7 +75,7 @@ class account_invoice(models.Model):
         return company_id, partner_id
     
     @api.multi
-    def _get_vals_for_supplier_invoice(self,company, partner):
+    def _get_vals_for_supplier_invoice(self, company, partner):
         journal_obj = self.env['account.journal']
         prop = self.env['ir.property']
         
@@ -81,9 +86,16 @@ class account_invoice(models.Model):
              ],limit=1)
         if partner.property_account_payable.company_id and \
                 partner.property_account_payable.company_id.id != company.id:
-            pay_dom = [('name', '=', 'property_account_payable'), ('company_id', '=', company.id), ('res_id', '=', 'res.partner,%s' %partner.id)]
+            pay_dom = [
+                       ('name', '=', 'property_account_payable'),
+                       ('company_id', '=', company.id),
+                       ('res_id', '=', 'res.partner,%s' %partner.id),
+                       ]
             if not pay_dom:
-                pay_dom = [('name', '=', 'property_account_payable'), ('company_id', '=', company.id)]
+                pay_dom = [
+                           ('name', '=', 'property_account_payable'),
+                           ('company_id', '=', company.id)
+                           ]
             pay_prop = prop.search(pay_dom)
             pay_account = pay_prop.get_by_record(pay_prop)
 
@@ -106,9 +118,14 @@ class account_invoice(models.Model):
     @api.multi
     def _get_vals_for_supplier_invoice_line(self, supplier_invoice, line, company, partner):  
         if line.product_id:
-            res = line.sudo().product_id_change(line.product_id.id, line.uos_id.id, line.quantity, line.name, supplier_invoice.type,
-            partner.id, supplier_invoice.fiscal_position.id , line.price_unit, supplier_invoice.currency_id.id,
-            company_id=company.id)
+            res = line.sudo().\
+                product_id_change(line.product_id.id, line.uos_id.id,
+                                  line.quantity, line.name,
+                                  supplier_invoice.type, partner.id,
+                                  supplier_invoice.fiscal_position.id,
+                                  line.price_unit,
+                                  supplier_invoice.currency_id.id,
+                                  company_id=company.id)
             vals = res.get('value', {})
             if not line.product_id.company_id:
                 vals.update({'product_id': line.product_id.id})
@@ -141,12 +158,11 @@ class account_invoice(models.Model):
 
         for invoice in self:
             if invoice.supplier_invoice_id:
-                raise orm.except_orm(_('Warning!'),
-                                     _('You already had a supplier invoice '
-                                       'for this customer invoice.\n'
-                                       'Please delete the %s '
-                                       'if you want to create a new one')
-                                     % (invoice.supplier_invoice_id.name))
+                raise Warning(_('You already had a supplier invoice '
+                                'for this customer invoice.\n'
+                                'Please delete the %s '
+                                'if you want to create a new one')
+                                % (invoice.supplier_invoice_id.name))
 
             company, partner = self.sudo()._check_edi_partner()
 
@@ -154,8 +170,9 @@ class account_invoice(models.Model):
             supplier_invoice = self.sudo().create(vals)
             self.write({'supplier_invoice_id': supplier_invoice.id})
             for line in invoice.invoice_line:
-                vals = self.sudo()._get_vals_for_supplier_invoice_line(supplier_invoice, line, company, partner)
+                vals = self.sudo().\
+                    _get_vals_for_supplier_invoice_line(supplier_invoice, line,
+                                                        company, partner)
                 account_invoice_line_obj.sudo().create(vals)
-        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
