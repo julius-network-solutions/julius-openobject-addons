@@ -27,6 +27,8 @@ from openerp import fields, models, api, exceptions, _
 
 from ..bank_statement import COLUMNS
 
+SEPARATOR = {'comma': ',', 'semicolon': ';', 'tab': '\t', 'space': ' ', 'pipe': '|'}
+
 class account_bank_statement_import(models.TransientModel):
     _name = "account.bank.statement.import"
     _description = "Bank statement import"
@@ -164,9 +166,7 @@ class account_bank_statement_import(models.TransientModel):
         exec "from .filters import " + filter_name + " as parser"
         # opening the file speficied as bank_file and read the data
         try:
-            # parse the data through the filter
-            bank_statements = parser.\
-                get_data(self, recordlist)
+            bank_statements = parser.get_data(self, recordlist)
         except IOError:
             raise
         return bank_statements
@@ -213,13 +213,18 @@ class account_bank_statement_import(models.TransientModel):
                     if statement_update:
                         bank_sts = bank_statement_obj.search([
                             ('period_id', '=', statement_period.id),
-                            ('company_id', '=', journal.company_id.id)
+                            ('company_id', '=', journal.company_id.id),
+                            ('journal_id', '=', journal.id),
                             ], limit=1)
+                        print bank_sts
                         if bank_sts:
                             statement_total_amount = statement.get('total_amount') or 0
-                            balance_start = bank_sts.balance_start                    
-                            balance_end_real = bank_sts.balance_end_real + \
-                                statement_total_amount
+                            balance_start = bank_sts.balance_start    
+                            if statement.get('balance_end_real'):
+                                balance_end_real = statement.get('balance_end_real') or 0
+                            else:
+                                balance_end_real = bank_sts.balance_end_real + \
+                                    statement_total_amount
                             bank_sts.balance_end_real = balance_end_real
                             bkst_list += bank_sts
                             str_not1 = self.\
@@ -229,7 +234,9 @@ class account_bank_statement_import(models.TransientModel):
                     
                     '''If the month does not exist we create a new statement'''
                     if not bank_statement_obj.search([
-                            ('period_id', '=', statement_period.id)
+                            ('period_id', '=', statement_period.id),
+                            ('company_id', '=', journal.company_id.id),
+                            ('journal_id', '=', journal.id),
                             ]) or statement_update == False:
                         if not statement.get('name', False):                    
                             statement['name'] = seq_obj.\
@@ -393,7 +400,9 @@ class account_bank_statement_import(models.TransientModel):
                 if separated_amount:
                     if val_debit:
                         st_line['account_id'] = payable_id
-                        amount = - str2float(val_debit, ',') or 0.0
+                        amount = str2float(val_debit, ',') or 0.0
+                        if amount > 0.0:
+                            amount = - amount
                     elif val_credit:
                         st_line['account_id'] = receivable_id
                         amount = str2float(val_credit, ',') or 0.0
@@ -416,11 +425,11 @@ class account_bank_statement_import(models.TransientModel):
             # Saving data at month level
             bank_statement["total_amount"] = total_amount
             bank_statement['date'] = statement_date or key + '-01'
-            statement_date = bank_statement['date']
+            statement_date_search = bank_statement['date']
             period = account_period_obj.\
                 search([
-                        ('date_start', '<=', statement_date),
-                        ('date_stop', '>=', statement_date),
+                        ('date_start', '<=', statement_date_search),
+                        ('date_stop', '>=', statement_date_search),
                         ], limit=1)
             bank_statement['period_id'] = period
             bank_statements.append(bank_statement)
@@ -432,7 +441,7 @@ class account_bank_statement_import(models.TransientModel):
         if separator == 'other':
             separator = self.separator_other
         else:
-            separator = SEPARATOR.get('separator', False)
+            separator = SEPARATOR.get(separator, False)
         return separator or ','
 
     @api.model
