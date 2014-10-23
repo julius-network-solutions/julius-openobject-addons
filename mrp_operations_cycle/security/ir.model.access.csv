@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_operation_cycle_user,access_operation_cycle_user,model_operation_cycle,mrp.group_mrp_user,1,1,1,1
+access_operation_cycle_manager,access_operation_cycle_manager,model_operation_cycle,mrp.group_mrp_manager,1,1,1,1

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+		<!-- xxxxxxxxxxxxxxx -->
+		<!-- operation.cycle -->
+		<!-- xxxxxxxxxxxxxxx -->
+		<record id="view_operation_cycle_task_view" model="ir.ui.view">
+            <field name="name">operation.cycle.form</field>
+            <field name="model">operation.cycle</field>
+            <field name="inherit_id" ref="mrp_operations_cycle.view_operation_cycle_form"/>
+            <field name="arch" type="xml">
+                <field name="production_id" position="after">
+                	<field name="task_id"/>
+                </field>
+            </field>
+        </record>
+
+		<!-- xxxxxxxxxxxx -->
+		<!-- project.task -->
+		<!-- xxxxxxxxxxxx -->
+		<record id="view_task_form2_cycle_view" model="ir.ui.view">
+            <field name="name">project.task.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <page string="Description" position="after">
+                	<page string="Cycles">
+                		<field name="cycle_ids" nolabel="1" colspan="4" col="4"/>
+					</page>
+                </page>
+            </field>
+        </record>
+
+    </data>
+</openerp>
