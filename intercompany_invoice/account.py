@@ -84,6 +84,7 @@ class account_invoice(models.Model):
              ('company_id','=',company.id),
 #              ('currency','=',self.currency_id.id)
              ],limit=1)
+        pay_account = partner.property_account_payable
         if partner.property_account_payable.company_id and \
                 partner.property_account_payable.company_id.id != company.id:
             pay_dom = [
@@ -98,7 +99,6 @@ class account_invoice(models.Model):
                            ]
             pay_prop = prop.search(pay_dom)
             pay_account = pay_prop.get_by_record(pay_prop)
-
         return {
             'state': 'draft',
             'partner_id': partner.id,
