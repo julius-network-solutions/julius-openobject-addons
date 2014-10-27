@@ -44,8 +44,8 @@ class partner_sms_send(orm.Model):
         active_ids = fields.get('active_ids')
         res = {}
         i = 0
-        for partner in partner_pool.browse(cr, uid, active_ids, context=context): 
-            i += 1           
+        for partner in partner_pool.browse(cr, uid, active_ids, context=context):
+            i += 1
             res = partner.mobile
         if i > 1:
             raise orm.except_orm(_('Error'), _('You can only select one partner'))
@@ -67,7 +67,7 @@ class partner_sms_send(orm.Model):
         gateway = sms_obj.browse(cr, uid, gateway_id, context=context)
         return {
             'value': {
-                'validity': gateway.validity, 
+                'validity': gateway.validity,
                 'classes': gateway.classes,
                 'deferred': gateway.deferred,
                 'priority': gateway.priority,
@@ -110,9 +110,9 @@ class partner_sms_send(orm.Model):
 
     _defaults = {
         'mobile_to': _default_get_mobile,
-        'gateway': _default_get_gateway,        
+        'gateway': _default_get_gateway,
     }
-    
+
     def sms_send(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -123,7 +123,7 @@ class partner_sms_send(orm.Model):
             else:
                 client_obj._send_message(cr, uid, data, context=context)
         return {}
-     
+
 
 class SMSClient(orm.Model):
     _name = 'sms.smsclient'
@@ -182,11 +182,11 @@ class SMSClient(orm.Model):
         'method': 'http',
         'validity': 10,
         'classes': '1',
-        'deferred': 0, 
+        'deferred': 0,
         'priority': '3',
         'coding': '1',
         'nostop': True,
-        'char_limit' : True, 
+        'char_limit' : True,
     }
 
     def _check_permissions(self, cr, uid, id, context=None):
@@ -203,12 +203,12 @@ class SMSClient(orm.Model):
             'state': 'draft',
             'mobile': data.mobile_to,
             'msg': data.text,
-            'validity': data.validity, 
-            'classes': data.classes, 
-            'deffered': data.deferred, 
-            'priorirty': data.priority, 
-            'coding': data.coding, 
-            'tag': data.tag, 
+            'validity': data.validity,
+            'classes': data.classes,
+            'deferred': data.deferred,
+            'priority': data.priority,
+            'coding': data.coding,
+            'tag': data.tag,
             'nostop': data.nostop,
         }
 
@@ -233,6 +233,8 @@ class SMSClient(orm.Model):
                      elif p.type == 'sms':
                          prms[p.name] = data.text
                      elif p.type == 'extra':
+                         prms[p.name] = p.value
+                     elif p.type == 'sender':
                          prms[p.name] = p.value
                 params = urllib.urlencode(prms)
                 name = url + "?" + params
@@ -353,7 +355,7 @@ class SMSQueue(orm.Model):
         'tag': fields.char('Tag', size=256,
             help='An optional tag'),
         'nostop': fields.boolean('NoStop', help='Do not display STOP clause in the message, this requires that this is not an advertising message'),
-        
+
     }
     _defaults = {
         'date_create': fields.datetime.now,

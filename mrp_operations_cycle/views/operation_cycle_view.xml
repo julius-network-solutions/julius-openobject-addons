@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+		<!-- xxxxxxxxxxxxxxx -->
+		<!-- operation.cycle -->
+		<!-- xxxxxxxxxxxxxxx -->
+
+		<!-- Views -->
+		<!-- Form View -->
+		<record id="view_operation_cycle_form" model="ir.ui.view">
+            <field name="name">operation.cycle.form</field>
+            <field name="model">operation.cycle</field>
+            <field name="arch" type="xml">
+                <form string="Operation Cycle">
+		            <header>
+		                <button name="action_start_working" type="object" string="Start" states="draft" class="oe_highlight"/>
+		                <button name="action_pause" type="object" string="Resume" states="pause" class="oe_highlight"/>
+		                <button name="action_done" type="object" string="Finished" states="startworking" class="oe_highlight"/>
+		                <button name="action_pause" type="object" string="Pending" states="startworking"/>
+		                <button name="action_draft" type="object" string="Set Draft" states="cancel"/>
+		                <button name="action_cancel" type="object" string="Cancel" states="draft,startworking"/>
+		                <field name="state" widget="statusbar" statusbar_visible="draft,startworking"/>
+		            </header>
+            		<sheet string="Operation Cycle">
+	                    <group col="4" colspan="4">
+	                   		<separator string="Definition"/>
+							<newline/>
+	                    	<group col="2" colspan="2">
+		                    	<field name="name"/>
+		                    	<field name="sequence"/>
+		                    	<field name="user_id"/>
+		                    	<field name="cycle_number"/>
+	                    	</group>
+	                    	<group col="2" colspan="2">
+		                    	<field name="total_cycle"/>
+		                   		<field name="uom_id"/>
+		                    	<field name="operation_id"/>
+		                    	<field name="production_id"/>
+	                    	</group>
+	                    </group>
+	                    <group col="4" colspan="4">
+	                    	<group col="2" colspan="2" name="theorical" string="Theorical Values">
+		                    	<field name="qty"/>
+		                    	<field name="hour" widget="float_time"/>
+		                    	<field name="date_planned"/>
+		                    	<field name="date_planned_end"/>
+	                    	</group>
+	                    	<group col="2" colspan="2" name="real" string="Real Values">
+		                    	<field name="real_qty"/>
+		                   		<field name="uptime"/>
+		                    	<field name="start_date"/>
+		                    	<field name="end_date"/>
+	                    	</group>
+	                    </group>
+					</sheet>
+                </form>
+            </field>
+        </record>
+		<!-- Tree View -->
+		<record id="view_operation_cycle_tree" model="ir.ui.view">
+            <field name="name">operation.cycle.tree</field>
+            <field name="model">operation.cycle</field>
+            <field name="arch" type="xml">
+                <tree string="Operation Cycle">
+                    <field name="sequence" invisible="1"/>
+                    <field name="name"/>
+		            <field name="date_planned"/>
+                </tree>
+            </field>
+        </record>
+		<!-- Searh View -->
+		<record id="view_operation_cycle_search" model="ir.ui.view">
+            <field name="name">operation.cycle.search</field>
+            <field name="model">operation.cycle</field>
+            <field name="arch" type="xml">
+                <search string="Operation Cycle">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+		<!-- Action Creation -->
+        <record id="action_operation_cycle_form" model="ir.actions.act_window">
+            <field name="name">Cycles</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">operation.cycle</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_operation_cycle_search"/>
+        </record>
+
+		<!-- Menu Creation -->
+        <menuitem parent="mrp.menu_mrp_manufacturing" id="menu_operation_cycle" 
+				name="Operation Cycle" action="action_operation_cycle_form" sequence="50"/>
+
+    </data>
+</openerp>

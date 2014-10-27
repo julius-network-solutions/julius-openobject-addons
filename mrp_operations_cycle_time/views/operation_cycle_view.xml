@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+		<!-- xxxxxxxxxxxxxxx -->
+		<!-- operation.cycle -->
+		<!-- xxxxxxxxxxxxxxx -->
+
+		<!-- Wizard -->
+        <record id="view_cycle_wizard_form" model="ir.ui.view">
+            <field name="name">cycle.wizard.form</field>
+            <field name="model">operation.cycle.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Update Cycle" version="7.0">
+                    <footer>
+                        <button string="Update Cycle" name="update_cycle" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_cycle_wizard" model="ir.actions.act_window">
+            <field name="name">Update Cycle</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">operation.cycle.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.values" id="action_cycle_link">
+            <field name="model_id" ref="model_operation_cycle" />
+            <field name="name">Update Cycles</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_cycle_wizard'))" />
+            <field name="key">action</field>
+            <field name="model">operation.cycle</field>
+        </record>
+
+    </data>
+</openerp>
