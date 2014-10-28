@@ -76,10 +76,11 @@ class ir_attachment(orm.Model):
         if context is None:
             context = {}
         res = {}
-        context['bin_size'] = False
+        ctx = context.copy()
+        ctx.update({'bin_size' : False})
         parameter_obj = self.pool.get('ir.config_parameter')
         location = parameter_obj.get_param(cr, uid, 'ir_attachment.location')
-        for document in self.browse(cr, uid, ids, context=context):
+        for document in self.browse(cr, uid, ids, context=ctx):
             res[document.id] = False
             if document.type == 'url':
                 is_image = False
@@ -113,8 +114,9 @@ class ir_attachment(orm.Model):
     
     def _get_image_data(self, cr, uid, ids, name, args, context=None):
         res = {}
-        context['bin_size'] = False
-        for document in self.browse(cr, uid, ids, context=context):
+        ctx = context.copy()
+        ctx.update({'bin_size' : False})
+        for document in self.browse(cr, uid, ids, context=ctx):
             res[document.id] = False
             if document.is_image:
                 if document.type == 'binary':

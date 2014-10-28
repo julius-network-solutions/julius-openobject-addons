@@ -38,7 +38,7 @@
         'document_view.xml',
     ],
     'demo': [],
-    'installable': False,
+    'installable': True,
     'active': False,
     'license': 'AGPL-3',
 }
