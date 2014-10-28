@@ -51,7 +51,7 @@ class hr_expense_line(orm.Model):
         
         for record in self.browse(cr, uid, ids, context=context):
             if record.currency_rate and record.currency_rate != 0:
-                res[record.id] /= currency_rate
+                res[record.id] /= record.currency_rate
         return res
 
     def _get_currency_rate(self, cr, uid, ids, field_name, arg, context=None):
