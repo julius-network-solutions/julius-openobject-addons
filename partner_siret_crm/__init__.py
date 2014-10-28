@@ -19,27 +19,6 @@
 #
 ###############################################################################
 
-{
-    "name": "Siret in partners",
-    "summary": "Add SIRET field in partners",
-    "version": "0.1",
-    "author": "Julius Network Solutions",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>, Yvan Patry <yvan@julius.fr>, Pierre Monod <pierre@julius.fr>",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "depends": [
-        "base",
-    ],
-    "description": """
-Add SIRET in :
-    * Partner
-""",
-    "demo": [],
-    "data": [
-        "partner_view.xml",
-    ],
-    'installable': True,
-    'active': False,
-}
+from . import lead
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

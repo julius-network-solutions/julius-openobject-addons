@@ -20,26 +20,27 @@
 ###############################################################################
 
 {
-    "name": "Siret in partners",
-    "summary": "Add SIRET field in partners",
+    "name": "Siret in Leads",
+    "summary": "Add SIRET in partner and leads forms",
     "version": "0.1",
     "author": "Julius Network Solutions",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>, Yvan Patry <yvan@julius.fr>, Pierre Monod <pierre@julius.fr>",
     "website": "http://julius.fr",
     "category": "Sales Management",
     "depends": [
-        "base",
+        "crm",
+        "partner_siret",
     ],
     "description": """
 Add SIRET in :
-    * Partner
+    * Lead and Opportunity
 """,
     "demo": [],
     "data": [
-        "partner_view.xml",
+        "lead_view.xml",
     ],
     'installable': True,
-    'active': False,
+    'auto_install': True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
