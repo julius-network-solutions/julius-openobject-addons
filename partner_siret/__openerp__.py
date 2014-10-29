@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,29 +17,29 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
-    "name" : "Siret in Partner Module", 
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Customs Modules",
-    "depends" : [
+    "name": "Siret in partners",
+    "summary": "Add SIRET field in partners",
+    "version": "0.1",
+    "author": "Julius Network Solutions",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>, Yvan Patry <yvan@julius.fr>, Pierre Monod <pierre@julius.fr>",
+    "website": "http://julius.fr",
+    "category": "Sales Management",
+    "depends": [
         "base",
-        "crm",
-        "sale",
     ],
     "description": """
-       Add Siret in Partner, Lead and Opportunity
-    """,
-    "demo" : [],
-    "data" : [
+Add SIRET in :
+    * Partner
+""",
+    "demo": [],
+    "data": [
         "partner_view.xml",
-        "lead_view.xml",
     ],
-    'installable' : False,
-    'active' : False,
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

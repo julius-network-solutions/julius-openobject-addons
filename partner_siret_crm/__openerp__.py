@@ -19,10 +19,28 @@
 #
 ###############################################################################
 
-from openerp import models
-
-class res_partner(models.Model):
-    _name = 'res.partner'
-    _inherit = ['res.partner', 'document.images']
+{
+    "name": "Siret in Leads",
+    "summary": "Add SIRET in partner and leads forms",
+    "version": "0.1",
+    "author": "Julius Network Solutions",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>, Yvan Patry <yvan@julius.fr>, Pierre Monod <pierre@julius.fr>",
+    "website": "http://julius.fr",
+    "category": "Sales Management",
+    "depends": [
+        "crm",
+        "partner_siret",
+    ],
+    "description": """
+Add SIRET in :
+    * Lead and Opportunity
+""",
+    "demo": [],
+    "data": [
+        "lead_view.xml",
+    ],
+    'installable': True,
+    'auto_install': True,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

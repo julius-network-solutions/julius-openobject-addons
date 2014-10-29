@@ -1,45 +1,48 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
+#    GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU Affero General Public License
+#    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
-
+###############################################################################
 
 {
     'name': 'Google Maps on Customers',
-    'version': '1.0',
+    'summary': 'Google Maps action on Customer form',
+    'version': '1.1',
     'category': 'Customer Relationship Management',
     'description': """
-The module adds Google Map field in partner address.
-====================================================
+The module adds a button Google Map in partners.
+================================================
 
 Using this you can directly :
-* open Google Map from the URL widget.
-* get the journey display from the user's company address to the partner address. 
+    * Open Google Map from the URL widget.
+    * Get the journey display from the user's company address to the partner address. 
 """,
-    'author': 'OpenERP SA, Julius Network Solutions',
-    'website': 'http://www.openerp.com',
-    'images': ['images/google_map.jpeg'],
-    'depends': ['base'],
+    'author': 'Julius Network Solutions',
+    'contributors': 'Mathieu Vatel <mathieu@julius.fr>, Yvan Patry <yvan@julius.fr>',
+    'website': 'http://www.julius.fr',
+    'depends': [
+        'base',
+    ],
     'demo': [],
     'data': [
-       'google_map_view.xml',
+       'partner_view.xml',
     ],
-    'installable': False,
+    'installable': True,
 }
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

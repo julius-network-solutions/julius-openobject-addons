@@ -59,7 +59,7 @@ class account_invoice(models.Model):
         return res
 
     @api.multi
-    def _check_edi_partner(self):
+    def _check_intercompany_partner(self):
         res_company_obj = self.env['res.company']
         res_partner_obj = self.env['res.partner']
 
@@ -71,7 +71,7 @@ class account_invoice(models.Model):
             ('company_id', '=', False),], limit=1)
         
         if not partner_id:   
-            self._raise_edi_partner_error(cr, uid, context)
+            Warning(_('Intercompany Partner not found !'))
         return company_id, partner_id
     
     @api.multi
@@ -84,21 +84,19 @@ class account_invoice(models.Model):
              ('company_id','=',company.id),
 #              ('currency','=',self.currency_id.id)
              ],limit=1)
+        pay_account = partner.property_account_payable
         if partner.property_account_payable.company_id and \
-                partner.property_account_payable.company_id.id != company.id:
+            partner.property_account_payable.company_id.id != company.id:
             pay_dom = [
                        ('name', '=', 'property_account_payable'),
                        ('company_id', '=', company.id),
-                       ('res_id', '=', 'res.partner,%s' %partner.id),
                        ]
-            if not pay_dom:
-                pay_dom = [
-                           ('name', '=', 'property_account_payable'),
-                           ('company_id', '=', company.id)
-                           ]
-            pay_prop = prop.search(pay_dom)
-            pay_account = pay_prop.get_by_record(pay_prop)
-
+            res_dom = [
+                       ('res_id', '=', 'res.partner,%s' % partner_id),
+                       ]
+            pay_prop = prop.search(pay_dom + res_dom) or prop.search(pay_dom)
+            if pay_prop:
+                pay_account = pay_prop.get_by_record(pay_prop)
         return {
             'state': 'draft',
             'partner_id': partner.id,
@@ -164,7 +162,7 @@ class account_invoice(models.Model):
                                 'if you want to create a new one')
                                 % (invoice.supplier_invoice_id.name))
 
-            company, partner = self.sudo()._check_edi_partner()
+            company, partner = self.sudo()._check_intercompany_partner()
 
             vals = self.sudo()._get_vals_for_supplier_invoice(company, partner)
             supplier_invoice = self.sudo().create(vals)

@@ -19,10 +19,6 @@
 #
 ###############################################################################
 
-from openerp import models
-
-class res_partner(models.Model):
-    _name = 'res.partner'
-    _inherit = ['res.partner', 'document.images']
+from . import lead
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
