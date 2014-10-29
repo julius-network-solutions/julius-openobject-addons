@@ -19,8 +19,7 @@
 #
 #################################################################################
 
-from openerp.osv import orm, fields
-from openerp.tools.translate import _
+from openerp.osv import fields as old_fields
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -35,6 +34,8 @@ except:
     _logger.warning("ERROR IMPORTING PIL, if not installed, please install it:"
     " get it here: https://pypi.python.org/pypi/PIL")
 import io
+
+from openerp import models, fields, api
 
 def is_url_image(url):    
     mimetype,encoding = mimetypes.guess_type(url)
@@ -69,7 +70,7 @@ def get_image_data_from_url(url):
 TYPE_IMAGES = ['png', 'jpg', 'gif', 'bmp', 'svg', 'jpeg']
 FORMAT_IMAGES = ['PNG', 'JPG', 'GIF', 'BMP', 'SVG', 'JPEG']
 
-class ir_attachment(orm.Model):
+class ir_attachment(models.Model):
     _inherit = 'ir.attachment'
 
     def _is_image_fnct(self, cr, uid, ids, name, args, context=None):
@@ -111,74 +112,49 @@ class ir_attachment(orm.Model):
                         _logger.error("_read_file reading %s", document.name)
                 res[document.id] = is_image
         return res
-    
-    def _get_image_data(self, cr, uid, ids, name, args, context=None):
-        res = {}
-        ctx = context.copy()
-        ctx.update({'bin_size' : False})
-        for document in self.browse(cr, uid, ids, context=ctx):
-            res[document.id] = False
-            if document.is_image:
-                if document.type == 'binary':
-                    res[document.id] = document.datas
-                else:
-                    res[document.id] = get_image_data_from_url(document.url)
-        return res
 
     _columns = {
-        'is_image': fields.function(_is_image_fnct,
+        'is_image': old_fields.function(_is_image_fnct,
                                     type='boolean',
                                     string='Is image',
                                     store=True,
                                     ),
-        'image_data': fields.function(_get_image_data,
-                                      type='binary',
-                                      string='Image',
-                                      store=False,
-                                      ),
-        'color': fields.integer('Color Index'),
-                
     }
 
-    _defaults = {
-        'color': 0,
-    }
+    image_data = fields.Binary('Image', compute='_get_image_data', store=False)
 
-class document_images(orm.AbstractModel):
+    @api.one
+    def _get_image_data(self):
+        image_data = False
+        document = self.with_context({'bin_size' : False})
+        if document.is_image:
+            if document.type == 'binary':
+                image_data = document.datas
+            else:
+                image_data = get_image_data_from_url(document.url)
+        self.image_data = image_data
+
+    color = fields.Integer('Color Index', default=0)
+
+class document_images(models.AbstractModel):
     _name = 'document.images'
     _description = 'Attachment Images'
     
-    def _get_images_from_attachment(self, cr, uid,
-                                    res_id, domain=None, context=None):
-        res = []
-        if context is None:
-            context = {}
-        attachment_obj = self.pool.get('ir.attachment')
-        domain += [('res_id', '=', res_id), ('res_model', '=', self._name)]
-        res = attachment_obj.search(cr, uid,
-                                    domain + [('is_image', '=', True)],
-                                    context=context)
-        return res
+    image_ids = fields.One2many('ir.attachment', string='Images',
+                                compute='_get_images')
     
-    def _get_images(self, cr, uid, ids, name, args, context=None):
-        if context is None:
-            context = {}
-        res = {}
-        for partner in self.browse(cr, uid, ids, context=context):
-            image_ids = self.\
-                _get_images_from_attachment(cr, uid,
-                                            partner.id,
-                                            [],
-                                            context=context)
-            res[partner.id] = image_ids
-        return res
+    @api.model
+    def _get_images_from_attachment(self, res_id, domain=None):
+        attachment_obj = self.env['ir.attachment']
+        domain += [
+                   ('res_id', '=', res_id),
+                   ('res_model', '=', self._name),
+                   ('is_image', '=', True),
+                   ]
+        return attachment_obj.search(domain)
 
-    _columns = {
-        'image_ids': fields.function(_get_images,
-                                     type='one2many',
-                                     string='Images',
-                                     relation='ir.attachment',
-                                     )
-    }
+    @api.one
+    def _get_images(self):
+        self.image_ids = self._get_images_from_attachment(self.id, domain=[])
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
