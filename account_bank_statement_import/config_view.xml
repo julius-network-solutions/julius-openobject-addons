@@ -40,6 +40,11 @@
                             <field name="separator" class="oe_inline"/>
                             <field name="separator_other" class="oe_inline" attrs="{'invisible': [('separator', '!=', 'other')]}"/>
                         </div>
+                        <div>
+                            <label for="encoding"/>
+                            <field name="encoding" class="oe_inline"/>
+                            <field name="encoding_other" class="oe_inline" attrs="{'invisible': [('encoding', '!=', 'other')]}"/>
+                        </div>
                     </div>
                     <group>
                         <div>

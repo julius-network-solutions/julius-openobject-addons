@@ -91,6 +91,20 @@ class account_bank_statement_import(models.TransientModel):
     column_ref = fields.Selection(COLUMNS, 'Ref column')
     column_note = fields.Selection(COLUMNS, 'Note column')
     edit_parameters = fields.Boolean('Edit Parameters', default=False)
+    encoding = fields.Selection([
+                                 ('utf-8', 'UTF-8'),
+                                 ('utf-16', 'UTF-16'),
+                                 ('windows-1252', 'Windows-1252'),
+                                 ('latin1', 'Latin1'),
+                                 ('latin2', 'Latin2'),
+                                 ('big5', 'Big5'),
+                                 ('gb18030', 'Gb18030'),
+                                 ('shift_jis', 'Shift-JIS'),
+                                 ('windows-1251', 'Windows-1251'),
+                                 ('koir8_r', 'Koir8-R'),
+                                 ('other', 'Other'),
+                                 ], 'Encoding')
+    encoding_other = fields.Char('Encoding')
 
     _defaults = {
         'filter_id': lambda self, cr, uid, context:
@@ -121,6 +135,8 @@ class account_bank_statement_import(models.TransientModel):
         self.column_credit = filter.column_credit
         self.column_ref = filter.column_ref
         self.column_note = filter.column_note
+        self.encoding = filter.encoding or 'utf-8'
+        self.encoding_other = filter.encoding_other
 
     @api.model
     def _get_line_vals(self, line, bank_sts, str_not1):
@@ -186,8 +202,17 @@ class account_bank_statement_import(models.TransientModel):
         bank_statement_obj = bkst_list = self.env['account.bank.statement']
         seq_obj = self.env['ir.sequence']
         for wizard in self:
-            recordlist1 = base64.\
-                decodestring(unicode(wizard.file_data,'utf-8')).split('\n')
+            encoding = wizard.encoding == 'other' and \
+                wizard.encoding_other or wizard.encoding or 'utf-8'
+            try:
+                recordlist1 = base64.\
+                    decodestring(wizard.file_data).\
+                    decode(encoding).encode('utf-8').split('\n')
+            except:
+                recordlist1 = base64.\
+                    decodestring(wizard.file_data).\
+                    decode(encoding, errors='replace').\
+                    encode('utf-8').split('\n')
             recordlist1.pop()
             recordlist = [to_unicode(x) for x in recordlist1]
             journal = wizard.journal_id

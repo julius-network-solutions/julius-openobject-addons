@@ -74,6 +74,11 @@
                             <field name="separator" class="oe_inline"/>
                             <field name="separator_other" class="oe_inline" attrs="{'invisible': [('separator', '!=', 'other')]}"/>
                         </div>
+                        <div attrs="{'invisible': [('edit_parameters', '=', False)]}">
+                            <label for="encoding"/>
+                            <field name="encoding" class="oe_inline"/>
+                            <field name="encoding_other" class="oe_inline" attrs="{'invisible': [('encoding', '!=', 'other')]}"/>
+                        </div>
                         <newline/>
                         <group attrs="{'invisible': [('edit_parameters', '=', False)]}">
                             <div>
