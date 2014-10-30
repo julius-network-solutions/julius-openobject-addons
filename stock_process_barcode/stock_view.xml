@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="view_product_packaging_form_add_uom" model="ir.ui.view">
+			<field name="name">Product Packaging add UOM</field>
+			<field name="model">product.packaging</field>
+			<field name="inherit_id" ref="product.product_packaging_form_view"/>
+			<field name="arch" type="xml">
+				<field name="ul" position="after">
+					<field name="uom_id"/>
+				</field>
+			</field>
+		</record>
+
+		<record id="product_packaging_add_uom_no_product" model="ir.ui.view">
+			<field name="name">Product Packaging add UOM</field>
+			<field name="model">product.packaging</field>
+			<field name="inherit_id" ref="product.product_packaging_form_view"/>
+			<field name="arch" type="xml">
+				<field name="ul" position="after">
+					<field name="uom_id"/>
+				</field>
+			</field>
+		</record>
+
+	</data>
+</openerp>
