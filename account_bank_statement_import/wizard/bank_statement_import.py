@@ -428,7 +428,7 @@ class account_bank_statement_import(models.TransientModel):
                         amount = str2float(val_debit, ',') or 0.0
                         if amount > 0.0:
                             amount = - amount
-                    elif val_credit:
+                    if amount == 0 and val_credit:
                         st_line['account_id'] = receivable_id
                         amount = str2float(val_credit, ',') or 0.0
                 else:
