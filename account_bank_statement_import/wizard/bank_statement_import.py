@@ -44,7 +44,11 @@ class account_bank_statement_import(models.TransientModel):
             if company and company.def_filter_id:
                 return company.def_filter_id.id
         return False
-    
+
+    many_journals = fields.Boolean('Many Journals', default=False,
+                                   help="If you check this, the journal "\
+                                   "will be use as default journal if the "\
+                                   "journal is not found in the file")
     journal_id = fields.Many2one('account.journal', 'Bank Journal',
                                  required=True)
     payable_id = fields.Many2one('account.account', 'Payable Account',
@@ -122,6 +126,7 @@ class account_bank_statement_import(models.TransientModel):
             self.payable_id = filter.def_payable_id.id
             self.receivable_id = filter.def_receivable_id.id
             self.awaiting_id = filter.def_awaiting_id.id
+        self.many_journals = filter.many_journals
         self.journal_id = filter.def_bank_journal_id.id
         self.date_format = filter.def_date_format
         self.separator = filter.separator
@@ -215,7 +220,7 @@ class account_bank_statement_import(models.TransientModel):
                     encode('utf-8').split('\n')
             recordlist1.pop()
             recordlist = [to_unicode(x) for x in recordlist1]
-            journal = wizard.journal_id
+            default_journal = wizard.journal_id
             default_period = account_period_obj.find()[0]
 
             err_log = _("Errors:") + "\n------\n"
@@ -228,6 +233,7 @@ class account_bank_statement_import(models.TransientModel):
             bank_statements = sorted(bank_statements,
                                      key=lambda statement: statement['date'])
             for statement in bank_statements:
+                journal = statement.get('journal') or default_journal
                 statement_period = statement.get('period_id') or \
                     self.env['account.period']
                 try:       
@@ -241,7 +247,6 @@ class account_bank_statement_import(models.TransientModel):
                             ('company_id', '=', journal.company_id.id),
                             ('journal_id', '=', journal.id),
                             ], limit=1)
-                        print bank_sts
                         if bank_sts:
                             statement_total_amount = statement.get('total_amount') or 0
                             balance_start = bank_sts.balance_start    
@@ -341,16 +346,19 @@ class account_bank_statement_import(models.TransientModel):
             action['domain'] = [('id','in', statements)]
         return action
 
-    @api.multi
-    def group_by_month(self, recordlist, separator=',', date_column=0):
+    @api.model
+    def _group_by_month(self, recordlist, separator=',',
+                        date_format='%Y-%m-%d', date_column=0):
         month_statement = {}
-        date_format = self.date_format
         for line in recordlist:
             line_splited = line.split(separator)
-            date = line_splited[date_column]
-            line_period = get_key_from_date(date, date_format)
-            month_statement.setdefault(line_period, [])
-            month_statement[line_period].append(line)
+            try:
+                date = line_splited[date_column]
+                line_period = get_key_from_date(date, date_format)
+                month_statement.setdefault(line_period, [])
+                month_statement[line_period].append(line)
+            except:
+                continue
         return month_statement
 
     @api.model
@@ -386,78 +394,146 @@ class account_bank_statement_import(models.TransientModel):
         return line
 
     @api.model
+    def _find_journal_from_lines(self, lines, separator, ignored_lines=0):
+        journal_obj = self.env['account.journal']
+        journals = journal_obj.search([('import_key', '!=', False)])
+        for line in lines[0:ignored_lines]:
+            line_splited = line.split(separator)
+            for val in line_splited:
+                clean_val =  val.replace('\r', '').replace('\n', '')
+                journal = journal_obj.search([('import_key', '=', clean_val)])
+                if journal:
+                    return journal
+        return self.env['account.journal']
+
+    @api.model
+    def _group_by_journal(self, recordlist, separator, date_format,
+                          many_journals, many_statements, date_column,
+                          ignored_lines=0, default_key=False):
+        journal_statement = {}
+        month_statement = {}
+        journal_list = []
+        if not many_journals:
+            journal_list = [(False, recordlist)]
+        else:
+            i = 1
+            while recordlist:
+                journal_lines = recordlist[0:ignored_lines]
+                recordlist = recordlist[ignored_lines:]
+                for line in recordlist:
+                    line_splited = line.split(separator)
+                    add_line = False
+                    for splited in line_splited:
+                        if splited:
+                            add_line = True
+                    if add_line and line_splited == 1:
+                        add_line = False
+                    if add_line and line_splited[0] == '\r':
+                        add_line = False
+                    if add_line:
+                        journal_lines.append(line)
+                        recordlist = recordlist[1:]
+                    else:
+                        if journal_lines:
+                            journal_list.append((i, journal_lines))
+                            i += 1
+                            break
+            if journal_lines:
+                journal_list.append((i, journal_lines))
+        for journal, lines in journal_list:
+            if not isinstance(journal, bool):
+                journal = self._find_journal_from_lines(lines,
+                                                        separator,
+                                                        ignored_lines)
+            month_statement = {}
+            if len(lines) > ignored_lines:
+                if many_statements:
+                    month_statement = self.\
+                        _group_by_month(lines[ignored_lines:],
+                                        separator=separator,
+                                        date_format=date_format,
+                                        date_column=date_column)
+                else:
+                    month_statement = {default_key: lines[ignored_lines:]}
+            if journal in journal_statement.keys():
+                month_statement.update(journal_statement.get(journal))
+            journal_statement[journal] = month_statement
+        return journal_statement
+
+    @api.model
     def format_statement_from_data(self, recordlist, separator, date_format,
-                                   many_statements, ignored_lines=0,
-                                   name=False, date=False, date_val=False,
-                                   debit=False, credit=False,
+                                   many_statements, many_journals,
+                                   ignored_lines=0, name=False, date=False,
+                                   date_val=False, debit=False, credit=False,
                                    separated_amount=False, receivable_id=False,
                                    payable_id=False, ref=False, extra_note=False,
                                    default_key=False, statement_date=False):
         account_period_obj = self.env['account.period']
         bank_statements = []
         pointor = 0
-        month_statement = {}
-        if len(recordlist) > ignored_lines:
-            if many_statements:
-                month_statement = self.group_by_month(recordlist[ignored_lines:],
-                                                      separator=separator,
-                                                      date_column=date)
-            else:
-                month_statement = {default_key: recordlist[ignored_lines:]}
-        # loop on each month
-        for key in month_statement.keys():
-            total_amount = 0
-            bank_statement = {}
-            bank_statement_lines = {}
-            bank_statement["bank_statement_line"] = {}
-             # Loop on all line of a month
-            for line in month_statement[key]:
-                line_splited = line.split(separator)
-                st_line = self.\
-                    format_line_from_data(line_splited, name=name, date=date,
-                                          date_val=date_val,
-                                          debit=debit, credit=credit,
-                                          ref=False, extra_note=False,
-                                          date_format=date_format)
-                amount = 0
-                val_debit = st_line.pop('debit')
-                val_credit = st_line.pop('credit')
-                if separated_amount:
-                    if val_debit:
-                        st_line['account_id'] = payable_id
-                        amount = str2float(val_debit, ',') or 0.0
-                        if amount > 0.0:
-                            amount = - amount
-                    if amount == 0 and val_credit:
-                        st_line['account_id'] = receivable_id
-                        amount = str2float(val_credit, ',') or 0.0
-                else:
-                    amount = str2float(val_debit or val_credit, ',') or 0.0
-                    if amount < 0:
-                        st_line['account_id'] = payable_id
+        journal_statement = self.\
+            _group_by_journal(recordlist, separator, date_format,
+                              many_journals, many_statements, date_column=date,
+                              ignored_lines=ignored_lines,
+                              default_key=default_key)
+        # loop on each journals
+        for journal in journal_statement.keys():
+            month_statement = journal_statement.get(journal)
+            # loop on each month
+            for key in month_statement.keys():
+                total_amount = 0
+                bank_statement = {}
+                bank_statement_lines = {}
+                bank_statement['journal'] = journal
+                bank_statement["bank_statement_line"] = {}
+                 # Loop on all line of a month
+                for line in month_statement[key]:
+                    line_splited = line.split(separator)
+                    st_line = self.\
+                        format_line_from_data(line_splited, name=name, date=date,
+                                              date_val=date_val,
+                                              debit=debit, credit=credit,
+                                              ref=ref, extra_note=extra_note,
+                                              date_format=date_format)
+                    amount = 0
+                    val_debit = st_line.pop('debit')
+                    val_credit = st_line.pop('credit')
+                    if separated_amount:
+                        if val_debit:
+                            st_line['account_id'] = payable_id
+                            amount = str2float(val_debit, ',') or 0.0
+                            if amount > 0.0:
+                                amount = - amount
+                        if amount == 0 and val_credit:
+                            st_line['account_id'] = receivable_id
+                            amount = str2float(val_credit, ',') or 0.0
                     else:
-                        st_line['account_id'] = receivable_id
-                st_line['amount'] = amount
-                if self.check_line_uniqueness(st_line['name'],
-                                              st_line['date'],
-                                              st_line['amount']):
-                    continue
-                else:
-                    bank_statement_lines[pointor] = st_line
-                bank_statement["bank_statement_line"] = bank_statement_lines
-                pointor += 1
-                total_amount += amount
-            # Saving data at month level
-            bank_statement["total_amount"] = total_amount
-            bank_statement['date'] = statement_date or key + '-01'
-            statement_date_search = bank_statement['date']
-            period = account_period_obj.\
-                search([
-                        ('date_start', '<=', statement_date_search),
-                        ('date_stop', '>=', statement_date_search),
-                        ], limit=1)
-            bank_statement['period_id'] = period
-            bank_statements.append(bank_statement)
+                        amount = str2float(val_debit or val_credit, ',') or 0.0
+                        if amount < 0:
+                            st_line['account_id'] = payable_id
+                        else:
+                            st_line['account_id'] = receivable_id
+                    st_line['amount'] = amount
+                    if self.check_line_uniqueness(st_line['name'],
+                                                  st_line['date'],
+                                                  st_line['amount']):
+                        continue
+                    else:
+                        bank_statement_lines[pointor] = st_line
+                    bank_statement["bank_statement_line"] = bank_statement_lines
+                    pointor += 1
+                    total_amount += amount
+                # Saving data at month level
+                bank_statement["total_amount"] = total_amount
+                bank_statement['date'] = statement_date or key + '-01'
+                statement_date_search = bank_statement['date']
+                period = account_period_obj.\
+                    search([
+                            ('date_start', '<=', statement_date_search),
+                            ('date_stop', '>=', statement_date_search),
+                            ], limit=1)
+                bank_statement['period_id'] = period
+                bank_statements.append(bank_statement)
         return bank_statements
 
     @api.multi

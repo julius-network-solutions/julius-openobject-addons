@@ -34,19 +34,23 @@ def get_data(self, recordlist):
     receivable_id = self.receivable_id.id
     payable_id = self.payable_id.id
     many_statements = self.many_statements
+    many_journals = self.many_journals
+    ref = self.get_column_number(self.column_ref, 5)
+    note = self.get_column_number(self.column_note, 6)
     default_key = time.strftime('%Y-%m')
     statement_date = False
     return self.format_statement_from_data(recordlist, separator,
                                            date_format=date_format,
                                            many_statements=many_statements,
+                                           many_journals=many_journals,
                                            ignored_lines=ignored_lines,
                                            name=name, date=date,
                                            date_val=date_val,
                                            debit=debit, credit=credit,
                                            separated_amount=separated_amount,
                                            receivable_id=receivable_id,
-                                           payable_id=payable_id, ref=False,
-                                           extra_note=False,
+                                           payable_id=payable_id, ref=ref,
+                                           extra_note=note,
                                            statement_date=False,
                                            default_key=default_key)
 

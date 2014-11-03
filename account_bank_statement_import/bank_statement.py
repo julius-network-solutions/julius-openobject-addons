@@ -58,6 +58,8 @@ class account_bankimport_filters(models.Model):
     filter = fields.Char('Filtername', size=64, required=True)
     name = fields.Char('Filename', size=128, required=True)
     active = fields.Boolean('Active')
+
+    many_journals = fields.Boolean('Many Journals', default=False)
     def_bank_journal_id = fields.Many2one('account.journal',
                                           'Default Bank Journal')
     def_payable_id = fields.Many2one('account.account',

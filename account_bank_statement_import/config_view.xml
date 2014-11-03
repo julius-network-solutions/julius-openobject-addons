@@ -28,6 +28,7 @@
                         <field name="name"/>
                         <field name="filter"/>
                         <field name="active"/>
+                        <field name="many_journals"/>
                         <field name="def_bank_journal_id"/>
                         <field name="def_payable_id"/>
                         <field name="def_receivable_id"/>

@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,9 +19,15 @@
 #
 ###############################################################################
 
-from . import account_journal
-from . import bank_statement
-from . import wizard
-from . import res_config
+from openerp import fields, models
+
+class account_journal(models.Model):
+    _inherit = 'account.journal'
+
+    import_key = fields.Char('Import key', size=128,
+                             help="File here the value of the key for the "\
+                             "bank statement import, if you choose the 'Many "\
+                             "journal' import")
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
