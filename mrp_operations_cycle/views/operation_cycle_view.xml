@@ -28,7 +28,7 @@
 							<newline/>
 	                    	<group col="2" colspan="2">
 		                    	<field name="name"/>
-		                    	<field name="sequence"/>
+		                    	<field name="sequence" readonly="1"/>
 		                    	<field name="user_id"/>
 		                    	<field name="cycle_number"/>
 	                    	</group>
@@ -63,9 +63,11 @@
             <field name="model">operation.cycle</field>
             <field name="arch" type="xml">
                 <tree string="Operation Cycle">
-                    <field name="sequence" invisible="1"/>
+                    <field name="sequence" invisible="0"/>
                     <field name="name"/>
 		            <field name="date_planned"/>
+                	<field name="operation_id"/>
+                	<field name="production_id"/>
                 </tree>
             </field>
         </record>
@@ -76,17 +78,41 @@
             <field name="arch" type="xml">
                 <search string="Operation Cycle">
                     <field name="name"/>
+                    <field name="product_id"/>
+                	<field name="operation_id"/>
+                	<field name="production_id"/>
                 </search>
             </field>
         </record>
-
+		<!-- Calendar View -->
+		<record model="ir.ui.view" id="view_operation_cycle_calendar">
+            <field name="name">operation.cycle.calendar</field>
+            <field name="model">operation.cycle</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+                <calendar string="Calendar View" date_start="date_planned" date_stop="date_planned_end" color="production_id">
+                    <field name="name"/>
+                    <field name="operation_id"/>
+                    <field name="production_id"/>
+                </calendar>
+            </field>
+        </record>
+		<!-- Calendar View -->
+		<record id="view_operation_cycle_gantt" model="ir.ui.view">
+            <field name="name">operation.cycle.gantt</field>
+            <field name="model">operation.cycle</field>
+            <field name="arch" type="xml">
+                <gantt date_stop="date_planned_end" date_start="date_planned" string="Productions" default_group_by="production_id">
+                </gantt>
+            </field>
+        </record>
 		<!-- Action Creation -->
         <record id="action_operation_cycle_form" model="ir.actions.act_window">
             <field name="name">Cycles</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">operation.cycle</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,calendar,gantt</field>
             <field name="search_view_id" ref="view_operation_cycle_search"/>
         </record>
 

@@ -22,7 +22,9 @@
 {
     "name": "MRP Operations Cycle",
     "version": "1.0",
-    "depends": ["mrp_operations"],
+    "depends": [
+                "mrp_operations",
+                ],
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "category": "Manufacturing",

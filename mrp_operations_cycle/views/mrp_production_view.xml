@@ -11,6 +11,16 @@
                 	<page string="Cycles">
                 		<field name="production_cycle_ids" nolabel="1" colspan="4" col="4"/>
 					</page>
+                	<page string="Real Values">
+	                    <group>
+	                        <group>
+								<field name="real_qty"/>
+								<field name="real_time"/>
+								<field name="date_start"/>
+								<field name="date_finished"/>
+	                        </group>
+	                    </group>
+					</page>
                 </page>
             </field>
         </record>
@@ -25,6 +35,9 @@
                 		<field name="operation_cycle_ids" nolabel="1" colspan="4" col="4"/>
 					</page>
                 </page>
+            	<field name="delay" position="after">
+					<field name="real_qty"/>
+				</field>
             </field>
         </record>
 

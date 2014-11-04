@@ -25,7 +25,6 @@ from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
 STATUS = [('draft','Draft'),('cancel','Cancelled'),('pause','Pending'),('startworking', 'In Progress'),('done','Finished')]
 
-
 class operation_cycle(models.Model):
     _name = 'operation.cycle'
     _description = 'Operation Cycle'
@@ -47,7 +46,9 @@ class operation_cycle(models.Model):
     state = fields.Selection(STATUS, 'Status', readonly=True, copy=False, default='draft')
     
     ''' Relational Fields '''
+    product_id = fields.Many2one('product.product', string='Product', related='operation_id.product')
     operation_id = fields.Many2one('mrp.production.workcenter.line')
+    workcenter_id = fields.Many2one('mrp.workcenter', string='Workcenter', related='operation_id.workcenter_id')
     production_id = fields.Many2one('mrp.production',
                                  related='operation_id.production_id',
                                  string='Production', store=True)
@@ -82,14 +83,14 @@ class operation_cycle(models.Model):
             self.uptime = 0
             
     @api.model
-    def compute_date(self, date, hour):
+    def compute_cycle_date(self, date, hour):
         if isinstance(date,str): 
             date = datetime.strptime(date, DEFAULT_SERVER_DATETIME_FORMAT)
             new_date = date + timedelta(hours=hour)
         else: 
             new_date = date + timedelta(hours=hour)
         return new_date
-            
+    
     """ State Action """
     @api.multi 
     def action_draft(sel):
@@ -132,6 +133,31 @@ class mrp_production_workcenter_line(models.Model):
     operation_cycle_ids = fields.One2many('operation.cycle',
                                           'operation_id',
                                           string='Operation Cycles')
+    
+    real_qty = fields.Float(string='Real Quantity', compute='compute_real_values', store=True, digits=(12, 6))
+    delay = fields.Float(string='Delay', compute='compute_real_values', store=True, digits=(12, 6))
+    date_start = fields.Datetime(string='Start Date', compute='compute_real_values', store=True, digits=(12, 6))
+    date_finished = fields.Datetime(string='End Date', compute='compute_real_values', store=True, digits=(12, 6))
+    
+    @api.one
+    @api.depends('operation_cycle_ids')
+    def compute_real_values(self):
+        """ Init """
+        delay = real_qty = 0
+        start_date = end_date = False
+        """ Process """
+        for cycle in self.operation_cycle_ids:
+            delay += cycle.uptime
+            real_qty += cycle.real_qty
+            if not start_date or cycle.start_date < start_date:
+                start_date = cycle.start_date
+            if not end_date or cycle.end_date > end_date:
+                end_date = cycle.end_date
+        """ Result """
+        self.real_qty = real_qty
+        self.delay = delay
+        self.date_start = start_date
+        self.date_finished = end_date
 
 class mrp_production(models.Model):
     _inherit = 'mrp.production'
@@ -140,6 +166,31 @@ class mrp_production(models.Model):
                                           'production_id',
                                           string='Operation Cycles')
     
+    real_qty = fields.Float(string='Real Quantity', compute='compute_real_values', store=True, digits=(12, 6))
+    real_time = fields.Float(string='Delay', compute='compute_real_values', store=True, digits=(12, 6))
+    date_start = fields.Datetime(string='Start Date', compute='compute_real_values', store=True, digits=(12, 6))
+    date_finished = fields.Datetime(string='End Date', compute='compute_real_values', store=True, digits=(12, 6))
+    
+    @api.one
+    @api.depends('production_cycle_ids')
+    def compute_real_values(self):
+        """ Init """
+        real_time = real_qty = 0
+        start_date = end_date = False
+        """ Process """
+        for work_order in self.production_cycle_ids:
+            real_time += work_order.uptime
+            real_qty += work_order.real_qty
+            if not start_date or work_order.start_date < start_date:
+                start_date = work_order.start_date
+            if not end_date or work_order.end_date > end_date:
+                end_date = work_order.end_date
+        """ Result """
+        self.real_qty = real_qty
+        self.real_time = real_time
+        self.date_start = start_date
+        self.date_finished = end_date
+        
     @api.one
     def _action_compute_lines(self, properties=None):
         """ Initialization """
@@ -147,23 +198,38 @@ class mrp_production(models.Model):
         workcenter_cycle_obj = self.env['operation.cycle']
         """ Initial Process  """
         result = super(mrp_production, self)._action_compute_lines(properties)
+        global_date = False
         for workcenter_line in self.workcenter_lines:
             hour = workcenter_line.hour/(workcenter_line.cycle or 1)
             vals = {
                 'name': workcenter_line.name,
-                'qty': (workcenter_line.qty/workcenter_line.cycle),
                 'uom_id': workcenter_line.uom.id,
                 'total_cycle': workcenter_line.cycle,
                 'operation_id': workcenter_line.id,
                 'hour': hour,
             }
-            """ Creation of cycle for the workorder """
-            cycle_number = 1
-            date = workcenter_line.production_id.date_planned
+            """ Creation of cycle for the work-order """
+            cycle_number = 1  
+            if not global_date:
+                date = workcenter_line.date_planned or workcenter_line.production_id.date_planned
+                global_date = workcenter_cycle_obj.compute_cycle_date(date, (hour*(workcenter_line.cycle)))
+            else:
+                date = global_date
+                global_date = workcenter_cycle_obj.compute_cycle_date(global_date, (hour*(workcenter_line.cycle)))
+                
+             
+            global_qty = workcenter_line.qty
+            
             while cycle_number <= workcenter_line.cycle:
+                if global_qty < workcenter_line.workcenter_id.capacity_per_cycle:
+                    qty = global_qty
+                else:
+                    qty = workcenter_line.workcenter_id.capacity_per_cycle
+                    global_qty -= qty
                 vals.update({
+                    'qty': qty,
                     'cycle_number': cycle_number,
-                    'date_planned': workcenter_cycle_obj.compute_date(date, (hour*cycle_number)),
+                    'date_planned': workcenter_cycle_obj.compute_cycle_date(date, (hour*(cycle_number-1))),
                 })
                 workcenter_cycle_obj.create(vals)
                 cycle_number += 1
