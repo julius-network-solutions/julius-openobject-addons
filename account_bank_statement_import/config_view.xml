@@ -28,6 +28,7 @@
                         <field name="name"/>
                         <field name="filter"/>
                         <field name="active"/>
+                        <field name="many_journals"/>
                         <field name="def_bank_journal_id"/>
                         <field name="def_payable_id"/>
                         <field name="def_receivable_id"/>
@@ -39,6 +40,11 @@
                             <label for="separator"/>
                             <field name="separator" class="oe_inline"/>
                             <field name="separator_other" class="oe_inline" attrs="{'invisible': [('separator', '!=', 'other')]}"/>
+                        </div>
+                        <div>
+                            <label for="encoding"/>
+                            <field name="encoding" class="oe_inline"/>
+                            <field name="encoding_other" class="oe_inline" attrs="{'invisible': [('encoding', '!=', 'other')]}"/>
                         </div>
                     </div>
                     <group>

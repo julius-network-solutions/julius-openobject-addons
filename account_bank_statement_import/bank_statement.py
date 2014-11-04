@@ -58,6 +58,8 @@ class account_bankimport_filters(models.Model):
     filter = fields.Char('Filtername', size=64, required=True)
     name = fields.Char('Filename', size=128, required=True)
     active = fields.Boolean('Active')
+
+    many_journals = fields.Boolean('Many Journals', default=False)
     def_bank_journal_id = fields.Many2one('account.journal',
                                           'Default Bank Journal')
     def_payable_id = fields.Many2one('account.account',
@@ -88,6 +90,20 @@ class account_bankimport_filters(models.Model):
     column_credit = fields.Selection(COLUMNS, 'Credit column')
     column_ref = fields.Selection(COLUMNS, 'Ref column')
     column_note = fields.Selection(COLUMNS, 'Note column')
+    encoding = fields.Selection([
+                                 ('utf-8', 'UTF-8'),
+                                 ('utf-16', 'UTF-16'),
+                                 ('windows-1252', 'Windows-1252'),
+                                 ('latin1', 'Latin1'),
+                                 ('latin2', 'Latin2'),
+                                 ('big5', 'Big5'),
+                                 ('gb18030', 'Gb18030'),
+                                 ('shift_jis', 'Shift-JIS'),
+                                 ('windows-1251', 'Windows-1251'),
+                                 ('koir8_r', 'Koir8-R'),
+                                 ('other', 'Other'),
+                                 ], 'Encoding', default='utf-8')
+    encoding_other = fields.Char('Encoding')
 
 class res_company(models.Model):
     _inherit = 'res.company'

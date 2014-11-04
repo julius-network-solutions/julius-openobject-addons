@@ -2,7 +2,7 @@
 <openerp>
 	<data noupdate="1">
 	
-		<record model="account.bankimport.filters" id="filters_asc">
+		<!--<record model="account.bankimport.filters" id="filters_asc">
 			<field name="name">ASC</field>
 			<field name="filter">asc</field>
 			<field name="active" eval="False"/>
@@ -31,7 +31,7 @@
             <field name="filter">bnp_entreprises</field>
             <field name="active" eval="False"/>
             <field name="def_date_format">%d/%m/%Y</field>
-        </record>
+        </record>-->
 	
 		<record model="account.bankimport.filters" id="filters_bnp">
 			<field name="name">BNP</field>
@@ -54,7 +54,7 @@
             <field name="def_date_format">%d/%m/%Y</field>
         </record>
     
-        <record model="account.bankimport.filters" id="filters_bps">
+        <!--<record model="account.bankimport.filters" id="filters_bps">
             <field name="name">BPS</field>
             <field name="filter">bps</field>
             <field name="active" eval="False"/>
@@ -83,7 +83,7 @@
 			<field name="name">CODA</field>
 			<field name="filter">coda</field>
 			<field name="active" eval="False"/>
-		</record>
+		</record>-->
     
         <record model="account.bankimport.filters" id="filters_default">
             <field name="name">DEFAULT</field>
@@ -100,7 +100,7 @@
             <field name="def_date_format">%d/%m/%Y</field>
         </record>
 	
-		<record model="account.bankimport.filters" id="filters_emirates_nbd">
+		<!--<record model="account.bankimport.filters" id="filters_emirates_nbd">
 			<field name="name">Emirates NBD</field>
 			<field name="filter">emirates_nbd</field>
 			<field name="active" eval="False"/>
@@ -134,7 +134,7 @@
 			<field name="name">ARGENTINA</field>
 			<field name="filter">argentina</field>
 			<field name="active" eval="False"/>
-		</record>
+		</record>-->
 
        <record model="account.bankimport.filters" id="filters_sg">
            <field name="name">SG</field>
