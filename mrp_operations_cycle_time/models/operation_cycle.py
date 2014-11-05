@@ -53,24 +53,5 @@ class operation_cycle(models.Model):
             c.write({'date_planned': date})
             date = self.compute_cycle_date(date, c.hour)
         return True
-     
-    @api.one
-    def write(self, vals):
-        result = super(operation_cycle, self).write(vals)
-        if vals.get('sequence') and not vals.get('date_planned'):
-            if self.date_planned:
-                date = datetime.strptime(self.date_planned, DEFAULT_SERVER_DATETIME_FORMAT)
-                date = datetime.strftime(date,DEFAULT_SERVER_DATE_FORMAT)
-                 
-                """ search all cycles with could be moved """
-                cycle_ids = [x.id for x in self.search([
-                                                        ('date_planned','>=',date),
-                                                        ('state','in',('pending','startworking')),
-                                                        ('operation_id', '=',self.operation_id.id),
-                                                        ])]
-                self.cycle_reorder(cycle_ids)
-                 
-                 
-        return result
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

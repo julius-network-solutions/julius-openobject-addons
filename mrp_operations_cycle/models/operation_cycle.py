@@ -28,7 +28,7 @@ STATUS = [('draft','Draft'),('cancel','Cancelled'),('pause','Pending'),('startwo
 class operation_cycle(models.Model):
     _name = 'operation.cycle'
     _description = 'Operation Cycle'
-    _order = 'sequence'
+    _order = 'date_planned'
     
     def _default_user(self):
         return self.env.uid
