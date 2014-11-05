@@ -62,12 +62,13 @@
             <field name="name">operation.cycle.tree</field>
             <field name="model">operation.cycle</field>
             <field name="arch" type="xml">
-                <tree string="Operation Cycle">
-                    <field name="sequence" invisible="0"/>
+                <tree string="Operation Cycle" colors="red:consistent == 'ko'">
+                    <field name="sequence" invisible="1"/>
                     <field name="name"/>
 		            <field name="date_planned"/>
                 	<field name="operation_id"/>
                 	<field name="production_id"/>
+                	<field name="consistent" invisible="1"/>
                 </tree>
             </field>
         </record>

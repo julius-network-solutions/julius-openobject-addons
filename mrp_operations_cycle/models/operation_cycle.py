@@ -59,6 +59,23 @@ class operation_cycle(models.Model):
     end_date = fields.Datetime(string='End Date')
     uptime = fields.Float(string='Uptime', compute='operation_uptime',
                           store=True, digits=(12, 6))
+    consistent = fields.Selection([('ok', 'OK'),('ko', 'KO')], 'Consistent', compute='_check_date', store=True)
+    
+    @api.one
+    @api.depends('date_planned', 'date_planned_end','workcenter_id')
+    def _check_date(self):
+        domain = [
+            ('date_planned', '<=', self.date_planned),
+            ('date_planned_end', '>=', self.date_planned),
+            ('workcenter_id', '=', self.workcenter_id.id),
+            ('id', '!=', self.id),
+            ('state', 'not in', ['cancel']),
+        ]
+        ncycles = self.search_count(domain)
+        if ncycles:
+            self.consistent = 'ko'
+        else: 
+            self.consistent = 'ok'
     
     @api.one
     @api.depends('date_planned', 'hour', 'operation_id.workcenter_id.calendar_id')
