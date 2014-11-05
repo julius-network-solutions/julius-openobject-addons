@@ -71,8 +71,8 @@ class operation_cycle(models.Model):
             ('id', '!=', self.id),
             ('state', 'not in', ['cancel']),
         ]
-        ncycles = self.search_count(domain)
-        if ncycles:
+        cycles = self.search(domain)
+        if cycles:
             self.consistent = 'ko'
         else: 
             self.consistent = 'ok'
