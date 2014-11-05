@@ -129,8 +129,7 @@ class sale_order(models.Model):
             line = False
             for line in line_by_taxes[tax_str]:
                 qty = line.product_uom_qty
-                pu = line.price_unit
-                sub = qty * pu
+                sub = line.price_subtotal
                 line_sum += sub
                 discount_value = line_sum * discount
             if line:
