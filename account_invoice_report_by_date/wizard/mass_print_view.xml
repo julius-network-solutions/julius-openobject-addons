@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_mass_invoice_report">
+            <field name="name">mass.invoice.report.view</field>
+            <field name="model">mass.invoice.report</field>
+            <field name="arch" type="xml">
+                <form string="Print Invoice Report">
+                    <separator string="Print Invoice Report"/>
+                    <label string="Please choose the journal, and the period to get"/>
+                    <group>
+                    	<field name="journal_id"/>
+                    </group>
+                    <div>
+                        <label for="date_start" string="Period"/>
+                        <field name="date_start" class="oe_inline"/> - <field name="date_end" class="oe_inline"/>
+                    </div>            
+                    <footer>
+                        <button string="Print Invoice Report" name="mass_invoice" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+		</record>
+        
+		<act_window name="Mass Invoices Report"
+            res_model="mass.invoice.report" 
+            src_model="account.invoice"
+            view_mode="form"
+            target="new"
+            key2="client_print_multi"
+            id="action_mass_invoice_report"/>
+
+    </data>
+</openerp>
