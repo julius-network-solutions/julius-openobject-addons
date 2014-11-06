@@ -65,8 +65,8 @@ class operation_cycle(models.Model):
     @api.depends('date_planned', 'date_planned_end','workcenter_id')
     def _check_date(self):
         domain = [
-            ('date_planned', '<=', self.date_planned),
-            ('date_planned_end', '>=', self.date_planned),
+            ('date_planned', '<', self.date_planned),
+            ('date_planned_end', '>', self.date_planned),
             ('workcenter_id', '=', self.workcenter_id.id),
             ('id', '!=', self.id),
             ('state', 'not in', ['cancel']),
