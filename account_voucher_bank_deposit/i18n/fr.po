@@ -1,0 +1,231 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* girard_sudron_account_voucher
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-27 08:47+0000\n"
+"PO-Revision-Date: 2013-09-27 10:51+0100\n"
+"Last-Translator: Yvan Patry <yvan@julius.fr>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+#: model:ir.model,name:girard_sudron_account_voucher.model_account_voucher
+msgid "Accounting Voucher"
+msgstr "Justificatif comptable"
+
+#. module: girard_sudron_account_voucher
+#: field:account.voucher,bank_id:0
+#: model:ir.model.fields,field_description:girard_sudron_account_voucher.field_account_voucher_bank_id
+msgid "Payment Mode"
+msgstr "Méthode de Paiement"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Cancel Voucher"
+msgstr "Cancel Voucher"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Supplier"
+msgstr "Fournisseur"
+
+#. module: girard_sudron_account_voucher
+#: view:account.move.line.wizard:0
+#: model:ir.actions.act_window,name:girard_sudron_account_voucher.payment_creation_by_partner
+msgid "Payment Creation By Partner"
+msgstr "Création de Paiment Par Partenaire"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.actions.act_window,name:girard_sudron_account_voucher.account_move_line_treat_action
+#: model:ir.ui.menu,name:girard_sudron_account_voucher.account_move_line_treat_menu
+msgid "Line To Cash - Treat"
+msgstr "Ligne à Encaisser - Traite"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "(Update)"
+msgstr "(Mise à jour)"
+
+#. module: girard_sudron_account_voucher
+#: field:account.voucher,file_dat:0
+#: model:ir.model.fields,field_description:girard_sudron_account_voucher.field_account_voucher_file_dat
+msgid "File .dat"
+msgstr "Fichier .dat"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Voucher Entries"
+msgstr "Saisie de justificatifs"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Payment Method"
+msgstr "Méthode de paiement"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.actions.act_window,name:girard_sudron_account_voucher.account_move_line_check_action
+#: model:ir.ui.menu,name:girard_sudron_account_voucher.account_move_line_check_menu
+msgid "Line To Cash - Check"
+msgstr "Ligne à Encaisser - Chèque"
+
+#. module: girard_sudron_account_voucher
+#: field:account.move.line.wizard,journal_id:0
+#: model:ir.model,name:girard_sudron_account_voucher.model_account_journal
+#: model:ir.model.fields,field_description:girard_sudron_account_voucher.field_account_move_line_wizard_journal_id
+msgid "Journal"
+msgstr "Journal"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Internal Notes"
+msgstr "Notes internes"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+#: model:ir.model,name:girard_sudron_account_voucher.model_account_move_line
+msgid "Journal Items"
+msgstr "Ècritures comptable"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.model,name:girard_sudron_account_voucher.model_dat_generation
+msgid "Dat  File Generation"
+msgstr "Génération Fichier Dat"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Post"
+msgstr "Comptabiliser"
+
+#. module: girard_sudron_account_voucher
+#: code:addons/girard_sudron_account_voucher/wizard/voucher_wizard.py:51
+#, python-format
+msgid "Configuration Error!"
+msgstr "Erreur de configuration"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.model.fields,field_description:girard_sudron_account_voucher.field_res_company_dat_path
+#: field:res.company,dat_path:0
+msgid "Path of .dat file"
+msgstr "Chemin du fichier .dat"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Generate File"
+msgstr "Génération du Fichier"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Are you sure you want to unreconcile this record?"
+msgstr "Are you sure you want to unreconcile this record?"
+
+#. module: girard_sudron_account_voucher
+#: code:addons/girard_sudron_account_voucher/voucher.py:409
+#: code:addons/girard_sudron_account_voucher/voucher.py:510
+#, python-format
+msgid "No Account Base Code and Account Tax Code!"
+msgstr "No Account Base Code and Account Tax Code!"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Set to Draft"
+msgstr "Mettre à l'état \"Brouillon\""
+
+#. module: girard_sudron_account_voucher
+#: model:ir.model,name:girard_sudron_account_voucher.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Total Amount"
+msgstr "Montant total"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Voucher Entry"
+msgstr "Saisie de justificatif"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.ui.menu,name:girard_sudron_account_voucher.account_payment_of_payment
+msgid "Payment of payment"
+msgstr "Encaissement"
+
+#. module: girard_sudron_account_voucher
+#: field:account.voucher.line,reference_from:0
+#: model:ir.model.fields,field_description:girard_sudron_account_voucher.field_account_voucher_line_reference_from
+msgid "Reference From"
+msgstr "Référence Tiré"
+
+#. module: girard_sudron_account_voucher
+#: code:addons/girard_sudron_account_voucher/wizard/voucher_wizard.py:52
+#, python-format
+msgid "Partner not fill in one line of your selection"
+msgstr "Partenaire non renseigné dans une des lignes de la sélection"
+
+#. module: girard_sudron_account_voucher
+#: code:addons/girard_sudron_account_voucher/voucher.py:409
+#: code:addons/girard_sudron_account_voucher/voucher.py:510
+#, python-format
+msgid "You have to configure account base code and account tax code on the '%s' tax!"
+msgstr "You have to configure account base code and account tax code on the '%s' tax!"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.model,name:girard_sudron_account_voucher.model_res_partner_bank
+msgid "Bank Accounts"
+msgstr "Comptes bancaires"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.model,name:girard_sudron_account_voucher.model_account_voucher_line
+msgid "Voucher Lines"
+msgstr "Lignes de justificatif"
+
+#. module: girard_sudron_account_voucher
+#: view:account.move.line.wizard:0
+msgid "or"
+msgstr "ou"
+
+#. module: girard_sudron_account_voucher
+#: field:account.move.line,bank_collected:0
+#: model:ir.model.fields,field_description:girard_sudron_account_voucher.field_account_move_line_bank_collected
+msgid "Bank Collected"
+msgstr "Bank Collected"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.actions.act_window,name:girard_sudron_account_voucher.account_voucher_action
+#: model:ir.ui.menu,name:girard_sudron_account_voucher.account_voucher_menu
+msgid "Bank Remittance"
+msgstr "Encaissement Bancaire"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Voucher Items"
+msgstr "Élément de justificatif"
+
+#. module: girard_sudron_account_voucher
+#: view:account.move.line.wizard:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: girard_sudron_account_voucher
+#: view:account.voucher:0
+msgid "Total Allocation"
+msgstr "Allocation totale"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.actions.act_window,name:girard_sudron_account_voucher.action_confirm_treat
+msgid "Confirm Treat"
+msgstr "Création de Paiement Groupé"
+
+#. module: girard_sudron_account_voucher
+#: model:ir.model,name:girard_sudron_account_voucher.model_account_move_line_wizard
+msgid "account.move.line.wizard"
+msgstr "account.move.line.wizard"
+
