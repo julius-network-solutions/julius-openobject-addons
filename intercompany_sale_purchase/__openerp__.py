@@ -47,7 +47,7 @@ This inter company sale and purchase module provides:
         "sale_view.xml",
     ],
     "active": False,
-    "installable": False,
+    "installable": True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
