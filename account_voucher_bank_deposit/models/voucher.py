@@ -221,46 +221,51 @@ class account_voucher(orm.Model):
                 default['value']['pre_line'] = 1
             default['value']['writeoff_amount'] = self._compute_writeoff_amount(cr, uid, default['value']['line_dr_ids'], default['value']['line_cr_ids'], price, ttype)
         return default
-
-    def writeoff_move_line_get(self, cr, uid, voucher_id, line_total, move_id, name, company_currency, current_currency, context=None):
+    
+    def first_move_line_get(self, cr, uid, voucher_id, move_id, company_currency, current_currency, context=None):
         '''
-        Set a dict to be use to create the writeoff move line.
-        '''
-        currency_obj = self.pool.get('res.currency')
-        move_line = {}
+        Return a dict to be use to create the first account move line of given voucher.
 
+        :param voucher_id: Id of voucher what we are creating account_move.
+        :param move_id: Id of account move where this line will be added.
+        :param company_currency: id of currency of the company to which the voucher belong
+        :param current_currency: id of currency of the voucher
+        :return: mapping between fieldname and value of account move line to create
+        :rtype: dict
+        '''
         voucher = self.pool.get('account.voucher').browse(cr,uid,voucher_id,context)
-        current_currency_obj = voucher.currency_id or voucher.journal_id.company_id.currency_id
-
-        if not currency_obj.is_zero(cr, uid, current_currency_obj, line_total):
-            diff = line_total
-            account_id = False
-            write_off_name = ''
-            if voucher.payment_option == 'with_writeoff':
-                account_id = voucher.writeoff_acc_id.id
-                write_off_name = voucher.comment
-            elif voucher.partner_id:
-                if voucher.type in ('sale', 'receipt'):
-                    account_id = voucher.partner_id.property_account_receivable.id
-                else:
-                    account_id = voucher.partner_id.property_account_payable.id
-            else:
-                if not voucher.journal_id.default_credit_account_id or not voucher.journal_id.default_debit_account_id:
-                    raise osv.except_osv(_('Error!'), _('Please define default credit/debit accounts on the journal "%s".') % (voucher.journal_id.name))
-                account_id = voucher.journal_id.default_credit_account_id.id or voucher.journal_id.default_debit_account_id.id
-            
-            sign = voucher.type == 'payment' and -1 or 1
-            move_line = {
-                'name': write_off_name or name,
+        debit = credit = 0.0
+        # TODO: is there any other alternative then the voucher type ??
+        # ANSWER: We can have payment and receipt "In Advance".
+        # TODO: Make this logic available.
+        # -for sale, purchase we have but for the payment and receipt we do not have as based on the bank/cash journal we can not know its payment or receipt
+        if voucher.type in ('purchase', 'payment'):
+            credit = voucher.paid_amount_in_company_currency
+        elif voucher.type in ('sale', 'receipt'):
+            debit = voucher.paid_amount_in_company_currency
+        if debit < 0: credit = -debit; debit = 0.0
+        if credit < 0: debit = -credit; credit = 0.0
+        sign = debit - credit < 0 and -1 or 1
+        
+        account_id = voucher.account_id.id
+        if not voucher.partner_id:
+            account_id = voucher.journal_id.default_credit_account_id.id or voucher.journal_id.default_debit_account_id.id
+        
+        #set the first line of the voucher
+        move_line = {
+                'name': voucher.name or '/',
+                'debit': debit,
+                'credit': credit,
                 'account_id': account_id,
                 'move_id': move_id,
+                'journal_id': voucher.journal_id.id,
+                'period_id': voucher.period_id.id,
                 'partner_id': voucher.partner_id.id,
+                'currency_id': company_currency <> current_currency and  current_currency or False,
+                'amount_currency': (sign * abs(voucher.amount) # amount < 0 for refunds
+                    if company_currency != current_currency else 0.0),
                 'date': voucher.date,
-                'credit': diff > 0 and diff or 0.0,
-                'debit': diff < 0 and -diff or 0.0,
-                'amount_currency': company_currency <> current_currency and (sign * -1 * voucher.writeoff_amount) or 0.0,
-                'currency_id': company_currency <> current_currency and current_currency or False,
-                'analytic_account_id': voucher.analytic_id and voucher.analytic_id.id or False,
+                'date_maturity': voucher.date_due
             }
         return move_line
     

@@ -26,6 +26,7 @@
 	                <group col="4">
 	                    <field name="account_id" required="1" string="Account"
 							on_change="onchange_account_id(account_id, journal_id, amount, currency_id, type, date)"/>
+	                    <field name="type" required="1"/>
 	                    <field name="currency_id" groups="base.group_multi_currency"/>
 	                    <field name="amount" class="oe_inline" string="Paid Amount" widget="monetary" options="{'currency_field': 'currency_id'}"
 							on_change="onchange_amount_account(amount, payment_rate, account_id, journal_id, currency_id, type, date, payment_rate_currency_id, company_id, context)"/>
@@ -39,7 +40,6 @@
 	                    <field name="name" colspan="2" placeholder="e.g. Invoice SAJ/0042"/>
 	                    <field name="company_id" widget="selection" groups="base.group_multi_company"/>
 	                    <field name="payment_rate_currency_id" invisible="1"/>
-	                    <field name="type" invisible="0"/>
 	                    <field name="partner_id" invisible="1"/>
 	                </group>
                     <notebook colspan="4">
