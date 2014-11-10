@@ -95,15 +95,13 @@ class purchase_order(orm.Model):
     def _check_edi_partner(self, cr, uid, order, context=None):
         """
         This method checks if the partner is linked to a res company
-        in the system. If yes, this will also checks if the sale shop
-        and warehouse have been well customized.
-        return: the company, the partner, the sale shop and the warehouse
+        in the system.
+        return: the company, the partner
         """
         if context is None:
             context = {}
         res_company_obj = self.pool.get('res.company')
         res_partner_obj = self.pool.get('res.partner')
-        sale_shop_obj = self.pool.get('sale.shop')
 
         # Check if there is a company with the same name or a company
         # with directly the linked partner (the supplier company)
@@ -131,25 +129,11 @@ class purchase_order(orm.Model):
         if not partner_id:   
             self._raise_edi_partner_error(cr, uid, context)
 
-        # To be able to continue we need to get
-        # the default sale shop of the linked company
-        shop_ids = sale_shop_obj.search(cr, SUPERUSER_ID, [
-            ('company_id', '=', company_id),
-            ], limit=1, context=context)
-        if not shop_ids:
-            raise orm.except_orm(_('Error'),
-                                 _('This linked company of '
-                                   'this customer doesn\'t have '
-                                   'any sale shop defined.\n'
-                                   'Please ask the administrator '
-                                   'to create one to be able '
-                                   'to manage EDI.'))
-        shop_id = shop_ids[0]
-        return company_id, partner_id, shop_id
+        return company_id, partner_id
 
     def _get_vals_for_edi_sale(self, cr, uid, order,
                                company_id, partner_id,
-                               shop_id, pricelist_id,
+                               pricelist_id,
                                context=None):
         """
         This method will return the defaults values to create the
@@ -187,7 +171,6 @@ class purchase_order(orm.Model):
             'picking_policy': picking_policy,
             'order_policy': order_policy,
             'invoice_quantity': invoice_quantity,
-            'shop_id': shop_id,
             'purchase_order_id': order.id, 
         }
     def _get_vals_for_edi_sale_line(self, cr, uid, line,
@@ -286,7 +269,7 @@ class purchase_order(orm.Model):
                                      % (order.sale_order_id.name))
 
             # Get the company linked, the supplier and company warehouse 
-            company_id, partner_id, shop_id = self.\
+            company_id, partner_id = self.\
                 _check_edi_partner(cr, SUPERUSER_ID, order, context=context)
 
             # Get the good purchase list price
@@ -297,7 +280,7 @@ class purchase_order(orm.Model):
             # Get the default values to create the linked purchase order
             vals = self._get_vals_for_edi_sale(cr, SUPERUSER_ID, order,
                                                company_id, partner_id,
-                                               shop_id, pricelist_id,
+                                               pricelist_id,
                                                context=context)
 
             # Create the linked sale order without lines
