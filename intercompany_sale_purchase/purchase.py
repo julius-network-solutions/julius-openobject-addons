@@ -125,7 +125,7 @@ class purchase_order(orm.Model):
             '&', ('id', '=', order.company_id.partner_id.id),
             ('company_id', '=', False),
             ], limit=1, context=context)
-        partner_id = len(partner_ids) > 0 and partner_ids[0]
+        partner_id = partner_ids and partner_ids[0] or False
         if not partner_id:   
             self._raise_edi_partner_error(cr, uid, context)
 
