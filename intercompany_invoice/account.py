@@ -79,11 +79,16 @@ class account_invoice(models.Model):
         journal_obj = self.env['account.journal']
         prop = self.env['ir.property']
         
-        journal = journal_obj.sudo().search(
-            [('type','=','purchase'),
-             ('company_id','=',company.id),
-#              ('currency','=',self.currency_id.id)
-             ],limit=1)
+        journal = journal_obj.sudo().\
+            search([
+                    ('type', '=', 'purchase'),
+                    ('company_id', '=', company.id),
+#                     ('currency', '=', self.currency_id.id),
+                    ], limit=1)
+        if not journal:
+            raise Warning(_('Impossible to generate the linked invoice to ' \
+                            '%s, There is no purchase journal ' \
+                            'defined.' %company.name))
         pay_account = partner.property_account_payable
         if partner.property_account_payable.company_id and \
             partner.property_account_payable.company_id.id != company.id:
@@ -111,8 +116,7 @@ class account_invoice(models.Model):
             'customer_invoice_id': self.id,
             'type': 'in_invoice',
         }
-        
-    
+
     @api.multi
     def _get_vals_for_supplier_invoice_line(self, supplier_invoice, line, company, partner):  
         if line.product_id:
