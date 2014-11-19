@@ -6,7 +6,7 @@
             <field name="name">account.bankimport.filters.tree</field>
             <field name="model">account.bankimport.filters</field>
             <field name="arch" type="xml">
-                <tree string="Bank Statement Filters" editable="top">
+                <tree string="Bank Statement Filters">
                     <field name="name"/>
                     <field name="filter"/>
                     <field name="active"/>

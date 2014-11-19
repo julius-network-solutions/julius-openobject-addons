@@ -39,9 +39,11 @@ class account_analytic_account(models.Model):
             default = {
                        'history_ids': False,
                        'main_id': contract.id,
-                       'state': 'close',
             }
             old_contract = contract.copy(default)
+            old_contract.name = _('%s (old %s)' %(contract.name,
+                                                  contract.code))
+            old_contract.set_close()
             
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
