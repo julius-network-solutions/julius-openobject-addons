@@ -6,9 +6,10 @@
 			<field name="name">Product Packaging add UOM</field>
 			<field name="model">product.packaging</field>
 			<field name="inherit_id" ref="product.product_packaging_form_view"/>
+            <field eval="20" name="priority"/>
 			<field name="arch" type="xml">
 				<field name="ul" position="after">
-					<field name="uom_id"/>
+					<field name="uom_id" required="1"/>
 				</field>
 			</field>
 		</record>
@@ -16,10 +17,11 @@
 		<record id="product_packaging_add_uom_no_product" model="ir.ui.view">
 			<field name="name">Product Packaging add UOM</field>
 			<field name="model">product.packaging</field>
-			<field name="inherit_id" ref="product.product_packaging_form_view"/>
+			<field name="inherit_id" ref="product.product_packaging_form_view_without_product"/>
+            <field eval="20" name="priority"/>
 			<field name="arch" type="xml">
 				<field name="ul" position="after">
-					<field name="uom_id"/>
+					<field name="uom_id" required="1"/>
 				</field>
 			</field>
 		</record>

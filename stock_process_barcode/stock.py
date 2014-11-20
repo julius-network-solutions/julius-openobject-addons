@@ -43,12 +43,13 @@ class stock_picking(models.Model):
         matching_packaging_ids = packaging_obj.search([('ean', '=', barcode_str)], limit=1)
         for matching_packaging in matching_packaging_ids:
             product = product_obj.search([('product_tmpl_id','=',matching_packaging.product_tmpl_id.id)])
-            mutli_qty = 1 / matching_packaging.uom_id.factor
-            op_id = stock_operation_obj._search_and_multi_increment(picking_id, 
-                                                                    [('product_id', '=', product.id)], 
-                                                                    filter_visible=True, mutli_qty=mutli_qty,
-                                                                    visible_op_ids=visible_op_ids, increment=True)
-            answer['operation_id'] = op_id
+            if matching_packaging.uom_id:
+                mutli_qty = 1 / matching_packaging.uom_id.factor
+                op_id = stock_operation_obj._search_and_multi_increment(picking_id, 
+                                                                        [('product_id', '=', product.id)], 
+                                                                        filter_visible=True, mutli_qty=mutli_qty,
+                                                                        visible_op_ids=visible_op_ids, increment=True)
+                answer['operation_id'] = op_id
             return answer
         
         # Default Process
