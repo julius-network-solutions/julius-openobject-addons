@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
  	<data>
-        <record id="view_partner_simple_inherit_form" model="ir.ui.view">
+
+        <!--<record id="view_partner_simple_inherit_form" model="ir.ui.view">
             <field name="name">res partner simplified inherit form</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_simple_form"/>
@@ -10,7 +11,7 @@
 	            	<field name="type"/>
 	            </field>
             </field>
-        </record>
+        </record>-->
 
         <record id="view_partner_inherit_form" model="ir.ui.view">
             <field name="name">res partner inherit form</field>
@@ -34,7 +35,7 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.res_partner_kanban_view"/>
             <field name="arch" type="xml">
-                <field name="name" position="after">
+                <field name="display_name" position="after">
                     <field name="type"/>
                 </field>
                 <xpath expr="//templates//ul" position="inside">

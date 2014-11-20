@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,14 +17,19 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
     "name": "Type on Partner simplified view",
     "version": '1.0',
-    "description": """ This module give the possibility to filter
-    by default the parter on company """,
+    "description": """
+Address type:
+=============
+
+This module dislpay contacts address type in the kanban view of contacts.
+""",
     "author": 'Julius Network Solutions',
+    "contributors": 'Mathieu Vatel <mathieu@julius.fr>',
     "website": 'http://www.julius.fr/',
     "depends": [
         'base',
@@ -33,7 +38,7 @@
         "base_partner_view.xml"
     ],
     "demo": [],
-    "installable": False,
+    "installable": True,
     "active": False,
     "category" : "Sales Management",
 }
