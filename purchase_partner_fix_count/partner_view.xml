@@ -1,0 +1,31 @@
+<openerp>
+    <data>
+
+        <record id="res_partner_view_purchase_buttons" model="ir.ui.view">
+            <field name="name">res.partner.view.purchase.buttons</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority" eval="21"/>
+            <field name="groups_id" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='purchase_order_count']" position="attributes">
+                    <attribute name="name">purchase_order_count2</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_partner_view_purchase_account_buttons" model="ir.ui.view">
+            <field name="name">res.partner.view.purchase.account.buttons</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority" eval="21"/>
+            <field name="groups_id" eval="[(4, ref('account.group_account_user'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='supplier_invoice_count']" position="attributes">
+                    <attribute name="name">supplier_invoice_count2</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
