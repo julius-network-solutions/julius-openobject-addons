@@ -32,17 +32,32 @@ class account_analytic_account(models.Model):
     history_ids = fields.One2many('account.analytic.account', 'main_id',
                                   'Histories', readonly=True)
 
+    @api.model
+    def _get_default_values_for_amendment(self):
+        """ Get default value to make an amendment """
+        return {}
+
+    @api.one
+    def action_after_amendment(self, contract):
+        """
+        Inheritable action to update the amendment
+        once created.
+        """
+        return
+
     @api.multi
     def make_amendment(self):
         """ Action to make an amendment """
         for contract in self:
-            default = {
-                       'history_ids': False,
-                       'main_id': contract.id,
-            }
+            default = contract._get_default_values_for_amendment()
+            default.update({
+                            'history_ids': False,
+                            'main_id': contract.id,
+                            })
             old_contract = contract.copy(default)
             old_contract.name = _('%s (old %s)' %(contract.name,
                                                   contract.code))
+            old_contract.action_after_amendment(contract)
             old_contract.set_close()
             
 
