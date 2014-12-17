@@ -20,10 +20,14 @@
 ###############################################################################
 
 import time
+from datetime import datetime
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 
 def str2date(date_str, date_format="%d%m%y"):
-      return time.strftime(DF, time.strptime(date_str, date_format))
+    import locale
+    locale.setlocale(locale.LC_TIME, "en_US.UTF-8")
+    date_formated = datetime.strptime(date_str, date_format)
+    return date_formated.strftime(DF)
 
 def to_unicode(s):
    try:
@@ -39,6 +43,8 @@ def to_unicode(s):
 
 def str2float(float_str, separator=None):
      try:
+         float_str = float_str.replace('"','')
+         print float_str
          if separator:
              float_str = float_str.replace(separator, '.')
          return float(float_str)

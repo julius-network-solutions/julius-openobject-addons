@@ -20,12 +20,14 @@
 ###############################################################################
 
 import base64
+import re
 
 from ..string_operation import (str2date, to_unicode,
                                 get_key_from_date, str2float)
 from openerp import fields, models, api, exceptions, _
 
 from ..bank_statement import COLUMNS
+
 
 SEPARATOR = {'comma': ',', 'semicolon': ';', 'tab': '\t', 'space': ' ', 'pipe': '|'}
 
@@ -489,6 +491,7 @@ class account_bank_statement_import(models.TransientModel):
                  # Loop on all line of a month
                 for line in month_statement[key]:
                     line_splited = line.split(separator)
+#                     line_splited = re.split(separator+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',line)
                     st_line = self.\
                         format_line_from_data(line_splited, name=name, date=date,
                                               date_val=date_val,
