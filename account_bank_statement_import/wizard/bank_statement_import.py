@@ -223,7 +223,7 @@ class account_bank_statement_import(models.TransientModel):
             recordlist1.pop()
             recordlist = [to_unicode(x) for x in recordlist1]
             default_journal = wizard.journal_id
-            default_period = account_period_obj.find()[0]
+            default_period = account_period_obj.with_context(account_period_prefer_normal = True).find()[0]
 
             err_log = _("Errors:") + "\n------\n"
             nb_err = 0
@@ -534,6 +534,7 @@ class account_bank_statement_import(models.TransientModel):
                     search([
                             ('date_start', '<=', statement_date_search),
                             ('date_stop', '>=', statement_date_search),
+                            ('special', '=', False),
                             ], limit=1)
                 bank_statement['period_id'] = period
                 bank_statements.append(bank_statement)
