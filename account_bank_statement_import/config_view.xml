@@ -9,6 +9,7 @@
                 <tree string="Bank Statement Filters">
                     <field name="name"/>
                     <field name="filter"/>
+                    <field name="company_id"/>
                     <field name="active"/>
                     <field name="def_bank_journal_id"/>
                     <field name="def_payable_id"/>
@@ -27,6 +28,7 @@
                     <group>
                         <field name="name"/>
                         <field name="filter"/>
+                        <field name="company_id"/>
                         <field name="active"/>
                         <field name="many_journals"/>
                         <field name="def_bank_journal_id"/>
@@ -47,6 +49,14 @@
                             <field name="encoding_other" class="oe_inline" attrs="{'invisible': [('encoding', '!=', 'other')]}"/>
                         </div>
                     </div>
+                    <group>
+                      	<group>
+          	                <field name="text_separator"/>      	
+						</group>
+						<group>
+          	                <field name="thousand_separator"/>      	
+						</group>                  
+                    </group>
                     <group>
                         <div>
                             <label for="ignored_lines"/>

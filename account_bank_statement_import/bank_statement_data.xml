@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	    <record model="ir.rule" id="account_bankimport_filters_rule">
+	        <field name="name">Account Bank Import Filters multi-company</field>
+	        <field name="model_id" search="[('model','=','account.bankimport.filters')]" model="ir.model"/>
+	        <field name="global" eval="True"/>
+	        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+	    </record>
+	</data>
+</openerp>
+
+        
+                            
