@@ -219,12 +219,14 @@ class account_bank_statement_import(models.TransientModel):
             try:
                 recordlist1 = base64.\
                     decodestring(wizard.file_data).\
-                    decode(encoding).encode('utf-8').split('\n')
+                    decode(encoding).encode('utf-8')
+                recordlist1 = re.split('\n'+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',recordlist1)
             except:
                 recordlist1 = base64.\
                     decodestring(wizard.file_data).\
                     decode(encoding, errors='replace').\
-                    encode('utf-8').split('\n')
+                    encode('utf-8')
+                recordlist1 = re.split('\n'+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',recordlist1)
             recordlist1.pop()
             recordlist = [to_unicode(x) for x in recordlist1]
             default_journal = wizard.journal_id
@@ -449,6 +451,7 @@ class account_bank_statement_import(models.TransientModel):
                 journal_list.append((i, journal_lines))
         for journal, lines in journal_list:
             if not isinstance(journal, bool):
+                print "here?"
                 journal = self._find_journal_from_lines(lines,
                                                         separator,
                                                         ignored_lines)
@@ -485,6 +488,7 @@ class account_bank_statement_import(models.TransientModel):
                               ignored_lines=ignored_lines,
                               default_key=default_key)
         # loop on each journals
+        print journal_statement
         for journal in journal_statement.keys():
             month_statement = journal_statement.get(journal)
             # loop on each month
