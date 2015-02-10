@@ -20,12 +20,14 @@
 ###############################################################################
 
 import base64
+import re
 
 from ..string_operation import (str2date, to_unicode,
                                 get_key_from_date, str2float)
 from openerp import fields, models, api, exceptions, _
 
 from ..bank_statement import COLUMNS
+
 
 SEPARATOR = {'comma': ',', 'semicolon': ';', 'tab': '\t', 'space': ' ', 'pipe': '|'}
 
@@ -109,6 +111,8 @@ class account_bank_statement_import(models.TransientModel):
                                  ('other', 'Other'),
                                  ], 'Encoding')
     encoding_other = fields.Char('Encoding')
+    thousand_separator = fields.Char('Thousand Separator')
+    text_separator = fields.Char('Text Separator')
 
     _defaults = {
         'filter_id': lambda self, cr, uid, context:
@@ -142,6 +146,9 @@ class account_bank_statement_import(models.TransientModel):
         self.column_note = filter.column_note
         self.encoding = filter.encoding or 'utf-8'
         self.encoding_other = filter.encoding_other
+        self.thousand_separator = filter.thousand_separator
+        self.text_separator = filter.text_separator
+
 
     @api.model
     def _get_line_vals(self, line, bank_sts, str_not1):
@@ -221,7 +228,7 @@ class account_bank_statement_import(models.TransientModel):
             recordlist1.pop()
             recordlist = [to_unicode(x) for x in recordlist1]
             default_journal = wizard.journal_id
-            default_period = account_period_obj.find()[0]
+            default_period = account_period_obj.with_context(account_period_prefer_normal = True).find()[0]
 
             err_log = _("Errors:") + "\n------\n"
             nb_err = 0
@@ -467,7 +474,8 @@ class account_bank_statement_import(models.TransientModel):
                                    date_val=False, debit=False, credit=False,
                                    separated_amount=False, receivable_id=False,
                                    payable_id=False, ref=False, extra_note=False,
-                                   default_key=False, statement_date=False):
+                                   default_key=False, statement_date=False,
+                                   thousand_separator=False, text_separator=False):
         account_period_obj = self.env['account.period']
         bank_statements = []
         pointor = 0
@@ -488,7 +496,8 @@ class account_bank_statement_import(models.TransientModel):
                 bank_statement["bank_statement_line"] = {}
                  # Loop on all line of a month
                 for line in month_statement[key]:
-                    line_splited = line.split(separator)
+#                     line_splited = line.split(separator)
+                    line_splited = re.split(separator+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',line)
                     st_line = self.\
                         format_line_from_data(line_splited, name=name, date=date,
                                               date_val=date_val,
@@ -498,6 +507,13 @@ class account_bank_statement_import(models.TransientModel):
                     amount = 0
                     val_debit = st_line.pop('debit')
                     val_credit = st_line.pop('credit')
+                    if text_separator:
+                        st_line['name'] = st_line['name'].replace(text_separator, "")
+                        st_line['ref'] = st_line['ref'].replace(text_separator, "")
+                        st_line['extra_note'] = st_line['extra_note'].replace(text_separator, "")
+                    if thousand_separator:
+                        val_debit = val_debit.replace(thousand_separator, "")
+                        val_credit = val_credit.replace(thousand_separator, "")
                     if separated_amount:
                         if val_debit:
                             st_line['account_id'] = payable_id
@@ -531,6 +547,7 @@ class account_bank_statement_import(models.TransientModel):
                     search([
                             ('date_start', '<=', statement_date_search),
                             ('date_stop', '>=', statement_date_search),
+                            ('special', '=', False),
                             ], limit=1)
                 bank_statement['period_id'] = period
                 bank_statements.append(bank_statement)

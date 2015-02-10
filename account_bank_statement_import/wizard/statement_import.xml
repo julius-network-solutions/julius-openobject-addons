@@ -83,6 +83,14 @@
                             <field name="encoding" class="oe_inline"/>
                             <field name="encoding_other" class="oe_inline" attrs="{'invisible': [('encoding', '!=', 'other')]}"/>
                         </div>
+                        <group attrs="{'invisible': [('edit_parameters', '=', False)]}">
+	                      	<group>
+	          	                <field name="text_separator"/>      	
+							</group>
+							<group>
+	          	                <field name="thousand_separator"/>      	
+							</group>                  
+	                    </group>
                         <newline/>
                         <group attrs="{'invisible': [('edit_parameters', '=', False)]}">
                             <div>

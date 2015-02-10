@@ -58,6 +58,9 @@ class account_bankimport_filters(models.Model):
     filter = fields.Char('Filtername', size=64, required=True)
     name = fields.Char('Filename', size=128, required=True)
     active = fields.Boolean('Active')
+    company_id = fields.Many2one('res.company', 
+                                  string= 'Company', 
+                                  required= True) 
 
     many_journals = fields.Boolean('Many Journals', default=False)
     def_bank_journal_id = fields.Many2one('account.journal',
@@ -104,6 +107,8 @@ class account_bankimport_filters(models.Model):
                                  ('other', 'Other'),
                                  ], 'Encoding', default='utf-8')
     encoding_other = fields.Char('Encoding')
+    thousand_separator = fields.Char('Thousand Separator')
+    text_separator = fields.Char('Text Separator')
 
 class res_company(models.Model):
     _inherit = 'res.company'

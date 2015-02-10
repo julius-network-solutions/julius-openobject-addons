@@ -53,6 +53,7 @@ You will be able to define:
         "security/ir.model.access.csv",
         "data/filters_data.xml",
         "account_journal_view.xml",
+        "bank_statement_data.xml",
         "config_view.xml",
         "wizard/statement_import.xml",
     ],
