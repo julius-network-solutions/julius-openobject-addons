@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_order_form_add_images" model="ir.ui.view">
+            <field name="name">sale.order.line.images</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/form//field[@name='name']" position="after">
+                    <group>
+                        <field name="image_medium" widget="image" class="oe_avatar oe_left" nolabel="1"/>
+                    </group>
+                    <newline/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
