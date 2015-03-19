@@ -34,29 +34,35 @@ def get_data(self, recordlist):
     date_format = self.date_format
     receivable_id = self.receivable_id.id
     payable_id = self.payable_id.id
-    statement_update = self.statement_update
     many_statements = self.many_statements
+    many_journals = self.many_journals
+    ref = self.get_column_number(self.column_ref, 5)
+    note = self.get_column_number(self.column_note, 6)
     default_key = time.strftime('%Y-%m')
     statement_date = False
-    
+    thousand_separator = self.thousand_separator
+    text_separator =self.text_separator
     ## Adapt parser for delete undefined line ##
     for line in recordlist[ignored_lines:]:
         line_splited = line.split(separator)
         if not line_splited[0]:
             recordlist.remove(line)
     result = self.format_statement_from_data(recordlist, separator,
-                                             date_format=date_format,
-                                             many_statements=many_statements,
-                                             ignored_lines=ignored_lines,
-                                             name=name, date=date,
-                                             date_val=date_val,
-                                             debit=debit, credit=credit,
-                                             separated_amount=separated_amount,
-                                             receivable_id=receivable_id,
-                                             payable_id=payable_id, ref=False,
-                                             extra_note=False,
-                                             statement_date=False,
-                                             default_key=default_key)
+                                           date_format=date_format,
+                                           many_statements=many_statements,
+                                           many_journals=many_journals,
+                                           ignored_lines=ignored_lines,
+                                           name=name, date=date,
+                                           date_val=date_val,
+                                           debit=debit, credit=credit,
+                                           separated_amount=separated_amount,
+                                           receivable_id=receivable_id,
+                                           payable_id=payable_id, ref=ref,
+                                           extra_note=note,
+                                           statement_date=False,
+                                           default_key=default_key,
+                                           thousand_separator=thousand_separator,
+                                           text_separator=text_separator)
     for statement in result:
         if not many_statements:
             balance_end_real = recordlist[4].split(separator)[1]

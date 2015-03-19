@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="report_sale_layouted_with_image" inherit_id="sale_layout.report_sale_layouted" priority="20">
+            <xpath expr="//table//t[@t-as='l']/tr" position="after">
+                <tr t-if="l.image">
+                    <td colspan="6">
+                       <img t-if="l.image" t-att-src="'data:image/png;base64,%s' % l.image" style="max-height: 800px;"/>
+                    </td>
+                </tr>
+            </xpath>
+       </template>
+
+    </data>
+</openerp>

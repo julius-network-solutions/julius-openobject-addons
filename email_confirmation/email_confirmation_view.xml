@@ -19,7 +19,7 @@
             <field name="model">mail.message</field>
             <field name="inherit_id" ref="mail.view_message_search"/>
             <field name="arch" type="xml">
-                <filter name="emails" position="after">
+                <filter name="attachments" position="after">
                     <filter string="Waiting Emails" name="waiting"  domain="[('type', '=', 'waiting')]"/>
                 </filter>
             </field>

@@ -22,8 +22,11 @@
 {
     "name": 'Email confirmation',
     "version": '1.0',
-    "description": """ This module give the possibility to edit
-    several record of a table. """,
+    "description": """
+This module give the possibility to confirm mail before send it.
+
+It avoids sending unnecessary mails before being checked and confirmed.
+""",
     "author": 'Julius Network Solutions',
     "website": 'http://www.julius.fr/',
     "depends": [

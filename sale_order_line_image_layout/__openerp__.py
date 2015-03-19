@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,23 +20,27 @@
 ###############################################################################
 
 {
-    "name": "Partner Prospect Module",
-    "version": "0.1",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "depends": [
-        "base",
-    ],
-    "description": """
-Module to manage a prospect partner
+    'name': 'Image on sale order lines',
+    'version': '0.2',
+    'category': 'Base',
+    'description': """
+Image on sale order line
+========================
+
 """,
-    "demo": [],
-    "data": [
-        "partner_view.xml",
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr/',
+    'images': [],
+    'depends': [
+        'sale_layout',
+        'sale_order_line_image',
     ],
+    'data': [
+        'views/report_quotation.xml',
+    ],
+    'demo': [],
     'installable': True,
-    'active': False,
+    'auto_install': True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

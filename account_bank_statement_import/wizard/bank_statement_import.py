@@ -219,12 +219,14 @@ class account_bank_statement_import(models.TransientModel):
             try:
                 recordlist1 = base64.\
                     decodestring(wizard.file_data).\
-                    decode(encoding).encode('utf-8').split('\n')
+                    decode(encoding).encode('utf-8')
+                recordlist1 = re.split('\n'+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',recordlist1)
             except:
                 recordlist1 = base64.\
                     decodestring(wizard.file_data).\
                     decode(encoding, errors='replace').\
-                    encode('utf-8').split('\n')
+                    encode('utf-8')
+                recordlist1 = re.split('\n'+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',recordlist1)
             recordlist1.pop()
             recordlist = [to_unicode(x) for x in recordlist1]
             default_journal = wizard.journal_id
@@ -358,7 +360,7 @@ class account_bank_statement_import(models.TransientModel):
                         date_format='%Y-%m-%d', date_column=0):
         month_statement = {}
         for line in recordlist:
-            line_splited = line.split(separator)
+            line_splited = re.split(separator+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',line)
             try:
                 date = line_splited[date_column]
                 line_period = get_key_from_date(date, date_format)
@@ -405,7 +407,7 @@ class account_bank_statement_import(models.TransientModel):
         journal_obj = self.env['account.journal']
         journals = journal_obj.search([('import_key', '!=', False)])
         for line in lines[0:ignored_lines]:
-            line_splited = line.split(separator)
+            line_splited = re.split(separator+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',line)
             for val in line_splited:
                 clean_val =  val.replace('\r', '').replace('\n', '')
                 journal = journal_obj.search([('import_key', '=', clean_val)])
@@ -428,7 +430,7 @@ class account_bank_statement_import(models.TransientModel):
                 journal_lines = recordlist[0:ignored_lines]
                 recordlist = recordlist[ignored_lines:]
                 for line in recordlist:
-                    line_splited = line.split(separator)
+                    line_splited = re.split(separator+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',line)
                     add_line = False
                     for splited in line_splited:
                         if splited:
@@ -463,6 +465,7 @@ class account_bank_statement_import(models.TransientModel):
                 else:
                     month_statement = {default_key: lines[ignored_lines:]}
             if journal in journal_statement.keys():
+                
                 month_statement.update(journal_statement.get(journal))
             journal_statement[journal] = month_statement
         return journal_statement

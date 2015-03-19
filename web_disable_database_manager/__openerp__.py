@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2015-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,23 +20,27 @@
 ###############################################################################
 
 {
-    "name": "Partner Prospect Module",
-    "version": "0.1",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "depends": [
-        "base",
-    ],
-    "description": """
-Module to manage a prospect partner
+    'name': 'Web Hide database manager',
+    "summary": "Hide the database manager link on the login page",
+    'category': 'Hidden',
+    'version': '1.0',
+    'description':
+        """
+Odoo Web Hide database manager.
+===============================
+
+This module will hide the database manager on the login page.
+You should access to database manager using the native URL:
+Your-odoo-url/web/database/manager.
 """,
-    "demo": [],
-    "data": [
-        "partner_view.xml",
-    ],
+    'depends': ['web'],
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     'installable': True,
-    'active': False,
+    'data': [
+        'views/webclient_templates.xml',
+    ],
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

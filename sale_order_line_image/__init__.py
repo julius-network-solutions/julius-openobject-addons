@@ -19,24 +19,6 @@
 #
 ###############################################################################
 
-{
-    "name": "Partner Prospect Module",
-    "version": "0.1",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "depends": [
-        "base",
-    ],
-    "description": """
-Module to manage a prospect partner
-""",
-    "demo": [],
-    "data": [
-        "partner_view.xml",
-    ],
-    'installable': True,
-    'active': False,
-}
+from . import sale_line
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

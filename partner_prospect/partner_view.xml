@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
-		
+
         <record model="ir.ui.view" id="view_partner_form">
             <field name="name">res.partner.form</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="priority" eval="30"/>
             <field name="arch" type="xml">
-				<field name="customer" position="before">
+				<xpath expr="//group/field[@name='customer']" position="before">
 					<field name="prospect"/>
-				</field>
+				</xpath>
 			</field>
 		</record>
         <record id="action_partner_prospect" model="ir.actions.act_window">
@@ -32,10 +32,9 @@
               </p>
             </field>
         </record>
-        
-		<menuitem action="action_partner_prospect" id="menu_partner_prospect" parent="base.menu_sales" sequence="0" groups="base.group_no_one"/>
+
+		<menuitem action="action_partner_prospect" id="menu_partner_prospect"
+            parent="base.menu_sales" sequence="0" groups="base.group_no_one"/>
+
 	</data>
 </openerp>
-
-        
-                            
