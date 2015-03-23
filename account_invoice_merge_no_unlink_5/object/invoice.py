@@ -22,33 +22,17 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
-from openerp.tools.translate import _
 from openerp import netsvc
+from openerp import models, fields, api, _
+from openerp.exceptions import except_orm
 
-class account_invoice(orm.Model):
+class account_invoice(models.Model):
     _inherit = "account.invoice"
 
-    _columns = {
-        'merged_invoice_id': fields.many2one('account.invoice',
-                                            'Merged Invoice',
-                                            readonly=True),
-    }
+    merged_invoice_id = fields.many2one('account.invoice', 'Merged Invoice',
+                                        readonly=True)
 
-    def __init__(self, pool, cr):
-        if self._columns.get('state'):
-            add_item = True
-            for (a,b) in self._columns['state'].selection:
-                if a == 'merged':
-                    add_item = False
-            if add_item:
-                new_selection = []
-                for (a,b) in self._columns['state'].selection:
-                    if a == 'merged':
-                        new_selection.extend([('merged', _('Merged'))])
-                    new_selection.extend([(a,b)])
-                self._columns['state'].selection = new_selection
-        super(account_invoice, self).__init__(pool, cr)
+    state = fields.Selection(selection_add=[('merged', 'Merged')])
 
     def merge_invoice(self, cr, uid, ids, merge_lines=False, journal_id=False, context=None):
         """ Merge draft invoices. Work only with same partner
@@ -65,7 +49,7 @@ class account_invoice(orm.Model):
         sql = "SELECT DISTINCT type, state, partner_id FROM account_invoice WHERE id IN (%s)" % ','.join(map(str, ids))
         cr.execute(sql)
         if len(cr.fetchall()) != 1:
-            raise orm.except_orm(_('Invalid action !'),
+            raise except_orm(_('Invalid action !'),
                                  _('Can not merge invoice(s) on different partners or states !'))
         merged_inv_id = 0
         inv_line_obj = self.pool.get('account.invoice.line')
@@ -74,7 +58,7 @@ class account_invoice(orm.Model):
             default = {'journal_id': journal_id}
         for inv in self.browse(cr, uid, ids, context):
             if inv.state != 'draft':
-                raise orm.except_orm(_('Invalid action !'), _('Can not merge invoice(s) that are already opened or paid !'))
+                raise except_orm(_('Invalid action !'), _('Can not merge invoice(s) that are already opened or paid !'))
             if merged_inv_id == 0:
                 merged_inv_id = self.copy(cr, uid, inv.id, default=default, context=context)
                 wf_service = netsvc.LocalService("workflow")
@@ -112,13 +96,13 @@ class account_invoice(orm.Model):
             if t['state'] in ('draft', 'cancel', 'merged'):
                 unlink_ids.append(t['id'])
             else:
-                raise orm.except_orm(_('Invalid action !'),
+                raise except_orm(_('Invalid action !'),
                                      _('Cannot delete invoice(s) that are already opened or paid !'))
         res = super(account_invoice, self).\
             unlink(cr, uid, unlink_ids, context=context)
         return res
 
-class account_invoice_line(orm.Model):
+class account_invoice_line(models.Model):
     _inherit = "account.invoice.line"
 
     def _can_merge_quantity(self, cr, uid, id1, id2, context=None):
@@ -140,13 +124,9 @@ class account_invoice_line(orm.Model):
             qty = invl1.quantity + invl2.quantity
         return qty
 
-    _columns = {
-        'invoice_line_sale_id': fields.many2many(
-            'sale.order.line',
-            'sale_order_line_invoice_rel',
-            'invoice_id', 'order_line_id',
-            'Sale Order lines'),
-    }
+    invoice_line_sale_id = fields.\
+        Many2many('sale.order.line', 'sale_order_line_invoice_rel',
+                  'invoice_id', 'order_line_id', 'Sale Order lines')
 
     def copy(self, cr, uid, ids, default=None, context=None):
         if default == None:
