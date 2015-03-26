@@ -29,7 +29,7 @@ from openerp.exceptions import except_orm
 class account_invoice(models.Model):
     _inherit = "account.invoice"
 
-    merged_invoice_id = fields.many2one('account.invoice', 'Merged Invoice',
+    merged_invoice_id = fields.Many2one('account.invoice', 'Merged Invoice',
                                         readonly=True)
 
     state = fields.Selection(selection_add=[('merged', 'Merged')])
