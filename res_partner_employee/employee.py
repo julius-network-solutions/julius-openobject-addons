@@ -43,7 +43,7 @@ class hr_employee(models.Model):
             'supplier' : False,
             'employee' : True
         }
-        address_obj = self.pool.get('res.partner.address')
+        address_obj = self.pool.get('res.partner')
         partner_obj = self.pool.get('res.partner')
         if not vals.get('address_home_id',False):
             partner_id = partner_obj.create(cr, uid, partner_vals, context=context)
@@ -59,15 +59,15 @@ class hr_employee(models.Model):
                 'phone' : vals.get('phone',False),
                 'fax' : vals.get('fax',False),
                 'mobile' : vals.get('mobile',False),
-                'partner_id' : partner_id,
+                'parent_id' : partner_id,
             }
             address_id = address_obj.create(cr, uid, data, context=context)
         
             vals.update({'address_home_id': address_id,})
         else:
-            if not address_obj.browse(cr, uid, vals.get('address_home_id'), context=context).partner_id:
+            if not address_obj.browse(cr, uid, vals.get('address_home_id'), context=context).parent_id:
                 partner_id = partner_obj.create(cr, uid, partner_vals, context=context)
-                address_obj.write(cr, uid, vals.get('address_home_id'), {'partner_id': partner_id}, context=context)
+                address_obj.write(cr, uid, vals.get('address_home_id'), {'parent_id': partner_id}, context=context)
         return super(hr_employee, self).create(cr, uid, vals, context=context)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
