@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_contract_period_tree" model="ir.ui.view">
+            <field name="name">contract.period.tree</field>
+            <field name="model">contract.period</field>
+            <field name="arch" type="xml">
+                <tree string="Contract period">
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="quantity"/>
+                    <field name="account_id"/>
+                    <field name="company_id"/>
+                    <field name="interval_type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_contract_period_form" model="ir.ui.view">
+            <field name="name">contract.period.form</field>
+            <field name="model">contract.period</field>
+            <field name="arch" type="xml">
+                <form string="Contract period">
+                    <group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="account_id"/>
+                            <field name="company_id" widget="selection"/>
+                        </group>
+                        <group>
+                            <field name="quantity"/>
+                            <field name="active"/>
+                            <field name="interval_type"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_contract_period_search" model="ir.ui.view">
+            <field name="name">contract.period.search</field>
+            <field name="model">contract.period</field>
+            <field name="arch" type="xml">
+                <search string="Contract period">
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="quantity"/>
+                    <field name="account_id"/>
+                    <field name="company_id"/>
+                    <field name="interval_type"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_contract_period_form" model="ir.actions.act_window">
+            <field name="name">Contract period</field>
+            <field name="res_model">contract.period</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_contract_period_tree"/>
+            <field name="search_view_id" ref="view_contract_period_search"/>
+        </record>
+
+        <menuitem name="Contracts" id="menu_sale_contract_main" parent="base.menu_base_config" sequence="20"/>
+        <menuitem id="menu_action_contract_period_form" action="action_contract_period_form" parent="menu_sale_contract_main" sequence="10"/>
+
+    </data>
+</openerp>
