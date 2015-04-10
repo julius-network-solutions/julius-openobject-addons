@@ -32,8 +32,8 @@ class product_tag(models.Model):
     name = fields.Char('Tag Name', required=True, translate=True)
     display_name = fields.Char('Full Name', compute='_compute_display_name')
     active = fields.Boolean(help='The active field allows you to hide the tag without removing it.', default=True)
-    parent = fields.Many2one(string='Parent Tag', comodel_name='product.tag', select=True, ondelete='cascade')
-    child_ids = fields.One2many(string='Child Tags', comodel_name='product.tag', inverse_name='parent')
+    parent_id = fields.Many2one(string='Parent Tag', comodel_name='product.tag', select=True, ondelete='cascade')
+    child_ids = fields.One2many(string='Child Tags', comodel_name='product.tag', inverse_name='parent_id')
     parent_left = fields.Integer('Left Parent', select=True)
     parent_right = fields.Integer('Right Parent', select=True)
 
@@ -42,11 +42,11 @@ class product_tag(models.Model):
     _order = 'parent_left'
 
     @api.one
-    @api.depends('name', 'parent.name')
+    @api.depends('name', 'parent_id.name')
     def _compute_display_name(self):
         """ Return the tags' display name, including their direct parent. """
-        if self.parent:
-            self.display_name = self.parent.display_name + ' / ' + self.name
+        if self.parent_id:
+            self.display_name = self.parent_id.display_name + ' / ' + self.name
         else:
             self.display_name = self.name
 
