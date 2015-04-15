@@ -6,8 +6,12 @@
             <field name="name">product.tag.view.form</field>
             <field name="model">product.tag</field>
             <field name="arch" type="xml">
-                <form string="Tag">
-                    <field name="name"/>
+                <form string="Product Tag">
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="active"/>
+                        <field name="parent_id"/>
+                    </group>
                 </form>
             </field>
         </record>	
@@ -15,9 +19,21 @@
         <record id="product_tag_tree" model="ir.ui.view">
             <field name="name">product.tag.view.tree</field>
             <field name="model">product.tag</field>
+            <field name="field_parent">child_ids</field>
             <field name="arch" type="xml">
-                <tree string="Tag">
-                    <field name="name"/>
+                <tree toolbar="1" string="Product Tags">
+                    <field name="display_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="product_tag_list" model="ir.ui.view">
+            <field name="name">Product Tags</field>
+            <field name="model">product.tag</field>
+            <field eval="6" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Product Tags">
+                    <field name="display_name"/>
                 </tree>
             </field>
         </record>
@@ -45,34 +61,34 @@
             id="menu_product_tag_action_form"
             parent="product.prod_config_main" sequence="3"/>
 	
-        <record id="product_product_tag_search_inherit" model="ir.ui.view">
-            <field name="name">product.product.tag.view.search</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_search_form_view"/>
+        <record id="product_template_tag_search_inherit" model="ir.ui.view">
+            <field name="name">product.template.tag.view.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
             <field name="arch" type="xml">
                 <field name="name" position="after">
-                    <field name="tag_ids" string="Tags" filter_domain="[('tag_ids','ilike',self)]"/>
+                    <field name="tag_ids" string="Tags" filter_domain="['|',('tag_ids','ilike',self),('tag_ids','child_of',self)]"/>
                 </field>
             </field>
         </record>
 
-        <record id="product_product_form_inherit" model="ir.ui.view">
-            <field name="name">product.product.view.form</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <record id="product_template_form_inherit" model="ir.ui.view">
+            <field name="name">product.template.view.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
-                <field name="name" position="after">
+                <xpath expr="//h1" position="after">
                     <field name="tag_ids" widget="many2many_tags" placeholder="Tags..."/>
-                </field>
+                </xpath>
             </field>
         </record>
 
 		<!--  kanban view   -->
 
-       	<record model="ir.ui.view" id="product_product_kanban">
-            <field name="name">Product Product Tag Kanban</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_kanban_view"/>
+        <record model="ir.ui.view" id="product_template_kanban">
+            <field name="name">Product Template Tag Kanban</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
             <field name="arch" type="xml">
                 <div name="tags" position="inside">
                     <ul>
