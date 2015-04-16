@@ -32,16 +32,17 @@ Automatic user for employees
 ============================
 
 This module adds a button inside the employee form to create a user for each
-employee to be able to invoice the analytic lines with the good associated user.
+employee to be able to invoice the analytic lines with
+the good associated user.
 """,
     "depends" : [
-        "hr",
-        "hr_employee_header"
-    ],
+                 "hr",
+                 "hr_employee_header",
+                 ],
     "demo" : [],
     "data" : [
-        'hr_view.xml',
-    ],
+              'hr_view.xml',
+              ],
     'installable' : True,
     'active' : False,
 }
