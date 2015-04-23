@@ -36,7 +36,7 @@ class account_invoice(orm.Model):
     }
 
     def __init__(self, pool, cr):
-        if self._columns.get('state'):
+        if self._columns and self._columns.get('state'):
             add_item = True
             for (a,b) in self._columns['state'].selection:
                 if a == 'merged':
