@@ -35,11 +35,38 @@ class resource_resource(models.Model):
                    'WHERE name IS NOT NULL AND last_name IS NULL;')
         return res
 
+    @api.model
+    def create(self, vals):
+        """To support data backward compatibility we have to keep this
+        overwrite even if we use fnct_inv: otherwise we can't create
+        entry because lastname is mandatory and module will not install
+        if there is demo data
+        """
+        last_name = vals.get('last_name') or ''
+        first_name = vals.get('first_name') or ''
+        name = last_name.upper() or ''
+        name += first_name and ' ' + first_name.title() or ''
+        vals.update({'name': name})
+        return super(resource_resource, self).create(vals)
+
     @api.one
     @api.depends('last_name', 'first_name')
     def _get_resource_name(self):
         name = self.last_name and self.last_name.upper() or ''
-        name += self.first_name and ' ' +  self.first_name.title() or ''
+        name += self.first_name and ' ' + self.first_name.title() or ''
+        self.name = name
+
+class hr_employee(models.Model):
+    _inherit = 'hr.employee'
+
+    employee_name = fields.Char('Name', store=True,
+                                compute='_get_resource_name',)
+    @api.one
+    @api.depends('last_name', 'first_name')
+    def _get_resource_name(self):
+        name = self.last_name and self.last_name.upper() or ''
+        name += self.first_name and ' ' + self.first_name.title() or ''
+        self.employee_name = name
         self.name = name
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

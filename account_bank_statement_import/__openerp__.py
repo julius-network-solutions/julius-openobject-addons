@@ -51,7 +51,7 @@ You will be able to define:
     "demo": [],
     "data": [
         "security/ir.model.access.csv",
-        "data/filters_data.xml",
+#         "data/filters_data.xml",
         "account_journal_view.xml",
         "bank_statement_data.xml",
         "config_view.xml",

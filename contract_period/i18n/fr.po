@@ -1,0 +1,120 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* contract_period
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-07 13:42+0000\n"
+"PO-Revision-Date: 2012-11-07 13:42+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: contract_period
+#: selection:contract.period,interval_type:0
+msgid "Weeks"
+msgstr "Semaines"
+
+#. module: contract_period
+#: field:contract.period,date_end:0
+msgid "Date end"
+msgstr "Fin"
+
+#. module: contract_period
+#: sql_constraint:res.company:0
+msgid "The company name must be unique !"
+msgstr "Le nom de la société doit être unique !"
+
+#. module: contract_period
+#: model:ir.model,name:contract_period.model_contract_contract
+#: model:ir.ui.menu,name:contract_period.menu_sale_contract_main
+msgid "Contracts"
+msgstr "Contrats"
+
+#. module: contract_period
+#: constraint:res.company:0
+msgid "Error! You can not create recursive companies."
+msgstr "Erreur ! Vous ne pouvez pas créer de sociétés récursives"
+
+#. module: contract_period
+#: field:contract.period,company_id:0
+msgid "Company"
+msgstr "Société"
+
+#. module: contract_period
+#: field:contract.contract,quantity_default:0
+msgid "Default quantity to invoice"
+msgstr "Quantité par défaut à facturer"
+
+#. module: contract_period
+#: model:ir.model,name:contract_period.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: contract_period
+#: selection:contract.period,interval_type:0
+msgid "Days"
+msgstr "Jours"
+
+#. module: contract_period
+#: field:contract.period,contract_id:0
+msgid "Contract"
+msgstr "Contrat"
+
+#. module: contract_period
+#: help:contract.contract,quantity_default_specific:0
+msgid "If you don't choose a value here the system will get the default company value"
+msgstr "Si vous ne choisissez pas de valeur ici, le système reprendra la valeur par défaut de la société"
+
+#. module: contract_period
+#: model:ir.model,name:contract_period.model_contract_period
+msgid "Contracts period"
+msgstr "Période de contrat"
+
+#. module: contract_period
+#: field:res.company,quantity_default:0
+msgid "Default quantity"
+msgstr "Duantité par défaut"
+
+#. module: contract_period
+#: field:contract.contract,quantity_default_specific:0
+msgid "Specific default quantity"
+msgstr "Quantité spécifique par défaut"
+
+#. module: contract_period
+#: field:contract.period,interval_type:0
+msgid "Interval type"
+msgstr "Unité d'intervalle"
+
+#. module: contract_period
+#: field:contract.period,active:0
+msgid "Active"
+msgstr "Actif"
+
+#. module: contract_period
+#: field:contract.period,date_start:0
+msgid "Date start"
+msgstr "Début"
+
+#. module: contract_period
+#: selection:contract.period,interval_type:0
+msgid "Month"
+msgstr "Mois"
+
+#. module: contract_period
+#: view:contract.period:0
+#: model:ir.actions.act_window,name:contract_period.action_contract_period_form
+#: model:ir.ui.menu,name:contract_period.menu_action_contract_period_form
+msgid "Contract period"
+msgstr "Période de contrat"
+
+#. module: contract_period
+#: field:contract.period,quantity:0
+msgid "Quantity"
+msgstr "Quantité"
+

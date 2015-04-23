@@ -22,8 +22,6 @@
 import base64
 from openerp.osv import orm, fields
 import time
-import mx.DateTime
-from mx.DateTime import RelativeDateTime, now, DateTime, localtime
 from openerp.tools.translate import _
 
 trans=[(u'ￃﾩ','e'),

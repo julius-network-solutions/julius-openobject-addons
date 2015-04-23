@@ -8,6 +8,7 @@
 			<field name="inherit_id" ref="hr.view_employee_form"/>
 			<field name="arch" type="xml">
 				<field name="name" position="after">
+                    <field name="employee_name" invisible="1"/>
                     <field name="last_name" placeholder="Last name" class="oe_edit_only"/>
 					<field name="first_name" placeholder="First name" class="oe_edit_only"/>
 				</field>

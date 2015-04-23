@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <record id="view_invoice_line_form" model="ir.ui.view">
+            <field name="name">account.invoice.line.form</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_form"/>
+            <field name="arch" type="xml">
+	    		<field name="price_unit" position="after">
+                    <label string="Second Quantity :" align="1.0"/>
+                    <group colspan="1" col="2">
+		    			<field name="second_quantity" nolabel="1" colspan="1"/>
+		    			<field name="second_uom_id" nolabel="1" colspan="1"/>
+                    </group>
+				</field>     
+		    </field> 
+        </record>
+
+	</data>
+</openerp>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="UserMenu" >
+        <li t-jquery=".odoo_support_contact" t-operation="replace">
+            <li class="odoo_support_contact" t-if="widget.session.portal_user != 1">
+                <a data-menu="odoo_support" href="#">Odoo Support</a>
+            </li>
+        </li>
+    </t>
+</templates>

@@ -51,10 +51,13 @@ class res_partner(models.Model):
         user_obj = self.env['res.users']
         for partner in self:
             if not partner.partner_user_id:
-                user_vals = partner._get_default_user_vals(self)
-                if user_vals:
-                    user = user_obj.create(user_vals)
-                    partner.partner_user_id = user
+                if partner.user_ids:
+                    partner.partner_user_id = partner.user_ids[0]
+                else:
+                    user_vals = partner._get_default_user_vals(self)
+                    if user_vals:
+                        user = user_obj.create(user_vals)
+                        partner.partner_user_id = user
                 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

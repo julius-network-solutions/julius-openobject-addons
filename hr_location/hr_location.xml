@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_hr_location_tree" model="ir.ui.view">
+            <field name="name">hr.location.tree</field>
+            <field name="model">hr.location</field>
+            <field name="arch" type="xml">
+                <tree string="Location">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_location_form" model="ir.ui.view">
+            <field name="name">hr.location.form</field>
+            <field name="model">hr.location</field>
+            <field name="arch" type="xml">
+                <form string="Location">
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="name"/>
+                        </div>
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="company_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_location_search" model="ir.ui.view">
+            <field name="name">hr.location.search</field>
+            <field name="model">hr.location</field>
+            <field name="arch" type="xml">
+                <search string="Location">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_hr_location_form" model="ir.actions.act_window">
+            <field name="name">Locations</field>
+            <field name="res_model">hr.location</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_hr_location_tree"/>
+            <field name="search_view_id" ref="view_hr_location_search"/>
+        </record>
+
+        <menuitem id="menu_action_hr_location_form" action="action_hr_location_form" parent="hr.menu_hr_configuration" sequence="6"/>
+
+    </data>
+</openerp>

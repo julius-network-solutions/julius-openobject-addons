@@ -97,7 +97,7 @@ class account_invoice(models.Model):
                        ('company_id', '=', company.id),
                        ]
             res_dom = [
-                       ('res_id', '=', 'res.partner,%s' % partner.id),
+                       ('res_id', '=', 'res.partner,%s' % partner_id),
                        ]
             pay_prop = prop.search(pay_dom + res_dom) or prop.search(pay_dom)
             if pay_prop:
