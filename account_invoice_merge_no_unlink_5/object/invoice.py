@@ -32,24 +32,7 @@ class account_invoice(models.Model):
     merged_invoice_id = fields.Many2one('account.invoice', 'Merged Invoice',
                                         readonly=True)
 
-<<<<<<< HEAD
-    def __init__(self, pool, cr):
-        if self._columns and self._columns.get('state'):
-            add_item = True
-            for (a,b) in self._columns['state'].selection:
-                if a == 'merged':
-                    add_item = False
-            if add_item:
-                new_selection = []
-                for (a,b) in self._columns['state'].selection:
-                    if a == 'merged':
-                        new_selection.extend([('merged', _('Merged'))])
-                    new_selection.extend([(a,b)])
-                self._columns['state'].selection = new_selection
-        super(account_invoice, self).__init__(pool, cr)
-=======
     state = fields.Selection(selection_add=[('merged', 'Merged')])
->>>>>>> 60815b8f562178591a818c009efd1566e151759e
 
     def merge_invoice(self, cr, uid, ids, merge_lines=False, journal_id=False, context=None):
         """ Merge draft invoices. Work only with same partner
