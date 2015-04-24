@@ -35,8 +35,8 @@ def get_data(self, recordlist):
     payable_id = self.payable_id.id
     many_statements = self.many_statements
     many_journals = self.many_journals
-    ref = self.get_column_number(self.column_ref, 5)
-    note = self.get_column_number(self.column_note, 6)
+    ref = self.get_column_number(self.column_ref)
+    note = self.get_column_number(self.column_note)
     default_key = time.strftime('%Y-%m')
     statement_date = False
     thousand_separator = self.thousand_separator

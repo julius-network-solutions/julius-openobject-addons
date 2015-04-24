@@ -566,7 +566,7 @@ class account_bank_statement_import(models.TransientModel):
         return separator or ','
 
     @api.model
-    def get_column_number(self, value, default):
+    def get_column_number(self, value, default=False):
         value = value and value - 1
         if isinstance(value, bool):
             value = default
