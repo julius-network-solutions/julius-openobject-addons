@@ -21,7 +21,7 @@
 
 {
     "name": "Sale order Probability",
-    "summary": "Probability to in a quotation",
+    "summary": "Probability to win a quotation",
     "version": "0.1",
     "author": "Julius Network Solutions",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
