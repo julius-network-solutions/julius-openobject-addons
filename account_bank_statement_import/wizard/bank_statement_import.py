@@ -227,7 +227,8 @@ class account_bank_statement_import(models.TransientModel):
                     decode(encoding, errors='replace').\
                     encode('utf-8')
                 recordlist1 = re.split('\n'+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',recordlist1)
-            recordlist1.pop()
+            if(recordlist1[-1] == ''):
+                recordlist1.pop()
             recordlist = [to_unicode(x) for x in recordlist1]
             default_journal = wizard.journal_id
             default_period = account_period_obj.with_context(account_period_prefer_normal = True).find()[0]
@@ -482,6 +483,7 @@ class account_bank_statement_import(models.TransientModel):
         account_period_obj = self.env['account.period']
         bank_statements = []
         pointor = 0
+
         journal_statement = self.\
             _group_by_journal(recordlist, separator, date_format,
                               many_journals, many_statements, date_column=date,
@@ -499,7 +501,6 @@ class account_bank_statement_import(models.TransientModel):
                 bank_statement["bank_statement_line"] = {}
                  # Loop on all line of a month
                 for line in month_statement[key]:
-#                     line_splited = line.split(separator)
                     line_splited = re.split(separator+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))',line)
                     st_line = self.\
                         format_line_from_data(line_splited, name=name, date=date,
