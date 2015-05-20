@@ -1,0 +1,27 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_probability
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-30 13:45+0000\n"
+"PO-Revision-Date: 2015-04-30 15:46+0100\n"
+"Last-Translator: Mathieu Vatel <mathieu@julius.fr>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: sale_probability
+#: model:ir.model,name:sale_probability.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: sale_probability
+#: field:sale.order,probability:0
+msgid "Success Rate (%)"
+msgstr "Probabilité de succès (%)"
+
