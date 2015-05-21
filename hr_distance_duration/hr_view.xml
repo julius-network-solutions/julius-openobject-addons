@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_hr_job_form" model="ir.ui.view">
+            <field name="name">hr.job.form</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <button name="set_open" position="after">
+                    <button name="get_duration" string="Get duration" type="object"/>
+                </button>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_applicant_form">
+            <field name="name">Recruitment Form</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
+            <field name="arch" type="xml">
+                <field name="stage_id" position="before">
+                    <button name="get_distance_duration"
+                        string="Get distance and duration" type="object"/>
+                </field>
+                <field name="job_id" position="after">
+                    <label for="distance"/>
+                    <div>
+                        <field name="distance" class="oe_inline"/> km
+                    </div>
+                    <label for="duration"/>
+                    <div>
+                        <field name="duration" class="oe_inline"/> min
+                    </div>
+                </field>
+            </field>
+       </record>
+
+    </data>
+</openerp>
