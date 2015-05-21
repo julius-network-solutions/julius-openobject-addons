@@ -22,24 +22,21 @@
 {
     'name': 'Google Maps distance and duration',
     'version': '1.0',
-    'category': 'Tools',
+    'category': 'Hidden',
     'summary': 'Google Maps distance and duration between 2 points',
     'description': """
-Enter 2 addresses and the system will return a distance and a duration
-============================
+Call the Google API to get distance and duration between 2 points
+=================================================================
 
-    """,
+""",
     'author': 'Julius Network Solutions',
     'website': 'http://www.julius.fr',
     'depends': [
-        'base',
-        'hr',
-        ],
-    'data': [
-        'hr_view.xml'
-    ],
+                'partner_google_maps_parameters',
+                ],
+    'data': [],
     'test': [],
-    'installable': False,
+    'installable': True,
     'active': False,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
