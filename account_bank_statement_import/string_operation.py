@@ -52,6 +52,9 @@ def str2float(float_str, separator=None):
          return 0.0
 
 def get_key_from_date(date_str, date_format):
+    import locale
+    locale.setlocale(locale.LC_TIME, "en_US.UTF-8")
+    date_formated = datetime.strptime(date_str, date_format)
     return time.strftime('%Y-%m', time.strptime(date_str, date_format))
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
