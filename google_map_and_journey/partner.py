@@ -43,7 +43,7 @@ class res_partner(models.Model):
     def open_map(self):
         base_url = "http://maps.google.com/maps?oi=map&q="
         for partner in self:
-            url = base_url + self._get_url_parameters_partner_vals(self)
+            url = base_url + self._get_url_parameters_partner_vals(partner)
             return {
                     'type': 'ir.actions.act_url',
                     'url': url,
