@@ -39,15 +39,16 @@
         </record>
 
         <record id="action_partner_kanban" model="ir.actions.act_window">
-            <field name="name">Partners</field>
+            <field name="name">Partner presence</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban</field>
             <field name="view_id" ref="view_partner_kanban"/>
         </record>
 
        <menuitem id="menu_action_partner_kanban"
-            name="Partners" parent="hr_attendance.menu_hr_attendance"
+            name="Partner presence" parent="hr_attendance.menu_hr_attendance"
             action="action_partner_kanban"
             sequence="30"/>
+
     </data>
 </openerp>
