@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_partner_kanban" model="ir.ui.view">
+            <field name="name">res.partner.attendance.kanban</field>
+            <field name="model">res.partner</field>
+            <field name="priority">50</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="color"/>
+                    <field name="display_name"/>
+                    <field name="has_image"/>
+                    <field name="is_company"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_vignette oe_semantic_html_override">
+                                <a name="%(action_password_validation_form)d" type="action">
+                                    <t t-if="record.has_image.raw_value === true">
+                                        <img t-att-src="kanban_image('res.partner', 'image_small', record.id.value)" class="oe_kanban_image"/>
+                                    </t>
+                                    <t t-if="record.has_image.raw_value === false">
+                                        <t t-if="record.is_company.raw_value === true">
+                                            <img t-att-src='_s + "/base/static/src/img/company_image.png"' class="oe_kanban_image"/>
+                                        </t>
+                                        <t t-if="record.is_company.raw_value === false">
+                                            <img t-att-src='_s + "/base/static/src/img/avatar.png"' class="oe_kanban_image"/>
+                                        </t>
+                                    </t>
+                                </a>
+                                <div class="oe_kanban_details">
+                                    <h4 class="oe_partner_heading"><a name="%(action_password_validation_form)d" type="action"><field name="display_name"/></a></h4>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_partner_kanban" model="ir.actions.act_window">
+            <field name="name">Partners</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="view_partner_kanban"/>
+        </record>
+
+       <menuitem id="menu_action_partner_kanban"
+            name="Partners" parent="hr_attendance.menu_hr_attendance"
+            action="action_partner_kanban"
+            sequence="30"/>
+    </data>
+</openerp>

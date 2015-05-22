@@ -19,35 +19,11 @@
 #
 ###############################################################################
 
-{
-    'name': 'Attendance for partner',
-    'summary': 'Manage attendances for partner',
-    'version': '1.0',
-    'category': 'Human resources',
-    'description': """
-Presentation:
-=============
+from openerp import models, fields, api, _
 
-This module will adds the field "Partner" to the attendance to be able to track partner's attendance.
+class res_partner(models.Model):
+    _inherit = "res.partner"
 
-This can be use for child care for example.
-""",
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr',
-    'contibutors': 'Mathieu Vatel <mathieu@julius.fr>',
-    'depends': [
-                'hr_attendance',
-                ],
-    'data': [
-             'wizard/password_validation_view.xml',
-             'wizard/point_attendance_view.xml',
-             'hr_attendance.xml',
-             'partner_attendance.xml',
-             'partner.xml',
-             ],
-    'demo': [],
-    'installable': True,
-    'active': False,
-}
+    attendance_password = fields.Char('Attendance password')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

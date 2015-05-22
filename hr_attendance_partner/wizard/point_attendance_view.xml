@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_point_partner_attendance_form" model="ir.ui.view">
+            <field name="name">Point Partner attendance</field>
+            <field name="model">point.partner.attendance</field>
+            <field name="arch" type="xml">
+                <form string="Point attendance">
+                    <separator colspan="4" string="Point the presence / absence"/>
+                    <div>
+                        <label for="partner_id"/>
+                        <field name="partner_id" class="oe_inline"/>
+                        <label for="state"/>
+                        <field name="state" class="oe_inline"/>
+                    </div>
+                    <footer>
+                        <button name="sign_in" string="Sign In"
+                            type="object" class="oe_highlight" states='absent'/>
+                        <button name="sign_out" string="Sign out"
+                            type="object" class="oe_highlight" states='present'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+                    
+        <act_window
+            id="action_point_partner_attendance_form" 
+            name="Point attendance" 
+            res_model="point.partner.attendance" 
+            target="new"
+            view_mode="form"
+            view_id="view_point_partner_attendance_form"/>
+
+    </data>
+</openerp>

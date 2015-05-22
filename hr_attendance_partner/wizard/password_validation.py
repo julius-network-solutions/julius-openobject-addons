@@ -19,35 +19,29 @@
 #
 ###############################################################################
 
-{
-    'name': 'Attendance for partner',
-    'summary': 'Manage attendances for partner',
-    'version': '1.0',
-    'category': 'Human resources',
-    'description': """
-Presentation:
-=============
+from openerp import models, fields, api, _
+from openerp.exceptions import Warning
 
-This module will adds the field "Partner" to the attendance to be able to track partner's attendance.
+class attendance_password_validation(models.TransientModel):
+    _name = 'attendance.password.validation'
+    _description = 'Attendance Password validation'
 
-This can be use for child care for example.
-""",
-    'author': 'Julius Network Solutions',
-    'website': 'http://www.julius.fr',
-    'contibutors': 'Mathieu Vatel <mathieu@julius.fr>',
-    'depends': [
-                'hr_attendance',
-                ],
-    'data': [
-             'wizard/password_validation_view.xml',
-             'wizard/point_attendance_view.xml',
-             'hr_attendance.xml',
-             'partner_attendance.xml',
-             'partner.xml',
-             ],
-    'demo': [],
-    'installable': True,
-    'active': False,
-}
+    password = fields.Char()
+    partner_id = fields.\
+        Many2one('res.partner', 'Partner', required=True,
+                 default=lambda self: self._context.get('partner_id'))
+
+    @api.multi
+    def validate(self):
+        assert len(self) == 1, 'This option should only be ' \
+            'used for a single id at a time.'
+        if self.partner_id.attendance_password != self.password:
+            raise Warning(_('Password error !'))
+        action = self.env.\
+            ref('hr_attendance_partner.action_point_partner_attendance_form')
+        if action:
+            result = action.read()[0]
+            result['context'] = {'partner_id': self.partner_id.id}
+            return result
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

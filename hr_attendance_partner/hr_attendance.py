@@ -43,4 +43,61 @@ class hr_attendance(models.Model):
                         ], limit=1)
             self.employee_id = employees.id
 
+    def _altern_si_so(self, cr, uid, ids, context=None):
+        """ Alternance sign_in/sign_out check.
+            Previous (if exists) must be of opposite action.
+            Next (if exists) must be of opposite action.
+        """
+        for att in self.browse(cr, uid, ids, context=context):
+            # search and browse for first previous and first next records
+            if att.type == 'partner':
+                prev_att_ids = self.\
+                    search(cr, uid, [
+                                     ('partner_id', '=', att.partner_id.id),
+                                     ('name', '<', att.name),
+                                     ('action', 'in', ('sign_in', 'sign_out')),
+                                     ], limit=1, order='name DESC')
+                next_add_ids = self.\
+                    search(cr, uid, [
+                                     ('partner_id', '=', att.partner_id.id),
+                                     ('name', '>', att.name),
+                                     ('action', 'in', ('sign_in', 'sign_out')),
+                                     ], limit=1, order='name ASC')
+                prev_atts = self.browse(cr, uid, prev_att_ids, context=context)
+                next_atts = self.browse(cr, uid, next_add_ids, context=context)
+                # check for alternance, return False if at least one condition is not satisfied
+                if prev_atts and prev_atts[0].action == att.action: # previous exists and is same action
+                    return False
+                if next_atts and next_atts[0].action == att.action: # next exists and is same action
+                    return False
+                if (not prev_atts) and (not next_atts) and att.action != 'sign_in': # first attendance must be sign_in
+                    return False
+            else:
+                prev_att_ids = self.\
+                    search(cr, uid, [
+                                     ('employee_id', '=', att.employee_id.id),
+                                     ('name', '<', att.name),
+                                     ('action', 'in', ('sign_in', 'sign_out')),
+                                     ], limit=1, order='name DESC')
+                next_add_ids = self.\
+                    search(cr, uid, [
+                                     ('employee_id', '=', att.employee_id.id),
+                                     ('name', '>', att.name),
+                                     ('action', 'in', ('sign_in', 'sign_out')),
+                                     ], limit=1, order='name ASC')
+                prev_atts = self.browse(cr, uid, prev_att_ids, context=context)
+                next_atts = self.browse(cr, uid, next_add_ids, context=context)
+                # check for alternance, return False if at least one condition is not satisfied
+                if prev_atts and prev_atts[0].action == att.action: # previous exists and is same action
+                    return False
+                if next_atts and next_atts[0].action == att.action: # next exists and is same action
+                    return False
+                if (not prev_atts) and (not next_atts) and att.action != 'sign_in': # first attendance must be sign_in
+                    return False
+        return True
+
+    _constraints = [(_altern_si_so,
+                     'Error ! Sign in (resp. Sign out) must follow Sign out (resp. Sign in)',
+                     ['action'])]
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
