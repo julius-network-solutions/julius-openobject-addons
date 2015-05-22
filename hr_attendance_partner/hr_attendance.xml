@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_attendance_who" model="ir.ui.view">
+            <field name="name">hr.attendance.tree</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_who"/> 
+            <field name="arch" type="xml">
+                <field name="employee_id" position="before">
+                    <field name="type"/>
+                </field>
+                <field name="employee_id" position="after">
+                    <field name="partner_id"
+                        attrs="{'invisible': [('type', '!=', 'partner')],}"/>
+                </field>
+                <field name="employee_id" position="attributes">
+                    <attribute name="attrs">{'invisible': [('type', '!=', 'employee')],}</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_attendance_form" model="ir.ui.view">
+            <field name="name">hr.attendance.form</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_form"/> 
+            <field name="arch" type="xml">
+                <field name="employee_id" position="before">
+                    <field name="type"/>
+                </field>
+                <field name="employee_id" position="after">
+                    <field name="partner_id"
+                        attrs="{
+                                'invisible': [('type', '!=', 'partner')],
+                                'required': [('type', '=', 'partner')],
+                                }"/>
+                </field>
+                <field name="employee_id" position="attributes">
+                    <attribute name="attrs">{
+                                             'invisible': [('type', '!=', 'employee')],
+                                             'required': [('type', '=', 'employee')],
+                                             }</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_hr_attendance_filter" model="ir.ui.view">
+            <field name="name">hr.attendance.search</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_hr_attendance_filter"/> 
+            <field name="arch" type="xml">
+                <field name="employee_id" position="after">
+                    <field name="partner_id"/>
+                </field>
+                <filter name="employee" position="after">
+                    <filter name="partner" string="Partner" context="{'group_by': 'partner_id'}"/>
+                </filter>
+                <filter string="My Attendance" position="after">
+                    <separator/>
+                    <filter string="Employee" name="is_employee" domain="[('type', '=', 'employee')]"/>
+                    <filter string="Partner" name="is_partner" domain="[('type', '=', 'partner')]"/>
+                </filter>
+            </field>
+        </record>
+
+    </data>
+</openerp>
