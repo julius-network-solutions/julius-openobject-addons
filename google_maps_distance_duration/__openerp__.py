@@ -32,7 +32,7 @@ Call the Google API to get distance and duration between 2 points
     'author': 'Julius Network Solutions',
     'website': 'http://www.julius.fr',
     'depends': [
-                'partner_google_maps_parameters',
+                'base',
                 ],
     'data': [],
     'test': [],
