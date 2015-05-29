@@ -27,12 +27,14 @@ class InheritSession(Session):
     def session_info(self):
         res = super(InheritSession, self).session_info()
         cr = request.env.cr
-        cr.execute("""SELECT 1 FROM res_groups_users_rel
-                   WHERE uid=%s AND gid IN
-                   (SELECT res_id FROM ir_model_data WHERE
-                   module=%s AND name=%s)""",
-                   (request.env.user.id, 'base', 'group_portal'))
-        portal = bool(cr.fetchone())
+        portal = True
+        if request.env.user:
+            cr.execute("""SELECT 1 FROM res_groups_users_rel
+                       WHERE uid=%s AND gid IN
+                       (SELECT res_id FROM ir_model_data WHERE
+                       module=%s AND name=%s)""",
+                       (request.env.user.id, 'base', 'group_portal'))
+            portal = bool(cr.fetchone())
         group_portal = portal if request.session.uid else None
         res.update({'portal_user': group_portal and 1 or 0})
         return res
