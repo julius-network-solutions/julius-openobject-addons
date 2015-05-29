@@ -8,12 +8,12 @@
 			<field name="inherit_id" ref="hr.view_employee_form"/>
 			<field name="arch" type="xml">
 				<field name="name" position="after">
-                    <field name="employee_name" invisible="1"/>
+                    <field name="employee_name"/>
                     <field name="last_name" placeholder="Last name" class="oe_edit_only"/>
 					<field name="first_name" placeholder="First name" class="oe_edit_only"/>
 				</field>
                 <field name="name" position="attributes">
-                    <attribute name="class">oe_view_only</attribute>
+                    <attribute name="invisible">1</attribute>
                 </field>
             </field>
         </record>
@@ -28,6 +28,20 @@
                     <field name="first_name" placeholder="First name" class="oe_edit_only"/>
                 </field>
             </field>
+        </record>
+
+        <record id="view_employee_tree" model="ir.ui.view">
+            <field name="name">Employees</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="employee_name"/>
+                </field>
+                <field name="name" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+             </field>
         </record>
 
     </data>
