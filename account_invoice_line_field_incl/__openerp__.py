@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,27 +17,32 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
-    "name" : "Field incl in lines",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
-    "website" : "http://www.julius.fr",
+    "name": "Field incl in lines",
+    "summary": "Field Included taxes in invoice lines",
+    "version": "1.0",
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "category": 'Accounting & Finance',
-    'complexity': "easy",
-    "depends" : [
-        "base",
-        "account",
-    ],
-    "description" : """ Adds a field price_subtotal_incl in account invoice lines """,
-    "init_xml" : [],
-    "demo_xml" : [],
-    "update_xml" : [
-        'account_view.xml',
-    ],
+    "depends": [
+                "base",
+                "account",
+                ],
+    "description": """
+Included taxes in invoice lines:
+================================
+
+Adds a computed and stored field price_subtotal_incl in account invoice lines
+""",
+    "demo": [],
+    "data": [
+             'account_view.xml',
+             ],
     "active": False,
-    "installable": False,
+    "installable": True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

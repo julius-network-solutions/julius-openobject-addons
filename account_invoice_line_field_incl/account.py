@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2012 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2012-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,12 +17,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from osv import fields, osv
-from tools.translate import _
+from openerp.osv import fields
+from openerp import models, _
 
-class account_invoice_line(osv.osv):
+class account_invoice_line(models.Model):
     _inherit = "account.invoice.line"
     
     def _amount_line_incl(self, cr, uid, ids, prop, unknow_none, unknow_dict):
@@ -30,8 +30,11 @@ class account_invoice_line(osv.osv):
         tax_obj = self.pool.get('account.tax')
         cur_obj = self.pool.get('res.currency')
         for line in self.browse(cr, uid, ids):
-            price = line.price_unit * (1-(line.discount or 0.0)/100.0)
-            taxes = tax_obj.compute_all(cr, uid, line.invoice_line_tax_id, price, line.quantity, product=line.product_id, address_id=line.invoice_id.address_invoice_id, partner=line.invoice_id.partner_id)
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            taxes = tax_obj.\
+                compute_all(cr, uid, line.invoice_line_tax_id,
+                            price, line.quantity, product=line.product_id,
+                            partner=line.invoice_id.partner_id)
             res[line.id] = taxes['total_included']
             if line.invoice_id:
                 cur = line.invoice_id.currency_id
@@ -39,8 +42,9 @@ class account_invoice_line(osv.osv):
         return res
     
     _columns = {
-        'price_subtotal_incl': fields.function(_amount_line_incl, method=True, string='Subtotal', store=True),
-    }
-account_invoice_line()
+                'price_subtotal_incl': fields.\
+                    function(_amount_line_incl, method=True,
+                             string='Subtotal', store=True),
+                }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
