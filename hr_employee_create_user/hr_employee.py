@@ -26,6 +26,11 @@ class hr_employee(models.Model):
 
     @api.model
     def _get_default_user_vals(self, employee):
+        partner = self.env['res.partner']
+        if employee.address_home_id:
+            partner = employee.address_home_id
+            while partner.parent_id:
+                partner = partner.parent_id
         default_name = employee.name
         name = default_name
         i = 1
@@ -38,11 +43,14 @@ class hr_employee(models.Model):
             if not self.search([('login', '=', name)]):
                 break
             i += 1
-        return {
-            'name': employee.name,
-            'login': name,
-            'password': name,
-        }
+        vals = {
+                'name': employee.name,
+                'login': name,
+                'password': name,
+                }
+        if partner:
+            vals.update({'partner_id': partner.id})
+        return vals
 
     @api.multi
     def create_user(self):
