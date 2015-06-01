@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="subscription.view_subscription_form"/>
             <field name="arch" type="xml">
             	<field name="doc_source" position="after">
-                    <field name="first_day"/>
+                    <field name="document_id"/>
                 </field>
          	</field>
       	</record>
