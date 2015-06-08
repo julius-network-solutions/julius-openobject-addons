@@ -1,65 +1,24 @@
-# -*- coding: utf-8 -*-
-###############################################################################
-#
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-###############################################################################
-
+# -*- encoding: utf-8 -*-
+# noqa: This is a backport from Odoo. OCA has no control over style here.
+# flake8: noqa
 {
-    "name": "Bank statement import",
-    "summary": "Bank statement import with specific filters",
-    "version": "1.2",
-    "author": "Julius Network Solutions",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>, Yvan Patry <yvan@julius.fr>, Pierre Monod <pierre@julius.fr>",
-    "category": "Accounting & Finance",
-    'images': [
-        'images/1_accounting_config.jpeg',
-        'images/2_filter_config.jpeg',
-        'images/3_accounting_config.jpeg',
-        'images/4_import_menu.jpeg',
-        'images/5_import_pop_up.jpeg',
+    'name': 'Account Bank Statement Import',
+    'category' : 'Accounting & Finance',
+    'version': '1.0',
+    'author': 'OpenERP SA',
+    'depends': ['account'],
+    'demo': [],
+    'description' : """Generic Wizard to Import Bank Statements.
+    
+    Backport from Odoo 9.0
+    """,
+    'data' : [
+        'account_bank_statement_import_view.xml',
     ],
-    "description": """
-Import your bank statement files.
-=================================
-
-With this module you will be able to:
-    * Set in your accounts configuration and other information by default
-    * Add bank statements
-    * View and change your bank statements
-
-You will be able to define:
-    * new parsers to import the files given by your bank.
-""",
-    "depends": [
-        "account",
+    'demo': [
+        'demo/fiscalyear_period.xml',
+        'demo/partner_bank.xml',
     ],
-    "demo": [],
-    "data": [
-        "security/ir.model.access.csv",
-#         "data/filters_data.xml",
-        "account_journal_view.xml",
-        "bank_statement_data.xml",
-        "config_view.xml",
-        "wizard/statement_import.xml",
-    ],
-    "active": False,
-    "installable": True,
+    'auto_install': False,
+    'installable': True,
 }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-
