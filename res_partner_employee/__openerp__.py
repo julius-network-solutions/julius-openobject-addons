@@ -20,24 +20,25 @@
 ###############################################################################
 
 {
-    "name" : "Automatic Partner for Employee",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://www.julius.fr/",
-    "category" : "Human Resources",
-    "depends" : [
-        "base",
-        "hr",
-    ],
+    "name": "Automatic Partner for Employee",
+    "version": "0.1",
+    "author": "Julius Network Solutions",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
+    "website": "http://www.julius.fr/",
+    "category": "Human Resources",
+    "depends": [
+                "base",
+                "hr",
+                ],
     "description": """
 Creates automatically a Partner for a new employee
 """,
-    "demo" : [],
-    "data" : [
-       "employee_view.xml",
-    ],
-    'installable' : True,
-    'active' : False,
+    "demo": [],
+    "data": [
+             "employee_view.xml",
+             ],
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
