@@ -39,16 +39,16 @@ class hr_employee(models.Model):
         supplier_taxes_id = [x.id for x in category.purchase_taxes_ids]
         name = self.name or ''
         vals = {
-            'name': name,
-            'uom_id': uom and uom.id or False,
-            'uom_po_id': uom and uom.id or False,
-            'categ_id': category and category.id or False,
-            'taxes_id': [(6,0, taxes_id)],
-            'supplier_taxes_id': [(6,0, supplier_taxes_id)],
-            'type': 'service',
-            'standard_price': 1,
-            'list_price': 1,
-        }
+                'name': name,
+                'uom_id': uom and uom.id or False,
+                'uom_po_id': uom and uom.id or False,
+                'categ_id': category and category.id or False,
+                'taxes_id': [(6,0, taxes_id)],
+                'supplier_taxes_id': [(6,0, supplier_taxes_id)],
+                'type': 'service',
+                'standard_price': 1,
+                'list_price': 1,
+                }
         return product_obj.create(vals)
 
     @api.multi
