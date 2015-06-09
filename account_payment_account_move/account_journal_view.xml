@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_account_journal_group_payment_line_form" model="ir.ui.view">
+            <field name="name">account.journal.group.payment.line.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <field name="centralisation" position="after">
+                    <field name="group_payment_line"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

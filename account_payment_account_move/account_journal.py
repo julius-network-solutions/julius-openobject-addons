@@ -19,31 +19,14 @@
 #
 ###############################################################################
 
+from openerp import models, fields
 
-{
-    "name": "Payment order generate move",
-    "name": "Generate the account move on payment order validation",
-    "version": "1.0",
-    "author": "Julius Network Solutions",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
-    "category": "Accounting & Finance",
-    "depends": [
-                "account",
-                "account_payment",
-                ],
-    "demo":[],
-    "data": [
-             "account_journal_view.xml",
-             "payment_export_view.xml",
-             ],
-    "description": """
-Account move on payment order:
-==============================
+class account_journal(models.Model):
+    _inherit = 'account.journal'
 
-This module generate an account move on payment orders validation.
-""",
-    "active": False,
-    "installable":True,
-}
+    group_payment_line = fields.\
+        Boolean('Group payment lines', default=True,
+                help='If checked, the system will group lines in the move' \
+                'generated from the payment')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

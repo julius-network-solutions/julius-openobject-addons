@@ -19,6 +19,7 @@
 #
 ###############################################################################
 
+from . import account_journal
 from . import payment_order
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
