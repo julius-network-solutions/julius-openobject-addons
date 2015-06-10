@@ -1,0 +1,180 @@
+<?xml version="1.0" ?>
+<openerp>
+	<data>
+
+		<record id="account_bank_statement_import_view" model="ir.ui.view">
+			<field name="name">Import bank statement file</field>
+			<field name="model">account.bank.statement.import</field>
+			<field name="arch" type="xml">
+				<form string="Import Bank statement file" version="7.0">
+                    <group>
+                        <label for="id" string="Import Parameters"/>
+                        <div>
+                            <div>
+                                <label for="filter_id"/>
+                                <field name="filter_id" class="oe_inline" widget="selection"/>
+                            </div>
+                            <div>
+                                <label for="date_format"/>
+                                <field name="date_format" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="statement_update"/>
+                                <field name="statement_update" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="many_statements"/>
+                                <field name="many_statements" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="file_data"/>
+                                <field name="file_data" class="oe_inline"/>
+                            </div>
+                        </div>
+                    </group>
+                    <group>
+	                    <label for="id" string="Accounting Parameters"/>
+						<div>
+                            <div>
+                                <label for="journal_id"/>
+                                <field name="journal_id" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="many_journals"/>
+                                <field name="many_journals" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="fill_accounts"/>
+                                <field name="fill_accounts" class="oe_inline"/>
+                            </div>
+                            <div attrs="{'invisible': [('fill_accounts', '=', False)]}">
+                                <label for="payable_id"/>
+                                <field name="payable_id" class="oe_inline"
+                                    attrs="{'required': [('fill_accounts', '=', True)]}"/>
+                            </div>
+                            <div attrs="{'invisible': [('fill_accounts', '=', False)]}">
+                                <label for="receivable_id"/>
+                                <field name="receivable_id" class="oe_inline"
+                                    attrs="{'required': [('fill_accounts', '=', True)]}"/>
+                            </div>
+                            <div attrs="{'invisible': [('fill_accounts', '=', False)]}">
+                                <label for="awaiting_id"/>
+                                <field name="awaiting_id" class="oe_inline"
+                                    attrs="{'required': [('fill_accounts', '=', True)]}"/>
+                            </div>
+						</div>
+					</group>
+                    <group>
+                        <label for="id" string="Import Parameters details"/>
+                        <div>
+                            <div>
+                                <label for="edit_parameters"/>
+                                <field name="edit_parameters" class="oe_inline"/>
+                            </div>
+                        </div>
+                        <newline/>
+                        <div attrs="{'invisible': [('edit_parameters', '=', False)]}">
+                            <label for="separator"/>
+                            <field name="separator" class="oe_inline"/>
+                            <field name="separator_other" class="oe_inline" attrs="{'invisible': [('separator', '!=', 'other')]}"/>
+                        </div>
+                        <div attrs="{'invisible': [('edit_parameters', '=', False)]}">
+                            <label for="encoding"/>
+                            <field name="encoding" class="oe_inline"/>
+                            <field name="encoding_other" class="oe_inline" attrs="{'invisible': [('encoding', '!=', 'other')]}"/>
+                        </div>
+                        <group attrs="{'invisible': [('edit_parameters', '=', False)]}">
+	                      	<group>
+	          	                <field name="text_separator"/>      	
+							</group>
+							<group>
+	          	                <field name="thousand_separator"/>      	
+							</group>                  
+	                    </group>
+                        <newline/>
+                        <group attrs="{'invisible': [('edit_parameters', '=', False)]}">
+                            <div>
+                                <label for="ignored_lines"/>
+                                <field name="ignored_lines" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_name"/>
+                                <field name="column_name" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_date"/>
+                                <field name="column_date" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_date_val"/>
+                                <field name="column_date_val" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="amount_separated"/>
+                                <field name="amount_separated" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_debit"/>
+                                <field name="column_debit" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_credit"/>
+                                <field name="column_credit" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_ref"/>
+                                <field name="column_ref" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="column_note"/>
+                                <field name="column_note" class="oe_inline"/>
+                            </div>
+                        </group>
+                    </group>
+					<footer>
+						<button name="file_parsing" string="Import" type="object" class="oe_highlight"/>
+						or
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_bank_statement_import" model="ir.actions.act_window">
+			<field name="name">Import bank statement file</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.bank.statement.import</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+			<field name="view_id" ref="account_bank_statement_import_view"/>
+		</record>
+		<menuitem name="Import bank statement file" parent="account.menu_finance_bank_and_cash" id="menu_account_bank_statement_file_import" action="action_bank_statement_import" sequence="10"/>
+
+		<record id="account_bank_statement_file_report_view" model="ir.ui.view">
+			<field name="name">Imported bank statement file</field>
+			<field name="model">account.bank.statement.import</field>
+			<field name="arch" type="xml">
+				<form string="Bank statement file report" version="7.0">
+					<group>
+						<field name="note" colspan="4"/>
+					</group>
+					<footer>
+						<button name="open_bank_statements" string="Open Imported Bank Statements" type="object" class="oe_highlight"/>
+						or
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_bank_statement_imported" model="ir.actions.act_window">
+			<field name="name">Imported bank statements</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.bank.statement</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+	</data>
+</openerp>
