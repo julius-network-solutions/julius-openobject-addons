@@ -38,9 +38,10 @@ or for all of them.
         'account_analytic_analysis',
     ],
     'data': [
-        'security/ir.model.access.csv',
-        'contract_period_view.xml',
-    ],
+             'security/ir.model.access.csv',
+             'contract_period_view.xml',
+             'company_view.xml',
+             ],
     'demo': [],
     'installable': True,
     'active': False,
