@@ -7,14 +7,12 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <div name="buttons" position='inside'>
+                <field name="title" position="after">
+                    <field name="partner_user_id"/>
                     <button name="create_user"
                         string="Create User" type="object"
                         class="oe_highlight"
                         attrs="{'invisible': [('partner_user_id', '!=', False)]}"/>
-                </div>
-                <field name="title" position="after">
-                    <field name="partner_user_id"/>
                 </field>
             </field>
         </record>
