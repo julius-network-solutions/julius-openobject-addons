@@ -28,6 +28,7 @@ class res_partner(models.Model):
 
     @api.model
     def _get_default_user_vals(self, partner):
+        users_obj = self.env['res.users']
         default_name = partner.name
         name = default_name
         i = 1
@@ -37,14 +38,14 @@ class res_partner(models.Model):
                 start = False
             else:
                 name = default_name + str(i)
-            if not self.search([('login', '=', name)]):
+            if not users_obj.search([('login', '=', name)]):
                 break
             i += 1
         return {
-            'name': partner.name,
-            'login': name,
-            'password': name,
-        }
+                'partner_id': partner.id,
+                'login': name,
+                'password': name,
+                }
 
     @api.multi
     def create_user(self):
@@ -56,7 +57,8 @@ class res_partner(models.Model):
                 else:
                     user_vals = partner._get_default_user_vals(self)
                     if user_vals:
-                        user = user_obj.create(user_vals)
+                        user = user_obj.with_context(do_not_update=1).\
+                            create(user_vals)
                         partner.partner_user_id = user
                 
 
