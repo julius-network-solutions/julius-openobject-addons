@@ -83,7 +83,7 @@
 			<field name="name">CODA</field>
 			<field name="filter">coda</field>
 			<field name="active" eval="False"/>
-		</record>
+		</record>-->
     
         <record model="account.bankimport.filters" id="filters_default">
             <field name="name">DEFAULT</field>
@@ -100,7 +100,7 @@
             <field name="def_date_format">%d/%m/%Y</field>
         </record>
 	
-		<<record model="account.bankimport.filters" id="filters_emirates_nbd">
+		<!--<record model="account.bankimport.filters" id="filters_emirates_nbd">
 			<field name="name">Emirates NBD</field>
 			<field name="filter">emirates_nbd</field>
 			<field name="active" eval="False"/>
