@@ -22,17 +22,17 @@
 {
     "name": "Bank statement import",
     "summary": "Bank statement import with specific filters",
-    "version": "1.2",
+    "version": "1.3",
     "author": "Julius Network Solutions",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>, Yvan Patry <yvan@julius.fr>, Pierre Monod <pierre@julius.fr>",
     "category": "Accounting & Finance",
-    'images': [
-        'images/1_accounting_config.jpeg',
-        'images/2_filter_config.jpeg',
-        'images/3_accounting_config.jpeg',
-        'images/4_import_menu.jpeg',
-        'images/5_import_pop_up.jpeg',
-    ],
+    "images": [
+               "images/1_accounting_config.jpeg",
+               "images/2_filter_config.jpeg",
+               "images/3_accounting_config.jpeg",
+               "images/4_import_menu.jpeg",
+               "images/5_import_pop_up.jpeg",
+               ],
     "description": """
 Import your bank statement files.
 =================================
@@ -44,6 +44,12 @@ With this module you will be able to:
 
 You will be able to define:
     * new parsers to import the files given by your bank.
+
+UPDATE 1.3:
+-----------
+
+    * Check uniqueness by journal.
+    * Add a possibility to import a filter outside the "wizard/filters" folder: e.g. inside an other module.
 """,
     "depends": [
         "account",
