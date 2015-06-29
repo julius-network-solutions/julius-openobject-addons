@@ -37,6 +37,8 @@ class product_tag(models.Model):
     parent_left = fields.Integer('Left Parent', select=True)
     parent_right = fields.Integer('Right Parent', select=True)
 
+    image = fields.Binary('Image')
+    
     _parent_store = True
     _parent_order = 'name'
     _order = 'parent_left'
