@@ -52,6 +52,7 @@ class contract_period(models.Model):
 class account_analytic_account(models.Model):
     _inherit = 'account.analytic.account'
 
+    date_init = fields.Date('First Billing Date')
     invoice_term = fields.Selection([
                                      ('payable_before', 'Payable in advance'),
                                      ('payable_after', 'Payable at the end'),

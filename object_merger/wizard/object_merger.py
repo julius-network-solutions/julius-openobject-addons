@@ -115,7 +115,14 @@ class object_merger(orm.TransientModel):
                             or False
             if field_data:
                 model_m2m, rel1, rel2 = field_data._sql_names(self.pool.get(model))
-                requete = "UPDATE "+model_m2m+" SET "+rel2+"="+str(object_id)+" WHERE "+ ustr(rel2) +" IN " + str(tuple(object_ids)) + ";"
+                requete = "UPDATE %s SET %s=%s WHERE %s " \
+                    "IN %s AND %s NOT IN (SELECT DISTINCT(%s) " \
+                    "FROM %s WHERE %s = %s);" %(model_m2m,rel2,
+                                                str(object_id),
+                                                ustr(rel2),
+                                                str(tuple(object_ids)),
+                                                rel1,rel1,model_m2m,
+                                                rel2,str(object_id))
                 cr.execute(requete)
         unactive_object_ids = model_pool.search(cr, uid, [('id', 'in', object_ids), ('id', '<>', object_id)], context=context)
         model_pool.write(cr, uid, unactive_object_ids, {'active': False}, context=context)

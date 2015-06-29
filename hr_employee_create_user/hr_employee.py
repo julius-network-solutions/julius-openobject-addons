@@ -50,6 +50,7 @@ class hr_employee(models.Model):
                 }
         if partner:
             vals.update({'partner_id': partner.id})
+            del vals['name']
         return vals
 
     @api.multi
@@ -59,8 +60,8 @@ class hr_employee(models.Model):
             if not employee.user_id:
                 user_vals = employee._get_default_user_vals(self)
                 if user_vals:
-                    user = user_obj.create(user_vals)
+                    user = user_obj.with_context(do_not_update=1).\
+                        create(user_vals)
                     employee.user_id = user
-                
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
