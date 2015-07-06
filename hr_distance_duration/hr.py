@@ -35,10 +35,10 @@ class hr_job(models.Model):
             departure_time = int(time.mktime(n.timetuple()))
         origin = 'Paris'
         destination = self.address_id and \
-            self.address_id.get_url_parameters_partner_vals() or origin
+            self.address_id._get_url_parameters_partner_vals(self.address_id) or origin
         maps = GoogleMaps()
         for applicant in self.application_ids:
-            origin = applicant.partner_id.get_url_parameters_partner_vals()
+            origin = applicant.partner_id._get_url_parameters_partner_vals(applicant.partner_id)
             duration = maps.duration(origin, destination, mode='transit',
                                      departure_time=departure_time) / 60.0
             distance = maps.distance(origin, destination, mode='transit',

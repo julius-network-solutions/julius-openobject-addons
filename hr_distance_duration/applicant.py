@@ -53,9 +53,9 @@ class hr_applicant(models.Model):
                                             state=partner.state_id.name,
                                             country=partner.country_id.name)
             maps = GoogleMaps()
-            duration = maps.duration(origin, destination, mode='transit',
+            duration = maps.duration(origin, destination, mode='walking',
                                      departure_time=departure_time) / 60.0
-            distance = maps.distance(origin, destination, mode='transit',
+            distance = maps.distance(origin, destination, mode='walking',
                                      departure_time=departure_time) / 1000.0
         self.write({'duration': duration, 'distance': distance})
         return True
