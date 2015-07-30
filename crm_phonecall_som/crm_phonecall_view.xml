@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+	<!--  PhoneCalls Tree View -->
+
+		<record model="ir.ui.view" id="crm_case_phone_tree_view_som">
+			<field name="name">CRM - Phone Calls Tree som</field>
+			<field name="model">crm.phonecall</field>
+			<field name="type">tree</field>
+			<field name="inherit_id" ref="crm.crm_case_phone_tree_view"/>
+			<field name="arch" type="xml">
+				<field name="user_id" position="after">
+					<field name="som"/>
+				</field>
+			</field>
+		</record>
+
+	<!-- Phonecalls Form View -->
+
+		<record model="ir.ui.view" id="crm_case_phone_form_view_som">
+			<field name="name">CRM - Phone Call Form som</field>
+			<field name="model">crm.phonecall</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="crm.crm_case_phone_form_view"/>
+			<field name="arch" type="xml">
+				<field name="opportunity_id" position="after">
+					<field name="som" widget="selection"/>
+				</field>
+			</field>
+		</record>
+
+    <!--Inbound Phonecalls Tree View -->
+
+		<record model="ir.ui.view" id="crm_case_inbound_phone_tree_view_som">
+			<field name="name">CRM - Inbound Phone Calls Tree som</field>
+			<field name="model">crm.phonecall</field>
+			<field name="type">tree</field>
+			<field name="inherit_id" ref="crm.crm_case_inbound_phone_tree_view"/>
+			<field name="arch" type="xml">
+				<field name="user_id" position="after">
+					<field name="som"/>
+				</field>
+			</field>
+		</record>
+
+	<!-- Phonecalls Search View  -->
+
+		<record id="view_crm_case_phonecalls_filter_som" model="ir.ui.view">
+			<field name="name">CRM - Phone Calls Search</field>
+			<field name="model">crm.phonecall</field>
+			<field name="type">search</field>
+			<field name="inherit_id" ref="crm.view_crm_case_phonecalls_filter"/>
+			<field name="arch" type="xml">
+				<field name="name" position="before">
+					<field name="som" widget="selection"/>
+				</field>
+			</field>
+		</record>
+
+	<!--  SOM Tree View -->
+
+		<record model="ir.ui.view" id="res_partner_som_tree_view">
+			<field name="name">State of Mind tree</field>
+			<field name="model">res.partner.som</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="State of Mind">
+					<field name="name"/>
+					<field name="factor"/>
+				</tree>
+			</field>
+		</record>
+
+	<!-- SOM Form View -->
+
+		<record model="ir.ui.view" id="res_partner_som_form_view">
+			<field name="name">State of Mind form</field>
+			<field name="model">res.partner.som</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="State of Mind">
+					<field name="name"/>
+					<field name="factor"/>
+				</form>
+			</field>
+		</record>
+
+	<!-- SOM search View -->
+
+		<record model="ir.ui.view" id="res_partner_som_search_view">
+			<field name="name">State of Mind search</field>
+			<field name="model">res.partner.som</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search string="State of Mind">
+					<field name="name"/>
+					<field name="factor"/>
+				</search>
+			</field>
+		</record>
+
+		<record id="action_res_partner_som_form" model="ir.actions.act_window">
+			<field name="name">State of Mind</field>
+			<field name="res_model">res.partner.som</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="res_partner_som_search_view"/>
+		</record>
+
+		<menuitem id="crm_phonecall_som" name="States of Mind" action="action_res_partner_som_form" parent="crm.menu_crm_config_phonecall" sequence="10"/>
+
+    </data>
+</openerp>

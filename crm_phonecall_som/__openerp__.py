@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,23 +18,24 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #################################################################################
-
-from openerp.addons.google_maps_distance_duration.google_maps import GoogleMaps
-from openerp.addons.base_geolocalize.models.res_partner import geo_query_address
-import datetime
-import time
-from openerp import models, fields, api
-
-class hr_job(models.Model):
-    _inherit = 'hr.job'
-
-    @api.one
-    def get_duration(self):
-        departure_time = self._context.get('departure_time')
-        if not departure_time:
-            n = datetime.datetime.now()
-            departure_time = int(time.mktime(n.timetuple()))
-        self.application_ids.get_distance_duration()
-        return True
-
+{
+    'name': 'Customer & Supplier Relationship Management',
+    'version': '1.0',
+    'category': 'Generic Modules/CRM & SRM',
+    'description': """ This modules adds the State of Mind into the crm phonecall missing in V6 """,
+    'author': 'Julius Network Solutions',
+    'website': 'http://www.julius.fr',
+    'depends': [
+        'crm',
+    ],
+    'init_xml': [],
+    'data': [
+        'security/ir.model.access.csv',
+        'crm_phonecall_view.xml',
+    ],
+    'demo_xml': [],
+    'test': [],
+    'installable': True,
+    'active': False,
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

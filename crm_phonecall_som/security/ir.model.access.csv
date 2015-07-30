@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_res_partner_som_saelsman","res.partner.som salesman","model_res_partner_som","base.group_sale_salesman",1,1,1,0
+"access_res_partner_som_manager","res.partner.som manager","model_res_partner_som","base.group_sale_manager",1,1,1,1
+"access_res_partner_som_user","res.partner.som user","model_res_partner_som","base.group_user",1,0,0,0

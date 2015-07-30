@@ -44,7 +44,6 @@ def to_unicode(s):
 def str2float(float_str, separator=None):
      try:
          float_str = float_str.replace('"','')
-         print float_str
          if separator:
              float_str = float_str.replace(separator, '.')
          return float(float_str)

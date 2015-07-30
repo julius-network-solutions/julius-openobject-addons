@@ -9,6 +9,7 @@
                 <tree string="Location">
                     <field name="name"/>
                     <field name="company_id"/>
+                    <field name="partner_id"/>
                 </tree>
             </field>
         </record>
@@ -28,6 +29,9 @@
                     </div>
                     <group>
                         <field name="company_id"/>
+                        <field name="partner_id"
+                            context="{'search_default_customer':1, 'show_address': 1}"
+                            options='{"always_reload": True}'/>
                     </group>
                 </form>
             </field>
@@ -40,6 +44,7 @@
                 <search string="Location">
                     <field name="name"/>
                     <field name="company_id"/>
+                    <field name="partner_id"/>
                 </search>
             </field>
         </record>

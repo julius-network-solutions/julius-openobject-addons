@@ -40,7 +40,8 @@ def get_data(self, recordlist):
     default_key = time.strftime('%Y-%m')
     statement_date = False
     thousand_separator = self.thousand_separator
-    text_separator =self.text_separator
+    text_separator = self.text_separator
+    journal = self.journal_id
     return self.format_statement_from_data(recordlist, separator,
                                            date_format=date_format,
                                            many_statements=many_statements,
@@ -56,6 +57,7 @@ def get_data(self, recordlist):
                                            statement_date=False,
                                            default_key=default_key,
                                            thousand_separator=thousand_separator,
-                                           text_separator=text_separator)
+                                           text_separator=text_separator,
+                                           default_journal=journal)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

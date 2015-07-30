@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2011 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,22 +19,29 @@
 #
 #################################################################################
 
-from openerp.addons.google_maps_distance_duration.google_maps import GoogleMaps
-from openerp.addons.base_geolocalize.models.res_partner import geo_query_address
-import datetime
 import time
-from openerp import models, fields, api
+from openerp.osv import osv, orm, fields
+from openerp.tools.translate import _
 
-class hr_job(models.Model):
-    _inherit = 'hr.job'
+#
+# Partner: State of Mind
+#
+class res_partner_som(osv.osv):
+    _name = "res.partner.som"
+    _columns = {
+        'name': fields.char('State of Mind',size=64, required=True),
+        'factor': fields.float('Factor', required=True)
+    }
+res_partner_som()
 
-    @api.one
-    def get_duration(self):
-        departure_time = self._context.get('departure_time')
-        if not departure_time:
-            n = datetime.datetime.now()
-            departure_time = int(time.mktime(n.timetuple()))
-        self.application_ids.get_distance_duration()
-        return True
+class crm_phonecall(osv.osv):
+    _inherit = "crm.phonecall"
+
+    _columns = {
+        'som': fields.many2one('res.partner.som', 'State of Mind'),
+    }
+
+crm_phonecall()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+

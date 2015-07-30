@@ -190,8 +190,8 @@ class account_bank_statement_import(models.TransientModel):
     def get_file(self, recordlist):
         # based on the filter we parse the document
         filter_name = self.filter_id.filter
-        
-        exec "from .filters import " + filter_name + " as parser"
+        filter_location = self.filter_id.filter_location or ".filters"
+        exec "from " + filter_location + " import " + filter_name + " as parser"
         # opening the file speficied as bank_file and read the data
         try:
             bank_statements = parser.get_data(self, recordlist)
@@ -372,7 +372,7 @@ class account_bank_statement_import(models.TransientModel):
         return month_statement
 
     @api.model
-    def check_line_uniqueness(self, name, date, amount, ref=None):
+    def check_line_uniqueness(self, name, date, amount, ref=None, journal=None):
         """
         This method checks of uniqueness of a field in the database
         """
@@ -384,6 +384,8 @@ class account_bank_statement_import(models.TransientModel):
                   ]
         if ref:
             domain += [('ref', '=', ref)]
+        if journal:
+            domain += [('journal_id', '=', journal.id)]
         return line_obj.search(domain, count=True)
 
     @api.model
@@ -419,12 +421,13 @@ class account_bank_statement_import(models.TransientModel):
     @api.model
     def _group_by_journal(self, recordlist, separator, date_format,
                           many_journals, many_statements, date_column,
-                          ignored_lines=0, default_key=False):
+                          ignored_lines=0, default_key=False,
+                          default_journal=False):
         journal_statement = {}
         month_statement = {}
         journal_list = []
         if not many_journals:
-            journal_list = [(False, recordlist)]
+            journal_list = [(default_journal, recordlist)]
         else:
             i = 1
             while recordlist:
@@ -451,7 +454,7 @@ class account_bank_statement_import(models.TransientModel):
             if journal_lines:
                 journal_list.append((i, journal_lines))
         for journal, lines in journal_list:
-            if not isinstance(journal, bool):
+            if not isinstance(journal, bool) and many_journals:
                 journal = self._find_journal_from_lines(lines,
                                                         separator,
                                                         ignored_lines)
@@ -479,16 +482,17 @@ class account_bank_statement_import(models.TransientModel):
                                    separated_amount=False, receivable_id=False,
                                    payable_id=False, ref=False, extra_note=False,
                                    default_key=False, statement_date=False,
-                                   thousand_separator=False, text_separator=False):
+                                   thousand_separator=False, text_separator=False,
+                                   default_journal=False):
         account_period_obj = self.env['account.period']
         bank_statements = []
         pointor = 0
-
         journal_statement = self.\
             _group_by_journal(recordlist, separator, date_format,
                               many_journals, many_statements, date_column=date,
                               ignored_lines=ignored_lines,
-                              default_key=default_key)
+                              default_key=default_key,
+                              default_journal=default_journal)
         # loop on each journals
         for journal in journal_statement.keys():
             month_statement = journal_statement.get(journal)
@@ -536,7 +540,8 @@ class account_bank_statement_import(models.TransientModel):
                     st_line['amount'] = amount
                     if self.check_line_uniqueness(st_line['name'],
                                                   st_line['date'],
-                                                  st_line['amount']):
+                                                  st_line['amount'],
+                                                  journal=journal):
                         continue
                     else:
                         bank_statement_lines[pointor] = st_line
@@ -552,6 +557,7 @@ class account_bank_statement_import(models.TransientModel):
                             ('date_start', '<=', statement_date_search),
                             ('date_stop', '>=', statement_date_search),
                             ('special', '=', False),
+                            ('company_id', '=', journal.company_id.id),
                             ], limit=1)
                 bank_statement['period_id'] = period
                 bank_statements.append(bank_statement)

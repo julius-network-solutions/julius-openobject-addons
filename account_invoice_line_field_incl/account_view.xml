@@ -12,6 +12,17 @@
 				</field>
 			</field>
         </record>
+
+        <record id="view_invoice_form_add_field_in_line" model="ir.ui.view">
+            <field name="name">account.invoice.form.add.field.in.line</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="after">
+                    <field name="price_subtotal_incl"/>
+                </xpath>
+            </field>
+        </record>
         
 	</data>
 </openerp>
