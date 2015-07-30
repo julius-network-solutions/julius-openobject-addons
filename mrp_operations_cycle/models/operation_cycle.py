@@ -19,6 +19,7 @@
 #
 ###############################################################################
 
+import time
 from openerp import api, models, fields
 from datetime import datetime, timedelta
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -121,16 +122,16 @@ class operation_cycle(models.Model):
     @api.multi 
     def action_done(self):
         delay = 0.0
-        date_now = time.strftime('%Y-%m-%d %H:%M:%S')
-
-        date_start = datetime.strptime(self.date_start,'%Y-%m-%d %H:%M:%S')
-        date_finished = datetime.strptime(date_now,'%Y-%m-%d %H:%M:%S')
-        delay += (date_finished-date_start).days * 24
-        delay += (date_finished-date_start).seconds / float(60*60)
-
-        self.write({'state':'done', 'date_finished': date_now,'delay':delay})
-        self.modify_production_order_state('done')
-        return True
+        if self.start_date:
+            date_now = time.strftime('%Y-%m-%d %H:%M:%S')
+            date_start = datetime.strptime(self.start_date,'%Y-%m-%d %H:%M:%S')
+            date_finished = datetime.strptime(date_now,'%Y-%m-%d %H:%M:%S')
+            delay += (date_finished-date_start).days * 24
+            delay += (date_finished-date_start).seconds / float(60*60)
+    
+            self.write({'state':'done', 'date_finished': date_now,'delay':delay})
+    #         self.modify_production_order_state('done')
+            return True
     
     @api.multi
     def action_cancel(self):
