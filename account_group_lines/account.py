@@ -60,6 +60,7 @@ class account_move(models.Model):
             date = line[16]
             ref = line[17]
             state = line[18]
+            company_id = line[19]
             domain = [('move_id', '=', move_id),]
             request_columns = '(move_id, amount_taxed, amount_currency, tax_amount, credit, debit, date, ref'
             request_data = [move_id, amount_taxed or 0, amount_currency or 0, tax_amount or 0, credit, debit, date, str(ref)]
@@ -133,6 +134,12 @@ class account_move(models.Model):
                 domain.append(('debit', '>=', 0.01),)
             elif credit:
                 domain.append(('credit', '>=', 0.01),)
+            if company_id:
+                domain.append(('company_id', '=', company_id),)
+                request_columns += ', company_id'
+                request_data.append(company_id)
+            else:
+                domain.append(('company_id', '=', None),)
             line_ids = line_obj.search(cr, uid, domain)
             if line_ids and len(line_ids) > 1:
                 name = ''
@@ -166,18 +173,18 @@ class account_move(models.Model):
             context = {}
         for move in self.browse(cr, uid, ids):
             cr.execute("""SELECT account_id, reconcile_id, reconcile_partial_id, statement_id, currency_id, period_id, move_id, analytic_account_id, journal_id, tax_code_id, partner_id,
-                                 sum(amount_taxed), sum(amount_currency), sum(tax_amount), sum(credit), sum(debit), date, ref, state
+                                 sum(amount_taxed), sum(amount_currency), sum(tax_amount), sum(credit), sum(debit), date, ref, state, company_id
                             FROM account_move_line
                             WHERE id in (SELECT id FROM account_move_line WHERE credit >= 0.01 AND (debit < 0.01 OR debit IS NULL ) AND move_id = %s )
-                            GROUP BY account_id, reconcile_id, reconcile_partial_id, statement_id, currency_id, period_id, move_id, analytic_account_id, journal_id, tax_code_id, partner_id, date, ref, state 
+                            GROUP BY account_id, reconcile_id, reconcile_partial_id, statement_id, currency_id, period_id, move_id, analytic_account_id, journal_id, tax_code_id, partner_id, date, ref, state, company_id 
                             ORDER BY move_id """ %(move.id))
             credit_lines = cr.fetchall()
             self._groupLines(cr, uid, ids, credit_lines, True, False, context)
             cr.execute("""SELECT account_id, reconcile_id, reconcile_partial_id, statement_id, currency_id, period_id, move_id, analytic_account_id, journal_id, tax_code_id, partner_id,
-                                 sum(amount_taxed),sum(amount_currency),sum(tax_amount),sum(credit),sum(debit), date, ref, state
+                                 sum(amount_taxed),sum(amount_currency),sum(tax_amount),sum(credit),sum(debit), date, ref, state, company_id
                             FROM account_move_line
                             WHERE id in (SELECT id FROM account_move_line WHERE debit >= 0.01 AND (credit < 0.01 OR credit IS NULL)  AND move_id = %s )
-                            GROUP BY account_id, reconcile_id, reconcile_partial_id, statement_id, currency_id, period_id, move_id, analytic_account_id, journal_id, tax_code_id, partner_id, date, ref, state 
+                            GROUP BY account_id, reconcile_id, reconcile_partial_id, statement_id, currency_id, period_id, move_id, analytic_account_id, journal_id, tax_code_id, partner_id, date, ref, state, company_id
                             ORDER BY move_id """ %(move.id))
             debit_lines = cr.fetchall()
             self._groupLines(cr, uid, ids, debit_lines, False, True, context)
