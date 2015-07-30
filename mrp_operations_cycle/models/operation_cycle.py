@@ -122,17 +122,28 @@ class operation_cycle(models.Model):
     @api.multi 
     def action_done(self):
         delay = 0.0
+<<<<<<< HEAD
         if self.date_start:
             date_now = time.strftime('%Y-%m-%d %H:%M:%S')
             
             date_start = datetime.strptime(self.date_start,'%Y-%m-%d %H:%M:%S')
+=======
+        if self.start_date:
+            date_now = time.strftime('%Y-%m-%d %H:%M:%S')
+            date_start = datetime.strptime(self.start_date,'%Y-%m-%d %H:%M:%S')
+>>>>>>> 7736349648c5c4c6c7d8f1a5c098b03e808c5f38
             date_finished = datetime.strptime(date_now,'%Y-%m-%d %H:%M:%S')
             delay += (date_finished-date_start).days * 24
             delay += (date_finished-date_start).seconds / float(60*60)
     
             self.write({'state':'done', 'date_finished': date_now,'delay':delay})
+<<<<<<< HEAD
             self.modify_production_order_state('done')
         return True
+=======
+    #         self.modify_production_order_state('done')
+            return True
+>>>>>>> 7736349648c5c4c6c7d8f1a5c098b03e808c5f38
     
     @api.multi
     def action_cancel(self):
