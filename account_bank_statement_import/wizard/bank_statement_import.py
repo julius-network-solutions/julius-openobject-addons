@@ -557,6 +557,7 @@ class account_bank_statement_import(models.TransientModel):
                             ('date_start', '<=', statement_date_search),
                             ('date_stop', '>=', statement_date_search),
                             ('special', '=', False),
+                            ('company_id', '=', journal.company_id.id),
                             ], limit=1)
                 bank_statement['period_id'] = period
                 bank_statements.append(bank_statement)

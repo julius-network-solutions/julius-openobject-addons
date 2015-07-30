@@ -20,11 +20,14 @@
 ###############################################################################
 
 from openerp import fields, models, api, _
+import openerp.addons.decimal_precision as dp
 
 class account_invoice_line(models.Model):
     _inherit = 'account.invoice.line'
     
-    second_quantity = fields.Float('Second Quantity')
+    second_quantity = fields.\
+        Float('Second Quantity',
+              digits= dp.get_precision('Product Unit of Measure'))
     second_uom_id = fields.Many2one('product.uom', 'Second UoM')
 
     @api.onchange('second_uom_id')
