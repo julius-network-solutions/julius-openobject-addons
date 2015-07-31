@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_hear_about_us_salesman,access_crm_hear_about_us salesman,model_crm_hear_about_us,base.group_sale_salesman,1,1,1,0
+access_crm_hear_about_us_manager,access_crm_hear_about_us manager,model_crm_hear_about_us,base.group_sale_manager,1,1,1,1
+access_crm_hear_about_us_user,access_crm_hear_about_us user,model_crm_hear_about_us,,1,0,0,0
