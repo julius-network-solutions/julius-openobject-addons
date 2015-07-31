@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="crm_hear_about_us_tree" model="ir.ui.view">
+            <field name="name">crm.hear.about.us.tree</field>
+            <field name="model">crm.hear.about.us</field>
+            <field name="arch" type="xml">
+                <tree string="Hear about us">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="crm_hear_about_us_form" model="ir.ui.view">
+            <field name="name">crm.hear.about.us.form</field>
+            <field name="model">crm.hear.about.us</field>
+            <field name="arch" type="xml">
+                <form string="Hear about us">
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="crm_hear_about_us_action" model="ir.actions.act_window">
+            <field name="name">Hear about us</field>
+            <field name="res_model">crm.hear.about.us</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="crm_hear_about_us_action" id="menu_crm_hear_about_us"
+            parent="base.menu_crm_config_lead" sequence="10"/>
+
+        <record model="ir.ui.view" id="crm_lead_hear_about_us_form">
+            <field name="name">CRM - Leads hear about us Form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_leads"/>
+            <field name="priority">30</field>
+            <field name="arch" type="xml">
+                <field name="referred" position="after">
+                    <field name="hear_about_us_id" options='{"no_open": True, "no_create": True}'/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_opportunity_hear_about_us_form">
+            <field name="name">CRM - Opportunities hear about us Form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+            <field name="priority">30</field>
+            <field name="arch" type="xml">
+                <field name="referred" position="after">
+                    <field name="hear_about_us_id" options='{"no_open": True, "no_create": True}'/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
