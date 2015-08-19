@@ -42,6 +42,7 @@ def get_data(self, recordlist):
     statement_date = False
     thousand_separator = self.thousand_separator
     text_separator =self.text_separator
+    default_journal=self.journal_id
     ## Adapt parser for delete undefined line ##
     for line in recordlist[ignored_lines:]:
         line_splited = line.split(separator)
@@ -62,7 +63,7 @@ def get_data(self, recordlist):
                                            statement_date=False,
                                            default_key=default_key,
                                            thousand_separator=thousand_separator,
-                                           text_separator=text_separator)
+                                           text_separator=text_separator, default_journal=default_journal)
     for statement in result:
         if not many_statements:
             balance_end_real = recordlist[4].split(separator)[1]
