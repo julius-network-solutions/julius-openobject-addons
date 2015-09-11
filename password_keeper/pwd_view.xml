@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+        <record id="pwd_tree_view" model="ir.ui.view">
+                <field name="name">pwd_tree_view</field>
+                <field name="model">res.password</field>
+                <field name="type">tree</field>
+                <field name="arch" type="xml">
+                    <tree string="pwd Tree">
+                        <field name="name"/>
+                        <field name="user"/>
+                        <field name="url"/>
+                        <field name="group_id"/>
+                        <field name="user_id"/>
+                    </tree>
+                </field>
+        </record>
+
+        <record id="pwd_form_view" model="ir.ui.view">
+                <field name="name">pwd_form_view</field>
+                <field name="model">res.password</field>
+                <field name="type">form</field>
+                <field name="arch" type="xml">
+                    <form string="pwd Form">
+                        <header>
+                            <button type="object" name="generate" string="Generate"/>
+                        </header>
+                        <sheet>
+                            <group>
+                                <field name="name"/>
+                                <field name="url"/>
+                            </group>
+                            <separator string="Informations"/>
+                            <group colspan="4" col="4">
+                                <field name="user"/>
+                                <field name="password" password="False"/>
+                                <field name="group_id"/>
+                                <field name="user_id"/>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+        </record>
+
+
+        <record id="action_pwd_tree" model="ir.actions.act_window" >
+            <field name="name">Password Keeper</field>
+            <field name="res_model">res.password</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem id="menu_res_password" parent="mail.mail_feeds_main" sequence="10" name="Passwords"/>
+        <menuitem id="sub_menu_res_password" name="Password keeper" parent="menu_res_password" action="action_pwd_tree"/>
+
+    </data>
+</openerp>
