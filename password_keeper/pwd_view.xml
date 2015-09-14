@@ -28,7 +28,7 @@
                         <sheet>
                             <group>
                                 <field name="name"/>
-                                <field name="url"/>
+                                <field name="url" widget="url"/>
                             </group>
                             <separator string="Informations"/>
                             <group colspan="4" col="4">
