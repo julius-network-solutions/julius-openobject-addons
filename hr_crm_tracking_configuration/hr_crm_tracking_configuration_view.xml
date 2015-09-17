@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+        <!--Position in the Sale/configuration menu-->
+		<menuitem id="menu_characteristic_sale" name="Tracking config" parent="base.menu_base_config" sequence="50"/>
+
+		<!--Position in the HR/configuration menu-->
+		<menuitem id="menu_characteristic_hr" name="Tracking config" parent="hr.menu_hr_configuration" sequence="50"/>
+    
+       	 <!-- CONFIGURABLE FIELDS -->       	 
+         <!-- Tree view -->
+         <record model="ir.ui.view" id="view_configurable_field_tree">
+			<field name="name">configurable.fields.view</field>
+            <field name="model">configurable.fields</field>			
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<field name="name"/>
+				<field name="field"/>
+			</field>
+    	</record>
+    	 
+    	<!-- Form view -->
+        <record model="ir.ui.view" id="view_configurable_field_form">
+			<field name="name">configurable.fields.view</field>
+            <field name="model">configurable.fields</field>			
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+			 	<group col="6" colspan="4">
+					<field name="name"/>
+					<field name="field" widget="selection"/>
+				 </group>
+			</field>
+    	</record>
+    	
+         <!-- Human Resources -->
+         <!-- Action -->
+         <record model="ir.actions.act_window" id="action_configurable_field_hr">
+			<field name="name">configurable.fields</field>
+			<field name="type">ir.actions.act_window</field>
+            <field name="res_model">configurable.fields</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('field.type','!=','commercial')]</field>
+            <field name="target">current</field>
+            <field name="view_id" ref="view_configurable_field_tree"/>
+    	</record>  	
+     	
+    	<!--Position in the  FHM/configuration menu-->
+		<menuitem id="menu_configurable_field_hr" action="action_configurable_field_hr" name="Fields Human Resources" parent="menu_characteristic_hr" sequence="1"/>
+         
+         <!-- Commercial --> 
+         <!-- Action -->
+         <record model="ir.actions.act_window" id="action_configurable_field_commercial">
+			<field name="name">configurable.field</field>
+			<field name="type">ir.actions.act_window</field>
+            <field name="res_model">configurable.fields</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>            
+            <field name="domain">[('field.type','!=','hr')]</field>
+            <field name="target">current</field>
+            <field name="view_id" ref="view_configurable_field_tree"/>
+    	</record>
+    	
+    	<!--Position in the  FHM/configuration menu-->
+		<menuitem id="menu_configurable_field_commercial" action="action_configurable_field_commercial" name="Fields Commercial" parent="menu_characteristic_sale" sequence="2"/>
+    
+   		 <!-- CHARACTERISTIC -->
+         <!-- Tree view -->
+         <record model="ir.ui.view" id="view_characteristic_tree">
+			<field name="name">characteristic.view</field>
+            <field name="model">characteristic</field>			
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<field name="name"/>
+				<field name="type_id"/>
+			</field>
+    	</record>
+    	
+    	<!-- Form view -->
+        <record model="ir.ui.view" id="view_characteristic_form">
+			<field name="name">characteristic.view</field>
+            <field name="model">characteristic</field>			
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<group col="6" colspan="4">
+					<field name="name"/>
+					<field name="type_id" widget="selection"/>
+				 </group>
+			</field>
+    	</record>
+         
+         <!-- Action -->
+         <record model="ir.actions.act_window" id="action_characteristic">
+			<field name="name">Characteristic</field>
+			<field name="type">ir.actions.act_window</field>
+            <field name="res_model">characteristic</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="view_id" ref="view_characteristic_tree"/>
+    	</record>
+    	
+    	<!--Position in the FHM/configuration menu-->
+		<menuitem id="menu_characteristic_setting_hr" action="action_characteristic" name="Characteristic" parent="menu_characteristic_hr" sequence="3"/>
+		<menuitem id="menu_characteristic_setting_sale" action="action_characteristic" name="Characteristic" parent="menu_characteristic_sale" sequence="3"/>
+		
+		<!-- CONFIGURABLE FIELDS SETTING -->       	 
+        <!-- Tree view -->
+        <record model="ir.ui.view" id="view_configurable_field_setting_tree">
+			<field name="name">configurable.fields.setting.view</field>
+            <field name="model">configurable.fields.setting</field>			
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<field name="name"/>
+				<field name="type"/>
+			</field>
+    	</record>
+    	 
+    	<!-- Form view -->
+        <record model="ir.ui.view" id="view_configurable_field_setting_form">
+			<field name="name">configurable.fields.view</field>
+            <field name="model">configurable.fields.setting</field>			
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+			 	<group col="6" colspan="4">
+					<field name="name"/>
+					<field name="type"/>
+				 </group>
+			</field>
+    	</record>
+    	
+    	<!-- Action -->
+        <record model="ir.actions.act_window" id="action_configurable_field_setting">
+			<field name="name">configurable.fields.setting</field>
+			<field name="type">ir.actions.act_window</field>
+            <field name="res_model">configurable.fields.setting</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="view_id" ref="view_configurable_field_setting_tree"/>
+    	</record>
+    	 	
+		<!--Position in the FHM/configuration menu-->
+		<menuitem id="menu_configurable_field_setting" action="action_configurable_field_setting" name="configurable fields setting" parent="base.menu_config" sequence="25"/>
+
+    </data>
+</openerp>

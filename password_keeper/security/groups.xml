@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <record model="ir.module.category" id="module_password">
+            <field name="name">Password</field>
+            <field name="description">aaa</field>
+            <field name="sequence">16</field>
+        </record>
+    </data>
+
+
+    <data noupdate="0">
+        <record id="group_password_manager" model="res.groups">
+            <field name="name">Password Manager</field>
+            <field name="category_id" ref="module_password"/>
+            <field name="comment">group_password_manager</field>
+            <field name="menu_access" eval="[(4, ref('password_keeper.menu_res_password')),
+                                             (4, ref('password_keeper.sub_menu_res_password'))]"/>
+        </record>
+        <record id="group_password_user" model="res.groups">
+            <field name="name">Password User</field>
+            <field name="category_id" ref="module_password"/>
+            <field name="comment">group_password_user</field>
+            <field name="menu_access" eval="[(4, ref('password_keeper.menu_res_password')),
+                                             (4, ref('password_keeper.sub_menu_res_password'))]"/>
+        </record>
+    </data>
+
+    <!-- CREATION Des droits onglet "RULES" (FILTRES) -->
+    <data noupdate="0">
+        <record model="ir.rule" id="group_password_manager_rules">
+            <field name="name">group_password_manager_rules</field>
+            <field name="model_id" ref="password_keeper.model_res_password"/>
+            <field name="groups" eval="[(4, ref('password_keeper.group_password_manager'))]"/>
+            <field name="domain_force">[]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="perm_write" eval="True"/>
+        </record>
+
+        <record model="ir.rule" id="group_password_user_rules">
+            <field name="name">group_password_user_rules</field>
+            <field name="model_id" ref="password_keeper.model_res_password"/>
+            <field name="groups" eval="[(4, ref('password_keeper.group_password_user'))]"/>
+            <field name="domain_force">['|',('user_id','=',user.id),('group_id','in', [g.id for g in user.groups_id])]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="perm_write" eval="True"/>
+        </record>
+    </data>
+</openerp>
