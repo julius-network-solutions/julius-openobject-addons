@@ -30,7 +30,7 @@ class res_users(models.Model):
     @api.one
     def generate(self):
         import random
-        alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        alphabet = "234567ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         pw_length = 16
         mypw = ""
         for i in range(pw_length):
