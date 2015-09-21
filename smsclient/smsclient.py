@@ -283,7 +283,10 @@ class SMSClient(orm.Model):
                     r = requests.post(api_url,
                                       headers={'X-Primotexto-ApiKey':apikey,'Content-Type':'application/json'},
                                       data=json.dumps(data))
+                    print json.dumps(data)
+                    print r
                     r.json()
+                    print r.json()
                     ### End of the new process ###
                 except Exception, e:
                     raise orm.except_orm('Error', e)

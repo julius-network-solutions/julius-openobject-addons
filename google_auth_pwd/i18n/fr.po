@@ -1,0 +1,133 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* password_keeper
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-11 14:39+0000\n"
+"PO-Revision-Date: 2015-09-11 14:39+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: password_keeper
+#: field:res.password,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: password_keeper
+#: field:res.password,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: password_keeper
+#: view:res.password:password_keeper.pwd_form_view
+msgid "Generate"
+msgstr "Générer"
+
+#. module: password_keeper
+#: field:res.password,group_id:0
+msgid "Group"
+msgstr "Groupe"
+
+#. module: password_keeper
+#: field:res.password,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: password_keeper
+#: view:res.password:password_keeper.pwd_form_view
+msgid "Informations"
+msgstr "Informations"
+
+#. module: password_keeper
+#: field:res.password,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: password_keeper
+#: field:res.password,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: password_keeper
+#: field:res.password,user_id:0
+msgid "Owner"
+msgstr "Propriétaire"
+
+#. module: password_keeper
+#: model:ir.module.category,name:password_keeper.module_password
+#: field:res.password,password:0
+msgid "Password"
+msgstr "Mot de passe"
+
+#. module: password_keeper
+#: model:ir.actions.act_window,name:password_keeper.action_pwd_tree
+msgid "Password Keeper"
+msgstr "Password Keeper"
+
+#. module: password_keeper
+#: model:res.groups,name:password_keeper.group_password_manager
+msgid "Password Manager"
+msgstr "Password Manager"
+
+#. module: password_keeper
+#: model:res.groups,name:password_keeper.group_password_user
+msgid "Password User"
+msgstr "Password User"
+
+#. module: password_keeper
+#: model:ir.ui.menu,name:password_keeper.sub_menu_res_password
+msgid "Password keeper"
+msgstr "Password keeper"
+
+#. module: password_keeper
+#: model:ir.ui.menu,name:password_keeper.menu_res_password
+msgid "Passwords"
+msgstr "Mots de passe"
+
+#. module: password_keeper
+#: field:res.password,name:0
+msgid "Title"
+msgstr "Titre"
+
+#. module: password_keeper
+#: field:res.password,url:0
+msgid "URL"
+msgstr "URL"
+
+#. module: password_keeper
+#: field:res.password,user:0
+msgid "User"
+msgstr "Identifiant"
+
+#. module: password_keeper
+#: model:ir.module.category,description:password_keeper.module_password
+msgid "aaa"
+msgstr "aaa"
+
+#. module: password_keeper
+#: model:res.groups,comment:password_keeper.group_password_manager
+msgid "group_password_manager"
+msgstr "group_password_manager"
+
+#. module: password_keeper
+#: model:res.groups,comment:password_keeper.group_password_user
+msgid "group_password_user"
+msgstr "group_password_user"
+
+#. module: password_keeper
+#: view:res.password:password_keeper.pwd_form_view
+msgid "pwd Form"
+msgstr "pwd Form"
+
+#. module: password_keeper
+#: view:res.password:password_keeper.pwd_tree_view
+msgid "pwd Tree"
+msgstr "pwd Tree"
+
