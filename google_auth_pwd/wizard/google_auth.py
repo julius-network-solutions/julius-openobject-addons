@@ -57,7 +57,9 @@ class google_auth_wiz(models.TransientModel):
     
     @api.multi
     def get_totp_token(self, secret):
-        secret = self.env['res.users'].browse(self._uid).password_api_key
+        user = self.env['res.users'].browse(self._uid)
+        self = self.with_context(tz=user.tz)
+        secret = user.password_api_key
         h = self.get_hotp_token(secret, intervals_no=int(time.time())//30)
         domain = []
         if self.validation_code == str(h):
