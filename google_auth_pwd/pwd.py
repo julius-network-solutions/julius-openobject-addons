@@ -22,32 +22,6 @@
 from openerp import models, fields, api, _
 
 class res_password(models.Model):
-    _name = "res.password"
+    _inherit = "res.password"
 
-    name            = fields.Char('Title')
-    user            = fields.Char('User')
-    url             = fields.Char('URL')
-    password        = fields.Char('Password')
-    group_id        = fields.Many2one('res.groups','Group')
-    user_id         = fields.Many2one('res.users',
-                                      'Owner',
-                                      readonly=1,
-                                      default=lambda self: self.env.user)
 
-    @api.one
-    def generate(self):
-        import random
-        alphabet = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        pw_length = 8
-        mypw = ""
-        for i in range(pw_length):
-            next_index = random.randrange(len(alphabet))
-            mypw = mypw + alphabet[next_index]
-
-        if not self.read(['password'])[0]['password']:
-            self.write({'password':mypw})
-        return
-<<<<<<< HEAD
-
-=======
->>>>>>> master
