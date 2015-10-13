@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="purchase_report_aeroo" model="ir.actions.report.xml">
+			<field name="name">Purchase Report Aeroo</field>
+			<field name="type">ir.actions.report.xml</field>
+			<field name="model">purchase.order</field>
+			<field name="report_name">purchase.report.aeroo</field>
+			<field name="auto">TRUE</field>
+			<field name="report_type">aeroo</field>
+			<field name="report_file">purchase_report_aeroo/report/purchase_report_aeroo.odt</field>
+			<field name="report_rml">purchase_report_aeroo/report/purchase_report_aeroo.odt</field>
+			<field name="parser_state">default</field>
+			<field name="tml_source">file</field>
+			<field name="in_format">oo-odt</field>
+			<field name="out_format" eval="ref('report_aeroo_ooo.report_mimetypes_pdf_odt')"/>
+		</record>
+		<record id="value_report_purchase_aeroo" model="ir.values">
+			<field name="name">purchase.report.aeroo</field>
+			<field name="key">action</field>
+			<field name="key2">client_print_multi</field>
+			<field name="model">purchase.order</field>
+			<field name="value" eval="'ir.actions.report.xml,'+str(ref('purchase_report_aeroo.purchase_report_aeroo'))"/>
+			<field name="object">TRUE</field>
+		</record>
+
+	</data>
+</openerp>
