@@ -47,7 +47,5 @@ class res_password(models.Model):
         if not self.read(['password'])[0]['password']:
             self.write({'password':mypw})
         return
-<<<<<<< HEAD
 
-=======
->>>>>>> master
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
