@@ -61,7 +61,7 @@ class account_bankimport_filters(models.Model):
     active = fields.Boolean('Active')
     company_id = fields.Many2one('res.company', 
                                   string= 'Company', 
-                                  required= True) 
+                                  required=True) 
 
     many_journals = fields.Boolean('Many Journals', default=False)
     def_bank_journal_id = fields.Many2one('account.journal',

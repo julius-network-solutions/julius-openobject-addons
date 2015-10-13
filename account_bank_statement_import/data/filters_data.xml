@@ -98,6 +98,7 @@
             <field name="column_credit" eval="5"/>
             <field name="ignored_lines">0</field>
             <field name="def_date_format">%d/%m/%Y</field>
+            <field name="company_id" ref="base.main_company"/>
         </record>
 	
 		<!--<record model="account.bankimport.filters" id="filters_emirates_nbd">
