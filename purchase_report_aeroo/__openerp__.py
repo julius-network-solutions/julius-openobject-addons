@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+## -*- coding: utf-8 -*-
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -20,25 +20,25 @@
 #################################################################################
 
 {
-    'name': 'hr_crm_tracking_configuration',
-    'version': '0.1',
-    'category': 'Configuration',
-    'author': 'Julius Network Solution',
-    'website': 'http://julius.fr',
-    'depends': [
-                'crm',
-                'hr',
-                'hr_recruitment',
-               ],
-    "description" : "Common configuration for the hr and crm tracking project ",
-    "init_xml" : [],
+    "name" : "Purchase Report Aeroo",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://www.julius.fr/",
+    "category" : "Generic Modules/Others",
+    "depends" : [
+        "base",
+        "purchase",
+        "report_aeroo",
+        "report_aeroo_ooo",
+    ],
+    "description" : """ Purchase report aeroo """,
+    "init_xml" : [
+        "report/purchase_report_view.xml",
+    ],
     "demo_xml" : [],
-    "update_xml" : [
-                    'security/ir.model.access.csv',
-                    'hr_crm_tracking_configuration_view.xml'
-                    ],
+    "update_xml" : [],
     "active": False,
-    "installable": True
+    "installable": True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+## -*- coding: utf-8 -*-
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -19,6 +19,7 @@
 #
 #################################################################################
 
-import hr_crm_tracking_configuration
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
