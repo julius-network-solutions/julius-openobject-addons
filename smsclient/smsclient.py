@@ -23,6 +23,7 @@
 
 import time
 import urllib
+import requests, json
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
 
@@ -139,7 +140,8 @@ class SMSClient(orm.Model):
             'gateway_id', 'History'),
         'method': fields.selection([
                 ('http', 'HTTP Method'),
-                ('smpp', 'SMPP Method')
+                ('smpp', 'SMPP Method'),
+                ('primo', 'Primo Method'),
             ], 'API Method', select=True),
         'state': fields.selection([
                 ('new', 'Not Verified'),
@@ -260,6 +262,34 @@ class SMSClient(orm.Model):
                 if len(sms.msg) > 160:
                     error_ids.append(sms.id)
                     continue
+            if sms.gateway_id.method == 'primo':
+                for p in sms.gateway_id.property_ids:
+                    if p.name == 'apikey':
+                        apikey = p.value
+                    elif p.type == 'sender':
+                        sender = p.value
+                try:
+                    api_url = sms.gateway_id.url
+                    message = ''
+                    if sms.coding == '2':
+                        message = str(sms.msg).decode('iso-8859-1').encode('utf8')
+                    if sms.coding == '1':
+                        message = str(sms.msg)
+                    data = {
+                            'number': sms.mobile,
+                            'message': message,
+                            'sender': sender,        
+                    }
+                    r = requests.post(api_url,
+                                      headers={'X-Primotexto-ApiKey':apikey,'Content-Type':'application/json'},
+                                      data=json.dumps(data))
+                    print json.dumps(data)
+                    print r
+                    r.json()
+                    print r.json()
+                    ### End of the new process ###
+                except Exception, e:
+                    raise orm.except_orm('Error', e)
             if sms.gateway_id.method == 'http':
                 try:
                     urllib.urlopen(sms.name)

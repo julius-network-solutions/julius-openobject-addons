@@ -1,0 +1,104 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+
+        <record id="view_account_bank_statement_folder_tree" model="ir.ui.view">
+            <field name="name">account.bank.statement.folder.tree</field>
+            <field name="model">account.bank.statement.folder</field>
+            <field name="arch" type="xml">
+                <tree string="Bank Statement Folders">
+                    <field name="name"/>
+                    <field name="host"/>
+                    <field name="filter_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_account_bank_statement_folder_form" model="ir.ui.view">
+            <field name="name">account.bank.statement.folder.form</field>
+            <field name="model">account.bank.statement.folder</field>
+            <field name="arch" type="xml">
+                <form string="Bank Statement Folders">
+                    <header>
+                        <button name="test_connexion" states="draft"
+                            type="object" string="Test connexion" class="oe_highlight"/>
+                        <button name="get_files" states="open"
+                            type="object" string="Get files" class="oe_highlight"/>
+                        <button name="set_draft" type="object"
+                            string="Set draft"  states="open,error,inactive" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open"
+                            statusbar_colors='{"inactive":"grey","error":"red"}'/>
+                    </header>
+                    <group>
+                        <field name="name"/>
+                        <field name="host"/>
+                        <field name="port"/>
+                        <field name="path"/>
+                        <field name="login"/>
+                        <field name="password" password="True"/>
+                        <field name="filter_id"/>
+                        <field name="error_msg" states="error"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_bank_statement_folder" model="ir.actions.act_window">
+            <field name="name">Bank Statement Folders</field>
+            <field name="res_model">account.bank.statement.folder</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_account_bank_statement_folder_tree"/>
+        </record>
+
+        <menuitem id="bank_statement_folders" parent="account.menu_configuration_misc" action="action_account_bank_statement_folder"/>
+
+        <record id="view_account_bank_statement_file_to_import_tree" model="ir.ui.view">
+            <field name="name">account.bank.statement.file.to.import.tree</field>
+            <field name="model">account.bank.statement.file.to.import</field>
+            <field name="arch" type="xml">
+                <tree string="Bank Statement Files">
+                    <field name="name"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_account_bank_statement_file_to_import_form" model="ir.ui.view">
+            <field name="name">account.bank.statement.folder.form</field>
+            <field name="model">account.bank.statement.file.to.import</field>
+            <field name="arch" type="xml">
+                <form string="Bank Statement Files">
+                    <header>
+                        <button name="import_files" states="draft"
+                            type="object" string="Import this file" class="oe_highlight"/>
+                        <button name="set_draft" type="object"
+                            string="Set draft"  states="imported,error" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open"
+                            statusbar_colors='{"error":"red"}'/>
+                    </header>
+                    <group>
+                        <field name="name"/>
+                        <field name="file" filename="name"/>
+                        <field name="filter_id"/>
+                        <field name="folder_id"/>
+                        <field name="path"/>
+                        <field name="error_msg" states="imported,error"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_bank_statement_file_to_import" model="ir.actions.act_window">
+            <field name="name">Bank Statement Files</field>
+            <field name="res_model">account.bank.statement.file.to.import</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_account_bank_statement_file_to_import_tree"/>
+        </record>
+
+        <menuitem id="bank_statement_files" parent="account.menu_configuration_misc" action="action_account_bank_statement_file_to_import"/>
+
+    </data>
+</openerp>

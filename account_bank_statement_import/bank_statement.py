@@ -56,12 +56,12 @@ class account_bankimport_filters(models.Model):
     _description = "Define the filters, which is related to the file"
 
     filter = fields.Char('Filtername', size=64, required=True)
-    filter_location = fields.Char('Filter location', required=True)
+    filter_location = fields.Char('Filter location')
     name = fields.Char('Filename', size=128, required=True)
     active = fields.Boolean('Active')
     company_id = fields.Many2one('res.company', 
                                   string= 'Company', 
-                                  required= True) 
+                                  required=True) 
 
     many_journals = fields.Boolean('Many Journals', default=False)
     def_bank_journal_id = fields.Many2one('account.journal',

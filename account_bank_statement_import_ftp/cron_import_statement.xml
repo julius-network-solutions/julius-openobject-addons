@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+
+        <record model="ir.cron" id="import_files_from_ftp">
+            <field name="name">Import bank statement files from FTP</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'account.bank.statement.folder'"/>
+            <field name="active" eval="False"/>
+            <field name="function" eval="'cron_import_files'"/>
+            <field name="args">()</field>
+        </record>
+
+        <record model="ir.cron" id="import_files_in_statement">
+            <field name="name">Import bank statement from files</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'account.bank.statement.file.to.import'"/>
+            <field name="active" eval="False"/>
+            <field name="function" eval="'cron_import_files'"/>
+            <field name="args">()</field>
+        </record>
+
+    </data>
+</openerp>

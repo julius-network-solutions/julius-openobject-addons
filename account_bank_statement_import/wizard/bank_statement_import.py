@@ -400,7 +400,8 @@ class account_bank_statement_import(models.TransientModel):
             str2date(line_splited[date_val], date_format) or ''
         line['debit'] = (debit or debit == 0) and line_splited[debit] or ''
         line['credit'] = (credit or credit == 0) and line_splited[credit] or ''
-        line['ref'] = (ref or ref == 0) and line_splited[ref] or ''
+        # If there is a column value, it use this one, else ref is empty
+        line['ref'] = (ref != -1) and line_splited[ref] or ''
         line['extra_note'] = (extra_note or extra_note == 0) and \
             line_splited[extra_note] or ''
         return line
@@ -576,7 +577,12 @@ class account_bank_statement_import(models.TransientModel):
     def get_column_number(self, value, default=False):
         value = value and value - 1
         if isinstance(value, bool):
-            value = default
+            if not default:
+                # If there isn't column by default nor no value defines in the form, it return -1 
+                value = -1
+            else:
+                # Else it return the default value
+                value = default
         return value
         
         
