@@ -31,7 +31,6 @@ class res_password(models.Model):
     group_id        = fields.Many2one('res.groups','Group')
     user_id         = fields.Many2one('res.users',
                                       'Owner',
-                                      readonly=1,
                                       default=lambda self: self.env.user)
 
     @api.one

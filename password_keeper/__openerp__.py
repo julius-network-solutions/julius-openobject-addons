@@ -28,6 +28,7 @@
     "depends" : [
         'base',
         'mail',
+        'share',
     ],
     "description": """
     Manager Passwords, with user right and user groups right
