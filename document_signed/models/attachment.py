@@ -65,6 +65,10 @@ class ir_attachment(models.Model):
 
     @api.one
     def verify_attachment(self):
+        if not crypto_install:
+            raise MissingError("ERROR IMPORTING M2Crypto, if not installed, "
+                               "please install it.\nGet it here:\n"
+                               "https://pypi.python.org/pypi/M2Crypto")
         params = self.env['ir.config_parameter']
         def _get_key():
             signature_key = params.sudo().\
@@ -78,7 +82,7 @@ class ir_attachment(models.Model):
             return signature_passphrase
         key = _get_key()
         pkey = RSA.load_key(key, gimmepw)
-        value = open('/home/jules/Bureau/file', 'rb').read()
+        value = self.datas
         sha256_val = hashlib.sha256(value).digest()
         signature = self.signed_content
         pkey.verify(sha256_val, signature)
