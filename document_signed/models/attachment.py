@@ -19,7 +19,16 @@
 #
 ###############################################################################
 
-from M2Crypto import RSA
+import logging
+_logger = logging.getLogger(__name__)
+crypto_install = False
+try:
+    from M2Crypto import RSA
+    crypto_install = True
+except:
+    _logger.warning("ERROR IMPORTING M2Crypto, if not installed, "
+                    "please install it.\nGet it here: "
+                    "https://pypi.python.org/pypi/M2Crypto")
 import base64, hashlib
 from openerp import models, fields, api
 from openerp.exceptions import MissingError
@@ -32,6 +41,10 @@ class ir_attachment(models.Model):
 
     @api.one
     def sign_attachment(self):
+        if not crypto_install:
+            raise MissingError("ERROR IMPORTING M2Crypto, if not installed, "
+                               "please install it.\nGet it here:\n"
+                               "https://pypi.python.org/pypi/M2Crypto")
         params = self.env['ir.config_parameter']
         def _get_key():
             signature_key = params.sudo().\
