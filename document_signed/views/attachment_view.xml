@@ -11,8 +11,10 @@
                 <group string="Indexed Content" position="after">
                     <group string="Signed Content" colspan="4">
                         <field name="signed_content" nolabel="1"/>
+                        <button type="object" string="Sign this document" class="oe_highlight"
+                            name="sign_attachment" attrs="{'invisible': [('signed_content', '!=', False)]}"/>
                         <button type="object" string="Sign this document"
-                            name="sign_attachment"/>
+                            name="sign_attachment" attrs="{'invisible': [('signed_content', '=', False)]}"/>
                     </group>
                 </group>
             </field>
