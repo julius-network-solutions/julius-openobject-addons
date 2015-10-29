@@ -1,0 +1,109 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* account_followup_choose_partners
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-29 09:12+0000\n"
+"PO-Revision-Date: 2015-10-29 09:12+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_followup_choose_partners
+#: code:addons/account_followup_choose_partners/wizard/account_followup_print.py:107
+#, python-format
+msgid "%s partners have no credits and as such the action is cleared"
+msgstr "%s partenaire(s) n'a/ont pas de crédit, donc l'action est effacée."
+
+#. module: account_followup_choose_partners
+#: field:do_followup.wizard,company_id:0
+msgid "Company"
+msgstr "Société"
+
+#. module: account_followup_choose_partners
+#: field:do_followup.wizard,create_uid:0
+#: field:do_followup.wizard_list,create_uid:0
+msgid "Created by"
+msgstr "Created by"
+
+#. module: account_followup_choose_partners
+#: field:do_followup.wizard,create_date:0
+#: field:do_followup.wizard_list,create_date:0
+msgid "Created on"
+msgstr "Created on"
+
+#. module: account_followup_choose_partners
+#: view:do_followup.wizard:account_followup_choose_partners.do_followup_wizard
+msgid "Do Followup"
+msgstr "Effectuer les relances"
+
+#. module: account_followup_choose_partners
+#: view:do_followup.wizard:account_followup_choose_partners.do_followup_wizard
+msgid "Followup"
+msgstr "Relance"
+
+#. module: account_followup_choose_partners
+#: view:do_followup.wizard:account_followup_choose_partners.do_followup_wizard
+msgid "Generate letters"
+msgstr "Générer lettres"
+
+#. module: account_followup_choose_partners
+#: field:do_followup.wizard,id:0
+#: field:do_followup.wizard_list,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: account_followup_choose_partners
+#: field:do_followup.wizard,write_uid:0
+#: field:do_followup.wizard_list,write_uid:0
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: account_followup_choose_partners
+#: field:do_followup.wizard,write_date:0
+#: field:do_followup.wizard_list,write_date:0
+msgid "Last Updated on"
+msgstr "Last Updated on"
+
+#. module: account_followup_choose_partners
+#: model:ir.actions.act_window,name:account_followup_choose_partners.action_make_followup
+msgid "Make Followup"
+msgstr "Effectuer les relances"
+
+#. module: account_followup_choose_partners
+#: field:do_followup.wizard_list,partner:0
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: account_followup_choose_partners
+#: field:do_followup.wizard,partner_ids:0
+msgid "Partner List"
+msgstr "Liste de partenaire"
+
+#. module: account_followup_choose_partners
+#: model:ir.model,name:account_followup_choose_partners.model_account_followup_print
+msgid "Print Follow-up & Send Mail to Customers"
+msgstr "Imprimer les relances et envoyer les courriels aux clients"
+
+#. module: account_followup_choose_partners
+#: model:ir.model,name:account_followup_choose_partners.model_account_followup_print_select
+msgid "Select Customers to Print Follow-up & Send Mail to Customers"
+msgstr "Sélectionnez les clients à relancer par lettre ou email"
+
+#. module: account_followup_choose_partners
+#: code:addons/account_followup_choose_partners/wizard/account_followup_print.py:126
+#, python-format
+msgid "Send Letters and Emails: Actions Summary"
+msgstr "Envoyer les lettres et courriels : résumé des actions"
+
+#. module: account_followup_choose_partners
+#: field:do_followup.wizard_list,partner_id:0
+msgid "partner_id"
+msgstr "partner_id"
+

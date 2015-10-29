@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+
+
+        <record id="do_followup_wizard" model="ir.ui.view">
+            <field name="name">do_followup.wizard.form</field>
+            <field name="model">do_followup.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Do Followup" version="7.0">
+                    <separator string="Followup" name="partner_separator"/>
+                    <field name="partner_ids">
+                        <tree>
+                            <field name="partner"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button name="do_followup" string="Generate letters" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_make_followup" model="ir.actions.act_window">
+            <field name="name">Make Followup</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">do_followup.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="do_followup_wizard"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+
+        <record model="ir.values" id="make_followup">
+            <field name="model_id" ref="base.model_res_partner" />
+            <field name="name">Make Followup</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_make_followup'))" />
+            <field name="key">action</field>
+            <field name="model">res.partner</field>
+        </record>
+
+    </data>
+</openerp>
