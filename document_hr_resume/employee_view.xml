@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_hr_employee_resume_form" model="ir.ui.view">
+            <field name="name">hr.employee.resume</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <group string="Active" position="after">
+                    <group string="Resume">
+                        <field name="resume_data"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+    </data>
+</openerp>

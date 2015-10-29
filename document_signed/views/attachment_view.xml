@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_document_file_form_signed_value" model="ir.ui.view">
+            <field name="name">ir.attachment.signed.value</field>
+            <field name="model">ir.attachment</field>
+            <field name="inherit_id" ref="base.view_attachment_form"/>
+            <field name="priority">30</field>
+            <field name="arch" type="xml">
+                <group string="Indexed Content" position="after">
+                    <group string="Signed Content" colspan="4">
+                        <field name="signed_content" nolabel="1"/>
+                        <button type="object" string="Sign this document" class="oe_highlight"
+                            name="sign_attachment" attrs="{'invisible': [('signed_content', '!=', False)]}"/>
+                        <button type="object" string="Sign this document"
+                            name="sign_attachment" attrs="{'invisible': [('signed_content', '=', False)]}"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+         <record id="view_attachment_signature_config_settings" model="ir.ui.view">
+            <field name="name">attachment_signature_settings</field>
+            <field name="model">base.config.settings</field>
+            <field name="inherit_id" ref="base_setup.view_general_configuration"/>
+            <field name="arch" type="xml">
+                <xpath expr="//label[@for='font']/.." position="after">
+                    <group>
+                        <label for="signature" string="Attachment signature"/>
+                        <div>
+                            <div>
+                                <h4>To setup the signature process for attachment, first you have to perform the following steps</h4>
+                                <ul>
+                                    <li> Generate your key like this (on linux): </li>
+                                </ul>
+                                <code> openssl req -x509 -newkey rsa:2048 -keyout mykey.pem -out cert.pem -days 365 </code>
+                                <ul>
+                                    <li> Then:. </li>
+                                    <li> Set the name of your generated key above </li>
+                                    <li> Set your pass phrase used for this key above </li>
+                                    <a href="#" class="oe_link">Return at Top</a>
+                                </ul>
+                            </div>
+                            <group>
+                                <group>
+                                    <field name="signature_key"/>
+                                    <field name="signature_passphrase" password="True"/>
+                                </group>
+                            </group>
+                        </div>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

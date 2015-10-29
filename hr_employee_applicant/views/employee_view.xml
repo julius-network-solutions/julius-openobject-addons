@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+		<record id="view_employee_form_applicant" model="ir.ui.view">
+			<field name="name">hr.employee.form.applicant</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="priority">50</field>
+			<field name="arch" type="xml">
+                <field name="manager" position="after">
+                    <field name="applicant"/>
+				</field>
+            </field>
+        </record>
+
+        <record id="view_employee_filter_applicant" model="ir.ui.view">
+            <field name="name">hr.employee.search.applicant</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <field name="category_ids" position="after">
+                    <filter string="Is an applicant" name="is_applicant"
+                        domain="[('applicant', '=', True)]"/>
+                    <filter string="Is an employee" name="is_employee"
+                        domain="[('applicant', '=', False)]"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
+            <field name="context">{'default_applicant': 0, 'search_default_is_employee': 1}</field>
+        </record>
+
+        <record id="hr.open_view_employee_list" model="ir.actions.act_window">
+            <field name="context">{'default_applicant': 0, 'search_default_is_employee': 1}</field>
+        </record>
+
+        <record id="hr.hr_employee_normal_action_tree" model="ir.actions.act_window">
+            <field name="context">{'default_applicant': 0, 'search_default_is_employee': 1}</field>
+        </record>
+
+        <record id="open_view_applicant_list" model="ir.actions.act_window">
+            <field name="name">Applicants</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="hr.view_employee_filter"/>
+            <field name="context">{'default_applicant': 1, 'search_default_is_applicant': 1}</field>
+            <field name="help" type="html">
+                <p class='oe_view_nocontent_create'>
+                    Click here to add new applicant
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_applicant_list" action="open_view_applicant_list"
+            name="Applicants"
+            parent="base.menu_crm_case_job_req_main"/>
+
+        <record id="crm_case_form_view_job" model="ir.ui.view">
+            <field name="name">hr.applicant.form</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
+            <field name="arch" type="xml">
+                <field name="emp_id" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                    <attribute name="class">oe_no_button</attribute>
+                    <attribute name="options">{"no_open": True, "no_create": True}</attribute>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
