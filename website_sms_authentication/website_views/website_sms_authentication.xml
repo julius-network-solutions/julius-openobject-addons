@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+      <template id="sms_authentication" name="SMS authentication">
+        <t t-call="website.layout">
+          <body data-spy="scroll" data-target=".navspy" data-offset="50">
+            <div class="container o_website_quote">
+              <div class="row mt16">
+                <div class="col-md-12">
+                  <form t-attf-action="/sms-authentication/#{code.id}" method="post" class="form-horizontal mt32" enctype="multipart/form-data">
+                    <h1>Authentication by SMS</h1>
+                    <a id="sms_authentication_header"/>
+                    <h1 class="page-header mt16">
+                      <span>A SMS was sent to your mobile phone. Please enter it here :</span>
+                      <input type="text" class="form-control" name="code" placeholder="Code"/>
+                    </h1>
+                    <a id="send"/>
+                    <div class="modal-footer">
+                      <div class="col-md-9">
+                      </div>
+                      <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </body>
+        </t>
+      </template>
+
+    </data>
+</openerp>
