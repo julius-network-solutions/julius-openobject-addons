@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -17,22 +17,16 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
-import time
-import urllib
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+###############################################################################
 
-class email_template(orm.Model):
+from openerp import models, fields
+
+
+class email_template(models.Model):
     _inherit = "email.template"
-    
-    _columns = {
-        'sms_template': fields.boolean('SMS Template'),
-        'mobile_to': fields.char('To (Mobile)', size=256),
-        'gateway_id': fields.many2one('sms.smsclient', 'SMS Gateway'),
-    }
-    
-            
-        
-    
-    
+
+    sms_template = fields.Boolean('SMS Template')
+    mobile_to = fields.Char('To (Mobile)', size=256)
+    gateway_id = fields.Many2one('sms.smsclient', 'SMS Gateway')
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,32 +18,38 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+###############################################################################
 
-from openerp.osv import orm, fields
 import time
-import logging
 import re
-
+import logging
 _logger = logging.getLogger('smsclient')
 
-class actions_server(orm.Model):
+from openerp import models, fields
+
+
+class actions_server(models.Model):
     """
     Possibility to specify the SMS Gateway when configure this server action
     """
     _inherit = 'ir.actions.server'
 
-
     def _get_states(self, cr, uid, context=None):
-        res = super(actions_server, self)._get_states(cr, uid, context=context)
+        res = super(actions_server, self).\
+            _get_states(cr, uid, context=context)
         res.insert(0, ('sms', 'SMS'))
         return res
 
-    _columns = {
-        'mobile': fields.char('Mobile No', size=512, help="Provides fields that be used to fetch the mobile number, e.g. you select the invoice, then `object.invoice_address_id.mobile` is the field which gives the correct mobile number"),
-        'sms_template_id': fields.many2one('email.template', 'SMS Template',
-            help='Select the SMS Template configuration to use with this action'),
-    }
+    mobile = fields.Char('Mobile No',
+                         size=512,
+                         help="Provides fields that be used to fetch "
+                         "the mobile number, e.g. you select the invoice, "
+                         "then `object.invoice_address_id.mobile` is "
+                         "the field which gives the correct mobile number")
+    sms_template_id = fields.Many2one('email.template', 'SMS Template',
+                                      help="Select the SMS Template "
+                                      "configuration to use with this action")
+
     ## Function ##
     def run(self, cr, uid, ids, context=None):
         if context is None:
@@ -76,47 +82,51 @@ class actions_server(orm.Model):
                     else:
                         _logger.error('Mobile number not specified !')
                     res_id = context['active_id']
-                    template = email_template_obj.get_email_template(cr, uid, action.sms_template_id.id, res_id, context)
+                    template = email_template_obj.\
+                        get_email_template(cr, uid, action.sms_template_id.id,
+                                           res_id, context)
                     values = {}
                     for field in ['subject', 'body_html', 'email_from',
                                   'email_to', 'email_cc', 'reply_to']:
-                        values[field] = email_template_obj.render_template(cr, uid, getattr(template, field),
-                                                             template.model, res_id, context=context) \
-                                                             or False
+                        values[field] = email_template_obj.\
+                        render_template(cr, uid, getattr(template, field),
+                                        template.model, res_id,
+                                        context=context) or False
                     if values['body_html']:
                         p = re.compile(r'<.*?>')
                         text = p.sub('', values['body_html'])
                     else:
                         _logger.error('Text not specified !')
                     
-                    vals ={
-                        'name': gateway.url,
-                        'gateway_id': gateway.id,
-                        'state': 'draft',
-                        'mobile': to,
-                        'msg': text,
-                        'validity': gateway.validity, 
-                        'classes': gateway.classes, 
-                        'deferred': gateway.deferred, 
-                        'priority': gateway.priority, 
-                        'coding': gateway.coding,
-                        'tag': gateway.tag, 
-                        'nostop': gateway.nostop,
-                    }
-                    sms_in_q = queue_obj.search(cr, uid,[
-                        ('name','=',gateway.url),
-                        ('gateway_id','=',gateway.id),
-                        ('state','=','draft'),
-                        ('mobile','=',to),
-                        ('msg','=',text),
-                        ('validity','=',gateway.validity), 
-                        ('classes','=',gateway.classes), 
-                        ('deferred','=',gateway.deferred), 
-                        ('priority','=',gateway.priority), 
-                        ('coding','=',gateway.coding),
-                        ('tag','=',gateway.tag), 
-                        ('nostop','=',gateway.nostop)
-                        ])
+                    vals = {
+                            'name': gateway.url,
+                            'gateway_id': gateway.id,
+                            'state': 'draft',
+                            'mobile': to,
+                            'msg': text,
+                            'validity': gateway.validity, 
+                            'classes': gateway.classes, 
+                            'deferred': gateway.deferred, 
+                            'priority': gateway.priority, 
+                            'coding': gateway.coding,
+                            'tag': gateway.tag, 
+                            'nostop': gateway.nostop,
+                            }
+                    sms_in_q = queue_obj.\
+                        search(cr, uid, [
+                                         ('name', '=', gateway.url),
+                                         ('gateway_id', '=', gateway.id),
+                                         ('state', '=', 'draft'),
+                                         ('mobile', '=', to),
+                                         ('msg', '=', text),
+                                         ('validity', '=', gateway.validity),
+                                         ('classes', '=', gateway.classes),
+                                         ('deferred', '=', gateway.deferred),
+                                         ('priority', '=', gateway.priority),
+                                         ('coding', '=', gateway.coding),
+                                         ('tag', '=', gateway.tag), 
+                                         ('nostop', '=', gateway.nostop)
+                                         ], context=context)
                     if not sms_in_q:
                         queue_obj.create(cr, uid, vals, context=context)
                         _logger.info('SMS successfully send to : %s' % (to))
@@ -125,7 +135,8 @@ class actions_server(orm.Model):
             else:
                 act_ids.append(action.id)
         if act_ids:
-            return super(actions_server, self).run(cr, uid, act_ids, context=context)
+            return super(actions_server, self).\
+                run(cr, uid, act_ids, context=context)
         return False
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
