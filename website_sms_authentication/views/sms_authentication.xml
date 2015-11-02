@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_sms_authentication_form" model="ir.ui.view">
+            <field name="name">sms.authentication.form</field>
+            <field name="model">sms.authentication</field>
+            <field name="arch" type="xml">
+                <form string="SMS authentication">
+                    <header>
+                        <button name="send_code" type="object"
+                            string="Send code" states="draft" class="oe_highlight"/>
+                        <button name="send_new_code" type="object"
+                            string="Send a new code" states="sent,not_valid" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"
+                            statusbar_visible="draft,sent,done" statusbar_colors='{"not_valid":"red", "cancel":"red"}'/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            <field name="name" class="oe_inline" readonly="1"/>
+                        </h1>
+                        <group>
+                            <field name="mobile"/>
+                            <field name="validity"/>
+                            <field name="gateway_id"/>
+                            <field name="res_model"/>
+                            <field name="res_id"/>
+                            <field name="link_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_sms_authentication_tree" model="ir.ui.view">
+            <field name="name">sms.authentication.tree</field>
+            <field name="model">sms.authentication</field>
+            <field name="arch" type="xml">
+                <tree string="SMS authentication"
+                    colors="blue:state=='draft';red:state=='cancel';red:state=='cancel';grey:state=='done'">
+                    <field name="name"/>
+                    <field name="mobile"/>
+                    <field name="validity"/>
+                    <field name="gateway_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_sms_authentication" model="ir.actions.act_window">
+            <field name="name">SMS authentication</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sms.authentication</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_sms_authentication" id="menu_sms_authentication"
+            parent="smsclient.menu_smsclient_administration_server" sequence="6"/>
+
+    </data>
+</openerp>

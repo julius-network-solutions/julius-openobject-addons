@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+      <template id="thanks">
+        <t t-call="website.layout">
+          <div id="wrap">
+            <div class="oe_structure">
+              <div class="container">
+                <h1>Thank you!</h1>
+                <p>
+                  Your demand has been successfully confirmed,
+                  we will get back to you soon.
+                </p>
+              </div>
+              <section data-snippet-id="cta" class="oe_dark">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12 text-center mt16 mb16">
+                      <a href="/" class="btn btn-primary btn-lg">Continue To Our Website</a>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </t>
+      </template>
+
+      <template id="sms_authentication" name="SMS authentication">
+        <t t-call="website.layout">
+          <body data-spy="scroll" data-target=".navspy" data-offset="50">
+            <div class="container o_website_quote">
+              <div class="row mt16">
+                <div class="col-md-12">
+                  <div id="header_sms">
+                      <h1>Authentication by SMS</h1>
+                      <a id="sms_authentication_header"/>
+                      <h1 class="page-header mt16">
+                        <span>A SMS was sent to your mobile phone. Please enter it here :</span>
+                      </h1>
+                  </div>
+                  <form t-attf-action="/sms-authentication-new-code/#{code.id}" method="post"
+                      class="form-horizontal mt32" enctype="multipart/form-data">
+                    <button type="submit" id="get_new_code" class="btn btn-primary">Get a new code</button>
+                  </form>
+                  <form t-attf-action="/sms-authentication/#{code.id}" method="post" class="form-horizontal mt32" enctype="multipart/form-data">
+                    <h1 class="mt16">
+                      <input type="text" class="form-control" name="code" placeholder="Code" required="1"/>
+                    </h1>
+                    <div t-if="error" class="col-lg-8 col-sm-9">
+                      <div class="alert alert-danger" t-if="error.get('wrong_code')">
+                        <h4>Wrong code ! Please try it again.</h4>
+                      </div>
+                      <div class="alert alert-danger" t-if="error.get('expired')">
+                        <h4>Code Expired ! Please click above to get a new code.</h4>
+                      </div>
+                    </div>
+                    <a id="send"/>
+                    <div class="modal-footer">
+                      <div class="col-md-9">
+                      </div>
+                        <div class="col-md-3">
+                          <button type="submit" class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </body>
+        </t>
+      </template>
+
+    </data>
+</openerp>

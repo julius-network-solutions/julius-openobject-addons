@@ -1,8 +1,9 @@
-##############################################################################
+# -*- coding: utf-8 -*-
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>)
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -17,12 +18,11 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-##############################################################################
+############################################################################### 
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+from openerp import models, fields, _
 
-class part_sms(orm.TransientModel):
+class part_sms(models.TransientModel):
     _name = 'part.sms'
 
     def _default_get_gateway(self, cr, uid, fields, context=None):
@@ -40,16 +40,16 @@ class part_sms(orm.TransientModel):
         sms_obj = self.pool.get('sms.smsclient')
         gateway = sms_obj.browse(cr, uid, gateway_id, context=context)
         return {
-            'value': {
-                'validity': gateway.validity, 
-                'classes': gateway.classes,
-                'deferred': gateway.deferred,
-                'priority': gateway.priority,
-                'coding': gateway.coding,
-                'tag': gateway.tag,
-                'nostop': gateway.nostop,
-            }
-        }
+                'value': {
+                          'validity': gateway.validity, 
+                          'classes': gateway.classes,
+                          'deferred': gateway.deferred,
+                          'priority': gateway.priority,
+                          'coding': gateway.coding,
+                          'tag': gateway.tag,
+                          'nostop': gateway.nostop,
+                          }
+                }
 
     def _merge_message(self, cr, uid, message, object, partner, context=None):
         def merge(match):
@@ -77,40 +77,46 @@ class part_sms(orm.TransientModel):
                     client_obj._send_message(cr, uid, data, context=context)
         return True
 
-    _columns = {
-        'gateway': fields.many2one('sms.smsclient', 'SMS Gateway', required=True),
-        'text': fields.text('Text', required=True),
-        'validity': fields.integer('Validity',
-            help='The maximum time -in minute(s)- before the message is dropped'),
-        'classes': fields.selection([
-                ('0', 'Flash'),
-                ('1', 'Phone display'),
-                ('2', 'SIM'),
-                ('3', 'Toolkit'),
-            ], 'Class',
-            help='The sms class: flash(0),phone display(1),SIM(2),toolkit(3)'),
-        'deferred': fields.integer('Deferred',
-            help='The time -in minute(s)- to wait before sending the message'),
-        'priority': fields.selection([
-                ('0', '0'),
-                ('1', '1'),
-                ('2', '2'),
-                ('3', '3')
-            ], 'Priority', help='The priority of the message'),
-        'coding': fields.selection([
-                ('1', '7 bit'),
-                ('2', 'Unicode')
-            ], 'Coding', help='The sms coding: 1 for 7 bit or 2 for unicode'),
-        'tag': fields.char('Tag', size=256, help='An optional tag'),
-        'nostop': fields.selection([
-                ('0', '0'),
-                ('1', '1')
-            ], 'NoStop',
-            help='Do not display STOP clause in the message, this requires that this is not an advertising message'),
-    }
+    gateway = fields.Many2one('sms.smsclient', 'SMS Gateway', required=True)
+    text = fields.Text('Text', required=True)
+    validity = fields.Integer('Validity',
+                              help="The maximum time -in minute(s)- "
+                              "before the message is dropped")
+    classes = fields.Selection([
+                                ('0', 'Flash'),
+                                ('1', 'Phone display'),
+                                ('2', 'SIM'),
+                                ('3', 'Toolkit'),
+                                ], 'Class',
+                               help="The sms class: flash(0),phone display(1),"
+                               "SIM(2),toolkit(3)")
+    deferred = fields.Integer('Deferred',
+                              help="The time -in minute(s)- to wait "
+                              "before sending the message")
+    priority = fields.Selection([
+                                 ('0', '0'),
+                                 ('1', '1'),
+                                 ('2', '2'),
+                                 ('3', '3')
+                                 ], 'Priority',
+                                help="The priority of the message")
+    coding = fields.Selection([
+                               ('1', '7 bit'),
+                               ('2', 'Unicode')
+                               ], 'Coding',
+                              help="The sms coding: 1 for 7 bit "
+                              "or 2 for unicode")
+    tag = fields.Char('Tag', size=256, help="An optional tag")
+    nostop = fields.Selection([
+                               ('0', '0'),
+                               ('1', '1')
+                               ], 'NoStop',
+                              help="Do not display STOP clause in the message,"
+                              " this requires that this is not an "
+                              "advertising message")
 
     _defaults = {
-        'gateway': _default_get_gateway,        
-    }
+                 'gateway': _default_get_gateway,        
+                 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
