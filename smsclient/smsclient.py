@@ -99,7 +99,7 @@ class partner_sms_send(models.Model):
                                "phone display(1), SIM(2), toolkit(3)")
     deferred = fields.Integer('Deferred',
                               help="The time -in minute(s)- "
-                              "to wait before sending the message"),
+                              "to wait before sending the message")
     priority = fields.Selection([
                                  ('0', '0'),
                                  ('1', '1'),
@@ -370,7 +370,7 @@ class SMSQueue(models.Model):
     error = fields.Text('Last Error', size=256,
                         readonly=True,
                         states={'draft': [('readonly', False)]})
-    date_create = fields.Datetime('Date', readonly=True),
+    date_create = fields.Datetime('Date', readonly=True)
     validity = fields.Integer('Validity',
                               help="The maximum time -in minute(s)- "
                               "before the message is dropped")
