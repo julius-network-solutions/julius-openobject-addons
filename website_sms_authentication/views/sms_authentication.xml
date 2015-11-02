@@ -23,6 +23,9 @@
                             <field name="mobile"/>
                             <field name="validity"/>
                             <field name="gateway_id"/>
+                            <field name="res_model"/>
+                            <field name="res_id"/>
+                            <field name="link_id"/>
                         </group>
                     </sheet>
                 </form>
