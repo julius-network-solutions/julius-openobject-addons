@@ -25,14 +25,14 @@ from openerp.http import request
 
 class website_sms_authentication(http.Controller):
 
-    def preRenderThanks(self, values, kwargs):
+    def preRenderThanks(self, code, values, kwargs):
         """ Allow to be overrided """
         return {
                 '_values': values,
                 '_kwargs': kwargs,
                 }
 
-    def callback_sms(self, values, kwargs):
+    def callback_sms(self, code, values, kwargs):
         """ Allow to be overrided """
         return request.website.\
             render(kwargs.get("view_callback",
@@ -67,8 +67,8 @@ class website_sms_authentication(http.Controller):
         if not code.verify_code(written_code):
             error['wrong_code'] = True
         else:
-            values = self.preRenderThanks(values, kwargs)
-            return self.callback_sms(values, kwargs)
+            values = self.preRenderThanks(code, values, kwargs)
+            return self.callback_sms(code, values, kwargs)
         values.update({
                        'code': code,
                        'error': error,
