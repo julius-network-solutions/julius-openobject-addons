@@ -57,11 +57,12 @@ class actions_server(models.Model):
         act_ids = []
         for action in self.browse(cr, uid, ids, context=context):
             obj_pool = self.pool.get(action.model_id.model)
-            obj = obj_pool.browse(cr, uid, context['active_id'], context=context)
+            if context.get('active_id'):
+                obj = obj_pool.browse(cr, uid, context['active_id'], context=context)
             email_template_obj = self.pool.get('email.template')
             cxt = {
                 'context': context,
-                'object': obj,
+                'object': obj or False,
                 'time': time,
                 'cr': cr,
                 'pool': self.pool,

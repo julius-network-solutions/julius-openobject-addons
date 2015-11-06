@@ -61,10 +61,12 @@ class google_auth_wiz(models.TransientModel):
         self = self.with_context(tz=user.tz)
         secret = user.password_api_key
         h = self.get_hotp_token(secret, intervals_no=int(time.time())//30)
+        print time.time()
         print h
         print self.validation_code
         domain = []
-        if self.validation_code == str(h):
+        h = str(h)
+        if self.validation_code == h:
             return {
               'name': _('Password Manager'),
               'view_type': 'form',
@@ -74,7 +76,7 @@ class google_auth_wiz(models.TransientModel):
               'type': 'ir.actions.act_window',
             }
         else: 
-            raise orm.except_orm('Wrong Code', 'Please Retry')
+            raise orm.except_orm('Wrong Code', 'Please Retry, %s,  %s, %s ' % (time.time(), h, self.validation_code))
         
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
