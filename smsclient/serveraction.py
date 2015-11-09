@@ -56,9 +56,7 @@ class actions_server(models.Model):
             context = {}
         act_ids = []
         for action in self.browse(cr, uid, ids, context=context):
-            print action
             obj_pool = self.pool.get(action.model_id.model)
-            print 'context', context
             if context.get('active_id'):
                 print '1'
                 obj = obj_pool.browse(cr, uid, context['active_id'], context=context)
@@ -137,7 +135,6 @@ class actions_server(models.Model):
                     except Exception, e:
                         _logger.error('Failed to send SMS : %s' % repr(e))
             else:
-                print 'here?'
                 act_ids.append(action.id)
         if act_ids:
             return super(actions_server, self).\
