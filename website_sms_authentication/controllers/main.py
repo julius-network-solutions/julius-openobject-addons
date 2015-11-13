@@ -63,8 +63,11 @@ class website_sms_authentication(http.Controller):
         for field in ['code']:
             if kwargs.get(field):
                 values[field] = kwargs.pop(field)
-        written_code = values['code'] and values.pop('code') or False
-        if not code.verify_code(written_code):
+        written_code = 'code' in values and values['code'] and \
+            values.pop('code') or False
+        if not written_code:
+            pass
+        elif not code.verify_code(written_code):
             error['wrong_code'] = True
         else:
             values = self.preRenderThanks(code, values, kwargs)

@@ -107,7 +107,6 @@ class sms_authentication(models.Model):
         """
         if self.state == 'draft':
             mobile = self.mobile
-            mobile = '+33634456091'
             self.write({
                         'state': 'sent',
                         'validity': datetime.now() + timedelta(minutes=15),
