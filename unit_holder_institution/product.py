@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,24 +19,22 @@
 #
 #################################################################################
 
-{
-    "name" : "Partner Tree View By Default",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
-        'base',
-    ],
-    "description": """
-    Partner Tree View By Default.
-    """,
-    "demo" : [],
-    "data" : [
-         'partner_view.xml',
-    ],
-    'installable' : True,
-    'active' : False,
-}
+from openerp.osv import fields, orm
+from openerp import tools
+from openerp.tools.translate import _
 
+class unit_holder_institution(orm.Model):
+    _name = 'unit.holder.institution'
+    
+    _columns = {
+        'name' : fields.char('name', size=128),
+    }
+
+
+class product_product(orm.Model):
+    _inherit = 'product.product'
+    
+    _columns = {
+        'unit_holder_id': fields.many2one('unit.holder.institution', 'Unit Holder Institution'),
+    }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

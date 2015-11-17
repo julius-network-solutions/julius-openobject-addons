@@ -2,7 +2,7 @@
 #################################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014 Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,20 +20,21 @@
 #################################################################################
 
 {
-    "name" : "Partner Tree View By Default",
-    "version" : "1.0",
+    "name" : "Unit Holder Institution",
+    "version" : "0.1",
     "author" : "Julius Network Solutions",
     "website" : "http://julius.fr",
-    "category" : "Sales Management",
+    "category" : "Product",
     "depends" : [
-        'base',
+        "base",
+        "product"
     ],
     "description": """
-    Partner Tree View By Default.
+    Add a new configurable fields type for partner
     """,
     "demo" : [],
     "data" : [
-         'partner_view.xml',
+        "product_view.xml",
     ],
     'installable' : True,
     'active' : False,

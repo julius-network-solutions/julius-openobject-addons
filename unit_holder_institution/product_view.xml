@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+       <record model="ir.ui.view" id="view_product_form">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+            	<field name="active" position="after">
+	            	<field name="unit_holder_id"/>
+				</field>			
+			</field>
+        </record>
+        
+        
+        <record model="ir.ui.view" id="unit_holder_institution_form_view">
+            <field name="name">unit.holder.institution.form</field>
+            <field name="model">unit.holder.institution</field>
+            <field name="arch" type="xml">
+                <form string="Unit Holder Institution">
+                    <group col="4">
+                        <field name="name"/>
+                    </group>
+                </form>
+			</field>
+        </record>
+        <record model="ir.ui.view" id="unit_holder_institution_tree_view">
+            <field name="name">unit.holder.institution.tree</field>
+            <field name="model">unit.holder.institution</field>
+            <field name="arch" type="xml">
+                <tree string="Unit Holder Institution">
+                    <field name="name"/>
+                </tree>
+			</field>
+        </record>
+        
+
+        <record id="action_unit_holder" model="ir.actions.act_window">
+            <field name="name">Unit Holder Institution</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">unit.holder.institution</field>
+            <field name="view_type">form</field>
+            <field name="help">Manage the unit holder institution you want to have available in your system </field>
+        </record>
+        
+		<menuitem action="action_unit_holder" id="menu__unit_holder" parent="base.menu_base_config" sequence="130" groups="base.group_no_one"/>
+	</data>
+</openerp>
+
+        
+                            

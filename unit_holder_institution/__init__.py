@@ -19,24 +19,6 @@
 #
 #################################################################################
 
-{
-    "name" : "Partner Tree View By Default",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sales Management",
-    "depends" : [
-        'base',
-    ],
-    "description": """
-    Partner Tree View By Default.
-    """,
-    "demo" : [],
-    "data" : [
-         'partner_view.xml',
-    ],
-    'installable' : True,
-    'active' : False,
-}
+import product
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
