@@ -19,18 +19,33 @@
 #
 ###############################################################################
 {
-    "name": "Website authentication by SMS",
-    "summary": "Authentication by SMS on the website",
+    "name": "Website authentication by SMS or Email",
+    "summary": "Authentication by SMS or Email on the website",
     "category": "Website",
-    "version": "1.0",
+    "version": "1.1",
     "description": """
 Website Authentication by SMS
 =============================
+
+Version 1.0:
+------------
+
+    * Generation of a code
+    * Send the code to the partner (by sms)
+    * Test and verify code used
+
+Update 1.1:
+-----------
+
+    * Add the possibility to send the code by email instead of mobile
+    * Format the phone number with the country code (depends of base_phone \
+get it here: https://www.odoo.com/apps/modules/8.0/base_phone/
 
 """,
     "author": "Julius Network Solutions",
     "depends": [
                 "smsclient",
+                "base_phone",
                 ],
     "data": [
              "views/sms_authentication.xml",

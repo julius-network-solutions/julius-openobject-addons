@@ -24,7 +24,7 @@
 import time
 import urllib
 import requests, json
-from openerp import models, fields, _
+from openerp import models, fields, api, _
 from openerp.exceptions import except_orm
 
 import logging
@@ -197,6 +197,7 @@ class SMSClient(models.Model):
                             "this requires that this is not an "
                             "advertising message")
     char_limit = fields.Boolean('Character Limit', default=True)
+    raise_exception = fields.Boolean('Raise exception', default=False)
 
     def _check_permissions(self, cr, uid, id, context=None):
         cr.execute("SELECT * FROM res_smsserver_group_rel "
@@ -257,90 +258,12 @@ class SMSClient(models.Model):
         if context is None:
             context = {}
         queue_obj = self.pool.get('sms.smsclient.queue')
-        history_obj = self.pool.get('sms.smsclient.history')
         sids = queue_obj.search(cr, uid, [
-                ('state', '!=', 'send'),
-                ('state', '!=', 'sending')
-            ], limit=30, context=context)
+                                          ('state', '!=', 'send'),
+                                          ('state', '!=', 'sending')
+                                          ], limit=30, context=context)
         queue_obj.write(cr, uid, sids, {'state': 'sending'}, context=context)
-        error_ids = []
-        sent_ids = []
-        for sms in queue_obj.browse(cr, uid, sids, context=context):
-            if sms.gateway_id.char_limit:
-                if len(sms.msg) > 160:
-                    error_ids.append(sms.id)
-                    continue
-            if sms.gateway_id.method == 'primo':
-                for p in sms.gateway_id.property_ids:
-                    if p.name == 'apikey':
-                        apikey = p.value
-                    elif p.type == 'sender':
-                        sender = p.value
-                try:
-                    api_url = sms.gateway_id.url
-                    message = ''
-                    if sms.coding == '2':
-                        message = str(sms.msg).decode('iso-8859-1').encode('utf8')
-                    if sms.coding == '1':
-                        message = str(sms.msg)
-                    data = {
-                            'number': sms.mobile,
-                            'message': message,
-                            'sender': sender,        
-                    }
-                    r = requests.post(api_url,
-                                      headers={'X-Primotexto-ApiKey':apikey,'Content-Type':'application/json'},
-                                      data=json.dumps(data))
-                    print json.dumps(data)
-                    print r
-                    r.json()
-                    print r.json()
-                    ### End of the new process ###
-                except Exception, e:
-                    raise except_orm('Error', e)
-            if sms.gateway_id.method == 'http':
-                try:
-                    urllib.urlopen(sms.name)
-                except Exception, e:
-                    raise except_orm('Error', e)
-            ### New Send Process OVH Dedicated ###
-            ## Parameter Fetch ##
-            if sms.gateway_id.method == 'smpp':
-                for p in sms.gateway_id.property_ids:
-                    if p.type == 'user':
-                        login = p.value
-                    elif p.type == 'password':
-                        pwd = p.value
-                    elif p.type == 'sender':
-                        sender = p.value
-                    elif p.type == 'sms':
-                        account = p.value
-                try:
-                    soap = WSDL.Proxy(sms.gateway_id.url)
-                    message = ''
-                    if sms.coding == '2':
-                        message = str(sms.msg).decode('iso-8859-1').encode('utf8')
-                    if sms.coding == '1':
-                        message = str(sms.msg)
-                    result = soap.telephonySmsUserSend(str(login), str(pwd),
-                        str(account), str(sender), str(sms.mobile), message,
-                        int(sms.validity), int(sms.classes), int(sms.deferred),
-                        int(sms.priority), int(sms.coding),str(sms.gateway_id.tag), int(sms.gateway_id.nostop))
-                    ### End of the new process ###
-                except Exception, e:
-                    raise except_orm('Error', e)
-            history_obj.create(cr, uid, {
-                            'name': _('SMS Sent'),
-                            'gateway_id': sms.gateway_id.id,
-                            'sms': sms.msg,
-                            'to': sms.mobile,
-                        }, context=context)
-            sent_ids.append(sms.id)
-        queue_obj.write(cr, uid, sent_ids, {'state': 'send'}, context=context)
-        queue_obj.write(cr, uid, error_ids, {
-                                        'state': 'error',
-                                        'error': 'Size of SMS should not be more then 160 char'
-                                    }, context=context)
+        queue_obj.send_sms(cr, uid, sids, context=context)
         return True
 
 
@@ -365,12 +288,14 @@ class SMSQueue(models.Model):
                               ('sending', 'Waiting'),
                               ('send', 'Sent'),
                               ('error', 'Error'),
+                              ('cancel', 'Cancel'),
                               ], 'Message Status', select=True, readonly=True,
                              default='draft')
     error = fields.Text('Last Error', size=256,
                         readonly=True,
                         states={'draft': [('readonly', False)]})
-    date_create = fields.Datetime('Date', readonly=True)
+    date_create = fields.Datetime('Date', readonly=True,
+                                  default=fields.Datetime.now())
     validity = fields.Integer('Validity',
                               help="The maximum time -in minute(s)- "
                               "before the message is dropped")
@@ -405,9 +330,175 @@ class SMSQueue(models.Model):
                             "this requires that this is not an "
                             "advertising message")
 
-    _defaults = {
-                 'date_create': fields.datetime.now,
-                 }
+    @api.one
+    def reset_to_draft(self, test=False):
+        """
+        Set the SMS to draft if in error
+        """
+        if self.state == 'error':
+            self.state = 'draft'
+
+    @api.one
+    def cancel_sms(self, test=False):
+        """
+        Set the SMS to draft if in error
+        """
+        if self.state != 'send':
+            self.state = 'cancel'
+
+    @api.one
+    def send_sms_by_primo(self, raise_exception=False):
+        """
+        Send SMS by the Primo method
+        """
+        for p in self.gateway_id.property_ids:
+            if p.name == 'apikey':
+                apikey = p.value
+            elif p.type == 'sender':
+                sender = p.value
+        try:
+            api_url = self.gateway_id.url
+            message = ''
+            if self.coding == '2':
+                message = str(self.msg).decode('iso-8859-1').encode('utf8')
+            if self.coding == '1':
+                message = str(self.msg)
+            data = {
+                    'number': self.mobile,
+                    'message': message,
+                    'sender': sender,        
+            }
+            r = requests.post(api_url,
+                              headers={'X-Primotexto-ApiKey':apikey,'Content-Type':'application/json'},
+                              data=json.dumps(data))
+            print json.dumps(data)
+            print r
+            r.json()
+            print r.json()
+            ### End of the new process ###
+            self.state = 'send'
+        except Exception, e:
+            if raise_exception:
+                raise except_orm('Error', e)
+            else:
+                self.write({
+                            'state': 'error',
+                            'error': str(e),
+                            })
+
+    @api.one
+    def send_sms_by_http(self, raise_exception=False):
+        """
+        Send SMS by the HTTP method
+        """
+        raise_exception = self.gateway_id.raise_exception
+        try:
+            urllib.urlopen(self.name)
+            self.state = 'send'
+        except Exception, e:
+            if raise_exception:
+                raise except_orm('Error', e)
+            else:
+                self.write({
+                            'state': 'error',
+                            'error': str(e),
+                            })
+
+    @api.one
+    def send_sms_by_smpp(self, raise_exception=False):
+        """
+        Send SMS by the SMPP method
+        """
+        for p in self.gateway_id.property_ids:
+            if p.type == 'user':
+                login = p.value
+            elif p.type == 'password':
+                pwd = p.value
+            elif p.type == 'sender':
+                sender = p.value
+            elif p.type == 'sms':
+                account = p.value
+        try:
+            soap = WSDL.Proxy(self.gateway_id.url)
+            message = ''
+            if self.coding == '2':
+                message = str(self.msg).decode('iso-8859-1').encode('utf8')
+            elif self.coding == '1':
+                message = str(self.msg)
+            result = soap.\
+                telephonySmsUserSend(str(login), str(pwd),
+                                     str(account), str(sender),
+                                     str(self.mobile), message,
+                                     int(self.validity),
+                                     int(self.classes),
+                                     int(self.deferred),
+                                     int(self.priority),
+                                     int(self.coding),
+                                     str(self.gateway_id.tag),
+                                     int(self.gateway_id.nostop))
+            self.state = 'send'
+            ### End of the new process ###
+        except Exception, e:
+            if raise_exception:
+                raise except_orm('Error', e)
+            else:
+                self.write({
+                            'state': 'error',
+                            'error': str(e),
+                            })
+
+    @api.model
+    def _test_error_before_sending(self, record):
+        """
+        Method Checking if SMS valid before sending it
+        @return: If the SMS can be send, return True,
+            else return False
+        """
+        gateway = record.gateway_id
+        if gateway.char_limit:
+            if len(self.msg) > 160:
+                error_text = _('Size of SMS should not be ' \
+                               'more then 160 char')
+                if gateway.raise_execption:
+                    raise except_orm('Error',
+                                     error_text)
+                else:
+                    record.write({
+                                  'state': 'error',
+                                  'error': error_text,
+                                  })
+                    return False
+        return True
+
+    @api.one
+    def send_sms_by_method(self, method=None):
+        """
+        Method sending SMS from the queue by method
+        """
+        gateway = self.gateway_id
+        if method == 'primo':
+            self.send_sms_by_primo(raise_exception=gateway.raise_exception)
+        elif method == 'http':
+            self.send_sms_by_http(raise_exception=gateway.raise_exception)
+        elif method == 'smpp':
+            self.send_sms_by_smpp(raise_exception=gateway.raise_exception)
+
+    @api.one
+    def send_sms(self):
+        """
+        Method sending SMS from the queue
+        """
+        if self._test_error_before_sending(self):
+            method = self.gateway_id.method
+            self.send_sms_by_method(method=method)
+            if self.state == 'sent':
+                self.env['sms.smsclient.history'].\
+                    create({
+                            'name': _('SMS Sent'),
+                            'gateway_id': self.gateway_id.id,
+                            'sms': self.msg,
+                            'to': self.mobile,
+                            })
 
 
 class Properties(models.Model):
@@ -445,7 +536,7 @@ class HistoryLine(models.Model):
     sms = fields.Text('SMS', size=160, readonly=True)
 
     _defaults = {
-                 'date_create': fields.datetime.now,
+                 'date_create': fields.Datetime.now(),
                  'user_id': lambda obj, cr, uid, context: uid,
                  }
 

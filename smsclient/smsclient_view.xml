@@ -5,7 +5,10 @@
         <!-- ************************************************************** -->
         <!-- ** Global menu for SMS Client ******************************** -->
         <!-- ************************************************************** -->
-        <menuitem name="SMS Gateway" id="menu_smsclient_administration_server" parent="base.menu_config"/>
+        <menuitem
+            name="SMS Gateway" sequence="1"
+            id="menu_smsclient_administration_server"
+            parent="base.menu_custom"/>
 
         <!-- ************************************************************** -->
         <!-- ** SMS Gateway list ****************************************** -->
@@ -16,30 +19,37 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <form string="SMS Gateway">
-                    <field name="name" select="1"/>
-                    <field name="method" select="1"/>
+                    <group>
+                        <field name="name" select="1"/>
+                        <field name="method" select="1"/>
+                    </group>
                     <notebook colspan="4">
                         <page string="General">
-                            <field name="url" colspan="4"/>
-                            <field name="property_ids" colspan="4" nolabel="1">
-                                <tree string="Gateway Parameters">
-                                    <field name="type"/>
-                                    <field name="name"/>
-                                    <field name="value"/>
-                                </tree>
-                                <form string="Gateway Parameters">
-                                    <field name="type"/>
-                                    <field name="name"/>
-                                    <field name="value"/>
-                                </form>
-                            </field>
-                            <field name="state"/>
+                            <group>
+                                <field name="url"/>
+                                <field name="property_ids" colspan="4" nolabel="1">
+                                    <tree string="Gateway Parameters">
+                                        <field name="type"/>
+                                        <field name="name"/>
+                                        <field name="value"/>
+                                    </tree>
+                                    <form string="Gateway Parameters">
+                                        <group>
+                                            <field name="type"/>
+                                            <field name="name"/>
+                                            <field name="value"/>
+                                        </group>
+                                    </form>
+                                </field>
+                                <field name="state"/>
+                            </group>
                         </page>
                         <page string="Permission">
-                            <separator string="Access Permission"
-                                colspan="4" />
-                            <field name="users_id" select="1"
-                                colspan="4" nolabel="1" />
+                            <group string="Access Permission"
+                                colspan="4" >
+                                <field name="users_id" select="1"
+                                    colspan="4" nolabel="1"/>
+                            </group>
                         </page>
                         <page string="Additional option">
    		                	<group>	  	 	
@@ -48,6 +58,7 @@
 	   		          	        	<field name="classes"/>
 	   		          	        	<field name="deferred"/>
 	   		          	        	<field name="nostop"/>
+                                    <field name="raise_exception"/>
 	           		          	</group>
 	   		          	        <group>
 		                   			<field name="priority"/>
@@ -109,12 +120,14 @@
             <field name="model">sms.smsclient.history</field>
             <field name="arch" type="xml">
                 <form string="Gateway History">
-                    <field name="gateway_id" select="1"/>
-                    <field name="date_create" select="1"/>
-                    <field name="user_id" select="1"/>
-                    <field name="name" select="1"/>
-                    <field name="to" select="1"/>
-                    <field name="sms" colspan="4" select="1"/>
+                    <group>
+                        <field name="gateway_id" select="1"/>
+                        <field name="date_create" select="1"/>
+                        <field name="user_id" select="1"/>
+                        <field name="name" select="1"/>
+                        <field name="to" select="1"/>
+                        <field name="sms" colspan="4" select="1"/>
+                    </group>
                 </form>
             </field>
         </record>
@@ -153,14 +166,25 @@
             <field name="model">sms.smsclient.queue</field>
             <field name="arch" type="xml">
                 <form string="Gateway History">
-                    <field name="date_create" select="1"/>
-                    <field name="gateway_id" select="1"/>
-                    <field name="mobile" select="1"/>
-                    <field name="state" select="1"/>
-                    <separator string="SMS Message" colspan="4"/>
-                    <field name="msg" colspan="4" select="2" nolabel="1"/>
-                    <separator string="Last Error"  colspan="4"/>
-                    <field name="error" colspan="4" select="2" nolabel="1"/>
+                    <header>
+                        <button name="reset_to_draft" type="object"
+                            string="Reset to draft" states="error" class="oe_highlight"/>
+                        <button name="send_sms" type="object"
+                            string="Send" states="draft" class="oe_highlight"/>
+                        <button name="cancel_sms" type="object"
+                            string="Cancel SMS" states="draft,sending,error"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,sending,send"
+                            statusbar_colors='{"draft":"blue","error":"red","cancel":"red"}'/>
+                    </header>
+                    <group>
+                        <field name="date_create" select="1"/>
+                        <field name="gateway_id" select="1"/>
+                        <field name="mobile" select="1"/>
+                        <separator string="SMS Message" colspan="4"/>
+                        <field name="msg" colspan="4" select="2" nolabel="1"/>
+                        <separator string="Last Error"  colspan="4"/>
+                        <field name="error" colspan="4" select="2" nolabel="1"/>
+                    </group>
                 </form>
             </field>
         </record>

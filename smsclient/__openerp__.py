@@ -23,7 +23,7 @@
 
 {
     "name": "SMS Client",
-    "version": "1.0",
+    "version": "1.1",
     "depends": [
                 "base",
                 "email_template",
@@ -60,6 +60,15 @@ Module History:
 
 This Module was developped by SYLEAM and OpenERP SA in a first place.
 Then, it was updated to the 7.0 version by Julius Network Solutions.
+
+Updates:
+--------
+
+    * Version 1.1:
+        * Send directly your SMS from the SMS queue
+        * Add the possibility to cancel a SMS
+        * Move the SMS menu to "Setting > Technical" (after Email)
+
 """,
     "website": "http://julius.fr",
     "category": "Tools",

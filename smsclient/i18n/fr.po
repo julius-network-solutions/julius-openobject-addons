@@ -88,7 +88,7 @@ msgstr "Si le paramètre concerne une valeur à substituer, indiquer le"
 #. module: smsclient
 #: selection:sms.smsclient.queue,state:0
 msgid "Sent"
-msgstr "Envoyer"
+msgstr "Envoyé"
 
 #. module: smsclient
 #: help:sms.smsclient.code.verify,init,code:0
