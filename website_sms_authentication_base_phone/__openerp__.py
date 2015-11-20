@@ -19,46 +19,31 @@
 #
 ###############################################################################
 {
-    "name": "Website authentication by SMS or Email",
-    "summary": "Authentication by SMS or Email on the website",
+    "name": "Website authentication by SMS or Email - base phone formatted",
+    "summary": "Format phone numbers on the website for the authentication",
     "category": "Website",
-    "version": "1.2",
+    "version": "1.0",
     "description": """
-Website Authentication by SMS
-=============================
+Website Authentication by SMS - Base Phone
+==========================================
 
 Version 1.0:
 ------------
 
-    * Generation of a code
-    * Send the code to the partner (by sms)
-    * Test and verify code used
-
-Update 1.1:
------------
-
-    * Add the possibility to send the code by email instead of mobile
     * Format the phone number with the country code (depends of base_phone \
 get it here: https://www.odoo.com/apps/modules/8.0/base_phone/)
-
-Update 1.2:
------------
-
-    * Remove the dependency to base_phone, but create a new addons which \
-is auto installed on base_phone installation \
-"website_sms_authentication_base_phone"
 
 """,
     "author": "Julius Network Solutions",
     "depends": [
-                "smsclient",
+                "website_sms_authentication",
+                "base_phone",
                 ],
     "data": [
              "views/sms_authentication.xml",
-             "website_views/website_sms_authentication.xml",
              ],
     "installable": True,
-    "auto_install": False,
+    "auto_install": True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

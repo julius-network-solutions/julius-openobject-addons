@@ -28,23 +28,6 @@ import re
 class sms_authentication(models.Model):
     _name = 'sms.authentication'
     _description = 'SMS authentication'
-    _inherit = ['phone.common']
-    _phone_fields = ['mobile']
-    _phone_name_sequence = 10
-    _country_field = 'country_id'
-    _partner_field = None
-
-    def create(self, cr, uid, vals, context=None):
-        vals_reformated = self._generic_reformat_phonenumbers(
-            cr, uid, None, vals, context=context)
-        return super(sms_authentication, self).create(
-            cr, uid, vals_reformated, context=context)
-
-    def write(self, cr, uid, ids, vals, context=None):
-        vals_reformated = self._generic_reformat_phonenumbers(
-            cr, uid, ids, vals, context=context)
-        return super(sms_authentication, self).write(
-            cr, uid, ids, vals_reformated, context=context)
 
     @api.model
     def _select_objects(self):
@@ -87,8 +70,6 @@ class sms_authentication(models.Model):
     res_id = fields.Integer('Res id')
     link_id = fields.Reference(string='Link', selection=_select_objects,
                                compute='_get_reference_link')
-
-    country_id = fields.Many2one('res.country', 'Country')
 
     @api.one
     def _get_reference_link(self):

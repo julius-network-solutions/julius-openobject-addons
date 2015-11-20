@@ -23,7 +23,6 @@
                         </h1>
                         <group>
                             <field name="type"/>
-                            <field name="country_id"/>
                             <field name="mobile"
                                 attrs="{'invisible': [('type', '!=', 'sms'),], 'required': [('type', '=', 'sms'),]}"/>
                             <field name="email"
