@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="ir_actions_report_xml_direct_pdf" model="ir.ui.view">
+            <field name="name">ir.actions.report.xml.direct.pdf</field>
+            <field name="model">ir.actions.report.xml</field>
+            <field name="inherit_id" ref="base.act_report_xml_view"/>
+            <field name="arch" type="xml">
+                <field name="report_rml" position="after">
+                    <field name="direct_pdf" attrs="{'invisible': [('report_type', '!=', 'qweb-pdf')]}"/>
+                    <field name="set_direct_pdf" attrs="{'invisible': [('report_type', '!=', 'qweb-pdf')]}"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
