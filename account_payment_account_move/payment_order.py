@@ -50,6 +50,7 @@ class payment_order(models.Model):
                                     })
             self.move_id = move.id
         reconciles = []
+        reconciles_partial = []
         group_lines = self.journal_id.group_payment_line
         debit_grouped = 0.0
         credit_grouped = 0.0
@@ -59,8 +60,8 @@ class payment_order(models.Model):
             move_line = line.move_line_id
             if not move_line:
                 raise Warning(_('The line %s has not related move' %line.name))
-            debit = move_line.debit
-            credit = move_line.credit
+            debit = move_line.debit and line.amount_currency or 0
+            credit = move_line.credit and line.amount_currency or 0
             account_id = move_line.account_id.id
             if not account_id:
                 if debit:
@@ -101,7 +102,11 @@ class payment_order(models.Model):
             else:
                 credit_grouped += credit
                 debit_grouped += debit
-            reconciles.append(move_line + to_reconcile_line)
+            if move_line.debit == line.amount_currency or \
+                move_line.credit == line.amount_currency:
+                reconciles.append(move_line + to_reconcile_line)
+            else:
+                reconciles_partial.append(move_line + to_reconcile_line)
         if credit_grouped:
             move_line_obj.\
                 create({
@@ -130,6 +135,8 @@ class payment_order(models.Model):
                         })
         for rec in reconciles:
             rec.reconcile('manual')
+        for rec in reconciles_partial:
+            rec.reconcile_partial('manual')
         return True
 
     @api.one
