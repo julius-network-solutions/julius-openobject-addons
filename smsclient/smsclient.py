@@ -324,7 +324,7 @@ class SMSQueue(models.Model):
                               help="The sms coding: 1 for 7 bit "
                               "or 2 for unicode")
     tag = fields.Char('Tag', size=256,
-                      help='An optional tag'),
+                      help='An optional tag')
     nostop = fields.Boolean('NoStop',
                             help="Do not display STOP clause in the message, "
                             "this requires that this is not an "
