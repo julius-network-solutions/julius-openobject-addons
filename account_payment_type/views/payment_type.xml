@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- PAYMENT TYPES -->
+        <record id="view_payment_type_form" model="ir.ui.view">
+            <field name="name">payment.type.form</field>
+            <field name="model">payment.type</field>
+            <field name="arch" type="xml">
+                <form string="Payment type">
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_payment_type_tree" model="ir.ui.view">
+            <field name="name">payment.type.tree</field>
+            <field name="model">payment.type</field>
+            <field name="arch" type="xml">
+                <tree string="Payment type" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_payment_type" model="ir.actions.act_window">
+            <field name="name">Payment types</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">payment.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_payment_type_tree"/>
+        </record>
+
+        <menuitem id="menu_payment_type"
+                name="Payment types"
+                parent="account.menu_configuration_misc"
+                sequence="11"
+                action="action_payment_type"/>
+
+    </data>
+</openerp>
