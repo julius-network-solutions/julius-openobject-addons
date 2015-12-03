@@ -58,7 +58,6 @@ class actions_server(models.Model):
         for action in self.browse(cr, uid, ids, context=context):
             obj_pool = self.pool.get(action.model_id.model)
             if context.get('active_id'):
-                print '1'
                 obj = obj_pool.browse(cr, uid, context['active_id'], context=context)
                 email_template_obj = self.pool.get('email.template')
                 cxt = {

@@ -371,10 +371,7 @@ class SMSQueue(models.Model):
             r = requests.post(api_url,
                               headers={'X-Primotexto-ApiKey':apikey,'Content-Type':'application/json'},
                               data=json.dumps(data))
-            print json.dumps(data)
-            print r
             r.json()
-            print r.json()
             ### End of the new process ###
             self.state = 'send'
         except Exception, e:
