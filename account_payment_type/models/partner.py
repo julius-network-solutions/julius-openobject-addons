@@ -30,7 +30,7 @@ class res_partner(models.Model):
 
     @api.model
     def _commercial_fields(self):
-        res = super(ResPartner, self)._commercial_fields()
+        res = super(res_partner, self)._commercial_fields()
         res += ['property_payment_type']
         return res
 
