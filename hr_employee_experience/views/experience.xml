@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Experiences -->
+        <record id="view_hr_employee_experience_form" model="ir.ui.view">
+            <field name="name">hr.employee.experience.form</field>
+            <field name="model">hr.employee.experience</field>
+            <field name="arch" type="xml">
+                <form string="Employee Experience">
+                    <group>
+                        <field name="employee_id"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="date_start"/>
+                        </group>
+                        <group>
+                            <field name="city"/>
+                            <field name="date_end"/>
+                        </group>
+                        <group colspan="4">
+                            <field name="description"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_employee_experience_tree" model="ir.ui.view">
+            <field name="name">hr.employee.experience.tree</field>
+            <field name="model">hr.employee.experience</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Experience">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="duration"/>
+                    <field name="city"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_employee_experience_search" model="ir.ui.view">
+            <field name="name">hr.employee.experience.search</field>
+            <field name="model">hr.employee.experience</field>
+            <field name="arch" type="xml">
+                <search string="Employee Experience">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_hr_employee_experience" model="ir.actions.act_window">
+            <field name="name">Employee Experience</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.employee.experience</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_hr_employee_experience_tree"/>
+        </record>
+
+        <menuitem id="menu_hr_employee_experience"
+                name="Employee Experience"
+                parent="hr.menu_hr_configuration"
+                sequence="50"
+                action="action_hr_employee_experience"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,152 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_employee_experience
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-12-11 12:15+0000\n"
+"PO-Revision-Date: 2015-12-11 12:15+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,city:0
+#: field:hr.employee.training,city:0
+msgid "City"
+msgstr "Ville"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,create_uid:0
+#: field:hr.employee.training,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,create_date:0
+#: field:hr.employee.training,create_date:0
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,date_end:0
+#: field:hr.employee.training,date_end:0
+msgid "Date end"
+msgstr "Date de fin"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,date_start:0
+#: field:hr.employee.training,date_start:0
+msgid "Date start"
+msgstr "Date de début"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,description:0
+#: field:hr.employee.training,description:0
+msgid "Description"
+msgstr "Description"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,duration:0
+#: field:hr.employee.training,duration:0
+msgid "Duration in Month"
+msgstr "Durée en mois"
+
+#. module: hr_employee_experience
+#: model:ir.model,name:hr_employee_experience.model_hr_employee
+msgid "Employee"
+msgstr "Employé"
+
+#. module: hr_employee_experience
+#: view:hr.employee.experience:hr_employee_experience.view_hr_employee_experience_form
+#: view:hr.employee.experience:hr_employee_experience.view_hr_employee_experience_search
+#: view:hr.employee.experience:hr_employee_experience.view_hr_employee_experience_tree
+#: model:ir.actions.act_window,name:hr_employee_experience.action_hr_employee_experience
+#: model:ir.ui.menu,name:hr_employee_experience.menu_hr_employee_experience
+msgid "Employee Experience"
+msgstr "Expérience de l'employé"
+
+#. module: hr_employee_experience
+#: view:hr.employee.training:hr_employee_experience.view_hr_employee_training_form
+#: view:hr.employee.training:hr_employee_experience.view_hr_employee_training_search
+#: view:hr.employee.training:hr_employee_experience.view_hr_employee_training_tree
+#: model:ir.actions.act_window,name:hr_employee_experience.action_hr_employee_training
+#: model:ir.ui.menu,name:hr_employee_experience.menu_hr_employee_training
+msgid "Employee Training"
+msgstr "Formations de l'employé"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,employee_id:0
+#: field:hr.employee.training,employee_id:0
+msgid "Employee/Applicant"
+msgstr "Employé/Candidat"
+
+#. module: hr_employee_experience
+#: view:hr.employee:hr_employee_experience.view_employee_form_experience
+#: field:hr.employee,experience_ids:0
+msgid "Experiences"
+msgstr "Expériences"
+
+#. module: hr_employee_experience
+#: model:ir.model,name:hr_employee_experience.model_hr_employee_experience
+msgid "Experiences of my employees"
+msgstr "Expériences de mes employés"
+
+#. module: hr_employee_experience
+#: model:ir.model,name:hr_employee_experience.model_hr_employee_training
+msgid "Training of my employees"
+msgstr "Formations de mes employés"
+
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,id:0
+#: field:hr.employee.training,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,write_uid:0
+#: field:hr.employee.training,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière modification par"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,write_date:0
+#: field:hr.employee.training,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière modification le"
+
+#. module: hr_employee_experience
+#: field:hr.employee.experience,name:0
+#: field:hr.employee.training,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: hr_employee_experience
+#: view:hr.employee:hr_employee_experience.view_employee_form_experience
+#: field:hr.employee,qualities:0
+msgid "Qualities"
+msgstr "Qualités"
+
+#. module: hr_employee_experience
+#: view:hr.employee:hr_employee_experience.view_employee_form_experience
+#: field:hr.employee,skills:0
+msgid "Skills"
+msgstr "Compétences"
+
+#. module: hr_employee_experience
+#: view:hr.employee:hr_employee_experience.view_employee_form_experience
+msgid "Skills / Qualities"
+msgstr "Compétences / Qualités"
+
+#. module: hr_employee_experience
+#: view:hr.employee:hr_employee_experience.view_employee_form_experience
+#: field:hr.employee,training_ids:0
+msgid "Trainings"
+msgstr "Formations"
+

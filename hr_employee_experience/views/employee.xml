@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+		<record id="view_employee_form_experience" model="ir.ui.view">
+			<field name="name">hr.employee.form</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form"/>
+			<field name="arch" type="xml">
+				<notebook position="inside">
+                    <page string="Skills / Qualities">
+                        <group colspan="4" string="Skills">
+                            <field name="skills" nolabel="1" colspan="4"/>
+                        </group>
+                        <group colspan="4" string="Qualities">
+                            <field name="qualities" nolabel="1" colspan="4"/>
+                        </group>
+                    </page>
+                    <page string="Experiences">
+                        <group colspan="4">
+                            <field name="experience_ids" nolabel="1" colspan="4">
+                                <tree string="Experiences">
+                                    <field name="name"/>
+                                    <field name="duration"/>
+                                    <field name="city"/>
+                                </tree>
+                                <form string="Experiences">
+                                    <group>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="date_start"/>
+                                        </group>
+                                        <group>
+                                            <field name="city"/>
+                                            <field name="date_end"/>
+                                        </group>
+                                        <group colspan="4">
+                                            <field name="description"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
+					</page>
+                    <page string="Trainings">
+                        <group colspan="4">
+                            <field name="training_ids" nolabel="1" colspan="4">
+                                <tree string="Trainings">
+                                    <field name="name"/>
+                                    <field name="duration"/>
+                                    <field name="city"/>
+                                </tree>
+                                <form string="Trainings">
+                                    <group>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="date_start"/>
+                                        </group>
+                                        <group>
+                                            <field name="city"/>
+                                            <field name="date_end"/>
+                                        </group>
+                                        <group colspan="4">
+                                            <field name="description"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
+                    </page>
+				</notebook>
+            </field>
+        </record>
+
+    </data>
+</openerp>
