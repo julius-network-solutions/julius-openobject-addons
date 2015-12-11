@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_experience_user,hr.employee.experience.user,hr_employee_experience.model_hr_employee_experience,base.group_user,1,0,0,0
+access_hr_employee_experience_manager,hr.employee.experience.manager,hr_employee_experience.model_hr_employee_experience,base.group_hr_user,1,1,1,1
+access_hr_employee_training_user,hr.employee.training.user,hr_employee_experience.model_hr_employee_training,base.group_user,1,0,0,0
+access_hr_employee_training_manager,hr.employee.training.manager,hr_employee_experience.model_hr_employee_training,base.group_hr_user,1,1,1,1
