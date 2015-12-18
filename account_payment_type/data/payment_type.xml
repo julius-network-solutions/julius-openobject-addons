@@ -15,7 +15,7 @@
             <field name="name">Wire transfer</field>
         </record>
 
-        <record id="payment_wire_cash" model="payment.type">
+        <record id="payment_cash" model="payment.type">
             <field name="name">Cash</field>
         </record>
 
