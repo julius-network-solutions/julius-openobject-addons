@@ -22,7 +22,7 @@
 {
     "name": "Document Signed",
     "summary": "Sign your attachment with an ssl key",
-    "version": "0.1",
+    "version": "0.2",
     "category": "Knowledge Management",
     "description": """
 Sign your attachments
@@ -52,6 +52,11 @@ Then:
 
 In the attachment you will find a button to sign the document.
 
+How to check this ?
+-------------------
+
+    * The signature will be added to this attachment as an other attachment.
+    * You will find a wizard to test a document.
 """,
     "author": "Julius Network Solutions",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
@@ -63,6 +68,7 @@ In the attachment you will find a button to sign the document.
                 "document",
                 ],
     "data": [
+             "wizard/test_attachment.xml",
              "views/attachment_view.xml",
              "views/res_config_view.xml",
              ],

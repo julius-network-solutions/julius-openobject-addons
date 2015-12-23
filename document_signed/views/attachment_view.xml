@@ -10,11 +10,17 @@
             <field name="arch" type="xml">
                 <group string="Indexed Content" position="after">
                     <group string="Signed Content" colspan="4">
-                        <field name="signed_content" nolabel="1"/>
-                        <button type="object" string="Sign this document" class="oe_highlight"
-                            name="sign_attachment" attrs="{'invisible': [('signed_content', '!=', False)]}"/>
-                        <button type="object" string="Sign this document"
-                            name="sign_attachment" attrs="{'invisible': [('signed_content', '=', False)]}"/>
+                        <group colspan="4">
+                            <field name="signed_content" nolabel="1" colspan="4"/>
+                        </group>
+                        <group colspan="4" col="4">
+                            <button type="object" string="Sign this document" class="oe_highlight"
+                                name="sign_attachment" attrs="{'invisible': [('signed_content', '!=', False)]}"/>
+                            <button type="object" string="Sign this document"
+                                name="sign_attachment" attrs="{'invisible': [('signed_content', '=', False)]}"/>
+                            <button name="%(act_test_attachment_signature_form)d" type="action"
+                                string="Verify key" attrs="{'invisible': [('signed_content', '=', False)]}"/>
+                        </group>
                     </group>
                 </group>
             </field>

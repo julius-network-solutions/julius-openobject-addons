@@ -25,40 +25,41 @@ crypto_install = False
 try:
     from M2Crypto import RSA
     crypto_install = True
+    from M2Crypto.RSA import RSAError
 except:
     _logger.warning("ERROR IMPORTING M2Crypto, if not installed, "
                     "please install it.\nGet it here: "
                     "https://pypi.python.org/pypi/M2Crypto")
 import base64, hashlib
-from openerp import models, fields, api
-from openerp.exceptions import MissingError
+from openerp import models, fields, api, _
+from openerp.exceptions import MissingError, Warning
 
 
-class ir_attachment(models.Model):
-    _inherit = 'ir.attachment'
+class ir_attachment_signature_test(models.Model):
+    _name = 'ir.attachment.signature.test'
+    _description = 'Test document signature'
 
-    signed_content = fields.Text('Signed Content',
-                                 compute='_get_signature_content')
-    signature_id = fields.Many2one('ir.attachment', 'Signature')
-    is_signature = fields.Boolean('Is a signature', readonly=True)
+    datas = fields.Binary('Document to test', required=True)
+    attachment_tested_id = fields.\
+        Many2one('ir.attachment', 'Attachment',
+                 default=lambda self: self._context.get('active_id'))
+    force_signature = fields.Boolean('Force signature', default=False)
+    signature_tested = fields.Text('Signature to test')
 
     @api.one
-    def _get_signature_content(self):
-        signature_text = ''
-        signature = self.search([
-                                  ('res_id', '=', self.id),
-                                  ('res_model', '=', self._name),
-                                  ('is_signature', '=', True),
-                                  ], limit=1, order="id DESC")
-        signature_text = signature.index_content
-        self.signed_content = signature_text
-        
-    @api.one
-    def sign_attachment(self):
+    def verify_attachment(self):
         if not crypto_install:
             raise MissingError("ERROR IMPORTING M2Crypto, if not installed, "
                                "please install it.\nGet it here:\n"
                                "https://pypi.python.org/pypi/M2Crypto")
+        signature = self.signature_tested
+        if self.force_signature:
+            if not self.signature_tested:
+                raise MissingError("Please set a key to test")
+        else:
+            signature = self.attachment_tested_id.signed_content
+            if not signature:
+                raise MissingError("This document have't been signed.")
         params = self.env['ir.config_parameter']
         def _get_key():
             signature_key = params.sudo().\
@@ -72,17 +73,21 @@ class ir_attachment(models.Model):
             return str(signature_passphrase)
         key = _get_key()
         pkey = RSA.load_key(key, gimmepw)
-        value = self.datas
+        att = self.env['ir.attachment'].create({
+                                                'name': 'File tested',
+                                                'datas': self.datas,
+                                                'datas_fname': 'File tested',
+                                                'res_model': self._name,
+                                                'res_id': self.id,
+                                                })
+        value = att.datas
+        signature = base64.decodestring(signature)
         sha256_val = hashlib.sha256(value).digest()
-        signature = pkey.sign(sha256_val)
-        file_name = self.datas_fname + '.signature'
-        att_id = self.create({
-                              'name': file_name,
-                              'datas': base64.encodestring(base64.encodestring(signature)),
-                              'datas_fname': file_name,
-                              'res_model': self._name,
-                              'res_id': self.id,
-                              'is_signature': True,
-                              })
+        try:
+            pkey.verify(sha256_val, signature)
+            raise Warning(_("The signature is OK !\n"
+                            "This document hasn't been changed."))
+        except RSAError:
+            raise Warning(_("Wrong signature !\nThe document has changed."))
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

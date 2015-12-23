@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_test_attachment_signature_form" model="ir.ui.view">
+            <field name="name">ir.attachment.signature.test.form</field>
+            <field name="model">ir.attachment.signature.test</field>
+            <field name="arch" type="xml">
+                <form string="Test signature">
+                    <group>
+                        <field name="datas"/>
+                        <field name="force_signature"/>
+                        <field name="attachment_tested_id"
+                            attrs="{'invisible': [('force_signature', '=', True)]}"/>
+                        <field name="signature_tested"
+                            attrs="{'invisible': [('force_signature', '=', False)]}"/>
+                    </group>
+                    <footer>
+                        <button name="verify_attachment" string="Check this document"
+                            type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="act_test_attachment_signature_form" model="ir.actions.act_window">
+            <field name="name">Test signature</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ir.attachment.signature.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_test_attachment_signature_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
