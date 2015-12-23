@@ -45,11 +45,13 @@ class ir_attachment(models.Model):
     @api.one
     def _get_signature_content(self):
         signature_text = ''
-        signature = self.search([
-                                  ('res_id', '=', self.id),
-                                  ('res_model', '=', self._name),
-                                  ('is_signature', '=', True),
-                                  ], limit=1, order="id DESC")
+        signature = self.signature_id
+        if not self.signature_id:
+            signature = self.search([
+                                      ('res_id', '=', self.id),
+                                      ('res_model', '=', self._name),
+                                      ('is_signature', '=', True),
+                                      ], limit=1, order="id DESC")
         signature_text = signature.index_content
         self.signed_content = signature_text
         
@@ -76,13 +78,13 @@ class ir_attachment(models.Model):
         sha256_val = hashlib.sha256(value).digest()
         signature = pkey.sign(sha256_val)
         file_name = self.datas_fname + '.signature'
-        att_id = self.create({
-                              'name': file_name,
-                              'datas': base64.encodestring(base64.encodestring(signature)),
-                              'datas_fname': file_name,
-                              'res_model': self._name,
-                              'res_id': self.id,
-                              'is_signature': True,
-                              })
+        self.signature_id = self.create({
+                                         'name': file_name,
+                                         'datas': base64.encodestring(base64.encodestring(signature)),
+                                         'datas_fname': file_name,
+                                         'res_model': self._name,
+                                         'res_id': self.id,
+                                         'is_signature': True,
+                                         }).id
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
