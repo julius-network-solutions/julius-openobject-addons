@@ -21,6 +21,7 @@
 
 from openerp import models, fields
 
+
 class crm_heard_about_us(models.Model):
     _name = 'crm.hear.about.us'
     _description = 'How did the customer hear about us'
@@ -28,11 +29,19 @@ class crm_heard_about_us(models.Model):
 
     sequence = fields.Integer(default=10)
     name = fields.Char(translate=True, required=True)
+    type = fields.Selection([
+                             ('all', 'All'),
+                             ('crm', 'CRM'),
+                             ], string='Type', default='all', required=True)
+    affiliate = fields.Boolean('Affiliate ?',)
+    other = fields.Boolean('Other',)
+
 
 class crm_lead(models.Model):
     _inherit = 'crm.lead'
 
     hear_about_us_id = fields.Many2one('crm.hear.about.us',
-                                       'How did the customer hear about us ?')
+                                       'How did the customer hear about us ?',
+                                       domain=[('type', 'in', ('all', 'crm'))])
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
