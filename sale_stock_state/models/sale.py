@@ -22,34 +22,22 @@
 from openerp import models, fields, api, _
 
 
-selection_vals = [
-                  ('no_picking', 'No Picking yet'),
-                  ('draft', 'Draft'),
-                  ('cancel', 'Cancelled'),
-                  ('waiting', 'Waiting Another Operation'),
-                  ('confirmed', 'Waiting Availability'),
-                  ('partially_available', 'Partially Available'),
-                  ('assigned', 'Ready to Transfer'),
-                  ('done', 'Transferred'),
-                  ('many', 'Many states'),
-                  ]
-
-selection_keys = {
-                  'draft': _('Draft'),
-                  'cancel': _('Cancelled'),
-                  'waiting': _('Waiting Another Operation'),
-                  'confirmed': _('Waiting Availability'),
-                  'partially_available': _('Partially Available'),
-                  'assigned': _('Ready to Transfer'),
-                  'done': _('Transferred'),
-                  }
-
-
 class sale_order(models.Model):
     _inherit = 'sale.order'
 
-    stock_state = fields.Selection(selection_vals, 'Stock state',
-                                   compute='_get_stock_state')
+    stock_state = fields.\
+        Selection([
+                   ('no_picking', 'No Picking yet'),
+                   ('draft', 'Draft'),
+                   ('cancel', 'Cancelled'),
+                   ('waiting', 'Waiting Another Operation'),
+                   ('confirmed', 'Waiting Availability'),
+                   ('partially_available', 'Partially Available'),
+                   ('assigned', 'Ready to Transfer'),
+                   ('done', 'Transferred'),
+                   ('many', 'Many states'),
+                   ], 'Stock state',
+                  compute='_get_stock_state')
     stock_state_many = fields.Char('Stock state if many',
                                    compute='_get_stock_state')
 
@@ -57,6 +45,15 @@ class sale_order(models.Model):
         state = 'no_picking'
         state_many = ''
         states = {}
+        selection_keys = {
+                          'draft': _('Draft'),
+                          'cancel': _('Cancelled'),
+                          'waiting': _('Waiting Another Operation'),
+                          'confirmed': _('Waiting Availability'),
+                          'partially_available': _('Partially Available'),
+                          'assigned': _('Ready to Transfer'),
+                          'done': _('Transferred'),
+                          }
         if self.picking_ids:
             for picking in self.picking_ids:
                 states[picking.state] = True
