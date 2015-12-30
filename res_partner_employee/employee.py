@@ -33,6 +33,9 @@ class hr_employee(models.Model):
                 'phone': fields.related('address_home_id', 'phone', string='Phone', type='char', size=64),
                 'fax': fields.related('address_home_id', 'fax', string='Fax', type='char', size=64),
                 'mobile': fields.related('address_home_id', 'mobile', string='Mobile', type='char', size=64),
+                'title': fields.related('address_home_id', 'title',
+                                        string="Title", type="many2one",
+                                        relation='res.partner.title')
                 }
 
     @api.model
@@ -55,6 +58,7 @@ class hr_employee(models.Model):
                         'phone' : vals.get('phone', False),
                         'fax' : vals.get('fax', False),
                         'mobile' : vals.get('mobile', False),
+                        'title' : vals.get('title', False),
                         }
         return partner_vals
 

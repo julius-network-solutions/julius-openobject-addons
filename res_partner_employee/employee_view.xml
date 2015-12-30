@@ -18,7 +18,10 @@
 	        			<field name="fax"/>
 	        			<field name="mobile"/>
 					</group>
-				</field>
+                </field>
+                <field name="gender" position="before">
+                    <field name="title"/>
+                </field>
             </field>
         </record>
 
