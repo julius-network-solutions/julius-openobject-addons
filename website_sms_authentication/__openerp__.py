@@ -22,7 +22,7 @@
     "name": "Website authentication by SMS or Email",
     "summary": "Authentication by SMS or Email on the website",
     "category": "Website",
-    "version": "1.2",
+    "version": "1.3",
     "description": """
 Website Authentication by SMS
 =============================
@@ -47,6 +47,12 @@ Update 1.2:
     * Remove the dependency to base_phone, but create a new addons which \
 is auto installed on base_phone installation \
 "website_sms_authentication_base_phone"
+
+Update 1.3:
+-----------
+
+    * Improve the website view with a different header if it's an email \
+instead of a sms.
 
 """,
     "author": "Julius Network Solutions",
