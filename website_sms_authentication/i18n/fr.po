@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-20 08:54+0000\n"
-"PO-Revision-Date: 2015-11-20 08:54+0000\n"
+"POT-Creation-Date: 2016-01-07 11:02+0000\n"
+"PO-Revision-Date: 2016-01-07 11:02+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,13 +17,28 @@ msgstr ""
 
 #. module: website_sms_authentication
 #: view:website:website_sms_authentication.sms_authentication
+msgid "). Please enter it here :"
+msgstr "). Veuillez le renseigner ici."
+
+#. module: website_sms_authentication
+#: view:website:website_sms_authentication.sms_authentication
+msgid "An email was sent to your email address ("
+msgstr "Un email vous a été envoyé sur votre adresse email ("
+
+#. module: website_sms_authentication
+#: view:website:website_sms_authentication.sms_authentication
+msgid "Authentication by Email"
+msgstr "Authentication by Email"
+
+#. module: website_sms_authentication
+#: view:website:website_sms_authentication.sms_authentication
 msgid "Authentication by SMS"
 msgstr "Authentification par SMS"
 
 #. module: website_sms_authentication
 #: view:website:website_sms_authentication.sms_authentication
-msgid "A SMS was sent to your mobile phone. Please enter it here :"
-msgstr "Un code vous a été envoyé sur votre mobile par SMS. Veuillez le renseigner ici :"
+msgid "A SMS was sent to your mobile phone ("
+msgstr "Un SMS a été envoyé sur votre mobile ("
 
 #. module: website_sms_authentication
 #: view:sms.authentication:website_sms_authentication.view_sms_authentication_search
@@ -46,6 +61,11 @@ msgstr "Code Expiré ! Veuillez cliquer ici afin de récupérer un nouveau code.
 #: view:website:website_sms_authentication.thanks
 msgid "Continue To Our Website"
 msgstr "Continuer sur notre site web"
+
+#. module: website_sms_authentication
+#: field:sms.authentication,country_id:0
+msgid "Country"
+msgstr "Pays"
 
 #. module: website_sms_authentication
 #: field:sms.authentication,create_uid:0

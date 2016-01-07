@@ -33,11 +33,18 @@
             <div class="container o_website_quote">
               <div class="row mt16">
                 <div class="col-md-12">
-                  <div id="header_sms">
+                  <div id="header_sms" t-if="code.type == 'sms'">
                       <h1>Authentication by SMS</h1>
                       <a id="sms_authentication_header"/>
                       <h1 class="page-header mt16">
-                        <span>A SMS was sent to your mobile phone. Please enter it here :</span>
+                        <span>A SMS was sent to your mobile phone (<span t-field="code.mobile"/>). Please enter it here :</span>
+                      </h1>
+                  </div>
+                  <div id="header_email" t-if="code.type == 'email'">
+                      <h1>Authentication by Email</h1>
+                      <a id="sms_authentication_header"/>
+                      <h1 class="page-header mt16">
+                        <span>An email was sent to your email address (<span t-field="code.email"/>). Please enter it here :</span>
                       </h1>
                   </div>
                   <form t-attf-action="/sms-authentication-new-code/#{code.id}" method="post"
