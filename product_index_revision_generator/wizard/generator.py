@@ -103,7 +103,7 @@ class product_revision_generator(orm.TransientModel):
         if rec.origin_bom_id:
             new_bom_id = bom_obj.\
                 copy(cr, uid, rec.origin_bom_id.id,
-                     default={'bom_lines': [], 'product_id': new_product_id},
+                     default={'bom_line_ids': [], 'product_id': new_product_id},
                      context=context)
             for line in rec.line_ids:
                 line_vals = {

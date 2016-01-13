@@ -54,7 +54,7 @@ class mrp_production(orm.Model):
             if prod.state in ('confirmed', 'partially_ready'):
                 available = 0
                 start = True
-                for component in prod.bom_id.bom_lines:
+                for component in prod.bom_id.bom_line_ids:
                     product_id = component.product_id.id
                     compo_list.setdefault(product_id, 0)
                     compo_list[product_id] += component.product_qty

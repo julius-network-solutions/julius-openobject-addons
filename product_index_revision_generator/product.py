@@ -233,7 +233,7 @@ class product_product(orm.Model):
                 gen_id = generator_obj.create(cr, uid, vals, action_context)
                 if bom_id:
                     for line in bom_obj.\
-                        browse(cr, uid, bom_id, context=context).bom_lines:
+                        browse(cr, uid, bom_id, context=context).bom_line_ids:
                         line_vals = bom_obj.\
                             copy_data(cr, uid, line.id, context=context)
                         line_vals.update({'generator_id': gen_id})
