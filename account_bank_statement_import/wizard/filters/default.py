@@ -28,7 +28,7 @@ def get_data(self, recordlist):
     date_val = self.get_column_number(self.column_date_val, 0)
     debit = self.get_column_number(self.column_debit, 3)
     credit = self.get_column_number(self.column_credit, 4)
-    ignored_lines = self.ignored_lines or 5
+    ignored_lines = self.ignored_lines or 0
     separated_amount = self.amount_separated
     date_format = self.date_format
     receivable_id = self.receivable_id.id

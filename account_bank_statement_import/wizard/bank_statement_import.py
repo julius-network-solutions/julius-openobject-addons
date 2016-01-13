@@ -470,7 +470,6 @@ class account_bank_statement_import(models.TransientModel):
                 else:
                     month_statement = {default_key: lines[ignored_lines:]}
             if journal in journal_statement.keys():
-                
                 month_statement.update(journal_statement.get(journal))
             journal_statement[journal] = month_statement
         return journal_statement
