@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<openerp>
+    <data>
+
+        <template id="fields_lastname_firstname" name="Auth Signup/ResetPassword form fields lastname and firstname" inherit_id='auth_signup.fields'>
+          <xpath expr="//div[@class='form-group field-name']" position="replace">
+            <div class="form-group field-lastname">
+              <label for="name" class="control-label">Votre NOM</label>
+              <input type="text" name="lastname" t-att-value="lastname" id="lastname" class="form-control" placeholder="NOM"
+                  required="required" t-att-readonly="'readonly' if only_passwords else None"
+                  t-att-autofocus="'autofocus' if login and not only_passwords else None" />
+            </div>
+            <div class="form-group field-firstname">
+              <label for="name" class="control-label">Votre Prénom</label>
+              <input type="text" name="firstname" t-att-value="firstname" id="firstname" class="form-control" placeholder="Prénom"
+                  required="required" t-att-readonly="'readonly' if only_passwords else None"/>
+            </div>
+          </xpath>
+        </template>
+
+    </data>
+</openerp>
