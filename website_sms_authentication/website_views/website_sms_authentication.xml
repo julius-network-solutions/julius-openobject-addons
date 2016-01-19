@@ -30,21 +30,21 @@
       <template id="sms_authentication" name="SMS authentication">
         <t t-call="website.layout">
           <body data-spy="scroll" data-target=".navspy" data-offset="50">
-            <div class="container o_website_quote">
+            <div class="container o_website_quote" id="authentication">
               <div class="row mt16">
                 <div class="col-md-12">
                   <div id="header_sms" t-if="code.type == 'sms'">
                       <h1>Authentication by SMS</h1>
                       <a id="sms_authentication_header"/>
                       <h1 class="page-header mt16">
-                        <span>A SMS was sent to your mobile phone (<span t-field="code.mobile"/>). Please enter it here :</span>
+                        <span>A SMS was sent to your mobile phone (<span t-field="code.mobile"/>). Please enter it here :</span>
                       </h1>
                   </div>
                   <div id="header_email" t-if="code.type == 'email'">
                       <h1>Authentication by Email</h1>
                       <a id="sms_authentication_header"/>
                       <h1 class="page-header mt16">
-                        <span>An email was sent to your email address (<span t-field="code.email"/>). Please enter it here :</span>
+                        <span>An email was sent to your email address (<span t-field="code.email"/>). Please enter it here :</span>
                       </h1>
                   </div>
                   <form t-attf-action="/sms-authentication-new-code/#{code.id}" method="post"
@@ -52,23 +52,23 @@
                     <button type="submit" id="get_new_code" class="btn btn-primary">Get a new code</button>
                   </form>
                   <form t-attf-action="/sms-authentication/#{code.id}" method="post" class="form-horizontal mt32" enctype="multipart/form-data">
-                    <h1 class="mt16">
+                    <div class="mt16">
                       <input type="text" class="form-control" name="code" placeholder="Code" required="1"/>
-                    </h1>
-                    <div t-if="error" class="col-lg-8 col-sm-9">
+                    </div>
+                    <div t-if="error" class="col-md-5 center-block alert-code">
                       <div class="alert alert-danger" t-if="error.get('wrong_code')">
-                        <h4>Wrong code ! Please try it again.</h4>
+                        <span>Wrong code ! Please try it again.</span>
                       </div>
                       <div class="alert alert-danger" t-if="error.get('expired')">
-                        <h4>Code Expired ! Please click above to get a new code.</h4>
+                        <span>Code Expired ! Please click above to get a new code.</span>
                       </div>
                     </div>
                     <a id="send"/>
-                    <div class="modal-footer">
+                    <div class="modal-footer" id="footer_send">
                       <div class="col-md-9">
                       </div>
-                        <div class="col-md-3">
-                          <button type="submit" class="btn btn-primary">Send</button>
+                        <div class="col-md-12">
+                          <button type="submit" class="btn btn-success">Send</button>
                         </div>
                     </div>
                   </form>
