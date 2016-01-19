@@ -47,11 +47,11 @@
                         <span>An email was sent to your email address (<span t-field="code.email"/>). Please enter it here :</span>
                       </h1>
                   </div>
-                  <form t-attf-action="/sms-authentication-new-code/#{code.id}" method="post"
+                  <form t-attf-action="/sms-authentication-new-code/#{code.id}" id="form_new_code" method="post"
                       class="form-horizontal mt32" enctype="multipart/form-data">
                     <button type="submit" id="get_new_code" class="btn btn-primary">Get a new code</button>
                   </form>
-                  <form t-attf-action="/sms-authentication/#{code.id}" method="post" class="form-horizontal mt32" enctype="multipart/form-data">
+                  <form t-attf-action="/sms-authentication/#{code.id}" method="post" class="form-horizontal mt32" id="form_code" enctype="multipart/form-data">
                     <div class="mt16">
                       <input type="text" class="form-control" name="code" placeholder="Code" required="1"/>
                     </div>
