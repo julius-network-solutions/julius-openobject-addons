@@ -19,6 +19,7 @@
 #
 ###############################################################################
 
+from openerp import http
 from openerp.http import request
 from openerp.addons.auth_signup.controllers.main import AuthSignupHome
 
