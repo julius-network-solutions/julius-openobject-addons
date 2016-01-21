@@ -22,7 +22,7 @@
     "name": "Website authentication by SMS or Email",
     "summary": "Authentication by SMS or Email on the website",
     "category": "Website",
-    "version": "1.3",
+    "version": "1.4",
     "description": """
 Website Authentication by SMS
 =============================
@@ -54,6 +54,11 @@ Update 1.3:
     * Improve the website view with a different header if it's an email \
 instead of a sms.
 
+Update 1.4:
+-----------
+
+    * Improve the website view with an id on the first div "row mt16"
+    * Get the values from the website view form
 """,
     "author": "Julius Network Solutions",
     "depends": [

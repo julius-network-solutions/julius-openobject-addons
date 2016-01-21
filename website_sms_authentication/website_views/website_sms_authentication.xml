@@ -31,7 +31,7 @@
         <t t-call="website.layout">
           <body data-spy="scroll" data-target=".navspy" data-offset="50">
             <div class="container o_website_quote" id="authentication">
-              <div class="row mt16">
+              <div class="row mt16" id="row_authentication">
                 <div class="col-md-12">
                   <div id="header_sms" t-if="code.type == 'sms'">
                       <h1>Authentication by SMS</h1>

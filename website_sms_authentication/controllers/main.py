@@ -46,7 +46,7 @@ class website_sms_authentication(http.Controller):
         if not code_id:
             return request.website.render('website.404')
         env = request.env(context=dict(request.context))
-        values = {}
+        values = dict(kwargs)
         error = {}
         code_obj = env['sms.authentication']
         code = code_obj.sudo().search([('id', '=', code_id)], limit=1)
@@ -87,7 +87,7 @@ class website_sms_authentication(http.Controller):
         if not code_id:
             return request.website.render('website.404')
         env = request.env(context=dict(request.context))
-        values = {}
+        values = dict(kwargs)
         error = {}
         code_obj = env['sms.authentication']
         code = code_obj.sudo().search([('id', '=', code_id)], limit=1)
