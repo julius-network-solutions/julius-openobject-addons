@@ -35,7 +35,7 @@ from openerp import models, fields, api, _
 from openerp.exceptions import MissingError, Warning
 
 
-class ir_attachment_signature_test(models.Model):
+class ir_attachment_signature_test(models.TransientModel):
     _name = 'ir.attachment.signature.test'
     _description = 'Test document signature'
 
