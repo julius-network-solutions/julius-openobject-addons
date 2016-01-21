@@ -19,9 +19,16 @@
 #
 ###############################################################################
 
+import logging
+import werkzeug
+
 from openerp import http
 from openerp.http import request
+from openerp import _
+from openerp.addons.auth_signup.res_users import SignupError
 from openerp.addons.auth_signup.controllers.main import AuthSignupHome
+
+_logger = logging.getLogger(__name__)
 
 
 class AuthSignupHomeFirstNameLastName(AuthSignupHome):
