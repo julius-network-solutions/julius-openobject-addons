@@ -27,10 +27,8 @@ class res_partner(models.Model):
 
     def signup_retrieve_info(self, cr, uid, token, context=None):
         res = super(res_partner, self).signup_retrieve_info(cr, uid, token, context=context)
-        print res
         if res.get('name'):
             partner = self._signup_retrieve_partner(cr, uid, token, check_validity=False, raise_exception=False, context=None)
-            print partner.firstname
             if partner.firstname:
                 res['firstname'] = partner.firstname
                 res['lastname'] = partner.lastname
