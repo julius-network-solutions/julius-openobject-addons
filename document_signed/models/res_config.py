@@ -29,7 +29,7 @@ class signature_config_settings(models.TransientModel):
     signature_passphrase = fields.Char("Signature pass phrase")
 
     @api.one
-    def set_calset(self):
+    def set_signature_key(self):
         params = self.env['ir.config_parameter']
         params.set_param('attachment_signature_key',
                          self.signature_key or '',
