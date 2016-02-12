@@ -1,0 +1,51 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* hr_location
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-12 15:23+0000\n"
+"PO-Revision-Date: 2016-02-12 15:23+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_location
+#: field:hr.location,partner_id:0
+msgid "Address"
+msgstr "Adresse"
+
+#. module: hr_location
+#: field:hr.location,company_id:0
+msgid "Company id"
+msgstr "Société"
+
+#. module: hr_location
+#: model:ir.model,name:hr_location.model_hr_location
+msgid "HR locations"
+msgstr "Etablissements"
+
+#. module: hr_location
+#: view:hr.location:hr_location.view_hr_location_form
+#: view:hr.location:hr_location.view_hr_location_search
+#: view:hr.location:hr_location.view_hr_location_tree
+msgid "Location"
+msgstr "Etablissements"
+
+#. module: hr_location
+#: model:ir.actions.act_window,name:hr_location.action_hr_location_form
+#: model:ir.ui.menu,name:hr_location.menu_action_hr_location_form
+msgid "Locations"
+msgstr "Etablissements"
+
+#. module: hr_location
+#: view:hr.location:hr_location.view_hr_location_form
+#: field:hr.location,name:0
+msgid "Name"
+msgstr "Nom"
+
