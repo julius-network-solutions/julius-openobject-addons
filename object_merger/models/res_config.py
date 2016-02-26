@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,42 +17,39 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from openerp.osv import fields, osv, orm
-from openerp.tools.translate import _
-from openerp import SUPERUSER_ID
 import copy
+from openerp import models, fields, SUPERUSER_ID, _
 
-class ir_model(orm.Model):
+
+class ir_model(models.Model):
     _inherit = 'ir.model'
-    
-    _columns = {
-        'object_merger_model': fields.boolean('Object Merger',
-            help='If checked, by default the Object Merger configuration will get this module in the list'),
-    }
-    
-    _defaults = {
-        'object_merger_model': False,
-    }
 
-class object_merger_settings(orm.TransientModel):
+    object_merger_model = fields.Boolean('Object Merger', default=False,
+                                         help='If checked, by default the Object '
+                                         'Merger configuration will get this '
+                                         'module in the list')
+
+
+class object_merger_settings(models.TransientModel):
     _name = 'object.merger.settings'
     _inherit = 'res.config.settings'
-    
+
     def _get_default_object_merger_models(self, cr, uid, context=None):
-        return self.pool.get('ir.model').search(cr, uid, [('object_merger_model', '=', True)], context=context)
-    
-    _columns = {
-        'models_ids': fields.many2many('ir.model',
-            'object_merger_settings_model_rel',
-            'object_merger_id', 'model_id', 'Models', domain=[('osv_memory', '=', False)]),
-    }
-    
+        return self.pool.get('ir.model').\
+            search(cr, uid, [('object_merger_model', '=', True)],
+                   context=context)
+
+    models_ids = fields.Many2many('ir.model',
+                                  'object_merger_settings_model_rel',
+                                  'object_merger_id', 'model_id', 'Models',
+                                  domain=[('osv_memory', '=', False)])
+
     _defaults = {
-        'models_ids': _get_default_object_merger_models,
-    }
-    
+                 'models_ids': _get_default_object_merger_models,
+                 }
+
     def update_field(self, cr, uid, vals, context=None):
         ## Init ##
         if context is None:
@@ -144,8 +141,8 @@ class object_merger_settings(orm.TransientModel):
         for vals in self.read(cr, uid, ids, context=context):
             result = self.update_field(cr, uid, vals, context=context)
         return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
+                'type': 'ir.actions.client',
+                'tag': 'reload',
+                }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
