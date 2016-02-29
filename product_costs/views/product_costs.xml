@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <menuitem id="menu_product_costs_main"
+            name="Product costs"
+            parent="base.menu_base_config"
+            sequence="50"/>
+
+        <record id="product_costs_type_form" model="ir.ui.view">
+            <field name="name">product.costs.type.form</field>
+            <field name="model">product.costs.type</field>
+            <field name="arch" type="xml">
+                <form string="Product costs type">
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="type"/>
+                        <field name="default_value" attrs="{'readonly': [('type', '!=', 'fixed')]}"/>
+                        <field name="python_code" attrs="{'invisible': [('type', '!=', 'python')]}"/>
+                        <field name="formula_ids" widget="many2many_tags" attrs="{'invisible': [('type', '!=', 'formula')]}"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="product_costs_type_tree" model="ir.ui.view">
+            <field name="name">product.costs.type.tree</field>
+            <field name="model">product.costs.type</field>
+            <field name="arch" type="xml">
+                <tree string="Product costs type">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_product_costs_type" model="ir.actions.act_window">
+            <field name="name">Product costs type</field>
+            <field name="res_model">product.costs.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_product_costs_type"
+            string="Costs types"
+            parent="menu_product_costs_main"
+            action="action_product_costs_type" sequence="10"/>
+
+        <record id="product_costs_structure_form" model="ir.ui.view">
+            <field name="name">product.costs.structure.form</field>
+            <field name="model">product.costs.structure</field>
+            <field name="arch" type="xml">
+                <form string="Product costs structure">
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group string="Lines" colspan="4">
+                        <field name="line_ids" colspan="4" nolabel="1">
+                            <tree string="Cost lines" editable="top">
+                                <field name="sequence" widget="handle"/>
+                                <field name="type_id"/>
+                                <field name="default_value" attrs="{'readonly': [('type', '!=', 'fixed')]}"/>
+                                <field name="name" invisible="1"/>
+                                <field name="type" invisible="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="product_costs_type_structure" model="ir.ui.view">
+            <field name="name">product.costs.structure.tree</field>
+            <field name="model">product.costs.structure</field>
+            <field name="arch" type="xml">
+                <tree string="Product costs structure">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_product_costs_structure" model="ir.actions.act_window">
+            <field name="name">Product costs structure</field>
+            <field name="res_model">product.costs.structure</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_product_costs_structure"
+            string="Costs structures"
+            parent="menu_product_costs_main"
+            action="action_product_costs_structure" sequence="20"/>
+
+    </data>
+</openerp>
