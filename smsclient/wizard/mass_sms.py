@@ -18,7 +18,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-############################################################################### 
+###############################################################################
 
 from openerp import models, fields, _
 
@@ -41,7 +41,7 @@ class part_sms(models.TransientModel):
         gateway = sms_obj.browse(cr, uid, gateway_id, context=context)
         return {
                 'value': {
-                          'validity': gateway.validity, 
+                          'validity': gateway.validity,
                           'classes': gateway.classes,
                           'deferred': gateway.deferred,
                           'priority': gateway.priority,
@@ -107,16 +107,13 @@ class part_sms(models.TransientModel):
                               help="The sms coding: 1 for 7 bit "
                               "or 2 for unicode")
     tag = fields.Char('Tag', size=256, help="An optional tag")
-    nostop = fields.Selection([
-                               ('0', '0'),
-                               ('1', '1')
-                               ], 'NoStop',
-                              help="Do not display STOP clause in the message,"
-                              " this requires that this is not an "
-                              "advertising message")
+    nostop = fields.Boolean('NoStop',
+                            help="Do not display STOP clause in the message,"
+                            " this requires that this is not an "
+                            "advertising message")
 
     _defaults = {
-                 'gateway': _default_get_gateway,        
+                 'gateway': _default_get_gateway,
                  }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
