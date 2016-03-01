@@ -59,6 +59,7 @@ class product_costs_structure(models.Model):
 class product_costs_structure_line(models.Model):
     _name = 'product.costs.structure.line'
     _description = 'Product costs structure line'
+    _order = 'sequence'
 
     name = fields.Char(related='type_id.name', readonly=True, store=True)
     type_id = fields.Many2one('product.costs.type', 'Cost type',
