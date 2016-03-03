@@ -130,9 +130,15 @@ class product_product(models.Model):
             total += process_workcenter(wrk)
         return total
 
+    @api.one
     @api.onchange('costs_structure_id')
     def onchange_cost_structure_id(self):
         self.costs_line_ids = False
+        for new_lines in self._get_cost_lines():
+            self.costs_line_ids = new_lines
+
+    @api.one
+    def _get_cost_lines(self):
         lines = []
         formula_lines = self.env['product.costs.structure.line']
         for line in self.costs_structure_id.line_ids:
@@ -161,6 +167,13 @@ class product_product(models.Model):
                          'value': value,
                          }
             lines.append(line_vals)
-        self.costs_line_ids = lines
+        return lines
+
+    @api.one
+    def update_cost_lines(self):
+        for new_lines in self._get_cost_lines():
+            self.costs_line_ids.unlink()
+            costs_lines = [(0, 0, line) for line in new_lines]
+            self.costs_line_ids = costs_lines
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

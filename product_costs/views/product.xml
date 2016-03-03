@@ -11,9 +11,15 @@
                 <page string="Sales" position="after">
                     <page name="costs" string="Costs">
                         <group string="Costs">
-                            <field name="costs_structure_id"
-                                class="oe_no_button"
-                                options='{"no_open": True, "no_create": True}'/>
+                            <label for="costs_structure_id"/>
+                            <div>
+                                <field name="costs_structure_id"
+                                    class="oe_no_button oe_inline" nolabel="1"
+                                    options='{"no_open": True, "no_create": True}'/>
+                                <button name="update_cost_lines" type="object"
+                                    string="Update cost lines from structure"
+                                    class="oe_link oe_inline"/>
+                            </div>
                             <field name="costs_line_ids" nolabel="1" colspan="4">
                                 <tree string="Costs lines" editable="top">
                                     <field name="sequence" widget="handle"/>
