@@ -63,22 +63,42 @@ class product_product(models.Model):
         Get purchase price of related BoMs
         """
         total = 0
+        product_obj = self.env['product.product']
         uom_obj = self.env['product.uom']
         bom = self.bom_ids and self.bom_ids[0]
-        if bom:
-            # TODO: take in account the start and end dates
-            for component in bom.bom_line_ids:
-                product = component.product_id
-                price = uom_obj.\
-                    _compute_price(from_uom_id=product.uom_id.id,
-                                   price=product.standard_price,
-                                   to_uom_id=component.product_uom.id)
-                total += price * component.product_qty
-            uom_price = uom_obj.\
-                _compute_price(from_uom_id=self.uom_id.id,
-                               price=total,
-                               to_uom_id=bom.product_uom.id)
-            total = uom_price * bom.product_qty
+        factor = self.uom_id.factor / bom.product_uom.factor
+        sub_boms = bom._bom_explode(bom=bom, product=self, factor=factor / bom.product_qty)
+        def process_bom(bom_dict, factor=1):
+            sum_strd = 0
+            prod = product_obj.browse(bom_dict['product_id'])
+            prod_qty = factor * bom_dict['product_qty']
+            product_uom = uom_obj.browse(bom_dict['product_uom'])
+            std_price = uom_obj._compute_price(from_uom_id=prod.uom_id.id,
+                                               price=prod.standard_price,
+                                               to_uom_id=product_uom.id)
+            sum_strd = prod_qty * std_price
+            return sum_strd
+#         if bom:
+#             # TODO: take in account the start and end dates
+#             for component in bom.bom_line_ids:
+#                 product = component.product_id
+#                 price = uom_obj.\
+#                     _compute_price(from_uom_id=product.uom_id.id,
+#                                    price=product.standard_price,
+#                                    to_uom_id=component.product_uom.id)
+#                 total += price * component.product_qty
+#             uom_price = uom_obj.\
+#                 _compute_price(from_uom_id=self.uom_id.id,
+#                                price=total,
+#                                to_uom_id=bom.product_uom.id)
+#             total = uom_price * bom.product_qty
+        parent_bom = {
+                      'product_qty': bom.product_qty,
+                      'product_uom': bom.product_uom.id,
+                      'product_id': bom.product_id.id,
+                      }
+        for sub_bom in (sub_boms and sub_boms[0]) or [parent_bom]:
+            total += process_bom(sub_bom)
         return total
 
     @api.one
@@ -93,29 +113,19 @@ class product_product(models.Model):
         bom = self.bom_ids and self.bom_ids[0]
         factor = self.uom_id.factor / bom.product_uom.factor
         sub_boms = bom._bom_explode(bom=bom, product=self, factor=factor / bom.product_qty)
-        def process_bom(bom_dict, factor=1):
-            sum_strd = 0
-            prod = product_obj.browse(bom_dict['product_id'])
-            prod_qty = factor * bom_dict['product_qty']
-            product_uom = uom_obj.browse(bom_dict['product_uom'])
-            std_price = uom_obj._compute_price(from_uom_id=prod.uom_id.id,
-                                               price=prod.standard_price,
-                                               to_uom_id=product_uom.id)
-            sum_strd = prod_qty * std_price
-            return sum_strd
         def process_workcenter(wrk):
             workcenter = workcenter_obj.browse(wrk['workcenter_id'])
             cost_cycle = wrk['cycle'] * workcenter.costs_cycle
             cost_hour = wrk['hour'] * workcenter.costs_hour
             total = cost_cycle + cost_hour
             return total
-        parent_bom = {
-                      'product_qty': bom.product_qty,
-                      'product_uom': bom.product_uom.id,
-                      'product_id': bom.product_id.id,
-                      }
-        for sub_bom in (sub_boms and sub_boms[0]) or [parent_bom]:
-            total += process_bom(sub_bom)
+#         parent_bom = {
+#                       'product_qty': bom.product_qty,
+#                       'product_uom': bom.product_uom.id,
+#                       'product_id': bom.product_id.id,
+#                       }
+#         for sub_bom in (sub_boms and sub_boms[0]) or [parent_bom]:
+#             total += process_bom(sub_bom)
         for wrk in (sub_boms and sub_boms[1]):
             total += process_workcenter(wrk)
         return total
