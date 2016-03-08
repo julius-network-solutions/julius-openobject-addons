@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2016-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,27 @@
 #
 ###############################################################################
 
-from . import models
-from . import wizard
+{
+    "name": "Web list editable even when grouped",
+    "version": "1.0",
+    "author": "Julius Network Solutions",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
+    "website": "http://julius.fr",
+    "category": "Hidden",
+    "depends": [
+                "web",
+                ],
+    "description": """
+Allow to edit lines in the tree view when grouped
+=================================================
+
+""",
+    "demo": [],
+    "data": [
+             'views/web_tree.xml',
+             ],
+    'installable': True,
+    'active': False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

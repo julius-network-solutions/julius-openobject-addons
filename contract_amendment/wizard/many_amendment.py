@@ -19,7 +19,30 @@
 #
 ###############################################################################
 
-from . import models
-from . import wizard
+from openerp import models, api, _
+from openerp.exceptions import Warning
+
+
+class account_analytic_account_amendment(models.TransientModel):
+    _name = "account.analytic.account.amendment"
+    _description = "Amendment for many contracts"
+
+    @api.multi
+    def make_amendment(self):
+        """
+        Action performed after a selection of many contracts.
+        """
+        contract_obj = self.env['account.analytic.account']
+        contract_ids = self._context.get('active_ids')
+        contracts = contract_obj.search([
+                                         ('state', '=', 'open'),
+                                         ('id', 'in', contract_ids),
+                                         ])
+        if contracts:
+            contracts.make_amendment()
+        else:
+            raise Warning(_("There's no 'open' contract contract "
+                            "in this selection. Please select 'open' "
+                            "contracts to be able to set them to 'amendment'"))
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

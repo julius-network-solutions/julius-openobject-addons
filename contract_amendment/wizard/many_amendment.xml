@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_many_amendment_form" model="ir.ui.view">
+            <field name="name">account.analytic.account.amendment.form</field>
+            <field name="model">account.analytic.account.amendment</field>
+            <field name="arch" type="xml">
+                <form string="Amendment of many contracts">
+                    <group>
+                        <label string="This wizard will put in amendment state all selected 'open' contracts. All other contracts won't be put to this state: 'Amendment'."/>
+                    </group>
+                    <footer>
+                        <button name="make_amendment" string="Make Amendments"
+                            type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_view_many_amendment_form"
+            multi="True"
+            key2="client_action_multi" name="Make Amendments"
+            res_model="account.analytic.account.amendment" src_model="account.analytic.account"
+            view_mode="form" target="new" view_type="form"
+            groups="fastbooking_booking.booking_supermanager"/>
+
+    </data>
+</openerp>

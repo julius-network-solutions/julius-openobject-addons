@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="product_product_form_inherit" model="ir.ui.view">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <page string="Sales" position="after">
+                    <page name="costs" string="Costs">
+                        <group string="Costs">
+                            <label for="costs_structure_id"/>
+                            <div>
+                                <field name="costs_structure_id"
+                                    class="oe_no_button oe_inline" nolabel="1"
+                                    options='{"no_open": True, "no_create": True}'/>
+                                <button name="update_cost_lines" type="object"
+                                    string="Update cost lines from structure"
+                                    class="oe_link oe_inline"/>
+                            </div>
+                            <field name="costs_line_ids" nolabel="1" colspan="4">
+                                <tree string="Costs lines" editable="top">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="type_id"/>
+                                    <field name="name" invisible="1"/>
+                                    <field name="type" invisible="1"/>
+                                    <field name="value"
+                                        attrs="{'readonly': [('type', '!=', 'fixed')]}"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+    </data>
+</openerp>

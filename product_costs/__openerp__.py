@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2016-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,41 +17,36 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-###############################################################################
+##############################################################################
 
 {
-    "name": "Contract Amendment",
-    "summary": "Amendment on contracts",
-    "version": "0.2",
+    "name": "Product Costs",
+    "version": "0.1",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
-    "category": "Sales Management",
+    "website": "Mathieu Vatel <mathieu@julius.fr>",
+    "category": "Product management",
     "depends": [
-                "hr_timesheet_invoice",
+                "product",
+                "mrp",
                 ],
     "description": """
-Contract Amendment
-==================
+Product Costs structure
+=======================
 
-Allow to store a copy of a contract to be able to histories the modifications.
+Get all costs for a product:
+----------------------------
 
-Version 0.1:
-------------
-
-    * Store history of a contract
-
-Version 0.2:
-------------
-
-    * Add a multiple action
+    * Get prices from the BoM structure
+    * Get prices from the BoM Routing
+    * Get prices from fixes costs
+    * etc.
 """,
     "demo": [],
     "data": [
-             "views/contract_view.xml",
-             "wizard/many_amendment.xml",
+             "views/product.xml",
+             "views/product_costs.xml",
              ],
-    "test": [],
     'installable': True,
     'active': False,
 }

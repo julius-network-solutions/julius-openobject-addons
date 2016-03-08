@@ -2,7 +2,7 @@
 <openerp>
     <data>
 
-        <!-- Sale View -->
+        <!-- Contract View -->
         <record id="view_account_analytic_account_amendment_form" model="ir.ui.view">
             <field name="name">account.analytic.account.amendment.inherit</field>
             <field name="model">account.analytic.account</field>
