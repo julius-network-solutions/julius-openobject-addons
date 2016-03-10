@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_costs_type_user,product.costs.type user,model_product_costs_type,base.group_user,1,0,0,0
+access_product_costs_structure_user,product.costs.structure user,model_product_costs_structure,base.group_user,1,0,0,0
+access_product_costs_structure_line_user,product.costs.structure.line user,model_product_costs_structure_line,base.group_user,1,0,0,0
+access_product_product_costs_user,product.product.costs user,model_product_product_costs,base.group_user,1,1,1,1
+access_product_costs_type_manager,product.costs.type manager,model_product_costs_type,base.group_sale_manager,1,1,1,1
+access_product_costs_structure_manager,product.costs.structure manager,model_product_costs_structure,base.group_sale_manager,1,1,1,1
+access_product_costs_structure_line_manager,product.costs.structure.line manager,model_product_costs_structure_line,base.group_sale_manager,1,1,1,1
+access_product_product_costs_manager,product.product.costs manager,model_product_product_costs,base.group_sale_manager,1,1,1,1
