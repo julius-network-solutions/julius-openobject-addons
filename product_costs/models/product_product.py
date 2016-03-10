@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp import models, fields, api, _
+import openerp.addons.decimal_precision as dp
 
 
 class product_product_costs(models.Model):
@@ -39,7 +40,7 @@ class product_product_costs(models.Model):
                              ('formula', 'Formula'),
                              ], related='type_id.type', readonly=True,
                             store=True)
-    value = fields.Float('Value')
+    value = fields.Float('Value', digits=dp.get_precision('Product Price'))
     product_id = fields.Many2one('product.product', 'Product',
                                  required=True, ondelete='cascade')
 

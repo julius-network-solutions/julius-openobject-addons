@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp import models, fields, api
+import openerp.addons.decimal_precision as dp
 
 
 class product_costs_type(models.Model):
@@ -35,7 +36,7 @@ class product_costs_type(models.Model):
                              ('python', 'Python Computation'),
                              ('formula', 'Formula'),
                              ], default='fixed', required=True)
-    default_value = fields.Float()
+    default_value = fields.Float(digits=dp.get_precision('Product Price'))
     python_code = fields.Text()
     formula_ids = fields.Many2many('product.costs.type',
                                    'product_costs_type_formula_rel',
@@ -64,7 +65,8 @@ class product_costs_structure_line(models.Model):
     name = fields.Char(related='type_id.name', readonly=True, store=True)
     type_id = fields.Many2one('product.costs.type', 'Cost type',
                               required=True)
-    default_value = fields.Float('Default value')
+    default_value = fields.Float('Default value',
+                                 digits=dp.get_precision('Product Price'))
     structure_id = fields.Many2one('product.costs.structure', 'Structure',
                                    required=True, ondelete='cascade')
     sequence = fields.Integer(required=True)

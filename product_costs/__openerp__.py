@@ -44,6 +44,7 @@ Get all costs for a product:
 """,
     "demo": [],
     "data": [
+             "security/ir.model.access.csv",
              "views/product.xml",
              "views/product_costs.xml",
              ],
