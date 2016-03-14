@@ -59,7 +59,7 @@ class product_product(models.Model):
                                      'Costs')
 
     @api.one
-    def _get_bom_price(self):
+    def _get_bom_price(self, cost_type_id=None):
         """
         Get purchase price of related BoMs
         """
@@ -68,7 +68,7 @@ class product_product(models.Model):
         uom_obj = self.env['product.uom']
         bom = self.bom_ids and self.bom_ids[0]
         factor = self.uom_id.factor / bom.product_uom.factor
-        sub_boms = bom._bom_explode(bom=bom, product=self, factor=factor / bom.product_qty)
+        sub_boms = bom._bom_explode_cost(bom=bom, product=self, factor=factor / bom.product_qty)
         def process_bom(bom_dict, factor=1):
             sum_strd = 0
             prod = product_obj.browse(bom_dict['product_id'])
@@ -99,7 +99,10 @@ class product_product(models.Model):
                       'product_id': bom.product_id.id,
                       }
         for sub_bom in (sub_boms and sub_boms[0]) or [parent_bom]:
-            total += process_bom(sub_bom)
+            print sub_bom.get('cost_type_id'), cost_type_id
+            if cost_type_id and sub_bom.get('cost_type_id') and sub_bom['cost_type_id'] == cost_type_id:
+                print sub_bom
+                total += process_bom(sub_bom)
         return total
 
     @api.one
@@ -150,7 +153,7 @@ class product_product(models.Model):
                 formula_lines += line
                 continue
             elif line.type == 'bom':
-                value = self._get_bom_price()[0]
+                value = self._get_bom_price(cost_type_id=line.type_id.id)[0]
             elif line.type == 'bom_routing':
                 value = self._get_bom_routing_price()[0]
             line_vals = {

@@ -47,6 +47,7 @@ Get all costs for a product:
              "security/ir.model.access.csv",
              "views/product.xml",
              "views/product_costs.xml",
+             "views/mrp_bom.xml",
              ],
     'installable': True,
     'active': False,
