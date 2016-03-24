@@ -15,21 +15,19 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+from openerp import models, fields, _
 
-class account_invoice_line(orm.Model):
+
+class account_invoice_line(models.Model):
     _inherit = "account.invoice.line"
 
-    _columns = {
-        'sale_lines': fields.many2many('sale.order.line',
-                                       'sale_order_line_invoice_rel',
-                                       'invoice_id', 'order_line_id',
-                                       'Sale Lines', readonly=True),
-    }
+    sale_lines = fields.Many2many('sale.order.line',
+                                  'sale_order_line_invoice_rel',
+                                  'invoice_id', 'order_line_id',
+                                  'Sale Lines', readonly=True)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

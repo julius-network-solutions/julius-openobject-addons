@@ -15,7 +15,7 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
 
@@ -28,20 +28,21 @@
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "category": "Sales Management",
     "depends": [
-        'account',
-        'sale',
-    ],
+                "account",
+                "sale",
+                ],
     "description": """
 Description:
 ============
 
-This module will add two fields into the invoice lines:
-- The link back of sale order lines in account invoice lines
--The link back of sale orders in account invoices
+This module will add one new fields into the invoice lines:
+-----------------------------------------------------------
+
+    * The link back of sale order lines in account invoice lines
 """,
     "demo": [],
     "data": [],
-    'installable': False,
+    'installable': True,
     'active': False,
 }
 
