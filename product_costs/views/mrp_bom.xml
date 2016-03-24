@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="mrp_bom_product_cost_form_view" model="ir.ui.view">
+            <field name="name">mrp.bom.product_cost.form</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="priority">17</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree//field[@name='property_ids']" position="after">
+                    <field name="cost_type_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

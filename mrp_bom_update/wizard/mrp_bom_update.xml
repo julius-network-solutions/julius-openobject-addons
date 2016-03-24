@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- Form View -->
+        <record id="view_mrp_bom_update_form" model="ir.ui.view">
+            <field name="name">mrp.bom.update.form</field>
+            <field name="model">mrp.bom.update</field>
+            <field name="arch" type="xml">
+                <form string="Update BoM">
+                    <group>
+                        <field name="source_id" />
+                        <field name="target_id" />
+                    </group>
+                    <footer>
+                        <button string="Update BOM" name="button_update_bom" type="object" class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_view_mrp_bom_update" model="ir.actions.act_window">
+            <field name="name">Update BOM</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.bom.update</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_mrp_bom_update_form" />
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu Item  -->
+        <menuitem name="Update BOM" parent="mrp.menu_mrp_bom" action="action_view_mrp_bom_update" id="menu_mrp_bom_update" sequence="11" />
+        <menuitem parent="mrp.menu_mrp_bom" id="mrp.menu_mrp_product_form" sequence="12" />
+
+    </data>
+</openerp>

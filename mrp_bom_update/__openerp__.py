@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2016-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2015-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -15,42 +15,34 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with this program. If not, see <http://www.gnu.org/licenses/>.
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+###############################################################################
 
 {
-    "name": "Product Costs",
+    "name": "MRP BOM UPDATE",
     "version": "0.1",
     "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "website": "Mathieu Vatel <mathieu@julius.fr>",
-    "category": "Product management",
+    "contributors": "Yvan Patry <yvan@julius.fr>, "
+    "Daniel Moco <daniel@julius.fr>, "
+    "Mathieu Vatel <mathieu@julius.fr>",
+    "website": "http://www.julius.fr",
+    "category": "Manufacturing",
     "depends": [
-                "product",
                 "mrp",
                 ],
     "description": """
-Product Costs structure
-=======================
+Manufacturing customization
+===========================
 
-Get all costs for a product:
-----------------------------
-
-    * Get prices from the BoM structure
-    * Get prices from the BoM Routing
-    * Get prices from fixes costs
-    * etc.
+    * new wizard in Manufacturing menu allowing the update or the delete of an article in all existing Bills of Materials
 """,
     "demo": [],
     "data": [
-             "security/ir.model.access.csv",
-             "views/product.xml",
-             "views/product_costs.xml",
-             "views/mrp_bom.xml",
+             "wizard/mrp_bom_update.xml",
              ],
-    'installable': True,
-    'active': False,
+    "installable": True,
+    "active": False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

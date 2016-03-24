@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2016-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2015-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -15,12 +15,10 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with this program. If not, see <http://www.gnu.org/licenses/>.
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+###############################################################################
 
-from . import product_costs
-from . import product_product
-from . import mrp_bom
+from . import wizard
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
