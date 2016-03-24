@@ -28,16 +28,18 @@
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "category": "Sales Management",
     "depends": [
-        'account',
-        'sale',
-    ],
+                'account',
+                'sale',
+                ],
     "description": """
 Description:
 ============
 
 This module will add two fields into the invoice lines:
-- The link back of sale order lines in account invoice lines
-- The link back of sale orders in account invoices
+-------------------------------------------------------
+
+    * The link back of sale order lines in account invoice lines
+    * The link back of sale orders in account invoices
 """,
     "demo": [],
     "data": [],

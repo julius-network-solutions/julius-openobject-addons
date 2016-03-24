@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2015-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -15,19 +15,31 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with this program. If not, see <http://www.gnu.org/licenses/>.
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
 
-from openerp import models, fields, _
+{
+    "name": "Partner get name with code and type",
+    "version": "1.0",
+    "category": "Sales Management",
+    "description": """
+Name get for partner:
+=====================
 
-
-class account_invoice_line(models.Model):
-    _inherit = "account.invoice.line"
-
-    sale_lines = fields.Many2many('sale.order.line',
-                                  'sale_order_line_invoice_rel',
-                                  'invoice_id', 'order_line_id',
-                                  'Sale Lines', readonly=True)
+    * This module shows the ref of the partner when going through partner \
+name get
+""",
+    "author": "Julius Network Solutions",
+    "website": "http://www.julius.fr",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
+    "depends": [
+                "base",
+                ],
+    "demo": [],
+    "data": [],
+    "installable": True,
+    "active": False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
