@@ -129,19 +129,7 @@ class sale_order_line(models.Model):
 
     emergency_costs = fields.Float('Emergency Costs')
     emergency_costs_line_id = fields.Many2one('account.invoice.line',
-                                               'Emergency invoice line')
-
-    @api.one
-    def copy(self, default=None):
-        default = dict(default or {})
-        default['emergency_costs_line_id'] = False
-        return super(sale_order_line, self).copy(default)
-
-    @api.one
-    def copy_data(self, default=None):
-        default = dict(default or {})
-        default['emergency_costs_line_id'] = False
-        return super(sale_order_line, self).copy_data(default)
+                                              'Emergency invoice line', copy=False)
 
     @api.multi
     def _emergency_line_to_create(self):

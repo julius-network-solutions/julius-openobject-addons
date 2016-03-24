@@ -129,19 +129,7 @@ class sale_order_line(models.Model):
 
     launch_costs = fields.Float('Launch Costs')
     launch_costs_line_id = fields.Many2one('account.invoice.line',
-                                           'Launch invoice line')
-
-    @api.one
-    def copy(self, default=None):
-        default = dict(default or {})
-        default['launch_costs_line_id'] = False
-        return super(sale_order_line, self).copy(default)
-
-    @api.one
-    def copy_data(self, default=None):
-        default = dict(default or {})
-        default['launch_costs_line_id'] = False
-        return super(sale_order_line, self).copy_data(default)
+                                           'Launch invoice line', copy=False)
 
     @api.multi
     def _launch_line_to_create(self):

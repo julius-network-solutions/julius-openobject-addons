@@ -19,8 +19,8 @@
 #
 ###############################################################################
 
-from openerp import models, api
-from openerp.tools.translate import _
+from openerp import models, api, _
+
 
 class account_invoice(models.Model):
     _inherit = "account.invoice"
@@ -41,12 +41,13 @@ class account_invoice(models.Model):
             tax_id = sale_line.tax_id and \
                 [(6, 0, [x.id for x in sale_line.tax_id] or [])]
             value.update({
-                'product_id': product_id,
-                'price_unit': price_unit,
-                'quantity': 1,
-                'invoice_line_tax_id': tax_id,
-            })
+                          'product_id': product_id,
+                          'price_unit': price_unit,
+                          'quantity': 1,
+                          'invoice_line_tax_id': tax_id,
+                          })
         return value
+
 
 class account_invoice_line(models.Model):
     _inherit = "account.invoice.line"

@@ -19,14 +19,14 @@
 #
 ###############################################################################
 
-from openerp import models, api
-from openerp.tools.translate import _
+from openerp import models, api, _
+
 
 class sale_order_line(models.Model):
     _inherit = "sale.order.line"
 
     @api.one
-    def _update_sale_added_cost_line(self, new_inv_line_id, field=''):
+    def _update_sale_added_cost_line(self, new_inv_line_id, field=False):
         if field:
             self.write({field: new_inv_line_id})
 
