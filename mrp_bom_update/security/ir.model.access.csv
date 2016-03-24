@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_bom_update_user,mrp.subproduct,model_mrp_bom_update,mrp.group_mrp_user,1,0,0,0
+access_mrp_bom_update_manager,mrp.bom.update manager,model_mrp_bom_update,mrp.group_mrp_manager,1,1,1,1
+access_mrp_bom_update_all,mrp.bom.update,model_mrp_bom_update,base.group_user,1,0,0,0
