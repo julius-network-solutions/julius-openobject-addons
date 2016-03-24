@@ -28,8 +28,8 @@
     "category": "Sales Management",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "depends": [
-        "base_added_costs",
-    ],
+                "base_added_costs",
+                ],
     "description": """
 Emergency Costs in sale orders
 ==============================
@@ -45,10 +45,10 @@ a line of emergency costs if needed by clicking on the
 """,
     "demo": [],
     "data": [
-        "data/product_data.xml",
-        "sale_view.xml",
-        "invoice_view.xml",
-    ],
+             "data/product_data.xml",
+             "sale_view.xml",
+             "invoice_view.xml",
+             ],
     'installable': True,
     'active': False,
 }

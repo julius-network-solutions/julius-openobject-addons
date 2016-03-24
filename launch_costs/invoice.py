@@ -19,8 +19,8 @@
 #
 ###############################################################################
 
-from openerp.tools.translate import _
-from openerp import models, api
+from openerp import models, api, _
+
 
 class account_invoice(models.Model):
     _inherit = "account.invoice"

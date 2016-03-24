@@ -19,12 +19,11 @@
 #
 ###############################################################################
 
-from openerp.osv import fields
-from openerp.tools.translate import _
+from openerp.osv import fields as old_fields
 import openerp.addons.decimal_precision as dp
 from openerp.addons.sale.sale import sale_order
-from openerp import models, api
-from openerp import fields as fields2
+from openerp import models, api, _, fields
+
 
 class sale_order(models.Model):
     _inherit = 'sale.order'
@@ -37,43 +36,50 @@ class sale_order(models.Model):
         return result.keys()
 
     _columns = {
-        'amount_untaxed': fields.function(sale_order._amount_all,
-            digits_compute=dp.get_precision('Account'),
-            string='Untaxed Amount',
-            store={
-                'sale.order': (lambda self, cr, uid, ids, c={}:
-                               ids, ['order_line'], 10),
-                'sale.order.line': (_get_order,
-                                    ['price_unit', 'tax_id',
-                                     'discount', 'product_uom_qty',
-                                     'launch_costs'], 10),
-            },
-            multi='sums', help="The amount without tax.",
-            track_visibility='always'),
-        'amount_tax': fields.function(sale_order._amount_all,
-            digits_compute=dp.get_precision('Account'),
-            string='Taxes',
-            store={
-                'sale.order': (lambda self, cr, uid, ids, c={}:
-                               ids, ['order_line'], 10),
-                'sale.order.line': (_get_order,
-                                    ['price_unit', 'tax_id',
-                                     'discount', 'product_uom_qty',
-                                     'launch_costs'], 10),
-            },
-            multi='sums', help="The tax amount."),
-        'amount_total': fields.function(sale_order._amount_all,
-            digits_compute=dp.get_precision('Account'), string='Total',
-            store={
-                'sale.order': (lambda self, cr, uid, ids, c={}:
-                               ids, ['order_line'], 10),
-                'sale.order.line': (_get_order,
-                                    ['price_unit', 'tax_id',
-                                     'discount', 'product_uom_qty',
-                                     'launch_costs'], 10),
-            },
-            multi='sums', help="The total amount."),
-    }
+                'amount_untaxed': old_fields.\
+                function(sale_order._amount_all,
+                         digits_compute=dp.get_precision('Account'),
+                         string='Untaxed Amount',
+                         store={
+                                'sale.order': (lambda self, cr, uid, ids, c={}:
+                                               ids, ['order_line'], 10),
+                                'sale.order.line': (_get_order,
+                                                    ['price_unit', 'tax_id',
+                                                     'discount',
+                                                     'product_uom_qty',
+                                                     'launch_costs'], 10),
+                                },
+                         multi='sums', help="The amount without tax.",
+                         track_visibility='always'),
+                'amount_tax': old_fields.\
+                function(sale_order._amount_all,
+                         digits_compute=dp.get_precision('Account'),
+                         string='Taxes',
+                         store={
+                                'sale.order': (lambda self, cr, uid, ids, c={}:
+                                               ids, ['order_line'], 10),
+                                'sale.order.line': (_get_order,
+                                                    ['price_unit', 'tax_id',
+                                                     'discount',
+                                                     'product_uom_qty',
+                                                     'launch_costs'], 10),
+                                },
+                         multi='sums', help="The tax amount."),
+                'amount_total': old_fields.\
+                function(sale_order._amount_all,
+                         digits_compute=dp.get_precision('Account'),
+                         string='Total',
+                         store={
+                                'sale.order': (lambda self, cr, uid, ids, c={}:
+                                               ids, ['order_line'], 10),
+                                'sale.order.line': (_get_order,
+                                                    ['price_unit', 'tax_id',
+                                                     'discount',
+                                                     'product_uom_qty',
+                                                     'launch_costs'], 10),
+                                },
+                         multi='sums', help="The total amount."),
+                }
 
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = super(sale_order, self).\
@@ -88,6 +94,7 @@ class sale_order(models.Model):
                         1, product, line.order_id.partner_id)['taxes']:
             val += c.get('amount', 0.0)
         return val
+
 
 class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
@@ -115,13 +122,14 @@ class sale_order_line(models.Model):
         return res
 
     _columns = {
-        'price_subtotal': fields.function(_amount_line,
-            string='Subtotal', digits_compute=dp.get_precision('Account')),
-    }
+                'price_subtotal': old_fields.\
+                function(_amount_line, string='Subtotal',
+                         digits_compute=dp.get_precision('Account')),
+                }
 
-    launch_costs = fields2.Float('Launch Costs')
-    launch_costs_line_id = fields2.Many2one('account.invoice.line',
-                                            'Launch invoice line')
+    launch_costs = fields.Float('Launch Costs')
+    launch_costs_line_id = fields.Many2one('account.invoice.line',
+                                           'Launch invoice line')
 
     @api.one
     def copy(self, default=None):
