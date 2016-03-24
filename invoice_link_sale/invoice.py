@@ -19,8 +19,8 @@
 #
 ###############################################################################
 
-from openerp import models, fields
-from openerp.tools.translate import _
+from openerp import models, fields, _
+
 
 class account_invoice(models.Model):
     _inherit = "account.invoice"
@@ -28,6 +28,7 @@ class account_invoice(models.Model):
     sale_ids = fields.Many2many('sale.order', 'sale_order_invoice_rel',
                                 'invoice_id', 'order_id', 'Sales',
                                 readonly=True, copy=False)
+
 
 class account_invoice_line(models.Model):
     _inherit = "account.invoice.line"
