@@ -45,7 +45,7 @@ class product_costs_type(models.Model):
                                    help="When formula is selected, the value "
                                    "will be computed by summing the value of "
                                    "linked costs")
-    sequence = fields.Integer(default=1, required=True)
+    sequence = fields.Integer(required=True, default=1)
 
 
 class product_costs_structure(models.Model):
@@ -69,7 +69,7 @@ class product_costs_structure_line(models.Model):
                                  digits=dp.get_precision('Product Price'))
     structure_id = fields.Many2one('product.costs.structure', 'Structure',
                                    required=True, ondelete='cascade')
-    sequence = fields.Integer(required=True)
+    sequence = fields.Integer(required=True, default=1)
     type = fields.Selection([
                              ('fixed', 'Fixed price'),
                              ('bom', 'BoM'),

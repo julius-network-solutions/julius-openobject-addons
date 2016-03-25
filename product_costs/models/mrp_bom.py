@@ -26,13 +26,12 @@ from openerp import tools, SUPERUSER_ID
 class mrp_bom_line(models.Model):
     _inherit = 'mrp.bom.line'
 
-    #relationship
-    cost_type_id = fields.Many2one('product.costs.type')
+    cost_type_id = fields.Many2one('product.costs.type', 'Cost type',
+                                   domain=[('type', '=', 'bom')])
 
 
 class mrp_bom(models.Model):
     _inherit = 'mrp.bom'
-
 
     def _bom_explode_cost(self, cr, uid, bom, product, factor, properties=None, level=0, routing_id=False, previous_products=None, master_bom=None, context=None):
         """ Finds Products and Work Centers for related BoM for manufacturing order.
@@ -49,7 +48,6 @@ class mrp_bom(models.Model):
         uom_obj = self.pool.get("product.uom")
         routing_obj = self.pool.get('mrp.routing')
         master_bom = master_bom or bom
-
 
         def _factor(factor, product_efficiency, product_rounding):
             factor = factor / (product_efficiency or 1.0)
@@ -87,7 +85,6 @@ class mrp_bom(models.Model):
             if previous_products and bom_line_id.product_id.product_tmpl_id.id in previous_products:
                 #raise osv.except_osv(_('Invalid Action!'), _('BoM "%s" contains a BoM line with a product recursion: "%s".') % (master_bom.name,bom_line_id.product_id.name_get()[0][1]))
                 raise Warning(('Invalid Action!, BoM "%s" contains a BoM line with a product recursion: "%s".') % (master_bom.name,bom_line_id.product_id.name_get()[0][1]))
-
 
             quantity = _factor(bom_line_id.product_qty * factor, bom_line_id.product_efficiency, bom_line_id.product_rounding)
             bom_id = self._bom_find(cr, uid, product_id=bom_line_id.product_id.id, properties=properties, context=context)
