@@ -21,13 +21,16 @@
                                     class="oe_link oe_inline"/>
                             </div>
                             <field name="costs_line_ids" nolabel="1" colspan="4">
-                                <tree string="Costs lines" editable="top">
+                                <tree string="Costs lines" editable="top"
+                                    colors="green:type=='formula'">
                                     <field name="sequence" widget="handle"/>
                                     <field name="type_id"/>
                                     <field name="name" invisible="1"/>
                                     <field name="type" invisible="1"/>
                                     <field name="value"
                                         attrs="{'readonly': [('type', '!=', 'fixed')]}"/>
+                                    <button type="object" name="update_standard_price"
+                                        string="Update standard price"/>
                                 </tree>
                             </field>
                         </group>

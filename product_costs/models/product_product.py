@@ -29,7 +29,7 @@ class product_product_costs(models.Model):
     _order = 'sequence'
 
     name = fields.Char(related='type_id.name', readonly=True, store=True)
-    sequence = fields.Integer(required=True)
+    sequence = fields.Integer(required=True, default=1)
     type_id = fields.Many2one('product.costs.type', 'Cost type',
                               required=True)
     type = fields.Selection([
@@ -49,6 +49,14 @@ class product_product_costs(models.Model):
         if self.type_id.type == 'fixed':
             self.value = self.type_id.default_value
 
+    @api.one
+    def update_standard_price(self):
+        """
+        This method will put the selected value to
+        the standard price of the selected product.
+        """
+        if self.product_id.cost_method == 'standard':
+            self.product_id.standard_price = self.value
 
 class product_product(models.Model):
     _inherit = 'product.product'
@@ -99,9 +107,7 @@ class product_product(models.Model):
                       'product_id': bom.product_id.id,
                       }
         for sub_bom in (sub_boms and sub_boms[0]) or [parent_bom]:
-            print sub_bom.get('cost_type_id'), cost_type_id
             if cost_type_id and sub_bom.get('cost_type_id') and sub_bom['cost_type_id'] == cost_type_id:
-                print sub_bom
                 total += process_bom(sub_bom)
         return total
 
@@ -114,6 +120,7 @@ class product_product(models.Model):
         product_obj = self.env['product.product']
         uom_obj = self.env['product.uom']
         workcenter_obj = self.env['mrp.workcenter']
+        routing_workcenter_obj = self.env['mrp.routing.workcenter']
         bom = self.bom_ids and self.bom_ids[0]
         factor = self.uom_id.factor / bom.product_uom.factor
         sub_boms = bom._bom_explode(bom=bom, product=self, factor=factor / bom.product_qty)
@@ -122,6 +129,9 @@ class product_product(models.Model):
             cost_cycle = wrk['cycle'] * workcenter.costs_cycle
             cost_hour = wrk['hour'] * workcenter.costs_hour
             total = cost_cycle + cost_hour
+            wc_use = routing_workcenter_obj.browse(wrk['wc_use'])
+            effective = wc_use.effective or 1
+            total *= effective
             return total
 #         parent_bom = {
 #                       'product_qty': bom.product_qty,
