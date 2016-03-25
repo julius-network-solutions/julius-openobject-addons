@@ -19,37 +19,12 @@
 #
 ###############################################################################
 
-{
-    "name": "Product index revision",
-    "summary": "Generator of product index revision",
-    "version": "0.1",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Purchases Management",
-    "depends": [
-                "product",
-                "mrp",
-                ],
-    "description": """
-This module will give you the opportunity to:
-=============================================
+from openerp import models, fields, _
 
-    * Duplicate simple products to manage index revisions, these revisions will have a start and end date
-    * If a product got a BoM, the system will also duplicate the BoM (you will be able to manage if any change appears directly in the pop up)
 
-This will also add:
--------------------
+class ir_attachment(models.Model):
+    _inherit = "ir.attachment"
 
-    * In sale view, you will only find revisions which are running in the current order date.
-""",
-    "demo": [],
-    "data": [
-             "wizard/add_plan.xml",
-             "wizard/generator.xml",
-             "views/product.xml",
-             ],
-    'installable': True,
-    'active': False,
-}
+    is_plan = fields.Boolean('Is Plan ?', default=False)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

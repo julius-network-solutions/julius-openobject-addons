@@ -54,7 +54,7 @@ msgstr "Validité de cet indice. Laisser vide si toujours valide."
 
 #. module: product_index_revision_generator
 #: help:product.revision.generator.line,product_uos:0
-msgid "Product UOS (Unit of Sale) is the unit of measurement for the invoicing and promotion of stock."
+msgid "Product UoS (Unit of Sale) is the unit of measurement for the invoicing and promotion of stock."
 msgstr "UdV de produit (Unité de Vente) est l'unité de mesure pour la facturation et calcul de stock."
 
 #. module: product_index_revision_generator
@@ -108,7 +108,7 @@ msgstr "Unité de mesure produit"
 
 #. module: product_index_revision_generator
 #: field:product.revision.generator.line,product_uos:0
-msgid "Product UOS"
+msgid "Product UoS"
 msgstr "UdV produit"
 
 #. module: product_index_revision_generator
@@ -215,7 +215,7 @@ msgstr "Attention"
 
 #. module: product_index_revision_generator
 #: field:product.revision.generator.line,product_uos_qty:0
-msgid "Product UOS Qty"
+msgid "Product UoS Qty"
 msgstr "UdV Qté"
 
 #. module: product_index_revision_generator
