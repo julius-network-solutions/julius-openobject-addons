@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
+
         <record id="sale_order_line_sacatec_tree_inherit" model="ir.ui.view">
             <field name="name">sale.order.line.sacatec.view.tree</field>
             <field name="model">sale.order.line</field>
@@ -27,5 +28,6 @@
                 </data>
             </field>
         </record>
+
     </data>
 </openerp>

@@ -19,16 +19,16 @@
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+from openerp import fields, models, _
 
-class sale_order_line(orm.Model):
+
+class sale_order_line(models.Model):
     _inherit = "sale.order.line"
-    _columns = {
-        'wanted_date': fields.date('Wanted date'),
-    }
 
-class sale_order(orm.Model):
+    wanted_date = fields.Date()
+
+
+class sale_order(models.Model):
     _inherit = "sale.order"
 
     def _get_date_planned(self, cr, uid, order,

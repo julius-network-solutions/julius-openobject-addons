@@ -19,29 +19,6 @@
 #
 ###############################################################################
 
-{
-    "name": "Sale Module Wanted Date",
-    "summary": "Add a Wanted Date into sale order lines",
-    "version": "0.1",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "depends": [
-                "sale",
-                "sale_stock",
-                ],
-    "description": """
-Inherit Sale Module.
-====================
-
-Adds to the sale order line a wanted date.
-""",
-    "demo": [],
-    "data": [
-             "views/sale.xml",
-             ],
-    "installable": True,
-    "active": False,
-}
+from . import sale
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
