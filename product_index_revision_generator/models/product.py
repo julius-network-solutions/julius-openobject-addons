@@ -19,11 +19,13 @@
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+from openerp.osv import fields as old_fields
+from openerp import models, fields, api, _
+from openerp.exceptions import ValidationError
 from openerp.tools.safe_eval import safe_eval
 import string
 import re
+
 
 def find_next_revision_index(letters=None):
     try:
@@ -50,26 +52,11 @@ def find_next_revision_index(letters=None):
     except:
         return 'A'
 
-class product_product(orm.Model):
+
+class product_product(models.Model):
     _inherit = 'product.product'
 
     _order = 'default_code,revision_index DESC,name_template'
-    def _get_plan_document_id(self, cr, uid,
-                              ids, field_name, arg, context=None):
-        res = {}
-        if context is None:
-            context = {}
-        attachment_obj = self.pool.get('ir.attachment')
-        for product in self.browse(cr, uid, ids, context=context):
-            res[product.id] = False
-            att_ids = attachment_obj.search(cr, uid, [
-                ('res_id', '=', product.id),
-                ('res_model', '=', 'product.product'),
-                ('is_plan', '=', True)
-                ], context=context, limit=1)
-            if att_ids:
-                res[product.id] = att_ids[0]
-        return res
 
     def _get_partner_code_name(self, cr, uid, ids, product,
                                partner_id, context=None):
@@ -112,7 +99,7 @@ class product_product(orm.Model):
                               'id': product.id,
                               'name': s.product_name or product.name,
                               'default_code': s.product_code or product.default_code,
-                              'variants': product.variants
+#                               'variants': product.variants,
                               }
                     result.append(_name_get(mydict))
             else:
@@ -121,7 +108,7 @@ class product_product(orm.Model):
                           'name': product.name,
                           'default_code': product.default_code,
                           'revision_index': product.revision_index,
-                          'variants': product.variants
+#                           'variants': product.variants,
                           }
                 result.append(_name_get(mydict))
         return result
@@ -167,29 +154,51 @@ class product_product(orm.Model):
         result = self.name_get(cr, user, ids, context=context)
         return result
 
-    _columns = {
-        'date_start': fields.date('Valid From',),
-        'date_stop': fields.date('Valid Until',),
-        'revision_index': fields.char('Revision Index', size=128),
-        'revision_note': fields.text('Revision note'),
-        'plan_revision': fields.char('Plan Revision', size=128),
-        'plan_document_id': fields.function(_get_plan_document_id,
-                                            type="many2one",
-                                            string="Plan",
-                                            relation="ir.attachment",
-                                            store=False),
-        'plan_document': fields.related('plan_document_id', 'datas',
-                                        type="binary",
-                                        string="Plan",
-                                        store=False,
-                                        readonly=True,
-                                        ),
-    }
+    date_start = fields.Date('Valid From')
+    date_stop = fields.Date('Valid Until')
+    revision_index = fields.Char(default='')
+    revision_note = fields.Text(default='')
+    plan_revision = fields.Char()
+    plan_document = fields.Binary('Plan', related='plan_document_id.datas',
+                                  store=False, readonly=True)
+    plan_document_id = fields.Many2one('ir.attachment', 'Plan',
+                                       compute='_get_plan_document_id',
+                                       store=False)
 
-    _defaults = {
-        'revision_index': '',
-        'revision_note': '',
-    }
+    @api.one
+    def _get_plan_document_id(self):
+        attachment_obj = self.env['ir.attachment']
+        attachments = attachment_obj.\
+            search([
+                    ('res_id', '=', self.id),
+                    ('res_model', '=', 'product.product'),
+                    ('is_plan', '=', True)
+                    ], limit=1)
+        self.plan_document_id = attachments.id
+
+#     def _get_plan_document_id(self, cr, uid,
+#                               ids, field_name, arg, context=None):
+#         res = {}
+#         if context is None:
+#             context = {}
+#         attachment_obj = self.pool.get('ir.attachment')
+#         for product in self.browse(cr, uid, ids, context=context):
+#             res[product.id] = False
+#             att_ids = attachment_obj.search(cr, uid, [
+#                 ('res_id', '=', product.id),
+#                 ('res_model', '=', 'product.product'),
+#                 ('is_plan', '=', True)
+#                 ], context=context, limit=1)
+#             if att_ids:
+#                 res[product.id] = att_ids[0]
+#         return res
+#
+#     _columns = {
+#                 'plan_document_id': old_fields.\
+#                 function(_get_plan_document_id,
+#                          type="many2one", string="Plan",
+#                          relation="ir.attachment", store=False),
+#                 }
 
     def create_revision_index(self, cr, uid, ids, context=None):
         if context is None:
@@ -199,6 +208,7 @@ class product_product(orm.Model):
         generator_obj = self.pool.get('product.revision.generator')
         generator_line_obj = self.pool.get('product.revision.generator.line')
         bom_obj = self.pool.get('mrp.bom')
+        bom_line_obj = self.pool.get('mrp.bom.line')
         action = False
         for product in self.browse(cr, uid, ids, context=context):
             try:
@@ -207,9 +217,9 @@ class product_product(orm.Model):
                                          'product_index_revision_generator',
                                          'action_product_revision_generator')
             except:
-                raise orm.except_orm('Error',
-                                     'Action "Product index generator" ' \
-                                     'not found in the system')
+                raise ValidationError(_('Error'),
+                                      _('Action "Product index generator" '
+                                        'not found in the system'))
             if action_id:
                 action = action_obj.read(cr, uid, action_id, context=context)
                 action_context = action.get('context', {})
@@ -223,9 +233,9 @@ class product_product(orm.Model):
                         'name': find_next_revision_index(index),
                         })
                 bom_ids = bom_obj.search(cr, uid, [
-                    ('product_id', '=', product.id),
-                    ('bom_id', '=', False),
-                    ], limit=1, context=context)
+                                                   ('product_id', '=', product.id),
+#                                                   ('bom_id', '=', False),
+                                                   ], limit=1, context=context)
                 bom_id = False
                 if bom_ids:
                     bom_id = bom_ids[0]
@@ -234,7 +244,7 @@ class product_product(orm.Model):
                 if bom_id:
                     for line in bom_obj.\
                         browse(cr, uid, bom_id, context=context).bom_line_ids:
-                        line_vals = bom_obj.\
+                        line_vals = bom_line_obj.\
                             copy_data(cr, uid, line.id, context=context)
                         line_vals.update({'generator_id': gen_id})
                         generator_line_obj.\
