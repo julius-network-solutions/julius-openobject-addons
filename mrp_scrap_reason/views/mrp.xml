@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
+    <data>
 
         <record id="stock_move_scrap_reason_form_view" model="ir.ui.view">
             <field name="name">stock.move.scrap.reason.view.form</field>
@@ -42,7 +42,7 @@
             <field name="model">mrp.production</field>
             <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='move_lines2']/tree/field[@name='product_qty']" position="after">
+                <xpath expr="//field[@name='move_lines2']/tree/field[@name='product_uom_qty']" position="after">
                     <field name="reason"/>
                     <field name="notes_reason"/>
                 </xpath>

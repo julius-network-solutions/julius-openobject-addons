@@ -15,19 +15,11 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
-
-class mrp_production_scarp_reason(orm.Model):
-    _name = 'stock.move.scrap.reason'
-    _description = 'Scrap Reason'
-
-    _columns = {
-        'name': fields.char('Name', size=256, required=True),
-    }
+from . import mrp
+from . import stock
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

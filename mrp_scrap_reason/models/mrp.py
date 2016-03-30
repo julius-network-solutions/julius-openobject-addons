@@ -19,6 +19,13 @@
 #
 ###############################################################################
 
-from . import scrap
+from openerp import fields, models
+
+
+class mrp_production_scarp_reason(models.Model):
+    _name = 'stock.move.scrap.reason'
+    _description = 'Scrap Reason'
+
+    name = fields.Char(required=True)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

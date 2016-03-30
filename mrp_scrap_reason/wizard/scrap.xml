@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
+    <data>
 
         <record id="view_stock_move_scrap_wizard_inherit" model="ir.ui.view">
             <field name="name">stock.move.scrap.view.form</field>
@@ -16,7 +16,7 @@
                             placeholder="Describe here the reason for scraping these products..."/>
                     </div>
                 </field>
-			</field>
+            </field>
         </record>
 
     </data>

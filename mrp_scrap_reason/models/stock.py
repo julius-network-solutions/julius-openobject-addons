@@ -22,8 +22,8 @@
 from openerp import fields, models, api, _
 
 
-class stock_move_scrap(models.TransientModel):
-    _inherit = 'stock.move.scrap'
+class stock_move(models.Model):
+    _inherit = 'stock.move'
 
     @api.model
     def _scrap_reason_get(self):
@@ -31,27 +31,38 @@ class stock_move_scrap(models.TransientModel):
         result = []
         for reason in reasons:
             result.append((reason.id, reason.name))
-        result.append((-1, _('Other...')))
+
+        result.append((-1, 'Other...'))
         return result
 
     reason = fields.Selection(_scrap_reason_get, help="Reason for scraping.")
-    notes = fields.Text('Notes')
+    notes_reason = fields.Text('Notes')
 
-    def move_scrap(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        for data in self.browse(cr, uid, ids, context=context):
-            reason = data.reason
-            try:
-                reason = int(data.reason)
-            except:
-                reason = False
-            notes = reason and data.notes or False
-            context.update({
-                            'reason': reason,
-                            'notes_reason': notes,
-                            })
-        return super(stock_move_scrap, self).\
-            move_scrap(cr, uid, ids, context=context)
-
+    def action_scrap(self, cr, uid, ids, quantity, location_id,
+                     restrict_lot_id=False, restrict_partner_id=False,
+                     context=None):
+        """ Move the scrap/damaged product into scrap location
+        @param cr: the database cursor
+        @param uid: the user id
+        @param ids: ids of stock move object to be scrapped
+        @param quantity : specify scrap qty
+        @param location_id : specify scrap location
+        @param context: context arguments
+        @return: Scraped lines
+        """
+        res = super(stock_move, self).\
+            action_scrap(cr, uid, ids, quantity,
+                         location_id=location_id,
+                         restrict_lot_id=restrict_lot_id,
+                         restrict_partner_id=restrict_partner_id,
+                         context=context)[0]
+        if context.get('reason'):
+            reason = context.get('reason')
+            notes_reason = reason and context.get('notes_reason') or False
+            self.write(cr, uid, res, {
+                                      'reason': reason,
+                                      'notes_reason': notes_reason,
+                                      }, context=context)
+        return res
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
