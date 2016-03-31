@@ -19,36 +19,51 @@
 #
 ###############################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
+from openerp.osv import fields as old_fields
+from openerp import fields, models, api, _, netsvc
 from openerp.tools import float_compare
-from openerp import netsvc
 
-class mrp_production(orm.Model):
+
+class mrp_production(models.Model):
     _inherit = "mrp.production"
 
-    def __init__(self, pool, cr):
-        if self._columns.get('state'):
-            add_item = True
-            for (a,b) in self._columns['state'].selection:
-                if a == 'partially_ready':
-                    add_item = False
-            if add_item:
-                new_selection = []
-                for (a,b) in self._columns['state'].selection:
-                    if a == 'ready':
-                        new_selection.extend([('partially_ready',
-                                               _('Partially ready'))])
-                    new_selection.extend([(a,b)])
-                self._columns['state'].selection = new_selection
-        super(mrp_production, self).__init__(pool, cr)
+    production_id = fields.Many2one('mrp.production', 'Production order to do',
+                                    readonly=True)
+    state = fields.\
+        Selection(selection_add=[
+                                 ('partially_ready', 'Partially ready'),
+                                 ])
+#     product_qty_ready = fields.Float('Quantity ready',
+#                                      compute='_get_available_quantity_ready',
+#                                      help='If you\'ve got at least the ' \
+#                                      'component to produce one element,' \
+#                                      'you will have a quantity here.',)
+
+#     def __init__(self, pool, cr):
+#         if self._columns.get('state'):
+#             add_item = True
+#             for (a,b) in self._columns['state'].selection:
+#                 if a == 'partially_ready':
+#                     add_item = False
+#             if add_item:
+#                 new_selection = []
+#                 for (a,b) in self._columns['state'].selection:
+#                     if a == 'ready':
+#                         new_selection.extend([('partially_ready',
+#                                                _('Partially ready'))])
+#                     new_selection.extend([(a,b)])
+#                 self._columns['state'].selection = new_selection
+#         super(mrp_production, self).__init__(pool, cr)
 
     def _get_available_quantity_ready(self, cr, uid, ids,
                                       name, args, context=None):
         if context is None: context = {}
         res = {}
         move_obj = self.pool.get('stock.move')
-        for prod in self.browse(cr, uid, ids, context=context):
+        copied_context = context.copy()
+        copied_context['states_in'] = ('done',)
+        copied_context['states_out'] = ('done', 'assigned', 'confirmed')
+        for prod in self.browse(cr, uid, ids, context=copied_context):
             res[prod.id] = 0
             compo_list = {}
             if prod.state in ('confirmed', 'partially_ready'):
@@ -59,11 +74,9 @@ class mrp_production(orm.Model):
                     compo_list.setdefault(product_id, 0)
                     compo_list[product_id] += component.product_qty
                 for move in prod.move_lines:
-                    context['states_in'] = ('done',)
-                    context['states_out'] = ('done', 'assigned', 'confirmed')
-                    available_quantity = move_obj.\
-                        _get_specific_available_qty(cr, uid, move,
-                                                    context=context)
+                    available_quantity = move.product_id.qty_available
+#                     ._get_specific_available_qty(cr, uid, move,
+#                                                     context=copied_context)
                     if available_quantity <= 0:
                         available = 0
                         break
@@ -80,6 +93,7 @@ class mrp_production(orm.Model):
                 if available > prod.product_qty:
                     available = prod.product_qty
                 res[prod.id] = available
+        print res
         return res
 
     def _create_move_to_do(self, cr, uid, move_id,
@@ -252,12 +266,11 @@ class mrp_production(orm.Model):
         return True
 
     _columns = {
-        'product_qty_ready': fields.function(_get_available_quantity_ready,
+        'product_qty_ready': old_fields.function(_get_available_quantity_ready,
              type='float', string='Quantity ready',
              help='If you\'ve got at least the component to produce one element,' \
              'you will have a quantity here.',
              ),
-        'production_id': fields.many2one('mrp.production', 'Production order to do', readonly=True),
     }
 
     def write(self, cr, uid, ids, vals, context=None):

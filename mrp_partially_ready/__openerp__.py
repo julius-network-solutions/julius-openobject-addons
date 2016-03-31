@@ -15,7 +15,7 @@
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
 
@@ -26,8 +26,8 @@
     "website": "http://julius.fr",
     "category": "Manufacturing",
     "depends": [
-        'mrp',
-    ],
+                'mrp',
+                ],
     "description": """
 You can now start the production order if you have the partially the components.
 ================================================================================
@@ -63,10 +63,10 @@ Now with this module:
 """,
     "demo": [],
     "data": [
-        'wizard/start_partially_view.xml',
-        'mrp_view.xml',
-    ],
-    'installable': False,
+             'wizard/start_partially_view.xml',
+             'views/mrp_view.xml',
+             ],
+    'installable': True,
     'active': False,
 }
 
