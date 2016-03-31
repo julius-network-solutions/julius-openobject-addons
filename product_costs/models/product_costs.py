@@ -34,10 +34,26 @@ class product_costs_type(models.Model):
                              ('bom', 'BoM'),
                              ('bom_routing', 'BoM Routing'),
                              ('python', 'Python Computation'),
+                             ('field', 'Linked Field'),
                              ('formula', 'Formula'),
                              ], default='fixed', required=True)
+    formula_type = fields.Selection([
+                                     ('sum', 'Sum'),
+                                     ('subtraction', 'Subtraction'),
+                                     ('multiplication', 'Multiplication'),
+                                     ('division', 'Division'),
+                                     ], default='sum', required=True)
     default_value = fields.Float(digits=dp.get_precision('Product Price'))
-    python_code = fields.Text()
+    field_expr = fields.Char('Field expression', help="use 'product' to get " \
+                             "the current product record. e.g.: " \
+                             "if you want the first supplier price "
+                             "use 'self.seller_ids and " \
+                             "self.seller_ids[0].pricelist_ids and " \
+                             "self.seller_ids[0].pricelist_ids[0].price " \
+                             "or 0")
+    python_code = fields.Text(help="The wanted value will be the " \
+                              "variable 'result'. Please use it.",
+                              default='result = 0.00')
     formula_ids = fields.Many2many('product.costs.type',
                                    'product_costs_type_formula_rel',
                                    'product_costs_id', 'linked_costs_id',
@@ -46,6 +62,7 @@ class product_costs_type(models.Model):
                                    "will be computed by summing the value of "
                                    "linked costs")
     sequence = fields.Integer(required=True, default=1)
+    can_update_product_price = fields.Boolean(default=False)
 
 
 class product_costs_structure(models.Model):
@@ -75,9 +92,17 @@ class product_costs_structure_line(models.Model):
                              ('bom', 'BoM'),
                              ('bom_routing', 'BoM Routing'),
                              ('python', 'Python Computation'),
+                             ('field', 'Linked Field'),
                              ('formula', 'Formula'),
                              ], related='type_id.type', readonly=True,
                             store=True)
+    formula_type = fields.Selection([
+                                     ('sum', 'Sum'),
+                                     ('subtraction', 'Subtraction'),
+                                     ('multiplication', 'Multiplication'),
+                                     ('division', 'Division'),
+                                     ], related='type_id.formula_type',
+                                    readonly=True, store=True)
 
     @api.onchange('type_id')
     def onchange_type_id(self):

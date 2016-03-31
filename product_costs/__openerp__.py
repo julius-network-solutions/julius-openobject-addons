@@ -21,7 +21,7 @@
 
 {
     "name": "Product Costs",
-    "version": "0.1",
+    "version": "0.2",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "website": "Mathieu Vatel <mathieu@julius.fr>",
@@ -41,6 +41,20 @@ Get all costs for a product:
     * Get prices from the BoM Routing
     * Get prices from fixes costs
     * etc.
+
+Version 0.1:
+------------
+
+    * Simple management of the formula as sum.
+    * The python method does not work.
+
+Version 0.2:
+------------
+
+    * Add the possibility to choose what kind of formula to use (sum, multiplication, etc.).
+    * Add the possibility to get a value from a linked field.
+    * Add the possibility to get a value from a python computation.
+    * Add an action to recompute only values (e.g. : use it when you change fixed prices).
 """,
     "demo": [],
     "data": [

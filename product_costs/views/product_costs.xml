@@ -16,9 +16,13 @@
                         <field name="name"/>
                         <field name="sequence"/>
                         <field name="type"/>
-                        <field name="default_value" attrs="{'readonly': [('type', '!=', 'fixed')]}"/>
+                        <field name="formula_type" attrs="{'invisible': [('type', '!=', 'formula')]}"/>
+                        <field name="default_value"
+                            attrs="{'invisible': [('type', '!=', 'fixed')], 'readonly': [('type', '!=', 'fixed')]}"/>
+                        <field name="field_expr" attrs="{'invisible': [('type', '!=', 'field')]}"/>
                         <field name="python_code" attrs="{'invisible': [('type', '!=', 'python')]}"/>
                         <field name="formula_ids" widget="many2many_tags" attrs="{'invisible': [('type', '!=', 'formula')]}"/>
+                        <field name="can_update_product_price"/>
                     </group>
                 </form>
             </field>

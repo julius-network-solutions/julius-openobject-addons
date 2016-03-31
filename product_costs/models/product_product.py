@@ -19,8 +19,14 @@
 #
 ##############################################################################
 
+from operator import mul, div, sub
+import time
+import logging
+_logger = logging.getLogger(__name__)
+
 from openerp import models, fields, api, _
 import openerp.addons.decimal_precision as dp
+from openerp.tools.safe_eval import safe_eval
 
 
 class product_product_costs(models.Model):
@@ -37,12 +43,23 @@ class product_product_costs(models.Model):
                              ('bom', 'BoM'),
                              ('bom_routing', 'BoM Routing'),
                              ('python', 'Python Computation'),
+                             ('field', 'Linked Field'),
                              ('formula', 'Formula'),
                              ], related='type_id.type', readonly=True,
                             store=True)
+    formula_type = fields.Selection([
+                                     ('sum', 'Sum'),
+                                     ('subtraction', 'Subtraction'),
+                                     ('multiplication', 'Multiplication'),
+                                     ('division', 'Division'),
+                                     ], related='type_id.formula_type',
+                                    readonly=True, store=True)
     value = fields.Float('Value', digits=dp.get_precision('Product Price'))
     product_id = fields.Many2one('product.product', 'Product',
                                  required=True, ondelete='cascade')
+    can_update_product_price = fields.\
+        Boolean(related='type_id.can_update_product_price',
+                readonly=True, store=True)
 
     @api.onchange('type_id')
     def onchange_type_id(self):
@@ -57,6 +74,55 @@ class product_product_costs(models.Model):
         """
         if self.product_id.cost_method == 'standard':
             self.product_id.standard_price = self.value
+
+    @api.multi
+    def get_formula_value(self):
+        """
+        This method will recompute the value from the other lines
+        """
+        self.ensure_one()
+        value = 0
+        lines = self.search([('product_id', '=', self.product_id.id)])
+        formula_values = [l.value for l in lines if l.type_id.id
+                          in self.type_id.formula_ids.ids]
+        if formula_values:
+            if self.formula_type == 'sum':
+                value = sum(formula_values)
+            elif self.formula_type == 'subtraction':
+                value = reduce(sub, formula_values)
+            elif self.formula_type == 'multiplication':
+                value = reduce(mul, formula_values)
+            elif self.formula_type == 'division':
+                value = reduce(div, formula_values)
+        return value
+
+    @api.one
+    def update_formula_value(self):
+        """
+        This method will update the value from the other lines
+        """
+        if self.type == 'formula':
+            self.value = self.get_formula_value()
+
+    @api.one
+    def update_line_value(self):
+        """
+        This method will update the value for this lines
+        """
+        product = self.product_id
+        if self.type not in ('fixed', 'formula'):
+            value = 0
+            if self.type == 'bom':
+                value = product._get_bom_price(cost_type_id=self.type_id.id)[0]
+            elif self.type == 'bom_routing':
+                value = product._get_bom_routing_price()[0]
+            elif self.type == 'field':
+                value = product._get_field_price(expr=self.type_id.field_expr)[0]
+            elif self.type == 'python':
+                value = product.\
+                    _get_python_price(expr=self.type_id.python_code)[0]
+            self.value = value
+
 
 class product_product(models.Model):
     _inherit = 'product.product'
@@ -87,20 +153,6 @@ class product_product(models.Model):
                                                to_uom_id=product_uom.id)
             sum_strd = prod_qty * std_price
             return sum_strd
-#         if bom:
-#             # TODO: take in account the start and end dates
-#             for component in bom.bom_line_ids:
-#                 product = component.product_id
-#                 price = uom_obj.\
-#                     _compute_price(from_uom_id=product.uom_id.id,
-#                                    price=product.standard_price,
-#                                    to_uom_id=component.product_uom.id)
-#                 total += price * component.product_qty
-#             uom_price = uom_obj.\
-#                 _compute_price(from_uom_id=self.uom_id.id,
-#                                price=total,
-#                                to_uom_id=bom.product_uom.id)
-#             total = uom_price * bom.product_qty
         parent_bom = {
                       'product_qty': bom.product_qty,
                       'product_uom': bom.product_uom.id,
@@ -133,16 +185,58 @@ class product_product(models.Model):
             effective = wc_use.effective or 1
             total *= effective
             return total
-#         parent_bom = {
-#                       'product_qty': bom.product_qty,
-#                       'product_uom': bom.product_uom.id,
-#                       'product_id': bom.product_id.id,
-#                       }
-#         for sub_bom in (sub_boms and sub_boms[0]) or [parent_bom]:
-#             total += process_bom(sub_bom)
         for wrk in (sub_boms and sub_boms[1]):
             total += process_workcenter(wrk)
         return total
+
+    @api.one
+    def _get_field_price(self, expr=''):
+        """
+        Get price from a related field
+        """
+        value = 0
+        user = self.env['res.users'].browse(self._uid)
+        space = {
+                'self': self,
+                'product': self,
+                'cr': self._cr,
+                'uid': self._uid,
+                'user': user,
+                'time': time,
+                # copy context to prevent side-effects of eval
+                'context': self._context.copy()}
+        try:
+            value = safe_eval(expr,
+                              space)
+            value = value and float(value) or 0
+        except Exception, e:
+            _logger.warning('Error on the computation: %s', e)
+            pass
+        return value
+
+    @api.one
+    def _get_python_price(self, expr=''):
+        """
+        Get price from a python expression
+        """
+        value = 0
+        user = self.env['res.users'].browse(self._uid)
+        space = {
+                'self': self,
+                'product': self,
+                'cr': self._cr,
+                'uid': self._uid,
+                'user': user,
+                'time': time,
+                # copy context to prevent side-effects of eval
+                'context': self._context.copy()}
+        try:
+            safe_eval(expr, space, mode='exec', nocopy=True)
+            value = space and space.get('result') and float(space['result']) or 0
+        except Exception, e:
+            _logger.warning('Error on the computation: %s', e)
+            pass
+        return value
 
     @api.one
     @api.onchange('costs_structure_id')
@@ -153,34 +247,40 @@ class product_product(models.Model):
 
     @api.one
     def _get_cost_lines(self):
+        """
+        This method will update the costs lines of the selected product
+        """
         lines = []
         formula_lines = self.env['product.costs.structure.line']
         for line in self.costs_structure_id.line_ids:
             value = 0
             if line.type == 'fixed':
                 value = line.default_value
-            elif line.type == 'formula':
-                formula_lines += line
-                continue
-            elif line.type == 'bom':
-                value = self._get_bom_price(cost_type_id=line.type_id.id)[0]
-            elif line.type == 'bom_routing':
-                value = self._get_bom_routing_price()[0]
+#             elif line.type == 'formula':
+#                 formula_lines += line
+#                 continue
+#             elif line.type == 'bom':
+#                 value = self._get_bom_price(cost_type_id=line.type_id.id)[0]
+#             elif line.type == 'bom_routing':
+#                 value = self._get_bom_routing_price()[0]
+#             elif line.type == 'field':
+#                 value = self._get_field_price(expr=line.type_id.field_expr)[0]
+#             elif line.type == 'python':
+#                 value = self.\
+#                     _get_python_price(expr=line.type_id.python_code)[0]
             line_vals = {
                          'type_id': line.type_id.id,
                          'sequence': line.sequence,
                          'value': value,
                          }
             lines.append(line_vals)
-        for line in formula_lines:
-            value = sum(l['value'] for l in lines
-                        if l['type_id'] in line.type_id.formula_ids.ids)
-            line_vals = {
-                         'type_id': line.type_id.id,
-                         'sequence': line.sequence,
-                         'value': value,
-                         }
-            lines.append(line_vals)
+#         for line in formula_lines:
+#             line_vals = {
+#                          'type_id': line.type_id.id,
+#                          'sequence': line.sequence,
+#                          'value': 0,
+#                          }
+#             lines.append(line_vals)
         return lines
 
     @api.one
@@ -189,5 +289,21 @@ class product_product(models.Model):
             self.costs_line_ids.unlink()
             costs_lines = [(0, 0, line) for line in new_lines]
             self.costs_line_ids = costs_lines
+        self.update_line_values()
+
+    @api.one
+    def update_line_values(self):
+        cost_lines = self.env['product.product.costs'].\
+            search([
+                    ('product_id', '=', self.id),
+                    ('type', 'not in', ('fixed', 'formula')),
+                    ])
+        cost_lines.update_line_value()
+        formula_lines = self.env['product.product.costs'].\
+            search([
+                    ('product_id', '=', self.id),
+                    ('type', '=', 'formula'),
+                    ])
+        formula_lines.update_formula_value()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

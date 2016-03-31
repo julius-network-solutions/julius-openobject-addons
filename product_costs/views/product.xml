@@ -29,10 +29,15 @@
                                     <field name="type" invisible="1"/>
                                     <field name="value"
                                         attrs="{'readonly': [('type', '!=', 'fixed')]}"/>
+                                    <field name="can_update_product_price" invisible="1"/>
                                     <button type="object" name="update_standard_price"
-                                        string="Update standard price"/>
+                                        string="Update standard price"
+                                        attrs="{'invisible': [('can_update_product_price', '=', False)]}"/>
                                 </tree>
                             </field>
+                            <button name="update_line_values" type="object"
+                                string="Update line values"
+                                class="oe_link oe_inline"/>
                         </group>
                     </page>
                 </page>
