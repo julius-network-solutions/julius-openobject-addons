@@ -232,21 +232,15 @@ class product_product(models.Model):
                 'context': self._context.copy()}
         try:
             safe_eval(expr, space, mode='exec', nocopy=True)
-            value = space and space.get('result') and float(space['result']) or 0
+            value = space and space.get('result') and \
+                float(space['result']) or 0
         except Exception, e:
             _logger.warning('Error on the computation: %s', e)
             pass
         return value
 
     @api.one
-    @api.onchange('costs_structure_id')
-    def onchange_cost_structure_id(self):
-        self.costs_line_ids = False
-        for new_lines in self._get_cost_lines():
-            self.costs_line_ids = new_lines
-
-    @api.one
-    def _get_cost_lines(self):
+    def _get_cost_lines(self, onchange=False):
         """
         This method will update the costs lines of the selected product
         """
@@ -256,32 +250,53 @@ class product_product(models.Model):
             value = 0
             if line.type == 'fixed':
                 value = line.default_value
-#             elif line.type == 'formula':
-#                 formula_lines += line
-#                 continue
-#             elif line.type == 'bom':
-#                 value = self._get_bom_price(cost_type_id=line.type_id.id)[0]
-#             elif line.type == 'bom_routing':
-#                 value = self._get_bom_routing_price()[0]
-#             elif line.type == 'field':
-#                 value = self._get_field_price(expr=line.type_id.field_expr)[0]
-#             elif line.type == 'python':
-#                 value = self.\
-#                     _get_python_price(expr=line.type_id.python_code)[0]
+            elif onchange:
+                if line.type == 'formula':
+                    formula_lines += line
+                    continue
+                elif line.type == 'bom':
+                    value = self._get_bom_price(cost_type_id=line.type_id.id)[0]
+                elif line.type == 'bom_routing':
+                    value = self._get_bom_routing_price()[0]
+                elif line.type == 'field':
+                    value = self._get_field_price(expr=line.type_id.field_expr)[0]
+                elif line.type == 'python':
+                    value = self.\
+                        _get_python_price(expr=line.type_id.python_code)[0]
             line_vals = {
                          'type_id': line.type_id.id,
                          'sequence': line.sequence,
                          'value': value,
                          }
             lines.append(line_vals)
-#         for line in formula_lines:
-#             line_vals = {
-#                          'type_id': line.type_id.id,
-#                          'sequence': line.sequence,
-#                          'value': 0,
-#                          }
-#             lines.append(line_vals)
+        if onchange:
+            for line in formula_lines:
+                value = 0
+                formula_values = [l['value'] for l in lines if l['type_id']
+                                  in line.type_id.formula_ids.ids]
+                if formula_values:
+                    if line.formula_type == 'sum':
+                        value = sum(formula_values)
+                    elif line.formula_type == 'subtraction':
+                        value = reduce(sub, formula_values)
+                    elif line.formula_type == 'multiplication':
+                        value = reduce(mul, formula_values)
+                    elif line.formula_type == 'division':
+                        value = reduce(div, formula_values)
+                line_vals = {
+                             'type_id': line.type_id.id,
+                             'sequence': line.sequence,
+                             'value': value,
+                             }
+                lines.append(line_vals)
         return lines
+
+    @api.one
+    @api.onchange('costs_structure_id')
+    def onchange_cost_structure_id(self):
+        self.costs_line_ids = False
+        for new_lines in self._get_cost_lines(onchange=True):
+            self.costs_line_ids = new_lines
 
     @api.one
     def update_cost_lines(self):
