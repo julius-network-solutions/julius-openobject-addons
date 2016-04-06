@@ -19,34 +19,6 @@
 #
 ###############################################################################
 
-{
-    "name": "Stock automatic check availability",
-    "version": "1.0",
-    "author": "Julius Network Solutions",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
-    "category": "Warehouse Management",
-    "description": """
-Check availability on selected picking types:
-=============================================
-
-Automatism:
------------
-
-For all selected picking types, the system will:
-    * first, cancel availability of linked moves,
-    * then, check availability order by planned date.
-""",
-    "website": "http://www.julius.fr",
-    "depends": [
-                "stock",
-                ],
-    "data": [
-             "data/scheduler.xml",
-             "views/picking_type.xml",
-             ],
-    "demo": [],
-    'installable': True,
-    'active': False,
-}
+from . import picking_type
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
