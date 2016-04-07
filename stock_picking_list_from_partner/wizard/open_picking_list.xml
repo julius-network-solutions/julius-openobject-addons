@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="open_picking_list_form_view" model="ir.ui.view">
+            <field name="name">open.picking.list.form.view</field>
+            <field name="model">open.picking.list</field>
+            <field name="arch" type="xml">
+                <form string="Get picking list" version="7.0">
+                    <p class="oe_grey">
+                        Select the period wanted for the picking, then click on "Get picking list".
+                    </p>
+                    <group invisible="context.get('active_model') == 'res.partner'">
+                        <field name="partner_id"/>
+                    </group>
+                    <group>
+                        <div>
+                            <label for="date_from" string="Period"/>
+                            <field name="date_from" class="oe_inline"/> - <field name="date_to" class="oe_inline"/>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="picking_type_id"/>
+                    </group>
+                    <footer>
+                        <button name="open_list" string="Get picking list" type="object"
+                            class="oe_highlight"/>
+                         or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_open_picking_list_form_view" model="ir.actions.act_window">
+            <field name="name">Get partner picking list</field>
+            <field name="res_model">open.picking.list</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="open_picking_list_form_view"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_action_open_picking_list"
+                  parent="stock.menu_stock_warehouse_mgmt"
+                  action="action_open_picking_list_form_view"
+                  sequence="10"/>
+
+    </data>
+</openerp>
