@@ -1,0 +1,49 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* stock_return_cancel
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-04-07 10:42+0000\n"
+"PO-Revision-Date: 2016-04-07 10:42+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_return_cancel
+#: selection:stock.return.picking,filter_return:0
+msgid "Cancel: create return and validate it"
+msgstr ""
+
+#. module: stock_return_cancel
+#: selection:stock.return.picking,filter_return:0
+msgid "Create a draft return"
+msgstr ""
+
+#. module: stock_return_cancel
+#: selection:stock.return.picking,filter_return:0
+msgid "Modify: create return, validate it and create a new draft picking"
+msgstr ""
+
+#. module: stock_return_cancel
+#: model:ir.model,name:stock_return_cancel.model_stock_return_picking
+msgid "Return Picking"
+msgstr ""
+
+#. module: stock_return_cancel
+#: field:stock.return.picking,filter_return:0
+msgid "Return method"
+msgstr ""
+
+#. module: stock_return_cancel
+#: code:addons/stock_return_cancel/wizard/stock_return_picking_cancel.py:83
+#: code:addons/stock_return_cancel/wizard/stock_return_picking_cancel.py:105
+#, python-format
+msgid "Returned Picking"
+msgstr ""
+

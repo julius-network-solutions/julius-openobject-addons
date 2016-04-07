@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_stock_return_picking_form_inherit" model="ir.ui.view">
+            <field name="name">Return lines choose type</field>
+            <field name="model">stock.return.picking</field>
+            <field name="inherit_id" ref="stock.view_stock_return_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="move_dest_exists" position="before">
+                    <field name="filter_return"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
