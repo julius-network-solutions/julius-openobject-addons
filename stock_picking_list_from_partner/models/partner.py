@@ -31,7 +31,6 @@ class res_partner(models.Model):
     @api.one
     def _picking_count(self):
         try:
-            print len(self.picking_ids)
             self.picking_count = len(self.picking_ids) + \
                 len(self.mapped('child_ids.picking_ids'))
         except:
