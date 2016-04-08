@@ -19,7 +19,6 @@
 #
 ###############################################################################
 
-from openerp.osv import fields as old_fields
 from openerp import models, fields, api, _
 from openerp.exceptions import ValidationError
 from openerp.tools.safe_eval import safe_eval
@@ -176,30 +175,6 @@ class product_product(models.Model):
                     ], limit=1)
         self.plan_document_id = attachments.id
 
-#     def _get_plan_document_id(self, cr, uid,
-#                               ids, field_name, arg, context=None):
-#         res = {}
-#         if context is None:
-#             context = {}
-#         attachment_obj = self.pool.get('ir.attachment')
-#         for product in self.browse(cr, uid, ids, context=context):
-#             res[product.id] = False
-#             att_ids = attachment_obj.search(cr, uid, [
-#                 ('res_id', '=', product.id),
-#                 ('res_model', '=', 'product.product'),
-#                 ('is_plan', '=', True)
-#                 ], context=context, limit=1)
-#             if att_ids:
-#                 res[product.id] = att_ids[0]
-#         return res
-#
-#     _columns = {
-#                 'plan_document_id': old_fields.\
-#                 function(_get_plan_document_id,
-#                          type="many2one", string="Plan",
-#                          relation="ir.attachment", store=False),
-#                 }
-
     def create_revision_index(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -251,5 +226,30 @@ class product_product(models.Model):
                             create(cr, uid, line_vals, context=context)
                 action['res_id'] = gen_id
         return action
+
+    @api.one
+    @api.constrains('default_code', 'revision_index')
+    def _check_revision_index(self):
+        """
+        Check if there's already an article with same revision
+        and default code
+        """
+        if self.default_code:
+            domain = [
+                      ('default_code', '=', self.default_code),
+                      ('id', '!=', self.id),
+                      ]
+            if self.revision_index:
+                domain += [
+                           '|',
+                           ('revision_index', '=', False),
+                           ('revision_index', '=', self.revision_index),
+                           ]
+            if self.search(domain):
+                raise ValidationError(_("The article '%s' with revision '%s' "
+                                        "already exists")
+                                      % (self.default_code,
+                                         self.revision_index))
+        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
