@@ -176,7 +176,8 @@ class product_product(models.Model):
         routing_workcenter_obj = self.env['mrp.routing.workcenter']
         bom = self.bom_ids and self.bom_ids[0]
         factor = self.uom_id.factor / bom.product_uom.factor
-        sub_boms = bom._bom_explode(bom=bom, product=self, factor=factor / bom.product_qty)
+        sub_boms = bom._bom_explode(bom=bom, product=self,
+                                    factor=factor / bom.product_qty)
         def process_workcenter(wrk):
             workcenter = workcenter_obj.browse(wrk['workcenter_id'])
             cost_cycle = wrk['cycle'] * workcenter.costs_cycle
@@ -185,6 +186,8 @@ class product_product(models.Model):
             wc_use = routing_workcenter_obj.browse(wrk['wc_use'])
             effective = wc_use.effective or 1
             total *= effective
+            total += (wc_use.prepare_time * effective *
+                      workcenter.costs_hour * wrk['cycle'] / wc_use.nbr_pcs)
             return total
         for wrk in (sub_boms and sub_boms[1]):
             total += process_workcenter(wrk)
