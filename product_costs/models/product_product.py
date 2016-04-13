@@ -141,7 +141,7 @@ class product_product(models.Model):
         product_obj = self.env['product.product']
         uom_obj = self.env['product.uom']
         bom = self.bom_ids and self.bom_ids[0]
-        factor = self.uom_id.factor / bom.product_uom.factor
+        factor = bom.product_uom.factor / self.uom_id.factor
         sub_boms = bom._bom_explode_cost(bom=bom, product=self, factor=factor / bom.product_qty)
         def process_bom(bom_dict, factor=1):
             sum_strd = 0
@@ -161,10 +161,7 @@ class product_product(models.Model):
         for sub_bom in (sub_boms and sub_boms[0]) or [parent_bom]:
             if cost_type_id and sub_bom.get('cost_type_id') and \
                     sub_bom['cost_type_id'] == cost_type_id:
-                prod_qty = factor * bom.product_qty
-                total += uom_obj._compute_price(from_uom_id=bom.product_uom.id,
-                                                price=process_bom(sub_bom),
-                                                to_uom_id=self.uom_id.id)
+                total += process_bom(sub_bom)
         return total
 
     @api.one
