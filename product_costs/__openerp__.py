@@ -24,7 +24,7 @@
     "version": "0.2",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
-    "website": "Mathieu Vatel <mathieu@julius.fr>",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "category": "Product management",
     "depends": [
                 "product",
