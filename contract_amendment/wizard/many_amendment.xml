@@ -24,8 +24,7 @@
             multi="True"
             key2="client_action_multi" name="Make Amendments"
             res_model="account.analytic.account.amendment" src_model="account.analytic.account"
-            view_mode="form" target="new" view_type="form"
-            groups="fastbooking_booking.booking_supermanager"/>
+            view_mode="form" target="new" view_type="form"/>
 
     </data>
 </openerp>
