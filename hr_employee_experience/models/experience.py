@@ -23,7 +23,9 @@ from datetime import datetime as DT
 from dateutil.relativedelta import relativedelta
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 from openerp import models, fields, api
+import logging
 
+_logger = logging.getLogger(__name__)
 
 class hr_employee_experience(models.Model):
     _name = 'hr.employee.experience'
@@ -44,11 +46,14 @@ class hr_employee_experience(models.Model):
         if self.date_start or self.date_end:
             start = self.date_start
             end = self.date_end or fields.Date.today()
-            if start < end:
-                diff = relativedelta(DT.strptime(end, DF),
-                                     DT.strptime(start, DF))
-                duration = int(round(diff.years * 12 + \
-                                     diff.months + diff.days / 31.0))
+            try:
+                if start < end:
+                    diff = relativedelta(DT.strptime(end, DF),
+                                         DT.strptime(start, DF))
+                    duration = int(round(diff.years * 12 + \
+                                         diff.months + diff.days / 31.0))
+            except Exception, e:
+                _logger.warning(str(e))
         self.duration = duration
 
 
