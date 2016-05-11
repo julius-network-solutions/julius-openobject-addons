@@ -46,14 +46,14 @@ class hr_employee_experience(models.Model):
         if self.date_start or self.date_end:
             start = self.date_start
             end = self.date_end or fields.Date.today()
-            try:
-                if start < end:
+            if start and start < end:
+                try:
                     diff = relativedelta(DT.strptime(end, DF),
                                          DT.strptime(start, DF))
                     duration = int(round(diff.years * 12 + \
                                          diff.months + diff.days / 31.0))
-            except Exception, e:
-                _logger.warning(str(e))
+                except Exception, e:
+                    _logger.warning(str(e))
         self.duration = duration
 
 

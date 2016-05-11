@@ -47,7 +47,7 @@ class hr_employee_experience(models.Model):
         if self.date_start or self.date_end:
             start = self.date_start
             end = self.date_end or fields.Date.today()
-            if start < end:
+            if start and start < end:
                 try:
                     diff = relativedelta(DT.strptime(end, DF),
                                          DT.strptime(start, DF))
