@@ -25,7 +25,7 @@ from openerp import models, fields, _
 class ir_model(models.Model):
     _inherit = 'ir.model'
 
-    multiple_edition_model = fields.Boolean('Multiple Edtion linked',
+    multiple_edition_model = fields.Boolean('Multiple Edition linked',
                                             help='If checked, by default the ' \
                                             'multiple edition configuration '\
                                             'will get this module in the list',
@@ -42,7 +42,7 @@ class multiple_edition_settings(models.TransientModel):
                                   'multiple_edition_settings_model_rel',
                                   'multiple_edition_id', 'model_id',
                                   'Models',
-                                  domain=[('is_transient', '=', False)])
+                                  domain=[('osv_memory', '=', False)])
 
     _defaults = {
         'models_ids': _get_default_multiple_edition_models,
