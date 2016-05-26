@@ -74,6 +74,7 @@ class product_product_costs(models.Model):
         """
         if self.product_id.cost_method == 'standard':
             self.product_id.standard_price = self.value
+        return True
 
     @api.multi
     def get_formula_value(self):
@@ -309,6 +310,7 @@ class product_product(models.Model):
             costs_lines = [(0, 0, line) for line in new_lines]
             self.costs_line_ids = costs_lines
         self.update_line_values()
+        return True
 
     @api.one
     def update_line_values(self):
@@ -324,5 +326,6 @@ class product_product(models.Model):
                     ('type', '=', 'formula'),
                     ])
         formula_lines.update_formula_value()
+        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
