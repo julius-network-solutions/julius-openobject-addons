@@ -21,7 +21,7 @@
 
 {
     "name": "Product Costs",
-    "version": "0.2",
+    "version": "0.3",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
@@ -55,6 +55,11 @@ Version 0.2:
     * Add the possibility to get a value from a linked field.
     * Add the possibility to get a value from a python computation.
     * Add an action to recompute only values (e.g. : use it when you change fixed prices).
+
+Version 0.3:
+------------
+
+    * Add the possibility to choose a cost type "BoM", and this will be set by default when selecting the article in a BoM line.
 """,
     "demo": [],
     "data": [

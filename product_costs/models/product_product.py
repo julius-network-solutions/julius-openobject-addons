@@ -132,6 +132,12 @@ class product_product(models.Model):
                                         'Cost structure')
     costs_line_ids = fields.One2many('product.product.costs', 'product_id',
                                      'Costs')
+    bom_cost_type_id = fields.Many2one('product.costs.type',
+                                       'BoM default cost type',
+                                       help='If filed, when the product will '
+                                       'be selected in a BoM line, this value '
+                                       'will be set by default.',
+                                       domain=[('type', '=', 'bom')])
 
     @api.one
     def _get_bom_price(self, cost_type_id=None):

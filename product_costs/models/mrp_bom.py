@@ -29,6 +29,24 @@ class mrp_bom_line(models.Model):
     cost_type_id = fields.Many2one('product.costs.type', 'Cost type',
                                    domain=[('type', '=', 'bom')])
 
+    def onchange_product_id(self, cr, uid, ids, product_id,
+                            product_qty=0, context=None):
+        res = super(mrp_bom_line, self).\
+            onchange_product_id(cr, uid, ids, product_id,
+                                product_qty=product_qty, context=context)
+        value = res.get('value', {})
+        cost_type_id = False
+        if product_id:
+            prod = self.pool.get('product.product').\
+                browse(cr, uid, product_id, context=context)
+            cost_type_id = prod.bom_cost_type_id and \
+                prod.bom_cost_type_id.id or False
+        value.update({
+                      'cost_type_id': cost_type_id,
+                      })
+        res['value'] = value
+        return res
+
 
 class mrp_bom(models.Model):
     _inherit = 'mrp.bom'

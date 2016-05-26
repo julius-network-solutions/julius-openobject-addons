@@ -11,6 +11,12 @@
                 <page string="Sales" position="after">
                     <page name="costs" string="Costs">
                         <group string="Costs">
+                            <label for="bom_cost_type_id"/>
+                            <div>
+                                <field name="bom_cost_type_id"
+                                    class="oe_no_button oe_inline" nolabel="1"
+                                    options='{"no_open": True, "no_create": True}'/>
+                            </div>
                             <label for="costs_structure_id"/>
                             <div>
                                 <field name="costs_structure_id"
