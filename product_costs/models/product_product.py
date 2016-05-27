@@ -149,7 +149,9 @@ class product_product(models.Model):
         uom_obj = self.env['product.uom']
         bom = self.bom_ids and self.bom_ids[0]
         factor = bom.product_uom.factor / self.uom_id.factor
-        sub_boms = bom._bom_explode_cost(bom=bom, product=self, factor=factor / bom.product_qty)
+        sub_boms = bom.\
+            _bom_explode_cost(bom=bom, product=self,
+                              factor=factor / (bom.product_qty or 0.0001))
         def process_bom(bom_dict, factor=1):
             sum_strd = 0
             prod = product_obj.browse(bom_dict['product_id'])
