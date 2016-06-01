@@ -42,7 +42,7 @@ Allow to display a partner if you don't have access to purchase orders.
         'partner_view.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
