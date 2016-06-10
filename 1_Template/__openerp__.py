@@ -20,24 +20,24 @@
 #################################################################################
 
 {
-    "name" : "Template Custom Module",
+    "name": "Template Custom Module",
     "summary": "Template custom module summary",
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Purchases Management",
-    "depends" : [
+    "version": "0.1",
+    "author": "Julius Network Solutions",
+    "website": "http://julius.fr",
+    "category": "Purchases Management",
+    "depends": [
         "base",
     ],
     "description": """
     Module to manage a discount in purchase orders
     """,
-    "demo" : [],
-    "data" : [
+    "demo": [],
+    "data": [
         "object_view.xml",
     ],
-    'installable' : False,
-    'active' : False,
+    'installable': False,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
