@@ -22,7 +22,7 @@
 from openerp.osv import fields as old_fields
 import openerp.addons.decimal_precision as dp
 from openerp.addons.sale.sale import sale_order
-from openerp import models, api, _, fields
+from openerp import models, api, fields
 
 
 class sale_order(models.Model):

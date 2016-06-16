@@ -19,38 +19,7 @@
 #
 ###############################################################################
 
-{
-    "name": "Launch Costs",
-    "summary": "Manage launch costs in sale orders",
-    "version": "0.5",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sales Management",
-    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
-    "depends": [
-                "base_added_costs",
-                ],
-    "description": """
-Launch Costs in sale orders
-==============================
-
-How this is working ?
----------------------
-
-You will find a new field in the sale order line : Launch Costs.
-
-Once the you've created an invoice for this order, you will be able to generate
-a line of launch costs if needed by clicking on the
-"Generate Launch Costs" in the invoice. 
-""",
-    "demo": [],
-    "data": [
-             "data/product_data.xml",
-             "views/sale.xml",
-             "views/invoice.xml",
-             ],
-    'installable': True,
-    'active': False,
-}
+from . import sale
+from . import invoice
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -19,7 +19,7 @@
 #
 ###############################################################################
 
-from openerp import models, api, _
+from openerp import models, api
 
 
 class sale_order_line(models.Model):

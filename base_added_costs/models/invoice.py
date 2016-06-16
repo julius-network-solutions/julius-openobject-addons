@@ -19,7 +19,7 @@
 #
 ###############################################################################
 
-from openerp import models, api, _
+from openerp import models, fields, api
 
 
 class account_invoice(models.Model):
@@ -58,5 +58,9 @@ class account_invoice_line(models.Model):
         if isinstance(value, list):
             value = value and value[0] or {}
         return self.create(value)
+
+    linked_invoice_line_id = fields.Many2one('account.invoice.line',
+                                             'Linked invoice_line',
+                                             default=False)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
