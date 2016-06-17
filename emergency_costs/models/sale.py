@@ -135,7 +135,8 @@ class sale_order_line(models.Model):
     def _emergency_line_to_create(self):
         res = False
         if self.emergency_costs != 0 \
-            and not self.emergency_costs_line_id:
+                and not self.emergency_costs_line_id or \
+                self.emergency_costs_line_id.invoice_id.state == 'cancel':
             res = True
         return res
 

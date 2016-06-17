@@ -135,7 +135,8 @@ class sale_order_line(models.Model):
     def _launch_line_to_create(self):
         res = False
         if self.launch_costs != 0 \
-            and not self.launch_costs_line_id:
+                and not self.launch_costs_line_id or \
+                self.launch_costs_line_id.invoice_id.state == 'cancel':
             res = True
         return res
 
