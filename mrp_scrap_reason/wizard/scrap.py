@@ -37,21 +37,16 @@ class stock_move_scrap(models.TransientModel):
     reason = fields.Selection(_scrap_reason_get, help="Reason for scraping.")
     notes = fields.Text('Notes')
 
-    def move_scrap(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        for data in self.browse(cr, uid, ids, context=context):
-            reason = data.reason
-            try:
-                reason = int(data.reason)
-            except:
-                reason = False
-            notes = reason and data.notes or False
-            context.update({
-                            'reason': reason,
-                            'notes_reason': notes,
-                            })
-        return super(stock_move_scrap, self).\
-            move_scrap(cr, uid, ids, context=context)
+    @api.multi
+    def move_scrap(self):
+        reason = self.reason
+        try:
+            reason = int(data.reason)
+        except:
+            reason = False
+        notes = reason and data.notes or False
+        return super(stock_move_scrap, self.with_context(reason=reason,
+                                                         notes_reason=notes)).\
+            move_scrap()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
