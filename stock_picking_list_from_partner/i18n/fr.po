@@ -1,78 +1,34 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* stock_picking_list_from_partner
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-25 09:15+0000\n"
-"PO-Revision-Date: 2014-09-25 11:21+0100\n"
-"Last-Translator: Mathieu Vatel <mathieu@julius.fr>\n"
+"POT-Creation-Date: 2016-06-28 15:56+0000\n"
+"PO-Revision-Date: 2016-06-28 15:56+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
 #. module: stock_picking_list_from_partner
-#: selection:open.picking.list,type:0
-msgid "Sending Goods"
-msgstr "Livraison de marchandise"
+#: view:open.picking.list:stock_picking_list_from_partner.open_picking_list_form_view
+msgid "Cancel"
+msgstr "Annuler"
 
 #. module: stock_picking_list_from_partner
-#: selection:open.picking.list,type:0
-msgid "Getting Goods"
-msgstr "Réception de marchandise"
+#: field:open.picking.list,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
 
 #. module: stock_picking_list_from_partner
-#: view:stock.picking:0
-#: view:stock.picking.in:0
-#: view:stock.picking.out:0
-msgid "Date upper than"
-msgstr "Date supp. à"
-
-#. module: stock_picking_list_from_partner
-#: model:ir.model,name:stock_picking_list_from_partner.model_stock_picking_in
-msgid "Incoming Shipments"
-msgstr "Réceptions"
-
-#. module: stock_picking_list_from_partner
-#: view:res.partner:0
-msgid "Pickings"
-msgstr "Opérations de manutention"
-
-#. module: stock_picking_list_from_partner
-#: view:stock.picking:0
-#: view:stock.picking.in:0
-#: view:stock.picking.out:0
-msgid "Date lower than"
-msgstr "Date inf. à"
-
-#. module: stock_picking_list_from_partner
-#: model:ir.model,name:stock_picking_list_from_partner.model_stock_picking
-msgid "Picking List"
-msgstr "Liste de colisage"
-
-#. module: stock_picking_list_from_partner
-#: model:ir.model,name:stock_picking_list_from_partner.model_open_picking_list
-msgid "Open Picking list from partner"
-msgstr "Liste de colisage depuis le partenaire"
-
-#. module: stock_picking_list_from_partner
-#: view:open.picking.list:0
-msgid "Period"
-msgstr "Période"
-
-#. module: stock_picking_list_from_partner
-#: field:open.picking.list,date_to:0
-msgid "Date to"
-msgstr "Jusqu'à"
-
-#. module: stock_picking_list_from_partner
-#: selection:open.picking.list,type:0
-msgid "Internal"
-msgstr "Interne"
+#: field:open.picking.list,create_date:0
+msgid "Created on"
+msgstr "Créé le"
 
 #. module: stock_picking_list_from_partner
 #: field:open.picking.list,date_from:0
@@ -80,9 +36,25 @@ msgid "Date from"
 msgstr "Depuis"
 
 #. module: stock_picking_list_from_partner
-#: view:open.picking.list:0
-msgid "Select the period wanted for the picking, then click on \"Get picking list\"."
-msgstr "Sélectionnez la période voulue pour les colisage, puis cliquez sur \"Récupérer la liste\"."
+#: view:stock.picking:stock_picking_list_from_partner.view_picking_internal_search_date
+msgid "Date lower than"
+msgstr "Date inf. à"
+
+#. module: stock_picking_list_from_partner
+#: field:open.picking.list,date_to:0
+msgid "Date to"
+msgstr "Jusqu'à"
+
+#. module: stock_picking_list_from_partner
+#: view:stock.picking:stock_picking_list_from_partner.view_picking_internal_search_date
+msgid "Date upper than"
+msgstr "Date sup. à"
+
+#. module: stock_picking_list_from_partner
+#: code:addons/stock_picking_list_from_partner/wizard/open_picking_list.py:50
+#, python-format
+msgid "Ending Date cannot be set before Beginning Date."
+msgstr "La date de fin doit être supérieure à la date de début."
 
 #. module: stock_picking_list_from_partner
 #: model:ir.actions.act_window,name:stock_picking_list_from_partner.action_open_picking_list_form_view
@@ -91,37 +63,59 @@ msgid "Get partner picking list"
 msgstr "Récap. de colisage"
 
 #. module: stock_picking_list_from_partner
-#: view:open.picking.list:0
+#: view:open.picking.list:stock_picking_list_from_partner.open_picking_list_form_view
 msgid "Get picking list"
 msgstr "Récupérer la liste"
 
 #. module: stock_picking_list_from_partner
-#: view:open.picking.list:0
-msgid "Cancel"
-msgstr "Annuler"
+#: field:open.picking.list,id:0
+msgid "ID"
+msgstr "ID"
 
 #. module: stock_picking_list_from_partner
+#: field:open.picking.list,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière modification par"
+
+#. module: stock_picking_list_from_partner
+#: field:open.picking.list,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière modification le"
+
+#. module: stock_picking_list_from_partner
+#: model:ir.model,name:stock_picking_list_from_partner.model_open_picking_list
+msgid "Open Picking list from partner"
+msgstr "Liste de colisage depuis le partenaire"
+
+#. module: stock_picking_list_from_partner
+#: model:ir.model,name:stock_picking_list_from_partner.model_res_partner
 #: field:open.picking.list,partner_id:0
 msgid "Partner"
 msgstr "Partenaire"
 
 #. module: stock_picking_list_from_partner
-#: field:open.picking.list,type:0
-msgid "Shipping Type"
-msgstr "Type de livraison"
+#: view:open.picking.list:stock_picking_list_from_partner.open_picking_list_form_view
+msgid "Period"
+msgstr "Période"
 
 #. module: stock_picking_list_from_partner
-#: model:ir.model,name:stock_picking_list_from_partner.model_stock_picking_out
-msgid "Delivery Orders"
-msgstr "Livraisons"
+#: view:res.partner:stock_picking_list_from_partner.res_partner_form_view_add_picking_action
+#: field:res.partner,picking_ids:0
+msgid "Pickings"
+msgstr "Opérations de manutention"
 
 #. module: stock_picking_list_from_partner
-#: view:open.picking.list:0
+#: view:open.picking.list:stock_picking_list_from_partner.open_picking_list_form_view
+msgid "Select the period wanted for the picking, then click on \"Get picking list\"."
+msgstr "Sélectionnez la période voulue pour les colisage, puis cliquez sur \"Récupérer la liste\"."
+
+#. module: stock_picking_list_from_partner
+#: field:open.picking.list,picking_type_id:0
+msgid "Type"
+msgstr "Type"
+
+#. module: stock_picking_list_from_partner
+#: view:open.picking.list:stock_picking_list_from_partner.open_picking_list_form_view
 msgid "or"
 msgstr "ou"
-
-#. module: stock_picking_list_from_partner
-#: constraint:open.picking.list:0
-msgid "The end date of the period should be greater than the start date"
-msgstr "La date de fin de période doit être supérieure à la date de début."
 

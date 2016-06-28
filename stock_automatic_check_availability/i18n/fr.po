@@ -1,12 +1,13 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
+#	* stock_automatic_check_availability
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-25 10:56+0000\n"
-"PO-Revision-Date: 2013-09-25 10:56+0000\n"
+"POT-Creation-Date: 2016-06-28 15:54+0000\n"
+"PO-Revision-Date: 2016-06-28 15:54+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,7 +16,17 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock_automatic_check_availability
-#: model:ir.model,name:stock_automatic_check_availability.model_stock_picking
-msgid "Picking List"
-msgstr "Opération de manutention"
+#: field:stock.picking.type,automatic_cancel_check:0
+msgid "Automatic cancel check"
+msgstr "Annulation / Vérification automatique"
+
+#. module: stock_automatic_check_availability
+#: help:stock.picking.type,automatic_cancel_check:0
+msgid "If checked, the cron 'Run stock cancel then check availability scheduler', will be automatically performed on this type."
+msgstr "Si coché, l'action automatique 'Run stock cancel then check availability scheduler', sera automatiquement exécutée pour ce type."
+
+#. module: stock_automatic_check_availability
+#: model:ir.model,name:stock_automatic_check_availability.model_stock_picking_type
+msgid "The picking type determines the picking view"
+msgstr "Le type de préparation détermine la vue de préparation"
 
