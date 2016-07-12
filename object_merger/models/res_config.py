@@ -44,7 +44,7 @@ class object_merger_settings(models.TransientModel):
     models_ids = fields.Many2many('ir.model',
                                   'object_merger_settings_model_rel',
                                   'object_merger_id', 'model_id', 'Models',
-                                  domain=[('osv_memory', '=', False)])
+                                  domain=[('transient', '=', False)])
 
     _defaults = {
                  'models_ids': _get_default_object_merger_models,
