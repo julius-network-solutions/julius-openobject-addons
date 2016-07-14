@@ -127,28 +127,33 @@ class object_merger(models.TransientModel):
         tfields = self.env['ir.model.fields'].search([('relation', '=', active_model), ('ttype', '=', 'many2many')])
         for field in tfields:
             model_obj = self.env[field.model]
-            if not model_obj:
+            
+            if (not isinstance(model_obj._fields[field.name], fields.Many2many)
+                or not model_obj._fields[field.name].store):
                 continue
-            field_data = model_obj._fields.get(field.name, False) \
-                            and (isinstance(model_obj._fields[field.name],
-                                            fields.Many2many) \
-                            and model_obj._fields[field.name].store) \
-                            and model_obj._fields[field.name] \
-                            or False
-            if field_data:
-                try: 
-                    model_m2m, rel1, rel2 = field_data.to_column()._sql_names(model_obj)
-                    requete = "UPDATE %s SET %s=%s WHERE %s " \
-                        "IN %s AND %s NOT IN (SELECT DISTINCT(%s) " \
-                        "FROM %s WHERE %s = %s);" % (model_m2m, rel2,
-                                                     str(object.id),
-                                                     ustr(rel2),
-                                                     str(tuple(objects.mapped('id'))),
-                                                     rel1, rel1, model_m2m,
-                                                     rel2, str(object.id))
-                    self.env.cr.execute(requete)
-                except Exception,e:
-                    _logger.error("Failed updating table %s, field %s with %s -> %s: %s" % (model_m2m, rel2, objects.mapped('id'), object.id, e))
+             
+            model_m2m, rel1, rel2 = model_obj._fields[field.name].to_column()._sql_names(model_obj)
+            
+            #Fix: relations might be wrong if the model inherits another model with a m2m field,
+            #defines its own _name and the inherited model has a relation_table set in the m2m field
+            #So we retrieve a list of columns from the given table and check if all required columns
+            #exist in the database. Example: mail.compose.message, field needaction_partner_ids
+            self.env.cr.execute("SELECT * FROM %s LIMIT 0" % model_m2m)
+            table_fields = [f.name for f in self.env.cr.description]
+            
+            if rel1 in table_fields and rel2 in table_fields:
+                
+                requete = "UPDATE %s SET %s=%s WHERE %s " \
+                    "IN %s AND %s NOT IN (SELECT DISTINCT(%s) " \
+                    "FROM %s WHERE %s = %s);" % (model_m2m, rel2,
+                                                 str(object.id),
+                                                 ustr(rel2),
+                                                 str(tuple(objects.mapped('id'))),
+                                                 rel1, rel1, model_m2m,
+                                                 rel2, str(object.id))
+                self.env.cr.execute(requete)
+            else:
+                _logger.warn("Table %s: field %s or %s not existing." % (model_m2m, rel1, rel2))
                     
         tfields = self.env['ir.model.fields'].search([('name', 'in', ['model', 'res_model'])])
         for field in tfields:
