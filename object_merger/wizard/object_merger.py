@@ -21,9 +21,11 @@
 
 from openerp.osv import fields as old_fields
 from openerp.tools import ustr
-from openerp import models, fields, _
+from openerp import api, models, fields, _
 from openerp.exceptions import except_orm
 
+import logging
+_logger = logging.getLogger(__name__)
 
 class object_merger(models.TransientModel):
     """
@@ -63,7 +65,8 @@ class object_merger(models.TransientModel):
             res['fields'][field_name]['required'] = True
         return res
 
-    def action_merge(self, cr, uid, ids, context=None):
+    @api.multi
+    def action_merge(self):
         """
         Merges two (or more objects
         @param self: The object pointer
@@ -74,80 +77,78 @@ class object_merger(models.TransientModel):
 
         @return : {}
         """
-        if context is None:
-            context = {}
-        res = self.read(cr, uid, ids, context=context)[0]
-        active_model = context.get('active_model')
+        assert len(self) == 1
+        
+        active_model = self.env.context.get('active_model')
         if not active_model:
             raise except_orm(_('Configuration Error!'),
                              _('The is no active model defined!'))
-        model_pool = self.pool.get(active_model)
-        object_ids = context.get('active_ids',[])
-        field_to_read = context.get('field_to_read')
-        field_list = field_to_read and [field_to_read] or []
-        object = self.read(cr, uid, ids[0], field_list, context=context)
-        if object and field_list and object[field_to_read]:
-            object_id = object[field_to_read][0]
-        else:
+        model_pool = self.env[active_model]
+        objects = model_pool.search([('id', 'in', self.env.context.get('active_ids',[]))])
+        field_to_read = self.env.context.get('field_to_read')
+        
+        object = self[field_to_read]
+        if not object:
             raise except_orm(_('Configuration Error!'),
                              _('Please select one value to keep'))
-        cr.execute("SELECT name, model FROM ir_model_fields WHERE relation=%s "
-                   "and ttype not in ('many2many', 'one2many');", (active_model, ))
-        for name, model_raw in cr.fetchall():
-            if hasattr(self.pool.get(model_raw), '_auto'):
-                if not self.pool.get(model_raw)._auto:
+        tfields = self.env['ir.model.fields'].search([('relation', '=', active_model), ('ttype', 'not in', ['one2many', 'many2many'])])
+        for field in tfields:
+            model_raw_obj = self.env[field.model]
+            if hasattr(model_raw_obj, '_auto'):
+                if not model_raw_obj._auto:
                     continue
-            if hasattr(self.pool.get(model_raw), '_check_time'):
+            if hasattr(model_raw_obj, '_check_time'):
                 continue
             else:
-                if hasattr(self.pool.get(model_raw), '_columns'):
-                    model_raw_obj = self.pool.get(model_raw)
-                    if model_raw_obj._columns.get(name, False) and \
-                            (isinstance(model_raw_obj._columns[name],
+                if hasattr(model_raw_obj, '_columns'):
+                    
+                    if model_raw_obj._columns.get(field.name, False) and \
+                            (isinstance(model_raw_obj._columns[field.name],
                                         old_fields.many2one) \
-                            or isinstance(model_raw_obj._columns[name],
+                            or isinstance(model_raw_obj._columns[field.name],
                                           old_fields.function) \
-                            and model_raw_obj._columns[name].store):
-                        if hasattr(self.pool.get(model_raw), '_table'):
-                            model = self.pool.get(model_raw)._table
+                            and model_raw_obj._columns[field.name].store):
+                        if hasattr(model_raw_obj, '_table'):
+                            model = model_raw_obj._table
                         else:
                             model = model_raw.replace('.', '_')
                         requete = "UPDATE %s SET %s = %s WHERE " \
-                            "%s IN %s;" % (model, name, str(object_id),
-                                           ustr(name), str(tuple(object_ids)))
-                        cr.execute(requete)
-        cr.execute("SELECT name, model FROM ir_model_fields WHERE "
-                   "relation=%s AND ttype IN ('many2many');", (active_model,))
-        for field, model in cr.fetchall():
-            model_obj = self.pool.get(model)
+                            "%s IN %s;" % (model, field.name, str(object.id),
+                                           ustr(field.name), str(tuple(objects.mapped('id'))))
+                        self.env.cr.execute(requete)
+        
+        tfields = self.env['ir.model.fields'].search([('relation', '=', active_model), ('ttype', '=', 'many2many')])
+        for field in tfields:
+            model_obj = self.env[field.model]
             if not model_obj:
                 continue
-            field_data = model_obj._columns.get(field, False) \
-                            and (isinstance(model_obj._columns[field],
-                                            old_fields.many2many) \
-                            or isinstance(model_obj._columns[field],
-                                          old_fields.function) \
-                            and model_obj._columns[field].store) \
-                            and model_obj._columns[field] \
+            field_data = model_obj._fields.get(field.name, False) \
+                            and (isinstance(model_obj._fields[field.name],
+                                            fields.Many2many) \
+                            and model_obj._fields[field.name].store) \
+                            and model_obj._fields[field.name] \
                             or False
             if field_data:
-                model_m2m, rel1, rel2 = field_data._sql_names(model_obj)
-                requete = "UPDATE %s SET %s=%s WHERE %s " \
-                    "IN %s AND %s NOT IN (SELECT DISTINCT(%s) " \
-                    "FROM %s WHERE %s = %s);" % (model_m2m, rel2,
-                                                 str(object_id),
-                                                 ustr(rel2),
-                                                 str(tuple(object_ids)),
-                                                 rel1, rel1, model_m2m,
-                                                 rel2, str(object_id))
-                cr.execute(requete)
-        cr.execute("SELECT name, model FROM ir_model_fields WHERE "
-                   "name IN ('res_model', 'model');")
-        for field, model in cr.fetchall():
-            model_obj = self.pool.get(model)
+                try: 
+                    model_m2m, rel1, rel2 = field_data.to_column()._sql_names(model_obj)
+                    requete = "UPDATE %s SET %s=%s WHERE %s " \
+                        "IN %s AND %s NOT IN (SELECT DISTINCT(%s) " \
+                        "FROM %s WHERE %s = %s);" % (model_m2m, rel2,
+                                                     str(object.id),
+                                                     ustr(rel2),
+                                                     str(tuple(objects.mapped('id'))),
+                                                     rel1, rel1, model_m2m,
+                                                     rel2, str(object.id))
+                    self.env.cr.execute(requete)
+                except Exception,e:
+                    _logger.error("Failed updating table %s, field %s with %s -> %s: %s" % (model_m2m, rel2, objects.mapped('id'), object.id, e))
+                    
+        tfields = self.env['ir.model.fields'].search([('name', 'in', ['model', 'res_model'])])
+        for field in tfields:
+            model_obj = self.env[field.model]
             if not model_obj:
                 continue
-            if field == 'model' and model_obj._columns.get('res_model', False):
+            if field.name == 'model' and model_obj._columns.get('res_model', False):
                 continue
             res_id = model_obj._columns.get('res_id')
             if res_id:
@@ -157,34 +158,29 @@ class object_merger(models.TransientModel):
                     requete = "UPDATE %s SET res_id = %s " \
                     "WHERE res_id IN %s AND " \
                     "%s = '%s';" % (model_obj._table,
-                                    str(object_id),
-                                    str(tuple(object_ids)),
-                                    field,
+                                    str(object.id),
+                                    str(tuple(objects.mapped('id'))),
+                                    field.name,
                                     active_model)
                 elif isinstance(res_id, old_fields.char):
                     requete = "UPDATE %s SET res_id = '%s' " \
                     "WHERE res_id IN %s AND " \
                     "%s = '%s';" % (model_obj._table,
-                                    str(object_id),
-                                    str(tuple([str(x) for x in object_ids])),
-                                    field,
+                                    str(object.id),
+                                    str(tuple([str(x) for x in objects.mapped('id')])),
+                                    field.name,
                                     active_model)
                 if requete:
-                    cr.execute(requete)
-        unactive_object_ids = model_pool.\
-            search(cr, uid, [
-                             ('id', 'in', object_ids),
-                             ('id', '<>', object_id),
-                             ], context=context)
+                    self.env.cr.execute(requete)
+        inactive_objects = model_pool.search([
+                             ('id', 'in', objects.mapped('id')),
+                             ('id', '<>', object.id),
+                             ])
         if model_pool._columns.get('active', False):
-            model_pool.write(cr, uid, unactive_object_ids,
-                             {'active': False}, context=context)
+            inactive_objects.write({'active': False})
         else:
-            read_data = self.read(cr, uid, ids[0],
-                                  ['delete_if_not_active'], context=context)
-            if read_data['delete_if_not_active']:
-                model_pool.unlink(cr, uid,
-                                  unactive_object_ids, context=context)
+            if self.delete_if_not_active:
+                inactive_objects.unlink()
         return {'type': 'ir.actions.act_window_close'}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
