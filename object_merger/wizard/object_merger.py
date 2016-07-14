@@ -108,14 +108,21 @@ class object_merger(models.TransientModel):
                             or isinstance(model_raw_obj._columns[field.name],
                                           old_fields.function) \
                             and model_raw_obj._columns[field.name].store):
-                        if hasattr(model_raw_obj, '_table'):
-                            model = model_raw_obj._table
+                        
+                        #If the field is readonly, directly update in the database.
+                        #Otherwise use normal methods so we trigger recalculation of computed fields
+                        if model_raw_obj._columns[field.name].readonly:
+                            if hasattr(model_raw_obj, '_table'):
+                                model = model_raw_obj._table
+                            else:
+                                model = model_raw.replace('.', '_')
+                            requete = "UPDATE %s SET %s = %s WHERE " \
+                                "%s IN %s;" % (model, field.name, str(object.id),
+                                               ustr(field.name), str(tuple(objects.mapped('id'))))
+                            self.env.cr.execute(requete)
                         else:
-                            model = model_raw.replace('.', '_')
-                        requete = "UPDATE %s SET %s = %s WHERE " \
-                            "%s IN %s;" % (model, field.name, str(object.id),
-                                           ustr(field.name), str(tuple(objects.mapped('id'))))
-                        self.env.cr.execute(requete)
+                            records_to_change = model_raw_obj.sudo().search([(field.name, 'in', objects.mapped('id'))])
+                            records_to_change.write({field.name: object.id})
         
         tfields = self.env['ir.model.fields'].search([('relation', '=', active_model), ('ttype', '=', 'many2many')])
         for field in tfields:
