@@ -33,6 +33,9 @@ class res_partner(models.Model):
                 res['firstname'] = partner.firstname
                 res['lastname'] = partner.lastname
                 del res['name']
+            if partner.lastname and not partner.firstname:
+                res['lastname'] = partner.lastname
+                del res['name']
         return res
 
 # vim:expandtab:tabstop=4:softtabstop=4:shiftwidth=4:
