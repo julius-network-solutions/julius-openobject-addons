@@ -67,8 +67,6 @@ def get_data(self, recordlist):
         st_line['date'] = time.strftime('%Y-%m-%d', time.strptime(line_splited[0], date_format))
         st_line['name'] = line_splited[2].strip('"')  # Enlever les quotes -> "
 
-        print line_splited
-
         debit = line_splited[3]
         credit = line_splited[4]
 

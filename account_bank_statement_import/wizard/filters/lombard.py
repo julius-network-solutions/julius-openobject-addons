@@ -42,12 +42,8 @@ def get_data(self, recordlist):
     default_key = time.strftime('%Y-%m')
     statement_date = False
     
-    print recordlist
-    print separator
     for line in recordlist:
         line_splited = re.compile('/'+separator+'(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))/g').split(line)
-        print line_splited
-    print lol
         
     return self.format_statement_from_data(recordlist, separator,
                                            date_format=date_format,
