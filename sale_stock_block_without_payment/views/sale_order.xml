@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_order_block_without_payment_view" model="ir.ui.view">
+        <field name="name">sale.order.block.without.payment.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="payment_term_id" position="after">
+                <field name="block_without_payment"/>
+                <field name="marked_as_paid" attrs="{'invisible':[('block_without_payment', '=', False)]}"/>
+            </field>
+            <button name="action_view_invoice" position="before">
+                <button name="set_marked_as_paid"
+                        string="Set as Paid by the customer" type="object"
+                        attrs="{'invisible': ['|', '|', ('marked_as_paid', '=', True),
+                        ('block_without_payment', '=', False), ('state', '!=', 'sent')]}"
+                        help="This action will just unlock the delivery order and not make the real payment"
+                        class="oe_highlight"/>
+                <button name="set_marked_as_unpaid"
+                        string="Set as not Paid by the customer" type="object"
+                        attrs="{'invisible': ['|', '|', ('marked_as_paid', '=', False),
+                        ('block_without_payment', '=', False), ('state', '!=', 'sent')]}"
+                        help="This action will just unlock the delivery order and not make the real payment"
+                        class="oe_highlight"/>
+            </button>
+        </field>
+    </record>
+
+</odoo>

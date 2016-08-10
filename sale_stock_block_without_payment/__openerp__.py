@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#
+#    Copyright (C) 2015: Ursa Information Systems
+#    Author: Sandip Mangukiya (<smangukiya@ursainfosystems.com>)
+#    Website:(<http://www.ursainfosystems.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,21 +21,26 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-from openerp.osv import fields, orm
-from openerp.tools.translate import _
-
-class account_payment_term(orm.Model):
-    _inherit = "account.payment.term"
-
-    _columns = {
-        'block_without_payment': fields.boolean(
-            'Block order Without Payment'),
-    }
-    
-    _defaults = {
-        'block_without_payment': False,
-    }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+{
+    'name': 'Block delivery if invoice is due',
+    'version': '9.0.1.0.0',
+    'license': 'AGPL-3',
+    'author': [
+        'Ursa Information Systems',
+        'Julius Network Solutions'
+    ],
+    'category': 'Sale Management',
+    'depends': [
+        'sale_stock',
+        'account_accountant'
+    ],
+    'data': [
+        'views/sale_order.xml',
+        'views/stock_picking.xml',
+        'views/account_payment_term.xml',
+    ],
+    'installable': True,
+    'active': True,
+}
