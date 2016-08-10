@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
+#
+#    Copyright (C) 2015: Ursa Information Systems
+#    Author: Sandip Mangukiya (<smangukiya@ursainfosystems.com>)
+#    Website:(<http://www.ursainfosystems.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,30 +21,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
-{
-    "name" : "Block Delivery if not payment",
-    "version" : "1.0",
-    "author" : "Julius Network Solutions",
-    "website" : "http://julius.fr",
-    "category" : "Sale Management",
-    "depends" : [
-        'sale',
-        'stock',
-    ],
-    "description": """
-    This Module will allows to block a picking and
-    all his moves while the order is not defined as paid.
-    """,
-    "demo" : [],
-    "data" : [
-        "sale_view.xml",
-        "stock_view.xml",
-        "account_view.xml",
-    ],
-    'installable' : False,
-    'active' : False,
-}
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+from openerp import fields, models
+
+
+class AccountPaymentTerm(models.Model):
+    _inherit = "account.payment.term"
+
+    block_without_payment = fields.Boolean(string='Block Order Without '
+                                                  'Payment',
+                                           default=False)

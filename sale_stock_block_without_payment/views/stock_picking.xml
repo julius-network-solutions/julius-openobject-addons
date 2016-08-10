@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="picking_block_without_payment_view" model="ir.ui.view">
+        <field name="name">stock.picking.without.payment.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='do_new_transfer']" position="attributes">
+                <attribute name="attrs">{'invisible':['|', ('state', 'not in', ['draft','partially_available','assigned']), ('sale_order_blocked', '=', True)]}</attribute>
+            </xpath>
+            <field name="move_type" position="after">
+                <field name="sale_order_blocked"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
