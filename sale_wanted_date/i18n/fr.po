@@ -1,13 +1,13 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* sale_wanted_date
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-25 10:45+0000\n"
-"PO-Revision-Date: 2013-09-25 10:45+0000\n"
+"POT-Creation-Date: 2016-06-28 15:50+0000\n"
+"PO-Revision-Date: 2016-06-28 15:50+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,9 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_wanted_date
-#: field:sale.order.line,wanted_date:0
-msgid "Wanted date"
-msgstr "Date voulue"
+#: help:sale.order.line,wanted_date:0
+msgid "Date expected wanted by the customer"
+msgstr "Date voulue espérée par le client"
 
 #. module: sale_wanted_date
 #: model:ir.model,name:sale_wanted_date.model_sale_order
@@ -28,5 +28,10 @@ msgstr "Bon de commande"
 #. module: sale_wanted_date
 #: model:ir.model,name:sale_wanted_date.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Ligne de commandes de vente"
+msgstr "Ligne de commande de vente"
+
+#. module: sale_wanted_date
+#: field:sale.order.line,wanted_date:0
+msgid "Wanted date"
+msgstr "Date voulue"
 

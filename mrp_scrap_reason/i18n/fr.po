@@ -1,40 +1,50 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #	* mrp_scrap_reason
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0\n"
+"Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-25 08:54+0000\n"
-"PO-Revision-Date: 2014-02-25 09:55+0100\n"
-"Last-Translator: Mathieu Vatel <mathieu@julius.fr>\n"
+"POT-Creation-Date: 2016-06-28 15:52+0000\n"
+"PO-Revision-Date: 2016-06-28 15:52+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
 #. module: mrp_scrap_reason
-#: help:stock.move,reason:0
-#: help:stock.move.scrap,reason:0
-msgid "Reason for scraping."
-msgstr "Raison de mise au rebut."
+#: field:stock.move.scrap.reason,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
 
 #. module: mrp_scrap_reason
-#: view:stock.move:0
-msgid "Traceability"
-msgstr "Traçabilité"
+#: field:stock.move.scrap.reason,create_date:0
+msgid "Created on"
+msgstr "Créé le"
 
 #. module: mrp_scrap_reason
-#: field:stock.move.scrap.reason,name:0
-msgid "Name"
-msgstr "Nom"
+#: view:stock.move:mrp_scrap_reason.stock_move_inherit_scrap_reason_form_view
+#: view:stock.move.scrap:mrp_scrap_reason.view_stock_move_scrap_wizard_inherit
+msgid "Describe here the reason for scraping these products..."
+msgstr "Expliquez ici la raison de mise au rebut de ces produits..."
 
 #. module: mrp_scrap_reason
-#: model:ir.model,name:mrp_scrap_reason.model_stock_move
-msgid "Stock Move"
-msgstr "Mouvement de stock"
+#: field:stock.move.scrap.reason,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: mrp_scrap_reason
+#: field:stock.move.scrap.reason,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière modification par"
+
+#. module: mrp_scrap_reason
+#: field:stock.move.scrap.reason,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière modification le"
 
 #. module: mrp_scrap_reason
 #: model:ir.actions.act_window,name:mrp_scrap_reason.stock_move_scrap_reason_action
@@ -44,16 +54,21 @@ msgid "Move scrap reason"
 msgstr "Raison de mise au rebut"
 
 #. module: mrp_scrap_reason
+#: field:stock.move.scrap.reason,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: mrp_scrap_reason
 #: field:stock.move,notes_reason:0
 #: field:stock.move.scrap,notes:0
 msgid "Notes"
 msgstr "Notes"
 
 #. module: mrp_scrap_reason
-#: view:stock.move:0
-#: view:stock.move.scrap:0
-msgid "Describe here the reason for scraping these products..."
-msgstr "Expliquez ici la raison de mise au rebut de ces produits..."
+#: code:addons/mrp_scrap_reason/wizard/scrap.py:34
+#, python-format
+msgid "Other..."
+msgstr "Autre..."
 
 #. module: mrp_scrap_reason
 #: field:stock.move,reason:0
@@ -62,11 +77,10 @@ msgid "Reason"
 msgstr "Raison"
 
 #. module: mrp_scrap_reason
-#: code:addons/mrp_scrap_reason/stock.py:35
-#: code:addons/mrp_scrap_reason/wizard/scrap.py:35
-#, python-format
-msgid "Other..."
-msgstr "Autre..."
+#: help:stock.move,reason:0
+#: help:stock.move.scrap,reason:0
+msgid "Reason for scraping."
+msgstr "Raison de mise au rebut."
 
 #. module: mrp_scrap_reason
 #: model:ir.model,name:mrp_scrap_reason.model_stock_move_scrap
@@ -75,8 +89,14 @@ msgstr "Mettre au rebut"
 
 #. module: mrp_scrap_reason
 #: model:ir.model,name:mrp_scrap_reason.model_stock_move_scrap_reason
-#: view:stock.move:0
-#: view:stock.move.scrap.reason:0
+#: view:stock.move:mrp_scrap_reason.stock_move_inherit_scrap_reason_form_view
+#: view:stock.move.scrap.reason:mrp_scrap_reason.stock_move_scrap_reason_form_view
+#: view:stock.move.scrap.reason:mrp_scrap_reason.stock_move_scrap_reason_tree_view
 msgid "Scrap Reason"
 msgstr "Raison de mise au rebut"
+
+#. module: mrp_scrap_reason
+#: model:ir.model,name:mrp_scrap_reason.model_stock_move
+msgid "Stock Move"
+msgstr "Mouvement de stock"
 

@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2016-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,23 +19,7 @@
 #
 ###############################################################################
 
-from openerp import models
+from . import invoice
+from . import sale
 
-
-class res_partner(models.Model):
-    _inherit = 'res.partner'
-
-    def signup_retrieve_info(self, cr, uid, token, context=None):
-        res = super(res_partner, self).signup_retrieve_info(cr, uid, token, context=context)
-        if res.get('name'):
-            partner = self._signup_retrieve_partner(cr, uid, token, check_validity=False, raise_exception=False, context=context)
-            if partner.firstname:
-                res['firstname'] = partner.firstname
-                res['lastname'] = partner.lastname
-                del res['name']
-            if partner.lastname and not partner.firstname:
-                res['lastname'] = partner.lastname
-                del res['name']
-        return res
-
-# vim:expandtab:tabstop=4:softtabstop=4:shiftwidth=4:
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

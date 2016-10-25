@@ -19,34 +19,44 @@
 #
 ###############################################################################
 
-from openerp import models, api, _
+from openerp import models, fields, api
 
 
 class account_invoice(models.Model):
     _inherit = "account.invoice"
 
     @api.one
-    def generate_emergency_costs_invoice_line(self):
+    def generate_launch_costs_invoice_line(self):
         if self.state == 'draft':
             inv_line_obj = self.env['account.invoice.line']
-            product = self.env.ref('emergency_costs.product_emergency_costs')
+            product = self.env.ref('launch_costs.product_launch_costs')
             product_id = product.id
             for invoice_line in self.invoice_line:
                 for sale_line in invoice_line.sale_line_ids:
-                    if sale_line._emergency_line_to_create():
-                        unit_price = sale_line.emergency_costs or 0
+                    if sale_line._launch_line_to_create():
+                        unit_price = sale_line.launch_costs or 0
                         value = self.\
                             _get_added_cost_line_value(sale_line, product_id,
                                                        unit_price)
-                        value.update({'invoice_id': self.id})
+                        value.update({
+                            'invoice_id': self.id,
+                            'linked_invoice_line_id': invoice_line.id,
+                            'is_launch_cost_line': True,
+                            })
                         new_inv_line = inv_line_obj.\
                             _create_added_cost_line(value, sale_line)
                         new_inv_line_id = new_inv_line and \
                             new_inv_line[0].id or False
                         if new_inv_line_id:
-                            field = 'emergency_costs_line_id'
+                            field = 'launch_costs_line_id'
                             sale_line.\
                                 _update_sale_added_cost_line(new_inv_line_id,
                                                              field=field)
+
+
+class account_invoice_line(models.Model):
+    _inherit = 'account.invoice.line'
+
+    is_launch_cost_line = fields.Boolean("Launch cost line", default=False)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

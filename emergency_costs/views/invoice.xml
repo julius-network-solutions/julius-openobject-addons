@@ -2,7 +2,7 @@
 <openerp>
     <data>
 
-        <!-- Sale View -->
+        <!-- Invoice View -->
         <record id="view_invoice_form_inherit" model="ir.ui.view">
             <field name="name">account.invoice.form.inherit</field>
             <field name="model">account.invoice</field>

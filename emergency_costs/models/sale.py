@@ -22,7 +22,7 @@
 from openerp.osv import fields as old_fields
 import openerp.addons.decimal_precision as dp
 from openerp.addons.sale.sale import sale_order
-from openerp import models, api, _, fields
+from openerp import models, api, fields
 
 
 class sale_order(models.Model):
@@ -47,7 +47,7 @@ class sale_order(models.Model):
                                                     ['price_unit', 'tax_id',
                                                      'discount',
                                                      'product_uom_qty',
-                                                     'launch_costs'], 10),
+                                                     'emergency_costs'], 10),
                                 },
                          multi='sums', help="The amount without tax.",
                          track_visibility='always'),
@@ -62,7 +62,7 @@ class sale_order(models.Model):
                                                     ['price_unit', 'tax_id',
                                                      'discount',
                                                      'product_uom_qty',
-                                                     'launch_costs'], 10),
+                                                     'emergency_costs'], 10),
                                 },
                          multi='sums', help="The tax amount."),
                 'amount_total': old_fields.\
@@ -76,7 +76,7 @@ class sale_order(models.Model):
                                                     ['price_unit', 'tax_id',
                                                      'discount',
                                                      'product_uom_qty',
-                                                     'launch_costs'], 10),
+                                                     'emergency_costs'], 10),
                                 },
                          multi='sums', help="The total amount."),
                 }
@@ -87,10 +87,10 @@ class sale_order(models.Model):
         data_obj = self.pool.get('ir.model.data')
         product_obj = self.pool.get('product.product')
         model, product_id = data_obj.get_object_reference(
-            cr, uid, 'launch_costs', 'product_launch_costs')
+            cr, uid, 'emergency_costs', 'product_emergency_costs')
         product = product_obj.browse(cr, uid, product_id, context=context)
         for c in self.pool.get('account.tax').\
-            compute_all(cr, uid, line.tax_id, line.launch_costs,
+            compute_all(cr, uid, line.tax_id, line.emergency_costs,
                         1, product, line.order_id.partner_id)['taxes']:
             val += c.get('amount', 0.0)
         return val
@@ -104,13 +104,13 @@ class sale_order_line(models.Model):
         cur_obj = self.pool.get('res.currency')
         data_obj = self.pool.get('ir.model.data')
         model, product_id = data_obj.get_object_reference(
-            cr, uid, 'launch_costs', 'product_launch_costs')
+            cr, uid, 'emergency_costs', 'product_emergency_costs')
         if context is None:
             context = {}
         res = super(sale_order_line, self).\
             _amount_line(cr, uid, ids, field_name, arg, context=context)
         for line in self.browse(cr, uid, ids, context=context):
-            price = line.launch_costs or 0
+            price = line.emergency_costs or 0
             if price:
                 taxes = tax_obj.\
                     compute_all(cr, uid, line.tax_id,
@@ -122,20 +122,21 @@ class sale_order_line(models.Model):
         return res
 
     _columns = {
-                'price_subtotal': old_fields.\
-                function(_amount_line, string='Subtotal',
-                         digits_compute=dp.get_precision('Account')),
-                }
+        'price_subtotal': old_fields.\
+        function(_amount_line, string='Subtotal',
+                 digits_compute=dp.get_precision('Account')),
+    }
 
-    launch_costs = fields.Float('Launch Costs')
-    launch_costs_line_id = fields.Many2one('account.invoice.line',
-                                           'Launch invoice line', copy=False)
+    emergency_costs = fields.Float('Emergency Costs')
+    emergency_costs_line_id = fields.Many2one('account.invoice.line',
+                                              'Emergency invoice line', copy=False)
 
     @api.multi
-    def _launch_line_to_create(self):
+    def _emergency_line_to_create(self):
         res = False
-        if self.launch_costs != 0 \
-            and not self.launch_costs_line_id:
+        if self.emergency_costs != 0 \
+                and not self.emergency_costs_line_id or \
+                self.emergency_costs_line_id.invoice_id.state == 'cancel':
             res = True
         return res
 

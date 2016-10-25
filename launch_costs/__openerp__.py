@@ -22,7 +22,7 @@
 {
     "name": "Launch Costs",
     "summary": "Manage launch costs in sale orders",
-    "version": "0.4",
+    "version": "0.5",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "category": "Sales Management",
@@ -45,9 +45,9 @@ a line of launch costs if needed by clicking on the
 """,
     "demo": [],
     "data": [
-             "sale_view.xml",
-             "invoice_view.xml",
              "data/product_data.xml",
+             "views/sale.xml",
+             "views/invoice.xml",
              ],
     'installable': True,
     'active': False,
