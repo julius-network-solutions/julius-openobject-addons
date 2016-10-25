@@ -27,7 +27,7 @@
     "website" : "http://julius.fr",
     "category" : "Purchases Management",
     "depends" : [
-        "base",
+        "sale",
     ],
     "description": """
     Module to manage a discount in purchase orders
