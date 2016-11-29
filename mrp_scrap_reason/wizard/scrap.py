@@ -41,10 +41,10 @@ class stock_move_scrap(models.TransientModel):
     def move_scrap(self):
         reason = self.reason
         try:
-            reason = int(data.reason)
+            reason = int(self.reason)
         except:
             reason = False
-        notes = reason and data.notes or False
+        notes = reason and self.notes or False
         return super(stock_move_scrap, self.with_context(reason=reason,
                                                          notes_reason=notes)).\
             move_scrap()

@@ -58,9 +58,9 @@ class stock_move(models.Model):
                          context=context)[0]
         if context.get('reason'):
             reason = context.get('reason')
-            notes_reason = reason and context.get('notes_reason') or False
+            notes_reason = context.get('notes_reason') or False
             self.write(cr, uid, res, {
-                                      'reason': reason,
+                                      'reason': int(reason),
                                       'notes_reason': notes_reason,
                                       }, context=context)
         return res
