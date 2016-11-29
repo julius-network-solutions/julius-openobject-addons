@@ -22,12 +22,12 @@
 {
     "name": "Template Custom Module",
     "summary": "Template custom module summary",
-    "version": "0.1",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Purchases Management",
-    "depends": [
-        "base",
+    "version" : "0.1",
+    "author" : "Julius Network Solutions",
+    "website" : "http://julius.fr",
+    "category" : "Purchases Management",
+    "depends" : [
+        "sale",
     ],
     "description": """
     Module to manage a discount in purchase orders
