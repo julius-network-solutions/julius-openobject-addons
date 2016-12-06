@@ -93,7 +93,6 @@ class mrp_production(models.Model):
                 if available > prod.product_qty:
                     available = prod.product_qty
                 res[prod.id] = available
-        print res
         return res
 
     def _create_move_to_do(self, cr, uid, move_id,

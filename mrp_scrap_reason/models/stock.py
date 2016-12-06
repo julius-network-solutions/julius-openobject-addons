@@ -31,8 +31,7 @@ class stock_move(models.Model):
         result = []
         for reason in reasons:
             result.append((reason.id, reason.name))
-
-        result.append((-1, 'Other...'))
+        result.append(('-1', 'Other...'))
         return result
 
     reason = fields.Selection(_scrap_reason_get, help="Reason for scraping.")
@@ -59,8 +58,13 @@ class stock_move(models.Model):
         if context.get('reason'):
             reason = context.get('reason')
             notes_reason = context.get('notes_reason') or False
+            if reason:
+                if int(reason) == -1:
+                    reason = '-1'
+                else:
+                    reason = int(reason)
             self.write(cr, uid, res, {
-                                      'reason': int(reason),
+                                      'reason': reason,
                                       'notes_reason': notes_reason,
                                       }, context=context)
         return res
