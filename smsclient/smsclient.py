@@ -415,12 +415,15 @@ class SMSQueue(models.Model):
             elif p.type == 'sms':
                 account = p.value
         try:
+            _logger.info('enter sending process')
             soap = WSDL.Proxy(self.gateway_id.url)
+            _logger.info('soap ok')
             message = ''
             if self.coding == '2':
                 message = str(self.msg).decode('iso-8859-1').encode('utf8')
             elif self.coding == '1':
                 message = str(self.msg)
+            _logger.info(message)
             result = soap.\
                 telephonySmsUserSend(str(login), str(pwd),
                                      str(account), str(sender),
@@ -432,6 +435,7 @@ class SMSQueue(models.Model):
                                      int(self.coding),
                                      str(self.gateway_id.tag),
                                      int(self.gateway_id.nostop))
+            _logger.info('sent')
             self.state = 'send'
             ### End of the new process ###
         except Exception, e:
