@@ -259,8 +259,7 @@ class SMSClient(models.Model):
             context = {}
         queue_obj = self.pool.get('sms.smsclient.queue')
         sids = queue_obj.search(cr, uid, [
-                                          ('state', '!=', 'send'),
-                                          ('state', '!=', 'sending')
+                                          ('state', '=', 'draft'),
                                           ], limit=30, context=context)
         queue_obj.write(cr, uid, sids, {'state': 'sending'}, context=context)
         queue_obj.send_sms(cr, uid, sids, context=context)
