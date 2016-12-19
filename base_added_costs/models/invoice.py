@@ -63,4 +63,13 @@ class account_invoice_line(models.Model):
                                              'Linked invoice_line',
                                              default=False)
 
+    is_cost_line = fields.Boolean(compute='_get_is_cost_line')
+
+    @api.one
+    def _get_is_cost_line(self):
+        """
+        Compute method for the field is_cost_line
+        """
+        self.is_cost_line = False
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
