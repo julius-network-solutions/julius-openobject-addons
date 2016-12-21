@@ -146,7 +146,7 @@ class SMSClient(models.Model):
                                ('http', 'HTTP Method'),
                                ('smpp', 'SMPP Method'),
                                ('primo', 'Primo Method'),
-                               ('OVH', 'Api OVH'),
+                               ('ovh', 'Api OVH'),
                                ], 'API Method', select=True, default='http')
     state = fields.Selection([
                               ('new', 'Not Verified'),
