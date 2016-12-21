@@ -29,11 +29,6 @@ from openerp.exceptions import except_orm
 
 import logging
 _logger = logging.getLogger(__name__)
-try:
-    from SOAPpy import WSDL
-except :
-    _logger.warning("ERROR IMPORTING SOAPpy, if not installed, "
-                    "please install it: e.g.: apt-get install python-soappy")
 
 
 class partner_sms_send(models.Model):
@@ -151,6 +146,7 @@ class SMSClient(models.Model):
                                ('http', 'HTTP Method'),
                                ('smpp', 'SMPP Method'),
                                ('primo', 'Primo Method'),
+                               ('OVH', 'Api OVH'),
                                ], 'API Method', select=True, default='http')
     state = fields.Selection([
                               ('new', 'Not Verified'),
@@ -415,6 +411,20 @@ class SMSQueue(models.Model):
             elif p.type == 'sms':
                 account = p.value
         try:
+            from SOAPpy import WSDL
+        except:
+            error_msg = "ERROR IMPORTING SOAPpy, if not installed, " \
+                "please install it: e.g.: apt-get install python-soappy"
+            _logger.error(error_msg)
+            if raise_exception:
+                raise except_orm('Error', error_msg)
+            else:
+                self.write({
+                            'state': 'error',
+                            'error': str(error_msg),
+                            })
+            return
+        try:
             _logger.info('enter sending process')
             soap = WSDL.Proxy(self.gateway_id.url)
             _logger.info('soap ok')
@@ -435,6 +445,95 @@ class SMSQueue(models.Model):
                                      int(self.coding),
                                      str(self.gateway_id.tag),
                                      int(self.gateway_id.nostop))
+            _logger.info('sent')
+            self.state = 'send'
+            ### End of the new process ###
+        except Exception, e:
+            if raise_exception:
+                raise except_orm('Error', e)
+            else:
+                self.write({
+                            'state': 'error',
+                            'error': str(e),
+                            })
+    @api.one
+    def send_sms_by_ovh(self, raise_exception=False):
+        """
+        Send SMS by the SMPP method
+        """
+        endpoint = 'ovh-eu'
+        application_key = ''
+        application_secret = ''
+        consumer_key = ''
+        service_name = ''
+        user = ''
+        for p in self.gateway_id.property_ids:
+            if p.type == 'sender':
+                sender = p.value
+            elif p.type == 'service_name':
+                service_name = p.value
+            elif p.type == 'user':
+                user = p.value
+            elif p.type == 'other':
+                if p.name == 'application_key':
+                    application_key = p.value
+                elif p.name == 'application_secret':
+                    application_secret = p.value
+                elif p.name == 'consumer_key':
+                    consumer_key = p.value
+                account = p.value
+        try:
+            import ovh
+        except:
+            error_msg = "ERROR IMPORTING ovh, if not installed, " \
+                "please install it: e.g.: " \
+                "pip install -e git+https://github.com/ovh/python-ovh.git#egg=ovh"
+            _logger.error(error_msg)
+            if raise_exception:
+                raise except_orm('Error', error_msg)
+            else:
+                self.write({
+                            'state': 'error',
+                            'error': str(error_msg),
+                            })
+            return
+        try:
+            _logger.info('enter sending process')
+            client = ovh.Client(
+                                endpoint=endpoint, # Endpoint of API OVH Europe (List of available endpoints)
+                                application_key=application_key,    # Application Key
+                                application_secret=application_secret, # Application Secret
+                                consumer_key=consumer_key,       # Consumer Key
+                                )
+            _logger.info('Client ok')
+            message = ''
+            if self.coding == '2':
+                message = str(self.msg).decode('iso-8859-1').encode('utf8')
+            elif self.coding == '1':
+                message = str(self.msg)
+            _logger.info(message)
+            url = '/sms/%s/users/%s/jobs' % (service_name, user)
+            priority = 'high'
+            if self.priority == '0':
+                priority = 'veryLow'
+            elif self.priority == '1':
+                priority = 'low'
+            elif self.priority == '2':
+                priority = 'medium'
+            coding = '7bit'
+            if self.coding == '2':
+                coding = '8bit'
+            result = client.post(url,
+                                 charset='UTF-8',
+                                 coding=coding,
+                                 message=message,
+                                 noStopClause=self.gateway_id.nostop,
+                                 priority=priority,
+                                 receivers=[self.mobile],
+                                 sender=sender,
+                                 senderForResponse=False,
+                                 validityPeriod=2880,
+                                 )
             _logger.info('sent')
             self.state = 'send'
             ### End of the new process ###
@@ -482,6 +581,8 @@ class SMSQueue(models.Model):
             self.send_sms_by_http(raise_exception=gateway.raise_exception)
         elif method == 'smpp':
             self.send_sms_by_smpp(raise_exception=gateway.raise_exception)
+        elif method == 'ovh':
+            self.send_sms_by_ovh(raise_exception=gateway.raise_exception)
 
     @api.one
     def send_sms(self):
@@ -516,7 +617,8 @@ class Properties(models.Model):
                              ('sender', 'Sender Name'),
                              ('to', 'Recipient No'),
                              ('sms', 'SMS Message'),
-                             ('extra', 'Extra Info')
+                             ('service_name', 'Service name'),
+                             ('extra', 'Extra Info'),
                              ], 'API Method', select=True,
                             help="If parameter concern a value to "
                             "substitute, indicate it")
