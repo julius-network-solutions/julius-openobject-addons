@@ -474,7 +474,7 @@ class SMSQueue(models.Model):
                 service_name = p.value
             elif p.type == 'user':
                 user = p.value
-            elif p.type == 'other':
+            elif p.type == 'extra':
                 if p.name == 'application_key':
                     application_key = p.value
                 elif p.name == 'application_secret':
@@ -482,6 +482,12 @@ class SMSQueue(models.Model):
                 elif p.name == 'consumer_key':
                     consumer_key = p.value
                 account = p.value
+        _logger.info(endpoint)
+        _logger.info(application_key)
+        _logger.info(application_secret)
+        _logger.info(consumer_key)
+        _logger.info(service_name)
+        _logger.info(user)
         try:
             import ovh
         except:
