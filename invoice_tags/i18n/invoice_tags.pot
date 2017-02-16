@@ -1,0 +1,123 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* invoice_tags
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-16 17:07+0000\n"
+"PO-Revision-Date: 2017-02-16 17:07+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: invoice_tags
+#: field:invoice.tag,active:0
+msgid "Active"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,child_ids:0
+msgid "Child Tags"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,create_uid:0
+msgid "Created by"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,create_date:0
+msgid "Created on"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,display_name:0
+msgid "Full Name"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,id:0
+msgid "ID"
+msgstr ""
+
+#. module: invoice_tags
+#: model:ir.model,name:invoice_tags.model_account_invoice
+msgid "Invoice"
+msgstr ""
+
+#. module: invoice_tags
+#: view:invoice.tag:invoice_tags.invoice_tag_form
+msgid "Invoice Tag"
+msgstr ""
+
+#. module: invoice_tags
+#: view:invoice.tag:invoice_tags.invoice_tag_list
+#: view:invoice.tag:invoice_tags.invoice_tag_tree
+#: model:ir.actions.act_window,name:invoice_tags.invoice_tag_action_form
+#: model:ir.model,name:invoice_tags.model_invoice_tag
+#: model:ir.ui.menu,name:invoice_tags.menu_invoice_tag_action_form
+msgid "Invoice Tags"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,__last_update:0
+msgid "Last Modified on"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,write_uid:0
+msgid "Last Updated by"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,write_date:0
+msgid "Last Updated on"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,parent_left:0
+msgid "Left Parent"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,parent_id:0
+msgid "Parent Tag"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,parent_right:0
+msgid "Right Parent"
+msgstr ""
+
+#. module: invoice_tags
+#: view:invoice.tag:invoice_tags.invoice_tag_search
+msgid "Tag"
+msgstr ""
+
+#. module: invoice_tags
+#: field:invoice.tag,name:0
+msgid "Tag Name"
+msgstr ""
+
+#. module: invoice_tags
+#: view:account.invoice:invoice_tags.view_account_invoice_filter_tags
+#: field:account.invoice,tag_ids:0
+msgid "Tags"
+msgstr ""
+
+#. module: invoice_tags
+#: view:account.invoice:invoice_tags.invoice_form_tags
+#: view:account.invoice:invoice_tags.invoice_supplier_form_tags
+msgid "Tags..."
+msgstr ""
+
+#. module: invoice_tags
+#: help:invoice.tag,active:0
+msgid "The active field allows you to hide the tag without removing it."
+msgstr ""
+
