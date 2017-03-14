@@ -22,6 +22,7 @@
 from operator import mul, div, sub
 import time
 import logging
+from datetime import datetime
 _logger = logging.getLogger(__name__)
 
 from openerp import models, fields, api, _
@@ -74,6 +75,7 @@ class product_product_costs(models.Model):
         """
         if self.product_id.cost_method == 'standard':
             self.product_id.standard_price = self.value
+            self.product_id.date_update_standard_price = datetime.now()
         return True
 
     @api.multi
@@ -138,7 +140,8 @@ class product_product(models.Model):
                                        'be selected in a BoM line, this value '
                                        'will be set by default.',
                                        domain=[('type', '=', 'bom')])
-
+    date_update_standard_price = fields.Date('Last Update')
+    
     @api.one
     def _get_bom_price(self, cost_type_id=None):
         """

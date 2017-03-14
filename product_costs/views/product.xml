@@ -8,6 +8,9 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="priority">20</field>
             <field name="arch" type="xml">
+        		<field name="cost_method" position="after">
+        			<field name="date_update_standard_price"/>
+        		</field>
                 <page string="Sales" position="after">
                     <page name="costs" string="Costs">
                         <group string="Costs">

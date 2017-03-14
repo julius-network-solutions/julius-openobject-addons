@@ -61,9 +61,6 @@ class google_auth_wiz(models.TransientModel):
         self = self.with_context(tz=user.tz)
         secret = user.password_api_key
         h = self.get_hotp_token(secret, intervals_no=int(time.time())//30)
-        print time.time()
-        print h
-        print self.validation_code
         domain = []
         h = str(h)
         if self.validation_code == h:
