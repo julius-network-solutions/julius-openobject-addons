@@ -28,11 +28,12 @@ class mrp_bom_update(models.TransientModel):
     name = fields.Char('name')
     source_id = fields.Many2one('product.product', 'Source')
     target_id = fields.Many2one('product.product', 'Target')
-    
+
     @api.one
     def button_update_bom(self):
         source = self.source_id
         target = self.target_id
+        
         bom_lines = self.env['mrp.bom.line'].search([('product_id','=', source.id)])
         if target:
             bom_lines.write({'product_id': target.id})

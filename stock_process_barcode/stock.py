@@ -38,13 +38,12 @@ class stock_picking(models.Model):
         product_obj = self.env['product.product']
         stock_operation_obj = self.env['stock.pack.operation']
         answer = {'filter_loc': False, 'operation_id': False}
-        
         # Check if the barcode correspond to a packaging type
         matching_packaging_ids = packaging_obj.search([('ean', '=', barcode_str)], limit=1)
         for matching_packaging in matching_packaging_ids:
             product = product_obj.search([('product_tmpl_id','=',matching_packaging.product_tmpl_id.id)])
             if matching_packaging.uom_id:
-                mutli_qty = 1 / matching_packaging.uom_id.factor
+                mutli_qty = (1 / matching_packaging.uom_id.factor) * matching_packaging.qty
                 op_id = stock_operation_obj._search_and_multi_increment(picking_id, 
                                                                         [('product_id', '=', product.id)], 
                                                                         filter_visible=True, mutli_qty=mutli_qty,
