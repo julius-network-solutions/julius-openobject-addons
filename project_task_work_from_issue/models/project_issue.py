@@ -52,9 +52,9 @@ class project_issue(models.Model):
                                "default_date": start_formatted,
                                })
         if self.project_id:
-            context_action({
-                            "domain_task": self.project_id.id,
-                            })
+            context_action.update({
+                                   "domain_task": self.project_id.id,
+                                   })
         view_id = self.env.ref("project.view_task_work_form").id
         action_read.update({
                             "views": [
