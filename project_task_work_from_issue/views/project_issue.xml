@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Project issue form -->
+        <record id="view_task_work_form_inherit" model="ir.ui.view">
+            <field name="name">project.issue.form.inherit</field>
+            <field name="model">project.issue</field>
+            <field name="inherit_id" ref="project_issue.project_issue_form_view"/>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <field name="stage_id" position="before">
+                    <button name="create_task_work_from_issue"
+                            string="Create task work"
+                            type="object"/>
+                </field>
+            </field>
+        </record>
+        
+    </data>
+</openerp>
