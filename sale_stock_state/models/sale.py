@@ -41,6 +41,7 @@ class sale_order(models.Model):
     stock_state_many = fields.Char('Stock state if many',
                                    compute='_get_stock_state')
 
+    @api.one
     def _get_stock_state(self):
         state = 'no_picking'
         state_many = ''
