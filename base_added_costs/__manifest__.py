@@ -19,15 +19,29 @@
 #
 ###############################################################################
 
-from openerp import models, api
+{
+    "name": "Base added costs",
+    "summary": "Manage added costs in sale orders",
+    "version": "0.3",
+    "author": "Julius Network Solutions",
+    "website": "http://julius.fr",
+    "category": "Sales Management",
+    "contributors": "Mathieu Vatel <mathieu@julius.fr>",
+    "depends": [
+        "sale",
+        "account",
+    ],
+    "description": """
+Added Costs in sale orders
+==========================
 
-
-class sale_order_line(models.Model):
-    _inherit = "sale.order.line"
-
-    @api.one
-    def _update_sale_added_cost_line(self, new_inv_line_id, field=False):
-        if field:
-            self.write({field: new_inv_line_id})
+This is only a base module to manage added costs on sale orders: e.g.
+Emergency Costs and Landed Costs.
+""",
+    "demo": [],
+    "data": [],
+    'installable': True,
+    'active': False,
+}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

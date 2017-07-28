@@ -2,7 +2,7 @@
 ###############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2014-Today Julius Network Solutions SARL <contact@julius.fr>
+#    Copyright (C) 2013-Today Julius Network Solutions SARL <contact@julius.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,27 +20,34 @@
 ###############################################################################
 
 {
-    "name": "Base added costs",
-    "summary": "Manage added costs in sale orders",
-    "version": "0.3",
+    "name": "Launch Costs",
+    "summary": "Manage launch costs in sale orders",
+    "version": "0.5",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "category": "Sales Management",
     "contributors": "Mathieu Vatel <mathieu@julius.fr>",
     "depends": [
-        "sale",
-        "account",
-        "invoice_link_sale",
-    ],
+                "base_added_costs",
+                ],
     "description": """
-Added Costs in sale orders
-==========================
+Launch Costs in sale orders
+==============================
 
-This is only a base module to manage added costs on sale orders: e.g.
-Emergency Costs and Landed Costs.
+How this is working ?
+---------------------
+
+You will find a new field in the sale order line : Launch Costs.
+
+Once the you've created an invoice for this order, you will be able to generate
+a line of launch costs if needed by clicking on the
+"Generate Launch Costs" in the invoice. 
 """,
     "demo": [],
-    "data": [],
+    "data": [
+             "data/product_data.xml",
+             "views/sale.xml",
+             ],
     'installable': True,
     'active': False,
 }

@@ -9,14 +9,14 @@
             <field name="priority">25</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//page[@string='Order Lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                <xpath expr="//page['Order Lines']/field[@name='order_line']/tree/field[@name='price_unit']" position="after">
                     <field name="launch_costs"/>
                 </xpath>
-                <xpath expr="//page[@string='Order Lines']/field[@name='order_line']/form//field[@name='price_unit']" position="after">
+                <xpath expr="//page['Order Lines']/field[@name='order_line']/form//field[@name='price_unit']" position="after">
                     <field name="launch_costs"/>
                 </xpath>
             </field>
         </record>
 
     </data>
-</openerp>                        
+</openerp>

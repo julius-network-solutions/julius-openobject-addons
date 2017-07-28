@@ -5,7 +5,6 @@
             <field name="name">Emergency Costs</field>
             <field name="default_code">EC</field>
             <field name="list_price">0</field>
-            <field name="price_data">0</field>
             <field name="standard_price">0</field>
             <field name="type">service</field>
             <field name="taxes_id">[(6, 0, [])]</field>

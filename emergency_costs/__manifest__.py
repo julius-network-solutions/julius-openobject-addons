@@ -20,8 +20,8 @@
 ###############################################################################
 
 {
-    "name": "Launch Costs",
-    "summary": "Manage launch costs in sale orders",
+    "name": "Emergency Costs",
+    "summary": "Manage emergency costs in sale orders",
     "version": "0.5",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
@@ -31,23 +31,22 @@
                 "base_added_costs",
                 ],
     "description": """
-Launch Costs in sale orders
+Emergency Costs in sale orders
 ==============================
 
 How this is working ?
 ---------------------
 
-You will find a new field in the sale order line : Launch Costs.
+You will find a new field in the sale order line : Emergency Costs.
 
 Once the you've created an invoice for this order, you will be able to generate
-a line of launch costs if needed by clicking on the
-"Generate Launch Costs" in the invoice. 
+a line of emergency costs if needed by clicking on the
+"Generate Emergency Costs" in the invoice. 
 """,
     "demo": [],
     "data": [
              "data/product_data.xml",
              "views/sale.xml",
-             "views/invoice.xml",
              ],
     'installable': True,
     'active': False,
