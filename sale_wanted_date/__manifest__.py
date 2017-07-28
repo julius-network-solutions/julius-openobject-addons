@@ -22,7 +22,7 @@
 {
     "name": "Sale Module Wanted Date",
     "summary": "Add a Wanted Date into sale order lines",
-    "version": "0.1",
+    "version": "10.0.1",
     "author": "Julius Network Solutions",
     "website": "http://julius.fr",
     "category": "Sales Management",

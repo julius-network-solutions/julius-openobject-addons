@@ -25,7 +25,7 @@ from openerp import fields, models, _
 class sale_order_line(models.Model):
     _inherit = "sale.order.line"
 
-    wanted_date = fields.Date()
+    wanted_date = fields.Date(help="Date expected wanted by the customer")
 
 
 class sale_order(models.Model):
