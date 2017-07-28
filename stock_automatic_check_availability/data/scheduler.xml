@@ -12,7 +12,7 @@
             <field eval="False" name="doall"/>
             <field eval="'stock.picking.type'" name="model"/>
             <field eval="'run_cancel_check_availability'" name="function"/>
-            <field eval="'(False,)'" name="args"/>
+            <field eval="'()'" name="args"/>
         </record>
         
     </data>

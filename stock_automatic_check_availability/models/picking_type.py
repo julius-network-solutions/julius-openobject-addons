@@ -31,7 +31,7 @@ class stock_picking_type(models.Model):
                 "performed on this type.")
 
     @api.multi
-    def _run_cancel_picking_availability(self, use_new_cursor=False):
+    def _run_cancel_picking_availability(self):
         """
         This method will cancel availability of linked moves
         """
@@ -64,22 +64,18 @@ class stock_picking_type(models.Model):
                         ], order='date_expected')
             moves.action_assign()
 
-    def run_cancel_check_availability(self, cr, uid, use_new_cursor=False,
-                                      context=None):
+    @api.model
+    def run_cancel_check_availability(self):
         """
         This action will :
             * first, cancel availability of linked moves,
             * then, check availability order by planned date.
         """
-        type_ids = self.search(cr, uid, [
-                                         ('automatic_cancel_check', '=', True),
-                                         ], context=context)
-        self._run_cancel_picking_availability(cr, uid, type_ids,
-                                              use_new_cursor=use_new_cursor,
-                                              context=context)
-        self._run_check_picking_availability(cr, uid, type_ids,
-                                             use_new_cursor=use_new_cursor,
-                                             context=context)
-        return True
+        types = self.search([
+                             ('automatic_cancel_check', '=', True),
+                             ])
+        types._run_cancel_picking_availability()
+        types._run_check_picking_availability()
+        return {}
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
