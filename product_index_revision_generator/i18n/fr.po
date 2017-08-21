@@ -169,19 +169,9 @@ msgid "Product UOS (Unit of Sale) is the unit of measurement for the invoicing a
 msgstr "L'UdV (Unité de vente) est une unité de mesure utilisée pour la facturation et la gestion de stock."
 
 #. module: product_index_revision_generator
-#: field:product.revision.generator.line,product_uom:0
+#: field:product.revision.generator.line,product_uom_id:0
 msgid "Product Unit of Measure"
 msgstr "Unité de mesure produit"
-
-#. module: product_index_revision_generator
-#: field:product.revision.generator.line,product_uos:0
-msgid "Product UoS"
-msgstr "UdV produit"
-
-#. module: product_index_revision_generator
-#: field:product.revision.generator.line,product_uos_qty:0
-msgid "Product UoS Qty"
-msgstr "UdV Qté"
 
 #. module: product_index_revision_generator
 #: model:ir.model,name:product_index_revision_generator.model_product_add_plan

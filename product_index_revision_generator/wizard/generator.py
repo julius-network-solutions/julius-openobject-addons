@@ -42,23 +42,19 @@ class product_revision_generator(models.TransientModel):
                             "Keep empty if it's always valid.")
     revision_note = fields.Text()
 
-    def _copy_product(self, cr, uid, product_id, default=None, context=None):
-        if context is None:
-            context = {}
+    @api.model
+    def _copy_product(self, product, default=None):
         if default is None:
             default = {}
-        product_obj = self.pool.get('product.product')
-        return product_obj.copy(cr, uid, product_id,
-                                default=default, context=context)
+        default['product_tmpl_id'] = product.product_tmpl_id.id
+        return product.copy(default=default)
 
-    def _write_product(self, cr, uid, product_id, vals=None, context=None):
-        if context is None:
-            context = {}
+    @api.model
+    def _write_product(self, product, vals=None):
         if vals is None:
             vals = {}
-        vals.update({'state': 'obsolete'})
-        product_obj = self.pool.get('product.product')
-        return product_obj.write(cr, uid, product_id, vals, context=context)
+        vals.update({'state': 'obsolete', 'active': False})
+        return product.write(vals)
 
     @api.multi
     def generate_index(self):
@@ -74,7 +70,6 @@ class product_revision_generator(models.TransientModel):
         date_stop = self.date_stop
         defaults.update({
                          'name': product.name,
-#                          'product_tmpl_id': product.product_tmpl_id.id,
                          'revision_index': revision_index,
                          'date_start': date_start,
                          'date_stop': date_stop,
@@ -82,35 +77,31 @@ class product_revision_generator(models.TransientModel):
                          'default_code': product.default_code,
                          'bom_ids': [],
                          })
-        new_product_id = self.with_context(variant=True).\
-            _copy_product(product.id, default=defaults)
+        new_product = self.with_context(variant=True).\
+            _copy_product(product, default=defaults)
         start = datetime.datetime.strptime(date_start, DF)
         date_stop_2 = (start + datetime.timedelta(days=-1)).strftime(DF)
         vals = {'date_stop': date_stop_2}
-        self.with_context(variant=True)._write_product(product.id, vals)
+        self.with_context(variant=True)._write_product(product, vals)
         if self.origin_bom_id:
             new_bom = self.origin_bom_id.\
                 copy(default={
                               'bom_line_ids': [],
-                              'product_id': new_product_id,
+                              'product_id': new_product.id,
                               })
             for line in self.line_ids:
-                line_vals = {
-                             'name': line.name,
-                             'code': line.code,
-                             'product_id': line.product_id.id,
-                             'product_qty': line.product_qty,
-                             'product_uom': line.product_uom.id,
-                             'sequence': line.sequence,
-                             'bom_id': new_bom.id,
-                             }
+                list_line_vals = line.copy_data()
+                line_vals = list_line_vals and list_line_vals[0] or {}
+                line_vals.pop('generator_id', None)
+                line_vals.update({
+                                  'bom_id': new_bom.id,
+                                  })
                 bom_line_obj.create(line_vals)
         try:
-            action = self.env.ref('product.product_normal_action')
+            action = self.env.ref('product.product_template_action')
         except ValueError:
             return False
         action = action.read()[0]
-        action.update({'res_id': new_product_id})
         views = action.get('views', [])
         new_order = [(False, u'form')]
         for view_id, mode in views:
@@ -118,145 +109,67 @@ class product_revision_generator(models.TransientModel):
                 if view_id:
                     new_order[0][0] = view_id
             else:
-                new_order.append((view_id,mode))
-        action['res_id'] = new_product_id
-        action['views'] = new_order
-        action['view_id'] = False
+                new_order.append((view_id, mode))
+        action.update({
+                       'res_id': new_product.product_tmpl_id.id,
+                       'views': new_order,
+                       'view_id': False,
+                       })
         return action
-
-#     def generate_index(self, cr, uid, ids, context=None):
-#         if context is None:
-#             context = {}
-#         product_obj = self.pool.get('product.product')
-#         bom_obj = self.pool.get('mrp.bom')
-#         bom_line_obj = self.pool.get('mrp.bom.line')
-#         defaults = {}
-#         rec = self.browse(cr, uid, ids[0], context=context)
-#         product = rec.product_id
-#         revision_index = rec.name
-#         date_start = rec.date_start
-#         revision_note = rec.revision_note or ''
-#         date_stop = rec.date_stop or False
-#         defaults.update({
-#                          'name': product.name,
-#                          'product_tmpl_id': product.product_tmpl_id.id,
-#                          'product_variant_ids': [],
-#                          'revision_index': revision_index,
-#                          'date_start': date_start,
-#                          'date_stop': date_stop,
-#                          'revision_note': revision_note,
-#                          'default_code': product.default_code or '',
-#                          'bom_ids': [],
-#                          })
-#         new_product_id = self._copy_product(cr, uid, product.id,
-#                                             default=defaults, context=context)
-#         print product_obj.browse(cr, uid, new_product_id, context=context).product_tmpl_id.id
-#         start = datetime.datetime.strptime(date_start, DF)
-#         date_stop_2 = (start + datetime.timedelta(days=-1)).strftime(DF)
-#         vals = {'date_stop': date_stop_2}
-#         self._write_product(cr, uid, product.id, vals, context=context)
-# #         if rec.origin_bom_id:
-# #             new_bom_id = bom_obj.\
-# #                 copy(cr, uid, rec.origin_bom_id.id,
-# #                      default={
-# #                               'bom_line_ids': [],
-# #                               'product_id': new_product_id,
-# #                               },
-# #                      context=context)
-# #             for line in rec.line_ids:
-# #                 line_vals = {
-# #                     'name': line.name,
-# #                     'code': line.code,
-# #                     'product_id': line.product_id.id,
-# #                     'product_qty': line.product_qty,
-# #                     'product_uom': line.product_uom.id,
-# #                     'sequence': line.sequence,
-# #                     'bom_id': new_bom_id,
-# #                 }
-# #                 bom_line_obj.create(cr, uid, line_vals, context=context)
-#         data_obj = self.pool.get('ir.model.data')
-#         action_obj = self.pool.get('ir.actions.act_window')
-#         try:
-#             model, res_id = data_obj.\
-#                 get_object_reference(cr, uid, 'product',
-#                                      'product_normal_action')
-#         except:
-#             return True
-#         action = action_obj.read(cr, uid, res_id, context=context)
-#         action.update({'res_id': new_product_id})
-#         views = action.get('views', [])
-#         new_order = [(False, u'form')]
-#         for view_id, mode in views:
-#             if mode == 'form':
-#                 if view_id:
-#                     new_order[0][0] = view_id
-#             else:
-#                 new_order.append((view_id,mode))
-#         action['res_id'] = new_product_id
-#         action['views'] = new_order
-#         action['view_id'] = False
-#         return action
 
 
 class product_revision_generator_line(models.TransientModel):
     _name = 'product.revision.generator.line'
     _description = 'Product revision generator lines'
 
-    name = fields.Char()
-    code = fields.Char('Reference')
     generator_id = fields.Many2one('product.revision.generator',
                                    'Generator', required=True,
                                    ondelete='cascade')
-    product_id = fields.Many2one('product.product', 'Product', required=True,
-                                 ondelete='cascade')
-    product_uos_qty = fields.\
-        Float('Product UoS Qty',
-              digits_compute=dp.get_precision('Product UoS'))
-    product_uos = fields.Many2one('product.uom', 'Product UoS',
-                                  help="Product UOS (Unit of Sale) is " \
-                                  "the unit of measurement for the " \
-                                  "invoicing and promotion of stock.")
-    product_qty = fields.\
-        Float('Product Quantity', required=True,
-              digits_compute=dp.get_precision('Product Unit of Measure'))
-    product_uom = fields.Many2one('product.uom', 'Product Unit of Measure',
-                                  required=True, help="Unit of Measure " \
-                                  "(Unit of Measure) is the unit of " \
-                                  "measurement for the inventory control")
-    company_id = fields.Many2one('res.company', 'Company')
-    sequence = fields.Integer(help="Gives the sequence order when " \
-                              "displaying a list of bills of material.")
 
-    def onchange_product_id(self, cr, uid, ids,
-                            product_id, name, context=None):
+    product_id = fields.Many2one('product.product', 'Product', required=True)
+    product_qty = fields.Float(
+        'Product Quantity', default=1.0,
+        digits=dp.get_precision('Product Unit of Measure'), required=True)
+    product_uom_id = fields.Many2one(
+        'product.uom', 'Product Unit of Measure',
+        oldname='product_uom', required=True,
+        help="Unit of Measure (Unit of Measure) is the unit of "
+        "measurement for the inventory control")
+    sequence = fields.Integer(
+        'Sequence', default=1,
+        help="Gives the sequence order when displaying.")
+    attribute_value_ids = fields.Many2many(
+        'product.attribute.value', string='Variants',
+        help="BOM Product Variants needed form apply this line.")
+    operation_id = fields.Many2one(
+        'mrp.routing.workcenter', 'Consumed in Operation',
+        help="The operation where the components are consumed, or "
+        "the finished products created.")
+
+    @api.onchange('product_id')
+    def onchange_product_id(self):
         """ Changes UoM and name if product_id changes.
         @param name: Name of the field
         @param product_id: Changed product_id
         @return:  Dictionary of changed values
         """
-        if product_id:
-            prod = self.pool.get('product.product').\
-                browse(cr, uid, product_id, context=context)
-            return {'value': {'name': prod.name,
-                              'product_uom': prod.uom_id.id}}
-        return {}
+        if self.product_id:
+            self.name = self.product_id.name
+            self.product_uom = self.product_id.uom_id.id
 
-    def onchange_uom(self, cr, uid, ids,
-                     product_id, product_uom, context=None):
-        res = {'value':{}}
-        if not product_uom or not product_id:
-            return res
-        product = self.pool.get('product.product').\
-            browse(cr, uid, product_id, context=context)
-        uom = self.pool.get('product.uom').\
-            browse(cr, uid, product_uom, context=context)
-        if uom.category_id.id != product.uom_id.category_id.id:
-            res['warning'] = {'title': _('Warning'),
-                              'message': _('The Product Unit of Measure '
-                                           'you chose has a different '
-                                           'category than in the '
-                                           'product form.')}
-            res['value'].update({'product_uom': product.uom_id.id})
-        return res
+    @api.onchange('product_uom_id')
+    def onchange_uom(self):
+        if self.product_uom_id.category_id.id != \
+                self.product_id.uom_id.category_id.id:
+            self.product_uom_id = self.product_id.uom_id.id
+            return {
+                    'warning': {
+                                'title': _('Warning !'),
+                                'message' : _('The Product Unit of Measure '
+                                              'you chose has a different '
+                                              'category than in the '
+                                              'product form.'),
+                                }
+                    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

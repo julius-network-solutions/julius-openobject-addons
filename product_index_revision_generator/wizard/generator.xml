@@ -19,24 +19,21 @@
                             <tree editable="bottom">
                                 <field name="sequence" widget="handle"/>
                                 <field name="product_id"
-                                    context="{'default_supply_method':'produce'}"
-                                    on_change="onchange_product_id(product_id, name)"/>
+                                       context="{'default_supply_method': 'produce'}"/>
                                 <field name="product_qty"/>
-                                <field name="product_uom"
-                                    on_change="onchange_uom(product_id, product_uom)"
-                                    groups="product.group_uom"/>
-                                <field name="name" invisible="1"/>
+                                <field name="product_uom_id"
+                                       groups="product.group_uom"/>
                             </tree>
                         </field>
                     </group>
                     <field name="revision_note" nolabel="1" colspan="4"
-                        placeholder="Notes for this revision index..."/>
+                           placeholder="Notes for this revision index..."/>
                     <footer>
                         <button string="Generate index" name="generate_index"
-                            type="object" class="oe_highlight"/>
+                                type="object" class="oe_highlight"/>
                         or
                         <button string="Cancel" class="oe_link"
-                            special="cancel"/>
+                                special="cancel"/>
                     </footer>
                 </form>
             </field>

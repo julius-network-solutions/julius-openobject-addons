@@ -33,16 +33,21 @@ class product_add_plan(models.TransientModel):
     @api.one
     def add_plan_document(self):
         doc_obj = self.env['ir.attachment']
+        model = self._context.get('active_model')
         product_id = self._context.get('active_id')
         if product_id:
+            product_obj = self.env[model]
+            product = product_obj.browse(product_id)
+            if model == 'product.template':
+                product = product.product_variant_id
             atts = doc_obj.search([
-                                   ('res_id', '=', product_id),
+                                   ('res_id', '=', product.id),
                                    ('res_model', '=', 'product.product'),
                                    ('is_plan', '=', True),
                                    ], limit=1)
             vals = {
                     'is_plan': True,
-                    'res_id': product_id,
+                    'res_id': product.id,
                     'res_model': 'product.product',
                     'name': self.name,
                     'type': 'binary',
@@ -53,41 +58,7 @@ class product_add_plan(models.TransientModel):
                 atts.write(vals)
             else:
                 doc_obj.create(vals)
-            product_obj = self.env['product.product']
-            product = product_obj.browse(product_id)
             product.plan_revision = self.name
-
-#     def add_plan_document(self, cr, uid, ids, context=None):
-#         if context is None:
-#             context = {}
-#         doc_obj = self.pool.get('ir.attachment')
-#         product_id = context.get('active_id')
-#         if product_id:
-#             att_id = False
-#             att_ids = doc_obj.search(cr, uid, [
-#                 ('res_id', '=', product_id),
-#                 ('res_model', '=', 'product.product'),
-#                 ('is_plan', '=', True),
-#                 ], context=context, limit=1)
-#             if att_ids:
-#                 att_id = att_ids[0]
-#             rec = self.browse(cr, uid, ids[0], context=context)
-#             vals = {
-#                 'is_plan': True,
-#                 'res_id': product_id,
-#                 'res_model': 'product.product',
-#                 'name': rec.name,
-#                 'type': 'binary',
-#                 'user_id': uid,
-#                 'datas': rec.plan_document,
-#             }
-#             if att_id:
-#                 doc_obj.write(cr, uid, att_id, vals, context=context)
-#             else:
-#                 doc_obj.create(cr, uid, vals, context=context)
-#             self.pool.get('product.product').write(cr, uid, product_id,
-#                                                    {'plan_revision': rec.name},
-#                                                    context=context)
-#         return True
+        return {}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
