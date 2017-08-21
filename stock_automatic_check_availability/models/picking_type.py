@@ -45,7 +45,7 @@ class stock_picking_type(models.Model):
             pickings.do_unreserve()
 
     @api.multi
-    def _run_check_picking_availability(self, use_new_cursor=False):
+    def _run_check_picking_availability(self):
         """
         This method will re-check availability of linked moves
         """
