@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="stock_scrap_form_view" model="ir.ui.view">
+            <field name="name">stock.scrap.view.form</field>
+            <field name="model">stock.scrap</field>
+            <field name="inherit_id" ref="stock.stock_scrap_form_view"/>
+            <field name="arch" type="xml">
+                <div class="o_row" position="after">
+                    <label for="reason"/>
+                    <div name="Reason">
+                        <field name="reason"/>
+                    </div>
+                    <field name="notes_reason" colspan="4"
+                        attrs="{'required': [('reason', '=', '-1')], 'invisible': [('reason', '!=', '-1')]}"
+                        placeholder="Describe here the reason for scraping these products..."/>
+                </div>
+            </field>
+        </record>
+
+        <record id="stock_scrap_form_view2" model="ir.ui.view">
+            <field name="name">stock.scrap.view.form</field>
+            <field name="model">stock.scrap</field>
+            <field name="inherit_id" ref="stock.stock_scrap_form_view2"/>
+            <field name="arch" type="xml">
+                <div class="o_row" position="after">
+                    <label for="reason"/>
+                    <div name="Reason">
+                        <field name="reason"/>
+                    </div>
+                    <field name="notes_reason" colspan="4"
+                        attrs="{'required': [('reason', '=', '-1')], 'invisible': [('reason', '!=', '-1')]}"
+                        placeholder="Describe here the reason for scraping these products..."/>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</openerp>

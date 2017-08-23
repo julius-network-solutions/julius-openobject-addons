@@ -35,9 +35,11 @@ This module will add a new object reason for scraping components
     "demo": [],
     "data": [
              "security/ir.model.access.csv",
-             "wizard/scrap.xml",
+             "views/scrap_reason.xml",
+             "views/scrap.xml",
              "views/mrp.xml",
              "views/stock.xml",
+             "wizard/mrp_product_produce.xml",
              ],
     'installable': True,
     'active': False,
