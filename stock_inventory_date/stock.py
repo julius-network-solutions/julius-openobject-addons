@@ -28,7 +28,6 @@ from openerp.osv import fields, osv
 from openerp.tools.float_utils import float_compare, float_round
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
-from twisted.test.test_amp import Hello
 
 class stock_inventory(osv.osv):
     _inherit = "stock.inventory"
