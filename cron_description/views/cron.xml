@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="ir_cron_view" model="ir.ui.view">
+            <field name="name">ir.cron.form</field>
+            <field name="model">ir.cron</field>
+            <field name="inherit_id" ref="base.ir_cron_view"/>
+            <field name="arch" type="xml">
+                <field name="args" position="after">
+                    <label for="description"/>
+                    <field name="description"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
