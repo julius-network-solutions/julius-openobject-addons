@@ -56,11 +56,21 @@ class document_resumes(models.AbstractModel):
     def _get_last_resume(self):
         self.resume_id = self.resume_ids and self.resume_ids[0]
 
-    resume_data = fields.Binary('Resume', compute='_get_last_resume_data', store=False)
+    resume_data = fields.Binary('Resume', compute='_get_last_resume_data',
+                                store=False)
 
     @api.one
     def _get_last_resume_data(self):
         value = self.resume_id.datas
         self.resume_data = value
+
+    resume_filename = fields.Char('Resume filename',
+                                  compute='_get_last_resume_filename',
+                                  store=False)
+
+    @api.one
+    def _get_last_resume_filename(self):
+        value = self.resume_id.datas_fname
+        self.resume_filename = value
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
