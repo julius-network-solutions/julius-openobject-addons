@@ -129,11 +129,10 @@ class Report(models.Model):
         # Get all the document to merge
         numbers = docs.keys()
         documents = {}
-        if 1 not in numbers:
-            numbers.append(1)
-        for number in numbers:
+        page_to_merge = range(1, max(numbers) + 1)
+        for number in page_to_merge:
             documents.setdefault(number, [])
-            for number2 in numbers:
+            for number2 in page_to_merge:
                 if number2 >= number:
                     if docs.get(number2):
                         documents[number].extend(docs.get(number2))
@@ -155,7 +154,7 @@ class Report(models.Model):
                 for doc in docs2:
                     if previous_doc:
                         page_number = doc.getPage(number - 1)
-                        page_number.mergePage(previous_doc.getPage(number -1 ))
+                        page_number.mergePage(previous_doc.getPage(number - 1))
                         writer.addPage(page_number)
                     previous_doc = doc
             else:
