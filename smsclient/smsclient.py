@@ -290,7 +290,7 @@ class SMSQueue(models.Model):
                         readonly=True,
                         states={'draft': [('readonly', False)]})
     date_create = fields.Datetime('Date', readonly=True,
-                                  default=fields.Datetime.now())
+                                  default=fields.Datetime.now)
     validity = fields.Integer('Validity',
                               help="The maximum time -in minute(s)- "
                               "before the message is dropped")
