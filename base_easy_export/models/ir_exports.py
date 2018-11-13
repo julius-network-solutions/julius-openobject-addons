@@ -24,7 +24,7 @@ from openerp import models, fields
 
 class ir_exports(models.Model):
     _inherit = 'ir.exports'
- 
+
     default_easy_export = fields.Boolean(default=False)
 
 
@@ -38,7 +38,7 @@ class IrExportsLine(models.Model):
 # class IrExportsFilters(models.Model):
 #     _name = 'ir.exports.filters'
 #     _description = 'Fields to filter data for easy export'
-# 
+#
 #     field_id = fields.Many2one('ir.model.fields', 'Field to filter',
 #                                required=True)
 #     name = fields.Char('Name', related='field_id.name', readonly=True,
@@ -46,7 +46,7 @@ class IrExportsLine(models.Model):
 #     export_id = fields.Many2one('ir.exports', 'Export',
 #                                 required=True)
 #     arch = fields.Text(defaut="<field name='field_name'/>")
-# 
+#
 #     @api.onchange('field_id')
 #     def onchange_field_id(self):
 #         if self.field_id and self.arch \
