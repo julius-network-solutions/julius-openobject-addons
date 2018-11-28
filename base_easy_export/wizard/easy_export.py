@@ -22,9 +22,11 @@
 import time
 import operator
 from lxml import etree
+import base64
 
 from openerp import models, fields, api, _
 from openerp.exceptions import Warning
+from openerp.addons.web.controllers.main import ExcelExport
 
 
 class EasyExport(models.TransientModel):
@@ -43,6 +45,10 @@ class EasyExport(models.TransientModel):
     export_active_ids = fields.Boolean("Export selected records",
                                        default=False)
     export_domain = fields.Char(compute='compute_active_domain')
+    file_data = fields.Binary()
+    file_name = fields.Char()
+    state = fields.Selection([('draft', 'Draft'), ('done', 'Done')],
+                             'State', default='draft', required=True)
 
     @api.onchange('model_id')
     def onchange_model_id(self):
@@ -85,7 +91,7 @@ class EasyExport(models.TransientModel):
         data = '{"model": "%s", "fields": %s, "ids": %s, "domain": [], \
             "context": %s, "import_compat": %s}' % (model, field_data, ids,
                                                     context, import_compat)
-        return data
+        return data, field_names
 
     @api.multi
     def get_ids(self, domain):
@@ -104,12 +110,26 @@ class EasyExport(models.TransientModel):
         self.ensure_one()
         token = int(time.time())
         ids = self.get_ids(self.export_domain)
-        data = self.get_data(ids)
-        return {
-                'type' : 'ir.actions.act_url',
-                'url': '/web/export/xls?data=%s&token=%s' %(data, token),
-                'target': 'self',
-                }
+        data, field_names = self.get_data(ids)
+        url = '/web/export/xls?data=%s&token=%s' %(data, token)
+        if len(url) < 8000:
+            return {
+                    'type' : 'ir.actions.act_url',
+                    'url': url,
+                    'target': 'self',
+                    }
+        self.file_name = '%s.xls' % self.model_id.model
+        rows_data = self.env[self.model_id.model].browse(eval(ids)).\
+            export_data(field_names, True).\
+            get('datas', [])
+        data = ExcelExport().from_data(field_names, rows_data)
+        self.file_data = base64.encodestring(data)
+        self.state = 'done'
+        action = self.env.ref('base_easy_export.'
+                              'action_default_action_easy_export')
+        action_read = action.read([])[0]
+        action_read['res_id'] = self.id
+        return action_read
 
     @api.model
     def get_xml_value(self):

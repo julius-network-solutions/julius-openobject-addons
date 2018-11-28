@@ -7,7 +7,8 @@
             <field name="model">easy.export</field>
             <field name="arch" type="xml">
                 <form string="Export" version="7.0">
-                    <group>
+                    <field name="state" invisible="True"/>
+                    <group attrs="{'invisible': [('state', '=', 'done')]}">
                         <field name="model_id"
                                class="oe_no_button"
                                options='{"no_open": True, "no_create": True}'
@@ -21,14 +22,33 @@
                         <field name="export_active_ids"
                                invisible="context.get('hide_data')"/>
                     </group>
-                    <separator string="to_replace"/>
-                    <footer>
+                    <div attrs="{'invisible': [('state', '=', 'done')]}">
+                        <separator string="to_replace"/>
+                    </div>
+                    <group attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <field name="file_data" filename="file_name" readonly="1"/>
+                        <field name="file_name" invisible="True"/>
+                    </group>
+                    <footer attrs="{'invisible': [('state', '=', 'done')]}">
                         <button string="Export" name="export_file_xls" type="object" class="oe_highlight"/>
                          or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
+                    <footer attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <button string="Close" class="oe_link" special="cancel"/>
+                    </footer>
                 </form>
             </field>
+        </record>
+
+        <record id="action_default_action_easy_export" model="ir.actions.act_window">
+            <field name="name">Default action easy export</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">easy.export</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="context" eval="{}"/>
+            <field name="target">new</field>
         </record>
 
     </data>
