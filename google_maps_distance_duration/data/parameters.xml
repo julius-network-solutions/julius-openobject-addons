@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="google_maps_apik" model="ir.config_parameter">
+            <field name="name">google_maps_apik</field>
+            <field name="value">TODO</field>
+        </record>
+
+    </data>
+</openerp>
+    

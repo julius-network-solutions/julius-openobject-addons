@@ -34,7 +34,9 @@ Call the Google API to get distance and duration between 2 points
     'depends': [
                 'base',
                 ],
-    'data': [],
+    'data': [
+             'data/parameters.xml',
+             ],
     'test': [],
     'installable': True,
     'active': False,
