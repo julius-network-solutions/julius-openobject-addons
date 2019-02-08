@@ -59,11 +59,14 @@ class GoogleMaps(object):
         """
         Get directions from `origin` to `destination`.
         """
+        key = self.env['ir.config_parameter'].\
+            get_param('google_maps_apik', default='')
         params = {
             'origin': origin,
             'destination': destination,
             'sensor': 'false',
             'mode': mode,
+            'key': key,
         }
         params.update(kwargs)
         if mode == 'transit':
