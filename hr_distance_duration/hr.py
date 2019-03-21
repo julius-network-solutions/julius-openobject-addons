@@ -19,8 +19,8 @@
 #
 #################################################################################
 
-from openerp.addons.google_maps_distance_duration.google_maps import GoogleMaps
-from openerp.addons.base_geolocalize.models.res_partner import geo_query_address
+# from openerp.addons.google_maps_distance_duration.google_maps import GoogleMaps
+# from openerp.addons.base_geolocalize.models.res_partner import geo_query_address
 import datetime
 import time
 from openerp import models, fields, api
