@@ -19,24 +19,6 @@
 #
 ###############################################################################
 
-{
-    "name": "Sale Order Set to Draft",
-    "version": "0.2",
-    "author": "Julius Network Solutions",
-    "website": "http://julius.fr",
-    "category": "Sale Management",
-    "depends": [
-                'sale',
-                ],
-    "description": """
-This Module at the possibilities to set a canceled sale order to draft.
-""",
-    "demo": [],
-    "data": [
-             "views/sale.xml",
-             ],
-    "installable": True,
-    "active": False,
-}
+from . import sale
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
