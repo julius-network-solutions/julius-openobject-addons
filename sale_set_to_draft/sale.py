@@ -19,24 +19,33 @@
 #
 ###############################################################################
 
-from openerp import models
-from openerp import netsvc
+from openerp import models, api, workflow
 
-class sale_order(models.Model):
+
+class SaleOrder(models.Model):
     _inherit = "sale.order"
-    
-    def action_cancel_draft(self, cr, uid, ids, *args):
-        if not len(ids):
-            return False
-        cr.execute('select id from sale_order_line where order_id IN %s and state=%s', (tuple(ids), 'cancel'))
-        line_ids = map(lambda x: x[0], cr.fetchall())
-        self.write(cr, uid, ids, {'state': 'draft', 'invoice_ids': [], 'shipped': 0})
-        self.pool.get('sale.order.line').write(cr, uid, line_ids, {'invoiced': False, 'state': 'draft', 'invoice_lines': [(6, 0, [])]})
-        wf_service = netsvc.LocalService("workflow")
-        for inv_id in ids:
+
+    @api.multi
+    def action_cancel_draft(self):
+        lines = self.env['sale.order.line'].\
+            search([
+                    ('order_id', 'in', self.ids),
+                    ('state', '=', 'cancel'),
+                    ])
+        self.write({
+                    'state': 'draft',
+                    'invoice_ids': [(6, 0, [])],
+                    'shipped': 0,
+                    })
+        lines.write({
+                     'invoiced': False,
+                     'state': 'draft',
+                     'invoice_lines': [(6, 0, [])],
+                     })
+        for sale in self:
             # Deleting the existing instance of workflow for SO
-            wf_service.trg_delete(uid, 'sale.order', inv_id, cr)
-            wf_service.trg_create(uid, 'sale.order', inv_id, cr)
+            workflow.trg_delete(self._uid, 'sale.order', sale.id, self._cr)
+            workflow.trg_create(self._uid, 'sale.order', sale.id, self._cr)
         return True
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
