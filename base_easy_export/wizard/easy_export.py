@@ -79,6 +79,8 @@ class EasyExport(models.TransientModel):
         for field in field_names:
             field_name = field
             field_label = columns_headers[i] or field
+            if not columns_headers[i]:
+                columns_headers[i] = field_label
             fields_data.append('{"name": "%s", "label": "%s"}' % (field_name, field_label))
             i += 1
         field_data += ','.join(fields_data)
@@ -91,7 +93,7 @@ class EasyExport(models.TransientModel):
         data = '{"model": "%s", "fields": %s, "ids": %s, "domain": [], \
             "context": %s, "import_compat": %s}' % (model, field_data, ids,
                                                     context, import_compat)
-        return data, field_names
+        return data, field_names, columns_headers
 
     @api.multi
     def get_ids(self, domain):
@@ -110,7 +112,7 @@ class EasyExport(models.TransientModel):
         self.ensure_one()
         token = int(time.time())
         ids = self.get_ids(self.export_domain)
-        data, field_names = self.get_data(ids)
+        data, field_names, columns_headers = self.get_data(ids)
         url = '/web/export/xls?data=%s&token=%s' %(data, token)
         if len(url) < 8000:
             return {
@@ -122,7 +124,7 @@ class EasyExport(models.TransientModel):
         rows_data = self.env[self.model_id.model].browse(eval(ids)).\
             export_data(field_names, True).\
             get('datas', [])
-        data = ExcelExport().from_data(field_names, rows_data)
+        data = ExcelExport().from_data(columns_headers, rows_data)
         self.file_data = base64.encodestring(data)
         self.state = 'done'
         action = self.env.ref('base_easy_export.'
