@@ -4,8 +4,11 @@
 # Copyright (c) 2020-Today Julius Network Solutions
 # (http://www.julius.fr) All Rights Reserved.
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, exceptions
 from odoo.tools.mail import html2plaintext
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class MailMessage(models.Model):
@@ -17,8 +20,11 @@ class MailMessage(models.Model):
         message = self.body
         try:
             text_message = html2plaintext(message)
-        except:
+        except Exception as e:
             text_message = message
+            _logger.warning(str(e))
+            if self._context.get("raise_on_error", False):
+                raise exceptions.Warning(e)
         message_action = self.env["mail.message.action"]
         actions = message_action.\
             search([
@@ -29,7 +35,9 @@ class MailMessage(models.Model):
             error = action.do_action(self)
             if error:
                 # log error here
-                print(error)
+                _logger.warning(error)
+                if self._context.get("raise_on_error", False):
+                    raise exceptions.Warning(error)
                 return
             self.to_be_treated = False
 

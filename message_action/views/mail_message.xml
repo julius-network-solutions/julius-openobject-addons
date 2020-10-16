@@ -11,7 +11,8 @@
                     <header>
                         <button name="treat_message" type="object"
                                 string="Treat Message"
-                                attrs="{'invisible': [('to_be_treated', '=', False)]}"/>
+                                attrs="{'invisible': [('to_be_treated', '=', False)]}"
+                                context="{'raise_on_error': True}"/>
                     </header>
                 </sheet>
                 <field name="moderator_id" position="after">
