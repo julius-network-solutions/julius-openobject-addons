@@ -13,11 +13,6 @@
                         <field name="second_quantity" class="oe_inline"/>
                         <field name="second_uom_id" class="oe_inline"/>
                     </div>
-                    <!--<label string="Second Quantity :" align="1.0"/>
-                    <div colspan="1" col="2">
-                        <field name="second_quantity" nolabel="1" colspan="1"/>
-                        <field name="second_uom_id" nolabel="1" colspan="1"/>
-                    </div>-->
                 </field>
             </field>
         </record>
