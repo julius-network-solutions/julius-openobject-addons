@@ -17,6 +17,7 @@ class MailMessage(models.Model):
     to_be_treated = fields.Boolean(default=False)
 
     def treat_message(self):
+        _logger.info("'Treat message' method called for ids: %s", % self.ids)
         message = self.body
         try:
             text_message = html2plaintext(message)

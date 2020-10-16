@@ -6,7 +6,7 @@
 
 {
     "name": "Automated Actions with mail messages",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "category": "Tools",
     "author": "Julius Network Solutions",
     "contributors": [
