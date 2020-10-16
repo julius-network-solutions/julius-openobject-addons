@@ -17,7 +17,7 @@ class MailMessage(models.Model):
     to_be_treated = fields.Boolean(default=False)
 
     def treat_message(self):
-        _logger.info("'Treat message' method called for ids: %s", % self.ids)
+        _logger.info("'Treat message' method called for ids: %s" % self.ids)
         message = self.body
         try:
             text_message = html2plaintext(message)
@@ -31,6 +31,8 @@ class MailMessage(models.Model):
             search([
                     ("model_name", "=", self.model),
                     ])
+        _logger.warning(text_message)
+        _logger.warning([a.value for a in actions])
         action = actions.filtered(lambda a: text_message == a.value)
         if action:
             error = action.do_action(self)
@@ -47,5 +49,10 @@ class MailMessage(models.Model):
                 raise exceptions.Warning("Action not found: %s" % text_message)
         return True
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+    def _cron_treat_message(self):
+        messages = self.search([("to_be_treated", "=", True)])
+        _logger.info("Treat %s messages" % len(messages))
+        for message in messages:
+            message.treat_message()
 
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

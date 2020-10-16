@@ -16,14 +16,19 @@ class MailMessageAction(models.Model):
     model_id = fields.Many2one("ir.model", required=True)
     model_name = fields.Char(related="model_id.model", readonly=True,
                              store=True)
+    user_id = fields.Many2one("res.users")
     action = fields.Selection([
                                ("create_move", "Create Move"),
                                ], default="create_move", required=True)
     location_id = fields.Many2one("stock.location",
                                   "Location")
+    origin = fields.Char()
+    keep_in_package = fields.Boolean(default=False)
 
     def do_action(self, message):
         if self.action == "create_move":
+            if self.user_id:
+                self = self.with_user(self.user_id)
             picking = self.env["stock.picking"]
             move = self.env["stock.move"]
             move_line = self.env["stock.move.line"]
@@ -39,11 +44,15 @@ class MailMessageAction(models.Model):
             if not quant:
                 return "Production lot not located"
             try:
-                picking = picking.create({
-                                          "picking_type_id": 5,
-                                          "location_id": quant.location_id.id,
-                                          "location_dest_id": self.location_id.id,
-                                          })
+                type_id = self.env.ref("stock.picking_type_internal").id
+                vals = {
+                        "picking_type_id": type_id,
+                        "location_id": quant.location_id.id,
+                        "location_dest_id": self.location_id.id,
+                        }
+                if self.origin:
+                    vals.update({"origin": self.origin})
+                picking = picking.create(vals)
                 move = move.create({
                                     "picking_id": picking.id,
                                     "name": self.name,
@@ -57,11 +66,18 @@ class MailMessageAction(models.Model):
                                     })
                 picking.action_confirm()
                 picking.action_assign()
-                move.move_line_ids.write({
-                                          "lot_id": prodlot.id,
-                                          "lot_name": prodlot.name,
-                                          "qty_done": prodlot.product_qty,
-                                          })
+                vals = {
+                        "lot_id": prodlot.id,
+                        "lot_name": prodlot.name,
+                        "qty_done": prodlot.product_qty,
+                        "package_id": quant.package_id.id,
+                        "result_package_id": False,
+                        }
+                if self.origin:
+                    vals.update({"origin": self.origin})
+                if self.keep_in_package:
+                    vals.update({"result_package_id": quant.package_id.id})
+                move.move_line_ids.write(vals)
                 picking.button_validate()
 #                 move_line = move_line.\
 #                     create({

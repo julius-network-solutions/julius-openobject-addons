@@ -20,10 +20,13 @@
                             <group>
                                 <field name="action"/>
                                 <field name="location_id"/>
+                                <field name="origin"/>
+                                <field name="keep_in_package"/>
                             </group>
                             <group>
                                 <field name="model_id"/>
                                 <field name="model_name"/>
+                                <field name="user_id"/>
                             </group>
                         </group>
                     </sheet>
