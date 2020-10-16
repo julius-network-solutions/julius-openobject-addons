@@ -55,23 +55,31 @@ class MailMessageAction(models.Model):
                                     "date": message.date,
                                     "company_id": self.env.company.id,
                                     })
-                move_line = move_line.\
-                    create({
-                            "move_id": move.id,
-                            "picking_id": picking.id,
-                            "product_id": prodlot.product_id.id,
-                            "product_uom_qty": prodlot.product_qty,
-                            "product_uom_id": prodlot.product_uom_id.id,
-                            "lot_id": prodlot.id,
-                            "lot_name": prodlot.name,
-                            "location_id": quant.location_id.id,
-                            "location_dest_id": self.location_id.id,
-                            "date": message.date,
-                            "company_id": self.env.company.id,
-                            })
                 picking.action_confirm()
                 picking.action_assign()
+                move.move_line_ids.write({
+                                          "lot_id": prodlot.id,
+                                          "lot_name": prodlot.name,
+                                          "qty_done": prodlot.product_qty,
+                                          })
                 picking.button_validate()
+#                 move_line = move_line.\
+#                     create({
+#                             "move_id": move.id,
+#                             "picking_id": picking.id,
+#                             "product_id": prodlot.product_id.id,
+#                             "product_uom_qty": prodlot.product_qty,
+#                             "product_uom_id": prodlot.product_uom_id.id,
+#                             "lot_id": prodlot.id,
+#                             "lot_name": prodlot.name,
+#                             "location_id": quant.location_id.id,
+#                             "location_dest_id": self.location_id.id,
+#                             "date": message.date,
+#                             "company_id": self.env.company.id,
+#                             })
+#                 picking.action_confirm()
+#                 picking.action_assign()
+#                 picking.button_validate()
 #                 move_line._action_done()
             except Exception as e:
                 return e
