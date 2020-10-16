@@ -6,5 +6,6 @@
 
 from . import mail_message
 from . import mail_message_action
+from . import stock_traceability
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

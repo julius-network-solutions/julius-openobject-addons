@@ -50,7 +50,8 @@ class MailMessage(models.Model):
         return True
 
     def _cron_treat_message(self):
-        messages = self.search([("to_be_treated", "=", True)])
+        messages = self.search([("to_be_treated", "=", True)],
+                               order="date ASC, id ASC")
         _logger.info("Treat %s messages" % len(messages))
         for message in messages:
             message.treat_message()

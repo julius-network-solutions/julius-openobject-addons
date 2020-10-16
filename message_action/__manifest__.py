@@ -6,7 +6,7 @@
 
 {
     "name": "Automated Actions with mail messages",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "category": "Tools",
     "author": "Julius Network Solutions",
     "contributors": [
@@ -24,6 +24,12 @@ e.g.: Create an automatic stock move for a production lot.
 
 Version History:
 ================
+
+
+Version 1.0.6:
+--------------
+
+    * Sort correctly treatment if the action is done during the same second.
 
 
 Version 1.0.5:
