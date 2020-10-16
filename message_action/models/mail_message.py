@@ -40,5 +40,11 @@ class MailMessage(models.Model):
                     raise exceptions.Warning(error)
                 return
             self.to_be_treated = False
+        else:
+            _logger.warning(text_message)
+            if self._context.get("raise_on_error", False):
+                raise exceptions.Warning("Action not found: %s" % text_message)
+        return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
