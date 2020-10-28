@@ -40,6 +40,7 @@ class AuthSignupHomeFirstNameLastName(AuthSignupHome):
         if not qcontext.get('token') and not qcontext.get('signup_enabled'):
             raise werkzeug.exceptions.NotFound()
 
+        error = False
         if 'error' not in qcontext and request.httprequest.method == 'POST':
             try:
                 self.do_signup(qcontext)
@@ -47,11 +48,16 @@ class AuthSignupHomeFirstNameLastName(AuthSignupHome):
             except (SignupError, AssertionError), e:
                 if request.env["res.users"].sudo().search([("login", "=", qcontext.get("login"))]):
                     qcontext["error"] = _("Another user is already registered using this email address.")
+                    error = qcontext["error"]
                 else:
                     _logger.error(e.message)
                     qcontext['error'] = _(e.message)
+                    error = qcontext['error']
 
-        return request.render('auth_signup.signup', qcontext)
+        response = super(AuthSignupHomeFirstNameLastName, self).web_auth_signup(*args, **kw)
+        if error:
+            response.qcontext.update(error=error)
+        return response
 
     def do_signup(self, qcontext):
         """ Shared helper that creates a res.partner out of a token """
